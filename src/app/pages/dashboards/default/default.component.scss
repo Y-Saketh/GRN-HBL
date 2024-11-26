@@ -1,0 +1,39 @@
+.floating-label {
+    position: relative;
+    margin-bottom: 1.5rem;
+  }
+  
+  .floating-input {
+    width: 100%;
+    padding: 10px 15px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: transparent;
+    outline: none;
+  }
+  
+  .floating-label label {
+    position: absolute;
+    top: 50%;
+    left: 15px;
+    transform: translateY(-50%);
+    pointer-events: none;
+    font-size: 12px;
+    color: #666;
+    transition: all 0.2s ease;
+  }
+  
+  /* Floating label effect when input is focused or filled */
+  .floating-input:focus + label,
+  .floating-input:not(:placeholder-shown) + label {
+    top: -10px;
+    left: 15px;
+    font-size: 12px;
+    color: #007bff;
+  }
+  
+  .floating-input:focus {
+    border-color: #007bff;
+  }
+  

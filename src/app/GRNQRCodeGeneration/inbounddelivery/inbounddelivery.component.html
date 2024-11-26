@@ -1,0 +1,163 @@
+<div class="col-xl-12">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title"><span style="color: black;">></span> In Bound Delivery</h4>
+            <!-- <p class="card-title-desc">Provide valuable, actionable feedback to your users with HTML5 form
+            validation–available in all our supported browsers.</p> -->
+            <form class="needs-validation" (ngSubmit)="validSubmit()" [formGroup]="validationform">
+                <div class="row mt-4">
+                    <!-- Row 1 -->
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label class="brandcolor" class="brandcolor" for="inbounddeliverynumber">PURCHASE ORDER
+                                NUMBER</label>
+                            <input type="text" class="form-control" id="inbounddeliverynumber"
+                                formControlName="inbounddeliverynumber" placeholder="Purchase Order Number"
+                                [ngClass]="{'is-invalid': submit && form.inbounddeliverynumber.errors}" />
+                            <div *ngIf="submit && form.inbounddeliverynumber.errors" class="invalid-feedback">
+                                <span *ngIf="form.inbounddeliverynumber.errors.required">Please provide a valid Purchase
+                                    Order Number.</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- <div class="row"> -->
+                    <!-- Button Row -->
+                    <div class="col-md-4 mt-4"></div>
+                    <div class="col-md-4  text-center">
+                        <button class="btn btn-success mt-4" type="submit">Get Details</button>
+                    </div>
+                    <div class="col-md-4"></div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+    <!-- end card -->
+    <div class="card">
+        <!-- <div class="row"> -->
+        <!-- <div class="col-12"> -->
+        <!-- <div class="card"> -->
+        <div class="card-body">
+            <div class="row mb-md-2">
+                <div class="col-sm-12 col-md-6">
+                    <div class="dataTables_length">
+                        <label class="d-inline-flex align-items-center">
+                            Show
+                            <select name="tickets-table_length" aria-controls="tickets-table"
+                                class="form-control form-control-sm mx-2" [(ngModel)]="service.pageSize">
+                                <option [ngValue]="10">10</option>
+                                <option [ngValue]="25">25</option>
+                                <option [ngValue]="50">50</option>
+                                <option [ngValue]="100">100</option>
+                            </select>
+                            entries
+                        </label>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-6">
+                    <div id="tickets-table_filter" class="dataTables_filter text-md-end">
+                        <label class="d-inline-flex align-items-center">
+                            Search:
+                            <input type="text" name="searchTerm" class="form-control form-control-sm ms-2"
+                                aria-controls="tickets-table" [(ngModel)]="service.searchTerm" />
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table id="basic-datatable" class="table table-bordered dt-responsive nowrap">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th sortable="gateEntryNumber" (sort)="onSort($event)">Entry Gate Pass Number</th>
+                            <th sortable="vehicleNumber" (sort)="onSort($event)">Vehicle Number</th>
+                            <th sortable="invoiceDate" (sort)="onSort($event)">Invoice Date/Gate Entry Date/Document
+                                Date</th>
+                            <th sortable="material" (sort)="onSort($event)">Material/SAP Code</th>
+                            <th sortable="description" (sort)="onSort($event)">Material Description</th>
+                            <th sortable="deliveryQuantity" (sort)="onSort($event)">Delivered Quantity</th>
+                            <th sortable="supplier" (sort)="onSort($event)">Supplier/Vendor Code</th>
+                            <th sortable="plant" (sort)="onSort($event)">Plant</th>
+                            <th sortable="tolerance" (sort)="onSort($event)">Over & Under Tolerance</th>
+                        </tr>
+                    </thead>
+                    @for(table of tables$ | async;track $index){
+                    <tbody>
+
+                        <tr>
+
+                            <td align="center">
+                                <a class="expand-row" (click)="changeValue($index)">+</a>
+                            </td>
+
+                            <td><input type="text" [(ngModel)]="table.gateEntryNumber"
+                                    class="form-control form-control-sm" /></td>
+                            <td><input type="text" [(ngModel)]="table.vehicleNumber"
+                                    class="form-control form-control-sm" /></td>
+                            <td><input type="text" [(ngModel)]="table.invoiceDate"
+                                    class="form-control form-control-sm" /></td>
+                            <td><input type="text" [(ngModel)]="table.material" class="form-control form-control-sm" />
+                            </td>
+                            <td><input type="text" [(ngModel)]="table.description"
+                                    class="form-control form-control-sm" /></td>
+                            <td><input type="text" [(ngModel)]="table.deliveryQuantity"
+                                    class="form-control form-control-sm" /></td>
+                            <td><input type="text" [(ngModel)]="table.supplier" class="form-control form-control-sm" />
+                            </td>
+                            <td><input type="text" [(ngModel)]="table.plant" class="form-control form-control-sm" />
+                            </td>
+                            <td><input type="text" [(ngModel)]="table.tolerance" class="form-control form-control-sm" />
+                            </td>
+
+                        </tr>
+
+                        @if(!hideme[$index]){
+                        <tr class="sub-table no-bg">
+                            <td align="center"> </td>
+                            <td colspan="9" class="p-0">
+                                <table class="table mb-0 table-striped">
+                                    <thead class="bg-dark text-white">
+                                        <tr>
+                                            <th>Storage Location</th>
+                                            <th>Incoterms</th>
+                                            <th>Transportation Group</th>
+                                            <th>Transporter Name</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>{{ table.storageLocation }}</td>
+                                            <td>{{ table.incoterms }}</td>
+                                            <td>{{ table.transportationGroup }}</td>
+                                            <td>{{ table.transporterName }}</td>
+
+                                            <!-- <td><input type="text" [(ngModel)]="table.storageLocation" class="form-control form-control-sm" /></td>
+                                            <td><input type="text" [(ngModel)]="table.incoterms" class="form-control form-control-sm" /></td>
+                                            <td><input type="text" [(ngModel)]="table.transportationGroup" class="form-control form-control-sm" /></td>
+                                            <td><input type="text" [(ngModel)]="table.transporterName" class="form-control form-control-sm" /></td>
+                 -->
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>}
+
+                    </tbody>
+                    }
+                </table>
+            </div>
+            <div class="col-md-4  text-left">
+                <button class="btn btn-success mt-4"  type="button">Save</button>
+            </div>
+        </div>
+
+        <!-- </div> -->
+        <!-- </div> -->
+        <!-- </div> -->
+
+    </div>
+
+
+</div>

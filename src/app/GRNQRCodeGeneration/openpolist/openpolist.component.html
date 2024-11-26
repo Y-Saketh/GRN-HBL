@@ -1,0 +1,270 @@
+<div class="col-xl-12">
+  <div class="card" style="background-color: beige;">
+    <div class="card-body">
+      <h4 class="card-title">
+        <span style="color: black;">></span>
+         Open Purchase Order List</h4>
+      <!-- <p class="card-title-desc">Provide valuable, actionable feedback to your users with HTML5 form
+          validation–available in all our supported browsers.</p> -->
+      <form class="needs-validation" (ngSubmit)="validSubmit()" [formGroup]="validationform">
+        <div class="row">
+          <!-- Row 1 -->
+          <div class="col-md-3">
+            <div class="mb-3">
+              <label class="brandcolor"  for="plant">PLANT</label>
+              <input type="text" class="form-control" id="plant" formControlName="plant" placeholder="Plant"
+                [ngClass]="{'is-invalid': submit && form.plant.errors}" />
+              <div *ngIf="submit && form.plant.errors" class="invalid-feedback">
+                <span *ngIf="form.plant.errors.required">Please provide a valid plant.</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="mb-3">
+              <label class="brandcolor" for="documentType">DOCUMENT TYPE FROM</label>
+              <input type="text" class="form-control" id="documentTypeFrom" formControlName="documentTypeFrom"
+                placeholder="Document Type From" [bsConfig]="bsConfig" [ngClass]="{'is-invalid': submit && form.documentTypeFrom.errors}"  bsDatepicker/>
+              <div *ngIf="!submit && form.documentTypeFrom.errors" class="invalid-feedback">
+                <span *ngIf="form.documentTypeFrom.errors.required">Please provide a valid document type From.</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="mb-3">
+              <label class="brandcolor" for="documentTypeTo">DOCUMENT TYPE TO</label>
+              <input type="text" class="form-control" id="documentTypeTo" formControlName="documentTypeTo"
+                placeholder="Document Type" [bsConfig]="bsConfig" [ngClass]="{'is-invalid': submit && form.documentTypeTo.errors}"  bsDatepicker/>
+              <div *ngIf="submit && form.documentTypeTo.errors" class="invalid-feedback">
+                <span *ngIf="form.documentTypeTo.errors.required">Please provide a valid document type To Date.</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="mb-3">
+              <label class="brandcolor" for="vendor">VENDOR</label>
+              <input type="text" class="form-control" id="vendor" formControlName="vendor" placeholder="Vendor"
+                [ngClass]="{'is-invalid': submit && form.vendor.errors}" />
+              <div *ngIf="submit && form.vendor.errors" class="invalid-feedback">
+                <span *ngIf="form.vendor.errors.required">Please provide a valid vendor.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <!-- Row 2 -->
+          <div class="col-md-3">
+            <div class="mb-3">
+              <label class="brandcolor" for="material">MATERIAL</label>
+              <input type="text" class="form-control" id="material" formControlName="material" placeholder="Material"
+                [ngClass]="{'is-invalid': submit && form.material.errors}" />
+              <div *ngIf="submit && form.material.errors" class="invalid-feedback">
+                <span *ngIf="form.material.errors.required">Please provide a valid material.</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="mb-3">
+              <label class="brandcolor" for="deliveryDateFrom">DELIVERY DATE FROM</label>
+              <input type="text" class="form-control" id="deliveryDateFrom" formControlName="deliveryDateFrom"
+                placeholder="Delivery Date From" [ngClass]="{'is-invalid': submit && form.deliveryDateFrom.errors}" bsDatepicker>
+              <div *ngIf="submit && form.deliveryDateFrom.errors" class="invalid-feedback">
+                <span *ngIf="form.deliveryDateFrom.errors.required">Please provide a valid deliveryDateFrom.</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="mb-3">
+              <label class="brandcolor" for="deliveryDateTo">DELIVERY DATE TO</label>
+              <input type="text" class="form-control" id="deliveryDateTo" formControlName="deliveryDateTo"
+                placeholder="Delivery Date To" [ngClass]="{'is-invalid': submit && form.purchaseGroup.errors}"  bsDatepicker/>
+              <div *ngIf="submit && form.deliveryDateTo.errors" class="invalid-feedback">
+                <span *ngIf="form.deliveryDateTo.errors.required">Please provide a valid deliveryDateTo.</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="mb-3">
+              <label class="brandcolor" for="purchaseGroup">PURCHASE GROUP</label>
+              <input type="text" class="form-control" id="purchaseGroup" formControlName="purchaseGroup"
+                placeholder="Purchase Group" [ngClass]="{'is-invalid': submit && form.purchaseGroup.errors}" />
+              <div *ngIf="submit && form.purchaseGroup.errors" class="invalid-feedback">
+                <span *ngIf="form.purchaseGroup.errors.required">Please provide a valid purchase group.</span>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+        <div class="row">
+          <div class="col-md-3">
+            <div class="mb-3">
+              <label class="brandcolor" for="poNumber">PO NUMBER</label>
+              <input type="text" class="form-control" id="poNumber" formControlName="poNumber" placeholder="PO Number"
+                [ngClass]="{'is-invalid': submit && form.poNumber.errors}" />
+              <div *ngIf="submit && form.poNumber.errors" class="invalid-feedback">
+                <span *ngIf="form.poNumber.errors.required">Please provide a valid PO number.</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="mb-3">
+              <label class="brandcolor" for="materialgroup">MATERIAL GROUP</label>
+              <input type="text" class="form-control" id="materialgroup" formControlName="materialgroup"
+                placeholder="Material Group" [ngClass]="{'is-invalid': submit && form.material.errors}" />
+              <div *ngIf="submit && form.materialgroup.errors" class="invalid-feedback">
+                <span *ngIf="form.materialgroup.errors.required">Please provide a valid material group.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <!-- Button Row -->
+          <div class="col-md-4"></div>
+          <div class="col-md-4 text-center">
+            <button class="btn btn-success" type="submit"(click)="getPOLIST()" >Get Details</button>
+          </div>
+          <div class="col-md-4"></div>
+        </div>
+      </form>
+
+    </div>
+  </div>
+  <!-- end card -->
+  <div class="card" >
+    <!-- <div class="row"> -->
+    <!-- <div class="col-12"> -->
+    <!-- <div class="card"> -->
+    <div class="card-body">
+      <div class="row mb-md-2">
+        <div class="col-sm-12 col-md-6">
+          <div class="dataTables_length">
+            <label class="d-inline-flex align-items-center">
+              Show
+              <select name="tickets-table_length" aria-controls="tickets-table"
+                class="form-control form-control-sm mx-2" [(ngModel)]="service.pageSize">
+                <option [ngValue]="10">10</option>
+                <option [ngValue]="25">25</option>
+                <option [ngValue]="50">50</option>
+                <option [ngValue]="100">100</option>
+              </select>
+              entries
+            </label>
+          </div>
+        </div>
+        <div class="col-sm-12 col-md-6">
+          <div id="tickets-table_filter" class="dataTables_filter text-md-end">
+            <label class="d-inline-flex align-items-center">
+              Search:
+              <input type="text" name="searchTerm" class="form-control form-control-sm ms-2"
+                aria-controls="tickets-table" [(ngModel)]="service.searchTerm" />
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table id="basic-datatable" class="table table-bordered dt-responsive nowrap">
+          <thead class="brandcolor tableHeader">
+            <tr>
+              <th></th>
+              <th class="brandcolor" sortable="purchasingDocument" (sort)="onSort($event)">Purchasing Document</th>
+              <th class="brandcolor" sortable="item" (sort)="onSort($event)">Item</th>
+              <th class="brandcolor" sortable="purchasingDocType" (sort)="onSort($event)">Purchasing Doc. Type</th>
+              <th class="brandcolor" sortable="purchasingGroup" (sort)="onSort($event)">Purchasing Group</th>
+              <th class="brandcolor" sortable="documentDate" (sort)="onSort($event)">Document Date</th>
+              <th class="brandcolor" sortable="supplier" (sort)="onSort($event)">Supplier/Supplying Plant</th>
+              <th class="brandcolor" sortable="material" (sort)="onSort($event)">Material</th>
+              <!-- <th>Actions</th> -->
+            </tr>
+          </thead>
+          @for(table of tables$ | async;track $index){
+            <tbody>
+              <tr>
+                <td align="center">
+                  <a class="expand-row" (click)="changeValue($index)">+</a>
+                </td>
+                <td>{{ table.EBELN }}</td> <!-- Purchase Document Number -->
+                <td>{{ table.EBELP }}</td> <!-- Item Number -->
+                <td>{{ table.EKGRP }}</td> <!-- Purchase Group -->
+                <td>{{ table.BEDAT }}</td> <!-- Purchase Document Date -->
+                <td>{{ table.LIFNR }}</td> <!-- Supplier Code -->
+                <td>{{ table.NAME1 }}</td> <!-- Vendor Address -->
+                <td>{{ table.MATNR }}</td> <!-- Material -->
+              </tr>
+              <ng-container *ngIf="!hideme[$index]">
+                <tr class="sub-table no-bg">
+                  <td align="center"></td>
+                  <td colspan="15" class="p-0">
+                    <table class="table mb-0 table-striped">
+                      <thead class="bg-dark text-white">
+                        <tr>
+                          <th>Updating Text Field</th>
+                          <th>Base Unit of Measure</th>
+                          <th>Plant</th>
+                          <th>Alternative Unit of Measure</th>
+                          <th>Unit of Measure</th>
+                          <th>Bill of Quantity (BOM)</th>
+                          <th>Stockkeeping Unit</th>
+                          <th>Sum of Amount</th>
+                          <th>Currency</th>
+                          <th>Still to be delivered (qty)</th>
+                          <th>Still to be delivered (value)</th>
+                          <th>Still to be invoiced (qty)</th>
+                          <th>Still to be invoiced (value)</th>
+                          <th>Delivery Date</th>
+                          <th>Supplier Email ID</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>{{ table.TXZ01 }}</td> <!-- Updating Text Field -->
+                          <td>{{ table.MEINS1 }}</td> <!-- Base Unit of Measure -->
+                          <td>{{ table.WERKS }}</td> <!-- Plant -->
+                          <td>{{ table.MENGE }}</td> <!-- Alternative Unit of Measure -->
+                          <td>{{ table.MEINS }}</td> <!-- Unit of Measure -->
+                          <td>{{ table.MENGE1 }}</td> <!-- Bill of Quantity (BOM) -->
+                          <td>{{ table.sku }}</td> <!-- Stockkeeping Unit -->
+                          <td>{{ table.DMBTR1 }}</td> <!-- Sum of Amount -->
+                          <td>{{ table.NETWR }}</td> <!-- Net Price -->
+                          <td>{{ table.LV_MENGE_SUM }}</td> <!-- Still to be delivered (qty) -->
+                          <td>{{ table.WRBTR }}</td> <!-- Still to be delivered (value) -->
+                          <td>{{ table.LIFNR }}</td> <!-- Still to be invoiced (qty) -->
+                          <td>{{ table.DAYS }}</td> <!-- Still to be invoiced (value) -->
+                          <td>{{ table.EINDT }}</td> <!-- Delivery Date -->
+                          <td>{{ table.BUYER }}</td> <!-- Supplier Email ID -->
+                        </tr>
+                      </tbody>
+                    </table>
+                  </td>
+                </tr>
+              </ng-container>
+            </tbody>
+            
+        }
+        </table>
+      </div>
+      <div class="row justify-content-md-between align-items-md-center mt-2">
+        <div class="col-sm-12 col-md-5">
+          <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">Showing
+            {{service.startIndex}} to
+            {{service.endIndex}} of {{service.totalRecords}}
+            entries
+          </div>
+        </div>
+        <!-- Pagination -->
+        <div class="col-sm-12 col-md-5">
+          <div class="text-md-right float-md-end pagination-rounded">
+            <pagination [totalItems]="total$ | async" [(ngModel)]="service.page">
+            </pagination>
+          </div>
+        </div>
+        <!-- End Pagination -->
+      </div>
+    </div>
+
+    <!-- </div> -->
+    <!-- </div> -->
+    <!-- </div> -->
+  </div>
+
+
+</div>

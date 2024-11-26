@@ -1,0 +1,27 @@
+.vertical-menu{
+    background-image: linear-gradient(to bottom, #6ba3cd, #031c2e) !important;
+ 
+ 
+    // background-image: linear-gradient(to bottom, #ABC8D7, #676F13) !important;
+}
+.navbar-brand-box{
+    background-color:#103554 !important ;
+    background-image: linear-gradient(to bottom, #103554, #031c2e) !important;
+ 
+}
+
+
+
+.sub-menu .active {
+    background-color: #454754; 
+    color: #303773;       
+    font-weight: bold;        
+    border-left: 4px solid #7e56b6; 
+  }
+  
+
+  .sub-menu .active:hover {
+    background-color: #454754; 
+    color: #303773;
+  }
+  

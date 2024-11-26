@@ -1,0 +1,187 @@
+<div class="col-xl-12">
+
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title"><span style="color: black;">></span> GRN Against Inbound Delivery</h4>
+            <!-- <p class="card-title-desc">Provide valuable, actionable feedback to your users with HTML5 form
+            validation–available in all our supported browsers.</p> -->
+
+
+        </div>
+    </div>
+    <!-- end card -->
+    <div class="card">
+        <!-- <div class="row"> -->
+        <!-- <div class="col-12"> -->
+        <!-- <div class="card"> -->
+        <div *ngIf="grnscreen" class="card-body">
+            <div class="row mb-md-2">
+                <div class="col-sm-12 col-md-6">
+                    <div class="dataTables_length">
+                        <label class="d-inline-flex align-items-center">
+                            Show
+                            <select name="tickets-table_length" aria-controls="tickets-table"
+                                class="form-control form-control-sm mx-2" [(ngModel)]="service.pageSize">
+                                <option [ngValue]="10">10</option>
+                                <option [ngValue]="25">25</option>
+                                <option [ngValue]="50">50</option>
+                                <option [ngValue]="100">100</option>
+                            </select>
+                            entries
+                        </label>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-6">
+                    <div id="tickets-table_filter" class="dataTables_filter text-md-end">
+                        <label class="d-inline-flex align-items-center">
+                            Search:
+                            <input type="text" name="searchTerm" class="form-control form-control-sm ms-2"
+                                aria-controls="tickets-table" [(ngModel)]="service.searchTerm" />
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table id="basic-datatable" class="table table-bordered dt-responsive nowrap">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th sortable="gateEntryNumber" (sort)="onSort($event)">Entry Gate Pass Number</th>
+                            <th sortable="vehicleNumber" (sort)="onSort($event)">Vehicle Number</th>
+                            <th sortable="invoiceDate" (sort)="onSort($event)">Invoice Date/Gate Entry Date/Document
+                                Date</th>
+                            <th sortable="material" (sort)="onSort($event)">Material/SAP Code</th>
+                            <th sortable="description" (sort)="onSort($event)">Material Description</th>
+                            <th sortable="deliveryQuantity" (sort)="onSort($event)">Delivered Quantity</th>
+                            <th sortable="supplier" (sort)="onSort($event)">Supplier/Vendor Code</th>
+                            <th sortable="plant" (sort)="onSort($event)">Plant</th>
+                            <th sortable="tolerance" (sort)="onSort($event)">Over & Under Tolerance</th>
+                        </tr>
+                    </thead>
+                    @for(table of tables$ | async;track $index){
+                    <tbody>
+
+                        <tr>
+
+                            <td align="center">
+                                <a class="expand-row" (click)="changeValue($index)">+</a>
+                            </td>
+
+                            <td>{{ table.gateEntryNumber }}</td>
+                            <td>{{ table.vehicleNumber }}</td>
+                            <td>{{ table.invoiceDate }}</td>
+                            <td (click)="onSelectMaterial(table)"
+                                style="cursor: pointer; text-decoration: underline; color: brown;">
+                                >{{ table.material }}</td>
+                            <td>{{ table.description }}</td>
+                            <td>{{ table.deliveryQuantity }}</td>
+                            <td>{{ table.supplier }}</td>
+                            <td>{{ table.plant }}</td>
+                            <td>{{ table.tolerance }}</td>
+
+                        </tr>
+
+                        @if(!hideme[$index]){
+                        <tr class="sub-table no-bg">
+                            <td align="center"> </td>
+                            <td colspan="9" class="p-0">
+                                <table class="table mb-0 table-striped">
+                                    <thead class="bg-dark text-white">
+                                        <tr>
+                                            <th>Storage Location</th>
+                                            <th>Incoterms</th>
+                                            <th>Transportation Group</th>
+                                            <th>Transporter Name</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>{{ table.storageLocation }}</td>
+                                            <td>{{ table.incoterms }}</td>
+                                            <td>{{ table.transportationGroup }}</td>
+                                            <td>{{ table.transporterName }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>}
+
+                    </tbody>
+                    }
+                </table>
+            </div>
+        </div>
+
+        <div *ngIf="selectedMaterial" class="mt-4">
+            <button class="btn btn-primary" style="float: left; margin-left: 10px;" type="button"
+                (click)="back()">Back</button><br><br>
+            <h5>Item Quantity: Detailed Items for Material {{ selectedMaterial.material }}</h5>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Item Quantity</th>
+                        <th>Status</th>
+                        <th>Storage Location</th>
+                        <th>Incoterms</th>
+                        <th>Transportation Group</th>
+                        <th>Transporter Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let row of secondTableData; let i = index">
+                        <td>{{ row.item }}</td>
+                        <td>
+                            <input type="number" class="form-control form-control-sm" [(ngModel)]="row.itemQuantity"
+                                [disabled]="row.matched" (change)="updateMatchStatus()" />
+                        </td>
+                        <td>
+                            <span [class.text-success]="row.matched" [class.text-danger]="!row.matched">
+                                {{ row.matched ? 'Matched' : 'Unmatched' }}
+                            </span>
+                        </td>
+                        <td>{{ selectedMaterial.storageLocation }}</td>
+                        <td>{{ selectedMaterial.incoterms }}</td>
+                        <td>{{ selectedMaterial.transportationGroup }}</td>
+                        <td>{{ selectedMaterial.transporterName }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="custom-btn-group mt-4">
+                <button class="btn btn-success" type="button">Save</button>
+                <button class="btn btn-primary" (click)="generateQR()" type="button">Continue to Generate QR</button>
+            </div>
+
+
+        </div>
+        <div *ngIf="qrscreen">
+            <h3>QR Code Generation</h3>
+            <p *ngIf="isGenerating" class="text-primary">Generating QR codes for all items...</p>
+
+            <div class="qr-container">
+                <div *ngFor="let qrData of qrCodes; let i = index" class="qr-item">
+                    <div class="qr-code-wrapper">
+                        <!-- Display QR code as image -->
+                        <img [src]="qrData.qrCodeUrl" alt="QR Code for Item {{ i + 1 }}" width="150" height="150" />
+                    </div>
+
+                    <div class="qr-info">
+                        <!-- Display fields beside the QR code -->
+                        <p>{{ qrData.data.grnNumber }}</p>
+                        <p>{{ qrData.data.vendorCode }}</p>
+                        <p>{{ qrData.data.sapCode }}</p>
+                        <p>{{ qrData.data.reelNumber }}</p>
+                        <p>{{ qrData.data.reelQuantity }}</p>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- </div> -->
+            <!-- </div> -->
+            <!-- </div> -->
+        </div>
+
+
+    </div>
