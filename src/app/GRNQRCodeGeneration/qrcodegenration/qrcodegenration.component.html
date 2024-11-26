@@ -1,1 +1,211 @@
-<p>qrcodegenration works!</p>
+<div class="container-fluid">
+    <app-page-title
+      title="Advanced Table"
+      [breadcrumbItems]="breadCrumbItems"
+    ></app-page-title>
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Advanced Data Table</h4>
+            <p class="card-sub-title">Example of datatable.</p>
+            <div class="row mb-md-2">
+              <div class="col-sm-12 col-md-6">
+                <div class="dataTables_length" id="tickets-table_length">
+                  <label class="d-inline-flex align-items-center"
+                    >Show
+                    <select
+                      name="tickets-table_length"
+                      aria-controls="tickets-table"
+                      name="pageSize"
+                      [(ngModel)]="service.pageSize"
+                      class="form-control form-control-sm mx-2"
+                    >
+                      <option [ngValue]="10">10</option>
+                      <option [ngValue]="25">25</option>
+                      <option [ngValue]="50">50</option>
+                      <option [ngValue]="100">100</option>
+                    </select>
+                    entries</label
+                  >
+                </div>
+              </div>
+              <!-- Search -->
+              <div class="col-sm-12 col-md-6">
+                <div
+                  id="tickets-table_filter"
+                  class="dataTables_filter text-md-end"
+                >
+                  <label class="d-inline-flex align-items-center"
+                    >Search:
+                    <input
+                      type="text"
+                      name="searchTerm"
+                      class="form-control form-control-sm ms-2"
+                      aria-controls="tickets-table"
+                      [(ngModel)]="service.searchTerm"
+                  /></label>
+                </div>
+              </div>
+              <!-- End search -->
+            </div>
+            <!-- Table -->
+            <div class="table">
+              <table
+                id="basic-datatable"
+                class="table table-bordered dt-responsive nowrap datatables no-footer dtr-inline"
+              >
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th sortable="MaterialDocumnet" (sort)="onSort($event)">
+                      Material Document
+                    </th>
+                    <th sortable="MaterialDocYear" (sort)="onSort($event)">
+                      Material Doc. Year
+                    </th>
+                    <th sortable="materialDocItem" (sort)="onSort($event)">
+                      Material Doc. Item
+                    </th>
+                    <th sortable="identification" (sort)="onSort($event)">
+                      Identification
+                    </th>
+                    <th sortable="movementType" (sort)="onSort($event)">
+                      Movement Type
+                    </th>
+                    <th sortable="Material" (sort)="onSort($event)">Material</th>
+                    <th sortable="Plant" (sort)="onSort($event)">Plant</th>
+                    <th sortable="storageLocation" (sort)="onSort($event)">
+                      Storage Location
+                    </th>
+                    <th sortable="batch" (sort)="onSort($event)">Batch</th>
+                    <th sortable="stockType" (sort)="onSort($event)">
+                      Stock Type
+                    </th>
+                    <th sortable="supplier" (sort)="onSort($event)">Supplier</th>
+                    <th sortable="currency" (sort)="onSort($event)">Currency</th>
+                  </tr>
+                </thead>
+                @for(table of tables$ | async;track $index){
+                <tbody>
+                  <tr>
+                    <td align="center">
+                      <a class="expand-row" (click)="changeValue($index)"> + </a>
+                    </td>
+                    <td>{{ table.MaterialDocumnet }}</td>
+                    <td>{{ table.MaterialDocYear }}</td>
+                    <td>{{ table.materialDocItem }}</td>
+                    <td>{{ table.identification }}</td>
+                    <td>{{ table.movementType }}</td>
+                    <td>{{ table.Material }}</td>
+                    <td>{{ table.Plant }}</td>
+                    <td>{{ table.storageLocation }}</td>
+                    <td>{{ table.batch }}</td>
+                    <td>{{ table.stockType }}</td>
+                    <td>{{ table.supplier }}</td>
+                    <td>{{ table.currency }}</td>
+                  </tr>
+                  @if(!hideme[$index]){
+                  <tr class="sub-table no-bg">
+                    <td align="center"></td>
+                    <td colspan="15" class="p-0">
+                      <table class="table mb-0 table-striped">
+                        <thead class="bg-dark">
+                          <tr>
+                            <th>Amt. in loc. cur.</th>
+                            <th>Valuation Type</th>
+                            <th>Quantity</th>
+                            <th>Base Unit of Measure</th>
+                            <th>Qty in unit of entry</th>
+                            <th>Unit of Entry</th>
+                            <th>Qty in OPUn</th>
+                            <th>Order Price Unit</th>
+                            <th>Purchase Order</th>
+                            <th>Item</th>
+                            <th>Fisc. Year Ref. Doc.</th>
+                            <th>Reference Document</th>
+                            <th>Reference Doc. Item</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>{{ table.amountInLocCur }}</td>
+                            <td>{{ table.valuationType }}</td>
+                            <td>{{ table.quantity }}</td>
+                            <td>{{ table.baseUnitofMeasure }}</td>
+                            <td>{{ table.qtyinunitofentry }}</td>
+                            <td>{{ table.unitofEntry }}</td>
+                            <td>{{ table.qtyinOPUn }}</td>
+                            <td>{{ table.orderPriceUnit }}</td>
+                            <td>{{ table.purchaseOrder }}</td>
+                            <td>{{ table.Item }}</td>
+                            <td>{{ table.FiscYearRefDoc }}</td>
+                            <td>{{ table.ReferenceDocument }}</td>
+                            <td>{{ table.ReferenceDocItem }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                  }
+                </tbody>
+                }
+              </table>
+            </div>
+            <!-- End table -->
+            <div
+              class="row justify-content-md-between align-items-md-center mt-2"
+            >
+              <div class="col-sm-12 col-md-5">
+                <div
+                  class="dataTables_info mb-2"
+                  id="tickets-table_info"
+                  role="status"
+                  aria-live="polite"
+                >
+                  Showing {{ service.startIndex }} to {{ service.endIndex }} of
+                  {{ service.totalRecords }}
+                  entries
+                </div>
+              </div>
+              <!-- Pagination -->
+              <div class="col-sm-12 col-md-5">
+                <div class="text-md-right float-md-end pagination-rounded">
+                  <pagination
+                    [totalItems]="total$ | async"
+                    [(ngModel)]="service.page"
+                  >
+                  </pagination>
+                </div>
+              </div>
+              <!-- End Pagination -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ng-template #content role="document" let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title mt-0">Modal Heading</h5>
+      <button
+        type="button"
+        class="close"
+        aria-hidden="true"
+        (click)="modal.dismiss('Cross click')"
+      >
+        ×
+      </button>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-light"
+        (click)="modal.close('Close click')"
+      >
+        Close
+      </button>
+      <button type="button" class="btn btn-primary">Save changes</button>
+    </div>
+  </ng-template>
+  
