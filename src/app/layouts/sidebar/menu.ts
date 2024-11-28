@@ -30,7 +30,31 @@ export const MENU: MenuItem[] = [
                 link: 'QRcodegenration',
                 parentId: 2
             },
-
+            {
+                id: 7,
+                label: 'ZPRClose-Download',
+                link: 'closeDownload',
+                parentId: 2
+            },
+            {
+                id: 8,
+                label: 'ZGR PENDING',
+                parentId: 2,
+                subItems: [
+                    {
+                        id: 9,
+                        label: 'IBD Done GR Pending',
+                        link: 'grpending',
+                        parentId: 8
+                    },
+                    {
+                        id: 10,
+                        label: 'IBD Done GR Done',
+                        link: 'grdone',
+                        parentId: 8
+                    }
+                ]
+            },
         ]
     },
     // {

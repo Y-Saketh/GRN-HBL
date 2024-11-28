@@ -61,6 +61,7 @@
               "./node_modules/ngx-toastr/toastr-old.css",
               "node_modules/slick-carousel/slick/slick.scss",
               "node_modules/slick-carousel/slick/slick-theme.scss",
+              "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
               "src/styles.scss"
 
             ],

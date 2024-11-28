@@ -14,7 +14,7 @@ import { tableData } from './data';
   standalone: true,
   styleUrl: './inbounddelivery.component.css',
   providers: [AdvancedService, DecimalPipe],
-  imports: [PagetitleComponent, ReactiveFormsModule, CommonModule, FormsModule, PaginationModule, AdvancedSortableDirective]
+  imports: [ReactiveFormsModule, CommonModule, FormsModule, PaginationModule, AdvancedSortableDirective]
 
 })
 

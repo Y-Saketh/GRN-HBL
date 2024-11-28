@@ -1,0 +1,43 @@
+const tableData = [
+    {
+      close: "X123",
+      purreqn: "PR456",
+      item: "IT789",
+      reqndate: "2024-11-20",
+      doctype: "DOC001",
+      delind: "DELIND123",
+      purgrp: "PG101",
+      Requisitioner: "John Doe",
+      ShortText: "Purchase for Project X",
+      MaterialNumber: "MAT5678",
+      Plant: "Plant A",
+      QtyRequested: 150,
+      UOM: "PCS",
+      DelDate: "2024-12-01",
+      RelDate: "2024-11-15",
+      TotalValue: 25000.0,
+      PendingDays: 5,
+    },
+    {
+      close: "X124",
+      purreqn: "PR457",
+      item: "IT790",
+      reqndate: "2024-11-22",
+      doctype: "DOC002",
+      delind: "DELIND124",
+      purgrp: "PG102",
+      Requisitioner: "Jane Smith",
+      ShortText: "Procurement for Maintenance",
+      MaterialNumber: "MAT6789",
+      Plant: "Plant B",
+      QtyRequested: 200,
+      UOM: "KG",
+      DelDate: "2024-12-05",
+      RelDate: "2024-11-18",
+      TotalValue: 40000.0,
+      PendingDays: 7,
+    },
+]
+
+
+export { tableData };

@@ -16,7 +16,7 @@ import QRCode from 'qrcode';
   styleUrl: './grnagainstid.component.css',
   standalone:true,
   providers: [AdvancedService, DecimalPipe],
-  imports: [PagetitleComponent, ReactiveFormsModule, CommonModule, FormsModule, PaginationModule, AdvancedSortableDirective]
+  imports: [ReactiveFormsModule, CommonModule, FormsModule, PaginationModule, AdvancedSortableDirective]
 
 })
 export class GrnagainstidComponent implements OnInit {

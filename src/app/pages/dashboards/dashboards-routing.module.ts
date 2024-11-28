@@ -11,6 +11,9 @@ import { OpenpolistComponent } from 'src/app/GRNQRCodeGeneration/openpolist/open
 import { InbounddeliveryComponent } from 'src/app/GRNQRCodeGeneration/inbounddelivery/inbounddelivery.component';
 import { GrnagainstidComponent } from 'src/app/GRNQRCodeGeneration/grnagainstid/grnagainstid.component';
 import { QRcodegenrationComponent } from 'src/app/GRNQRCodeGeneration/qrcodegenration/qrcodegenration.component';
+import { GrpendingComponent } from 'src/app/GRNQRCodeGeneration/grpending/grpending.component';
+import { GrdoneComponent } from 'src/app/GRNQRCodeGeneration/grdone/grdone.component';
+import { CloseDownloadComponent } from 'src/app/GRNQRCodeGeneration/close-download/close-download.component';
 
 const routes: Routes = [
     {
@@ -36,6 +39,18 @@ const routes: Routes = [
     {
         path: 'QRcodegenration',
         component: QRcodegenrationComponent
+    },
+    {
+        path: 'grpending',
+        component: GrpendingComponent
+    },
+    {
+        path: 'grdone',
+        component: GrdoneComponent
+    },
+    {
+        path: 'closeDownload',
+        component: CloseDownloadComponent
     },
     // {
     //     path: 'saas',
