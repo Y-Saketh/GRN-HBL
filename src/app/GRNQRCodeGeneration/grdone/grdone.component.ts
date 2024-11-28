@@ -5,23 +5,21 @@ import { Table } from './advanced.model';
 import { AdvancedService } from './advanced.service';
 import { PagetitleComponent } from 'src/app/shared/ui/pagetitle/pagetitle.component';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
-import { AdvancedSortableDirective, SortEvent } from './advanced-sortable.directive';
+import { AdvancedSortableDirective, SortEvent } from './Advanced-sortable.directive';
 import { Observable } from 'rxjs';
 import { tableData } from './data';
 import { UserProfileService } from 'src/app/core/services/user.service';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 @Component({
-  selector: 'app-openpolist',
-  templateUrl: './openpolist.component.html',
-  styleUrl: './openpolist.component.css',
+  selector: 'app-grdone',
   standalone: true,
-  providers: [AdvancedService, DecimalPipe,UserProfileService],
-  imports: [ReactiveFormsModule, CommonModule, FormsModule, PaginationModule, AdvancedSortableDirective,BsDatepickerModule]
-  // imports:[CommonModule,ReactiveFormsModule,]
+  providers: [AdvancedService, DecimalPipe, UserProfileService],
+  imports: [ReactiveFormsModule, CommonModule, FormsModule, PaginationModule, AdvancedSortableDirective,BsDatepickerModule],
+  templateUrl: './grdone.component.html',
+  styleUrl: './grdone.component.css'
 })
-export class OpenpolistComponent implements OnInit {
-
+export class GrdoneComponent implements OnInit {
   breadCrumbItems: Array<{}>;
   // Table data
   tableData: Table[];
@@ -53,16 +51,9 @@ export class OpenpolistComponent implements OnInit {
     this.submit = false;
     this.validationform = this.formBuilder.group({
       plant: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]+')]],
-      documentTypeFrom: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
-      documentTypeTo: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
-      deliveryDateFrom: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
-      deliveryDateTo: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
-      purchaseGroup: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
-      poNumber: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
-      vendor: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
-      material: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
-      materialgroup: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
-
+      delivery: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
+      storageLocation: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
+      ibdCreadtedOn: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
     });
 
     this.breadCrumbItems = [{ label: 'Tables' }, { label: 'Advanced Table', active: true }];
@@ -138,19 +129,13 @@ export class OpenpolistComponent implements OnInit {
   //     "CREAT": "130202-EG-PUR"	-
 
   
-  getPOLIST(){
+  getGrDone(){
     console.log("validationform",this.form) 
     let obj = {
-      "WERKS":"1300",// this.form['plant'].value , //"1300", 
-      "EBELN": "",//this.form['poNumber'].value , //"",
-      "BSART": "ZPDM",//this.form['plant'].value , //"ZPDM",
-      "LIFNR": "",// this.form['plant'].value ,
-      "MATNR": this.form['material'].value , //"",
-      "BEDAT_F":"2024-04-01",// this.form['documentTypeFrom'].value , //"2024-04-01",
-      "BEDAT_T":"2024-04-01",//this.form['documentTypeTo'].value , // "2024-05-30",
-      "EINDT_F": "",//this.form['plant'].value , // "",
-      "EINDT_T":"",//this.form['plant'].value , // "",
-      "MATKL": "",//this.form['plant'].value , //""
+      "WERKS":"",
+      "EBELN": "",
+      "BSART": "",
+      "LIFNR": "",
     }
     console.log("objobj",obj)
     this.apiService.OpenPoList(obj).subscribe({
