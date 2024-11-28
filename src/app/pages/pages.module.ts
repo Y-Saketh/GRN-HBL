@@ -19,10 +19,7 @@ import { PickerModule } from '@ctrl/ngx-emoji-mart';
 import { PagesRoutingModule } from './pages-routing.module';
 
 import { DashboardsModule } from './dashboards/dashboards.module';
-import { EcommerceModule } from './ecommerce/ecommerce.module';
-// import { CryptoModule } from './crypto/crypto.module';
-import { EmailModule } from './email/email.module';
-import { InvoicesModule } from './invoices/invoices.module';
+
 import { ProjectsModule } from './projects/projects.module';
 import { TasksModule } from './tasks/tasks.module';
 // import { ContactsModule } from './contacts/contacts.module';
@@ -34,7 +31,7 @@ import { TablesModule } from './tables/tables.module';
 import { IconsModule } from './icons/icons.module';
 // import { ChartModule } from './chart/chart.module';
 // import { CalendarComponent } from './calendar/calendar.component';
-import { MapsModule } from './maps/maps.module';
+// import { MapsModule } from './maps/maps.module';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 @NgModule(
