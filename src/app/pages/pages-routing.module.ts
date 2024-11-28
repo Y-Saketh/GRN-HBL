@@ -9,13 +9,9 @@ const routes: Routes = [
     component: DefaultComponent
   },
   { path: 'dashboard', component: DefaultComponent },
-  // { path: 'calendar', component: CalendarComponent },
-  // { path: 'chat', component: ChatComponent },
-  // { path: 'filemanager', component: FilemanagerComponent },
+
   { path: 'dashboards', loadChildren: () => import('./dashboards/dashboards.module').then(m => m.DashboardsModule) },
-  { path: 'email', loadChildren: () => import('./email/email.module').then(m => m.EmailModule) },
-  // { path: 'invoices', loadChildren: () => import('./invoices/invoices.module').then(m => m.InvoicesModule) },
-  { path: 'projects', loadChildren: () => import('./projects/projects.module').then(m => m.ProjectsModule) },
+   { path: 'projects', loadChildren: () => import('./projects/projects.module').then(m => m.ProjectsModule) },
   { path: 'tasks', loadChildren: () => import('./tasks/tasks.module').then(m => m.TasksModule) },
   { path: 'pages', loadChildren: () => import('./utility/utility.module').then(m => m.UtilityModule) },
   { path: 'ui', loadChildren: () => import('./ui/ui.module').then(m => m.UiModule) },
