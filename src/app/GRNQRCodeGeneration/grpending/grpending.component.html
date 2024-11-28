@@ -12,189 +12,183 @@
         (ngSubmit)="validSubmit()"
         [formGroup]="validationform"
       >
-        <div class="col">
+        
+        <div class="row">
+          <!-- Row 1 -->
           <!-- Plant -->
-          <div class="row">
-            <div class="col-md-2 mt-3">
-              <h6 class="brandcolor">Plant</h6>
-            </div>
-            <div class="col-md-5">
-              <div class="mb-3">
-                <input
-                  type="text"
-                  class="form-control"
-                  id="plant"
-                  formControlName="plant"
-                  placeholder="Plant"
-                  [ngClass]="{ 'is-invalid': submit && form.plant.errors }"
-                />
-                <div
-                  *ngIf="submit && form.plant.errors"
-                  class="invalid-feedback"
+          <div class="col-md-3">
+            <label class="brandcolor" for="plant">PLANT</label>
+            <div class="mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="plant"
+                formControlName="plant"
+                placeholder="Plant"
+                [ngClass]="{ 'is-invalid': submit && form.plant.errors }"
+              />
+              <div *ngIf="submit && form.plant.errors" class="invalid-feedback">
+                <span *ngIf="form.plant.errors.required"
+                  >Please provide a valid plant.</span
                 >
-                  <span *ngIf="form.plant.errors.required"
-                    >Please provide a valid plant.</span
-                  >
-                </div>
               </div>
             </div>
           </div>
           <!-- Delivery -->
-          <div class="row">
-            <div class="col-md-2 mt-3">
-              <h6 class="brandcolor">Delivery</h6>
-            </div>
-            <div class="col-md-5">
-              <div class="mb-3">
-                <input
-                  type="text"
-                  class="form-control"
-                  id="delivery"
-                  formControlName="delivery"
-                  placeholder="Delivery From"
-                  [bsConfig]="bsConfig"
-                  [ngClass]="{ 'is-invalid': submit && form.delivery.errors }"
-                  bsDatepicker
-                />
-                <div
-                  *ngIf="!submit && form.delivery.errors"
-                  class="invalid-feedback"
+          <div class="col-md-3">
+            <label class="brandcolor" for="deliveryfrom">DELIVERY FROM</label>
+            <div class="mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="deliveryfrom"
+                formControlName="deliveryfrom"
+                placeholder="Delivery From"
+                [bsConfig]="bsConfig"
+                [ngClass]="{ 'is-invalid': submit && form.delivery.errors }"
+                bsDatepicker
+              />
+              <div
+                *ngIf="!submit && form.deliveryfrom.errors"
+                class="invalid-feedback"
+              >
+                <span *ngIf="form.deliveryfrom.errors.required"
+                  >Please provide a valid delivery.</span
                 >
-                  <span *ngIf="form.delivery.errors.required"
-                    >Please provide a valid delivery.</span
-                  >
-                </div>
               </div>
             </div>
-            <div class="col-md-5">
-              <div class="mb-3">
-                <input
-                  type="text"
-                  class="form-control"
-                  id="delivery"
-                  formControlName="delivery"
-                  placeholder="Delivery To"
-                  [bsConfig]="bsConfig"
-                  [ngClass]="{ 'is-invalid': submit && form.delivery.errors }"
-                  bsDatepicker
-                />
-                <div
-                  *ngIf="!submit && form.delivery.errors"
-                  class="invalid-feedback"
+          </div>
+          <div class="col-md-3">
+            <label class="brandcolor" for="deliveryto">DELIVERY TO</label>
+            <div class="mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="deliveryto"
+                formControlName="delivery"
+                placeholder="Delivery To"
+                [bsConfig]="bsConfig"
+                [ngClass]="{ 'is-invalid': submit && form.delivery.errors }"
+                bsDatepicker
+              />
+              <div
+                *ngIf="!submit && form.deliveryto.errors"
+                class="invalid-feedback"
+              >
+                <span *ngIf="form.deliveryto.errors.required"
+                  >Please provide a valid delivery.</span
                 >
-                  <span *ngIf="form.delivery.errors.required"
-                    >Please provide a valid delivery.</span
-                  >
-                </div>
               </div>
             </div>
           </div>
           <!-- Storage Location -->
-          <div class="row">
-            <div class="col-md-2 mt-3">
-              <h6 class="brandcolor">Storage Location</h6>
-            </div>
-            <div class="col-md-5">
-              <div class="mb-3">
-                <input
-                  type="text"
-                  class="form-control"
-                  id="storageLocation"
-                  formControlName="storageLocation"
-                  placeholder="Storage Location From"
-                  [bsConfig]="bsConfig"
-                  [ngClass]="{
-                    'is-invalid': submit && form.storageLocation.errors
-                  }"
-                  bsDatepicker
-                />
-                <div
-                  *ngIf="submit && form.storageLocation.errors"
-                  class="invalid-feedback"
+          <div class="col-md-3">
+            <label class="brandcolor" for="storageLocationfrom"
+                >STORAGE LOCATION FROM</label
+              >
+            <div class="mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="storageLocationfrom"
+                formControlName="storageLocationfrom"
+                placeholder="Storage Location From"
+                [bsConfig]="bsConfig"
+                [ngClass]="{
+                  'is-invalid': submit && form.storageLocationfrom.errors
+                }"
+                bsDatepicker
+              />
+              <div
+                *ngIf="submit && form.storageLocationfrom.errors"
+                class="invalid-feedback"
+              >
+                <span *ngIf="form.storageLocationfrom.errors.required"
+                  >Please provide a valid STORAGE LOCATION.</span
                 >
-                  <span *ngIf="form.storageLocation.errors.required"
-                    >Please provide a valid STORAGE LOCATION.</span
-                  >
-                </div>
-              </div>
-            </div>
-            <div class="col-md-5">
-              <div class="mb-3">
-                <input
-                  type="text"
-                  class="form-control"
-                  id="storageLocation"
-                  formControlName="storageLocation"
-                  placeholder="Storage Location To"
-                  [bsConfig]="bsConfig"
-                  [ngClass]="{
-                    'is-invalid': submit && form.storageLocation.errors
-                  }"
-                  bsDatepicker
-                />
-                <div
-                  *ngIf="submit && form.storageLocation.errors"
-                  class="invalid-feedback"
-                >
-                  <span *ngIf="form.storageLocation.errors.required"
-                    >Please provide a valid STORAGE LOCATION.</span
-                  >
-                </div>
               </div>
             </div>
           </div>
-          <!--IBD CREATED ON-->
-          <div class="row">
-            <div class="col-md-2 mt-3">
-              <h6 class="brandcolor">IBD CREATED ON</h6>
-            </div>
-            <div class="col-md-5">
-              <div class="mb-3">
-                <input
-                  type="text"
-                  class="form-control"
-                  id="ibdCreadtedOn"
-                  formControlName="ibdCreadtedOn"
-                  placeholder="IBD CREATED ON"
-                  [ngClass]="{
-                    'is-invalid': submit && form.ibdCreadtedOn.errors
-                  }"
-                />
-                <div
-                  *ngIf="submit && form.ibdCreadtedOn.errors"
-                  class="invalid-feedback"
+          <div class="col-md-3">
+            <label class="brandcolor" for="storageLocationfrom"
+                >STORAGE LOCATION TO</label
+              >
+            <div class="mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="storageLocationto"
+                formControlName="storageLocationto"
+                placeholder="Storage Location To"
+                [bsConfig]="bsConfig"
+                [ngClass]="{
+                  'is-invalid': submit && form.storageLocationto.errors
+                }"
+                bsDatepicker
+              />
+              <div
+                *ngIf="submit && form.storageLocationto.errors"
+                class="invalid-feedback"
+              >
+                <span *ngIf="form.storageLocationto.errors.required"
+                  >Please provide a valid STORAGE LOCATION.</span
                 >
-                  <span *ngIf="form.ibdCreadtedOn.errors.required"
-                    >Please provide a valid IBD CREATED ON.</span
-                  >
-                </div>
               </div>
             </div>
-            <div class="col-md-5">
-              <div class="mb-3">
-                <input
-                  type="text"
-                  class="form-control"
-                  id="ibdCreadtedTo"
-                  formControlName="ibdCreadtedTo"
-                  placeholder="IBD CREATED To"
-                  [ngClass]="{
-                    'is-invalid': submit && form.ibdCreadtedOn.errors
-                  }"
-                />
-                <div
-                  *ngIf="submit && form.ibdCreadtedTo.errors"
-                  class="invalid-feedback"
+          </div>
+          <!--row 2-->
+          <!--IBD CREATED ON-->
+          <div class="col-md-3">
+            <label class="brandcolor" for="ibdCreadtedOn"
+                >IBD CREATED ON</label
+              >
+            <div class="mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="ibdCreadtedOn"
+                formControlName="ibdCreadtedOn"
+                placeholder="IBD CREATED ON"
+                [ngClass]="{
+                  'is-invalid': submit && form.ibdCreadtedOn.errors
+                }"
+              />
+              <div
+                *ngIf="submit && form.ibdCreadtedOn.errors"
+                class="invalid-feedback"
+              >
+                <span *ngIf="form.ibdCreadtedOn.errors.required"
+                  >Please provide a valid IBD CREATED ON.</span
                 >
-                  <span *ngIf="form.ibdCreadtedTo.errors.required"
-                    >Please provide a valid IBD CREATED ON.</span
-                  >
-                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <label class="brandcolor" for="ibdCreadtedTo"
+                >IBD CREATED TO</label
+              >
+            <div class="mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="ibdCreadtedTo"
+                formControlName="ibdCreadtedTo"
+                placeholder="IBD CREATED To"
+                [ngClass]="{
+                  'is-invalid': submit && form.ibdCreadtedOn.errors
+                }"
+              />
+              <div
+                *ngIf="submit && form.ibdCreadtedTo.errors"
+                class="invalid-feedback"
+              >
+                <span *ngIf="form.ibdCreadtedTo.errors.required"
+                  >Please provide a valid IBD CREATED ON.</span
+                >
               </div>
             </div>
           </div>
         </div>
-
         <div class="row mt-4">
           <!-- Button Row -->
           <div class="col-md-4"></div>
