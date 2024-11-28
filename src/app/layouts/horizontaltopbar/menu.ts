@@ -10,6 +10,7 @@ export const MENU: MenuItem[] = [
             {
                 id: 3,
                 label: 'MENUITEMS.DASHBOARDS.LIST.OPENPOLIST',
+                icon: 'bx-home-circle',
                 link: 'openpolist',
                 parentId: 2
             },
