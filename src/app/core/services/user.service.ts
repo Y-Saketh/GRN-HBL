@@ -24,5 +24,10 @@ export class UserProfileService {
         return this.http.post(`${environment.API_URL_DEV}api/external/OpenPoList`,data)
         // return this.http.post(<url.API_URL_DEV>`/api/external/OpenPoList`,data)
     }
+    OpenINBOUND(data){
+        console.log("environment.API_URL_DEV",environment.API_URL_DEV)
+        return this.http.post(`${environment.API_URL_DEV}api/external/OpenINBOUND`,data)
+        // return this.http.post(<url.API_URL_DEV>`/api/external/OpenPoList`,data)
+    }
 
 }

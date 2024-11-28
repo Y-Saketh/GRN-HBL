@@ -86,6 +86,7 @@ export class AdvancedService {
         totalRecords: 0
     };
 
+    private apiData: Table[] = [];
     constructor(private pipe: DecimalPipe) {
         this._search$.pipe(
             tap(() => this._loading$.next(true)),
@@ -117,6 +118,12 @@ export class AdvancedService {
     /**
      * set the value
      */
+
+    setTableData(data: Table[]) {
+        this.apiData = data;
+        this._search$.next(); // Trigger a refresh
+      }
+
     // tslint:disable-next-line: adjacent-overload-signatures
     set page(page: number) { this._set({ page }); }
     // tslint:disable-next-line: adjacent-overload-signatures
@@ -145,7 +152,7 @@ export class AdvancedService {
         const { sortColumn, sortDirection, pageSize, page, searchTerm } = this._state;
 
         // 1. sort
-        let tables = sort(tableData, sortColumn, sortDirection);
+        let tables = sort(this.apiData, sortColumn, sortDirection);
 
         // 2. filter
         tables = tables.filter(table => matches(table, searchTerm, this.pipe));
