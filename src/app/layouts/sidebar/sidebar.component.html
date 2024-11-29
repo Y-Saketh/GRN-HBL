@@ -37,34 +37,42 @@
           </a>
           }
           @if(hasItems(item)){
-          <ul class="sub-menu" aria-expanded="false">
-            @for (subitem of item.subItems; track $index) {
-            <li>
-              @if(hasItems(subitem)){
-              <a class="side-nav-link-a-ref has-arrow" href="javascript:void(0);" [attr.data-parent]="subitem.parentId">
-                {{ subitem.label | translate}}
-              </a>
-              <ul class="sub-menu mm-collapse" aria-expanded="false">
-                @for (subSubitem of subitem.subItems; track $index) {
-                <li>
-                  <a [attr.data-parent]="subSubitem.parentId" routerLink="{{subSubitem.link}}" routerLinkActive="active" class="side-nav-link-ref">
-                    {{ subSubitem.label | translate }}
-                  </a>
-                </li>
+            <ul class="sub-menu" aria-expanded="false">
+              @for (subitem of item.subItems; track $index) {
+              <li>
+                @if(hasItems(subitem)){
+                <a class="side-nav-link-a-ref has-arrow" href="javascript:void(0);" [attr.data-parent]="subitem.parentId">
+                  @if(subitem.icon){
+                  <i class="bx {{ subitem.icon }}"></i> <!-- Icon for subitem -->
+                  }
+                  {{ subitem.label | translate }}
+                </a>
+                <ul class="sub-menu mm-collapse" aria-expanded="false">
+                  @for (subSubitem of subitem.subItems; track $index) {
+                  <li>
+                    <a [attr.data-parent]="subSubitem.parentId" routerLink="{{subSubitem.link}}" routerLinkActive="active" class="side-nav-link-ref">
+                      @if(subSubitem.icon){
+                      <i class="bx {{ subSubitem.icon }}"></i> <!-- Icon for sub-subitem -->
+                      }
+                      {{ subSubitem.label | translate }}
+                    </a>
+                  </li>
+                  }
+                </ul>}
+                @else{
+                <a routerLink="{{subitem.link}}" class="side-nav-link-ref" [attr.data-parent]="subitem.parentId" routerLinkActive="active">
+                  @if(subitem.icon){
+                  <i class="bx {{ subitem.icon }}"></i> <!-- Icon for subitem -->
+                  }
+                  {{ subitem.label | translate }}
+                  @if(subitem.badge){
+                  <span class="badge rounded-pill bg-{{subitem.badge.variant}} float-end">{{subitem.badge.text | translate}}</span>
+                  }
+                </a>
                 }
-              </ul>}
-              @else{
-              <a routerLink="{{subitem.link}}" class="side-nav-link-ref" [attr.data-parent]="subitem.parentId" routerLinkActive="active">
-                {{ subitem.label | translate}}
-                @if(subitem.badge){
-                <span class="badge rounded-pill bg-{{subitem.badge.variant}} float-end">{{subitem.badge.text |
-                  translate}}</span>
-                }
-              </a>
+              </li>
               }
-            </li>
-            }
-          </ul>
+            </ul>
           }
         </li>
         }

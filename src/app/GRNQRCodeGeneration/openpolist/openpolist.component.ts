@@ -1,5 +1,5 @@
 import { CommonModule, DecimalPipe } from '@angular/common';
-import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Table } from './advanced.model';
 import { AdvancedService } from './advanced.service';
@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 import { tableData } from './data';
 import { UserProfileService } from 'src/app/core/services/user.service';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-openpolist',
@@ -21,7 +22,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
   // imports:[CommonModule,ReactiveFormsModule,]
 })
 export class OpenpolistComponent implements OnInit {
-
+  @ViewChild('newContactModal', { static: false }) newContactModal?: ModalDirective;
   breadCrumbItems: Array<{}>;
   // Table data
   tableData: Table[];
@@ -140,17 +141,30 @@ export class OpenpolistComponent implements OnInit {
   
   getPOLIST(){
     console.log("validationform",this.form) 
-    let obj = {
-      "WERKS":"1300",// this.form['plant'].value , //"1300", 
-      "EBELN": "",//this.form['poNumber'].value , //"",
-      "BSART": "ZPDM",//this.form['plant'].value , //"ZPDM",
-      "LIFNR": "",// this.form['plant'].value ,
-      "MATNR": this.form['material'].value , //"",
-      "BEDAT_F":"2024-04-01",// this.form['documentTypeFrom'].value , //"2024-04-01",
-      "BEDAT_T":"2024-04-01",//this.form['documentTypeTo'].value , // "2024-05-30",
-      "EINDT_F": "",//this.form['plant'].value , // "",
-      "EINDT_T":"",//this.form['plant'].value , // "",
-      "MATKL": "",//this.form['plant'].value , //""
+    // let obj = {
+    //   "WERKS":"1300",// this.form['plant'].value , //"1300", 
+    //   "EBELN": "",//this.form['poNumber'].value , //"",
+    //   "BSART": "ZPDM",//this.form['plant'].value , //"ZPDM",
+    //   "LIFNR": "",// this.form['plant'].value ,
+    //   "MATNR": this.form['material'].value , //"",
+    //   "BEDAT_F":"2024-04-01",// this.form['documentTypeFrom'].value , //"2024-04-01",
+    //   "BEDAT_T":"2024-04-01",//this.form['documentTypeTo'].value , // "2024-05-30",
+    //   "EINDT_F": "",//this.form['plant'].value , // "",
+    //   "EINDT_T":"",//this.form['plant'].value , // "",
+    //   "MATKL": "",//this.form['plant'].value , //""
+    // }
+
+    let obj ={
+      "WERKS": "1300",
+      "EBELN": "",
+      "BSART": "ZPDM",
+      "LIFNR":  "",
+      "MATNR": "",
+      "BEDAT_F": "2024-04-01",
+      "BEDAT_T": "2024-05-30",
+      "EINDT_F": "",
+      "EINDT_T": "",
+      "MATKL":   ""
     }
     console.log("objobj",obj)
     this.apiService.OpenPoList(obj).subscribe({

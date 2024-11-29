@@ -2,10 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { DefaultComponent } from './default/default.component';
-import { SaasComponent } from './saas/saas.component';
-import { CryptoComponent } from './crypto/crypto.component';
-import { BlogComponent } from './blog/blog.component';
-import { JobsComponent } from "./jobs/jobs.component";
+
 import { SampleComponentComponent } from './default/sample-component/sample-component.component';
 import { OpenpolistComponent } from 'src/app/GRNQRCodeGeneration/openpolist/openpolist.component';
 import { InbounddeliveryComponent } from 'src/app/GRNQRCodeGeneration/inbounddelivery/inbounddelivery.component';
@@ -52,22 +49,7 @@ const routes: Routes = [
         path: 'closeDownload',
         component: CloseDownloadComponent
     },
-    // {
-    //     path: 'saas',
-    //     component: SaasComponent
-    // },
-    // {
-    //     path: 'crypto',
-    //     component: CryptoComponent
-    // },
-    // {
-    //     path: 'blog',
-    //     component: BlogComponent
-    // },
-    // {
-    //     path:"jobs",
-    //     component:JobsComponent
-    // }
+   
 ];
 
 @NgModule({

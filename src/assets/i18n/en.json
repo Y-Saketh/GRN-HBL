@@ -75,7 +75,7 @@
       "LIST": {
         "OPENPOLIST": "Open PO List",
         "INBOUNDDELIVERY":"In-Bound Delivery",
-        "GRNAGAINSTID":"GRN Against ID",
+        "GRNAGAINSTID":"GRN Against IBD",
         "QRCODEGENERATION":"QR-Code Generation",
         "SAAS": "Saas",
         "CRYPTO": "Crypto",
