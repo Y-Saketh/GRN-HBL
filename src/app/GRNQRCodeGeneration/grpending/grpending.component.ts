@@ -51,9 +51,12 @@ export class GrpendingComponent implements OnInit {
     this.submit = false;
     this.validationform = this.formBuilder.group({
       plant: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]+')]],
-      delivery: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
-      storageLocation: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
+      deliveryfrom: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
+      deliveryto: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
+      storageLocationfrom: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
+      storageLocationto: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
       ibdCreadtedOn: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
+      ibdCreadtedTo: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
     });
 
     this.breadCrumbItems = [{ label: 'Tables' }, { label: 'Advanced Table', active: true }];
@@ -132,13 +135,16 @@ export class GrpendingComponent implements OnInit {
   getGrPending(){
     console.log("validationform",this.form) 
     let obj = {
-      "WERKS":"1300",// this.form['plant'].value , //"1300", 
-      "EBELN": "",//this.form['poNumber'].value , //"",
-      "BSART": "ZPDM",//this.form['plant'].value , //"ZPDM",
-      "LIFNR": "",// this.form['plant'].value ,
+      "WERKS": "1300",
+      "VBELN": "180390138",
+      "LGORT": "S048",
+      "BUDAT_F": "2024-04-01",
+      "BUDAT_T": "2024-11-25",
+      "R1": "X",
+      "R2": ""
     }
     console.log("objobj",obj)
-    this.apiService.OpenPoList(obj).subscribe({
+    this.apiService.GrPending(obj).subscribe({
       next: (res: any) => {
         console.log('Data:', res);
         this.GrPending = res;

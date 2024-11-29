@@ -90,25 +90,25 @@
           <!-- Row 2 -->
            <!-- Current Date From-->
           <div class="col-md-3">
-            <label class="brandcolor" for="fromdate">CURRENT DATE FROM</label>
+            <label class="brandcolor" for="curentdatefrom">CURRENT DATE FROM</label>
             <div class="mb-3">
               <input
                 type="text"
                 class="form-control"
-                id="fromdate"
-                formControlName="fromdate"
+                id="curentdatefrom"
+                formControlName="curentdatefrom"
                 placeholder="FROM DATE"
                 [bsConfig]="bsConfig"
                 [ngClass]="{
-                  'is-invalid': submit && form.fromdate.errors
+                  'is-invalid': submit && form.curentdatefrom.errors
                 }"
                 bsDatepicker
               />
               <div
-                *ngIf="submit && form.fromdate.errors"
+                *ngIf="submit && form.curentdatefrom.errors"
                 class="invalid-feedback"
               >
-                <span *ngIf="form.fromdate.errors.required"
+                <span *ngIf="form.curentdatefrom.errors.required"
                   >Please provide a valid From Date.</span
                 >
               </div>
@@ -116,25 +116,25 @@
           </div>
           <!-- Current Date To-->
           <div class="col-md-3">
-            <label class="brandcolor" for="todate">CURRENT DATE TO</label>
+            <label class="brandcolor" for="curentdateto">CURRENT DATE TO</label>
             <div class="mb-3">
               <input
                 type="text"
                 class="form-control"
-                id="todate"
-                formControlName="todate"
+                id="curentdateto"
+                formControlName="curentdateto"
                 placeholder="TO DATE"
                 [bsConfig]="bsConfig"
                 [ngClass]="{
-                  'is-invalid': submit && form.todate.errors
+                  'is-invalid': submit && form.curentdateto.errors
                 }"
                 bsDatepicker
               />
               <div
-                *ngIf="submit && form.todate.errors"
+                *ngIf="submit && form.curentdateto.errors"
                 class="invalid-feedback"
               >
-                <span *ngIf="form.todate.errors.required"
+                <span *ngIf="form.curentdateto.errors.required"
                   >Please provide a valid To Date.</span
                 >
               </div>
@@ -246,7 +246,7 @@
               <!-- Purchase Document Number -->
               <td>{{ table.purreqn }}</td>
               <!-- Item Number -->
-              <td>{{ table.item }}</td>
+              <td>{{ table.EBELP }}</td>
               <!-- Purchase Group -->
               <td>{{ table.reqndate }}</td>
               <!-- Purchase Document Date -->
@@ -254,7 +254,7 @@
               <!-- Supplier Code -->
               <td>{{ table.delind }}</td>
               <!-- Vendor Address -->
-              <td>{{ table.purgrp }}</td>
+              <td>{{ table.EKGRP }}</td>
               <!-- Material -->
             </tr>
             <ng-container *ngIf="!hideme[$index]">
@@ -282,13 +282,13 @@
                         <!-- Updating Text Field -->
                         <td>{{ table.ShortText }}</td>
                         <!-- Base Unit of Measure -->
-                        <td>{{ table.MaterialNumber }}</td>
+                        <td>{{ table.MATNR }}</td>
                         <!-- Plant -->
-                        <td>{{ table.Plant }}</td>
+                        <td>{{ table.WERKS }}</td>
                         <!-- Alternative Unit of Measure -->
                         <td>{{ table.QtyRequested }}</td>
                         <!-- Unit of Measure -->
-                        <td>{{ table.UOM }}</td>
+                        <td>{{ table.MEINS }}</td>
                         <!-- Bill of Quantity (BOM) -->
                         <td>{{ table.DelDate }}</td>
                         <!-- Stockkeeping Unit -->

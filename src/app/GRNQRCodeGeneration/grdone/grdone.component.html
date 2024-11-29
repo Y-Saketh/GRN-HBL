@@ -12,182 +12,178 @@
         (ngSubmit)="validSubmit()"
         [formGroup]="validationform"
       >
-      <div class="row">
-        <!-- Row 1 -->
-        <!-- Plant -->
-        <div class="col-md-3">
-          <label class="brandcolor" for="plant">PLANT</label>
-          <div class="mb-3">
-            <input
-              type="text"
-              class="form-control"
-              id="plant"
-              formControlName="plant"
-              placeholder="Plant"
-              [ngClass]="{ 'is-invalid': submit && form.plant.errors }"
-            />
-            <div *ngIf="submit && form.plant.errors" class="invalid-feedback">
-              <span *ngIf="form.plant.errors.required"
-                >Please provide a valid plant.</span
-              >
+        <div class="row">
+          <!-- Row 1 -->
+          <!-- Plant -->
+          <div class="col-md-3">
+            <label class="brandcolor" for="plant">PLANT</label>
+            <div class="mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="plant"
+                formControlName="plant"
+                placeholder="Plant"
+                [ngClass]="{ 'is-invalid': submit && form.plant.errors }"
+              />
+              <div *ngIf="submit && form.plant.errors" class="invalid-feedback">
+                <span *ngIf="form.plant.errors.required"
+                  >Please provide a valid plant.</span
+                >
+              </div>
             </div>
           </div>
-        </div>
-        <!-- Delivery -->
-        <div class="col-md-3">
-          <label class="brandcolor" for="deliveryfrom">DELIVERY FROM</label>
-          <div class="mb-3">
-            <input
-              type="text"
-              class="form-control"
-              id="deliveryfrom"
-              formControlName="deliveryfrom"
-              placeholder="Delivery From"
-              [bsConfig]="bsConfig"
-              [ngClass]="{ 'is-invalid': submit && form.delivery.errors }"
-              bsDatepicker
-            />
-            <div
-              *ngIf="!submit && form.deliveryfrom.errors"
-              class="invalid-feedback"
-            >
-              <span *ngIf="form.deliveryfrom.errors.required"
-                >Please provide a valid delivery.</span
+          <!-- Delivery -->
+          <div class="col-md-3">
+            <label class="brandcolor" for="deliveryfrom">DELIVERY FROM</label>
+            <div class="mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="deliveryfrom"
+                formControlName="deliveryfrom"
+                placeholder="Delivery From"
+                [bsConfig]="bsConfig"
+                [ngClass]="{ 'is-invalid': submit && form.delivery.errors }"
+                bsDatepicker
+              />
+              <div
+                *ngIf="!submit && form.deliveryfrom.errors"
+                class="invalid-feedback"
               >
+                <span *ngIf="form.deliveryfrom.errors.required"
+                  >Please provide a valid delivery.</span
+                >
+              </div>
             </div>
           </div>
-        </div>
-        <div class="col-md-3">
-          <label class="brandcolor" for="deliveryto">DELIVERY TO</label>
-          <div class="mb-3">
-            <input
-              type="text"
-              class="form-control"
-              id="deliveryto"
-              formControlName="delivery"
-              placeholder="Delivery To"
-              [bsConfig]="bsConfig"
-              [ngClass]="{ 'is-invalid': submit && form.delivery.errors }"
-              bsDatepicker
-            />
-            <div
-              *ngIf="!submit && form.deliveryto.errors"
-              class="invalid-feedback"
-            >
-              <span *ngIf="form.deliveryto.errors.required"
-                >Please provide a valid delivery.</span
+          <div class="col-md-3">
+            <label class="brandcolor" for="deliveryto">DELIVERY TO</label>
+            <div class="mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="deliveryto"
+                formControlName="delivery"
+                placeholder="Delivery To"
+                [bsConfig]="bsConfig"
+                [ngClass]="{ 'is-invalid': submit && form.delivery.errors }"
+                bsDatepicker
+              />
+              <div
+                *ngIf="!submit && form.deliveryto.errors"
+                class="invalid-feedback"
               >
+                <span *ngIf="form.deliveryto.errors.required"
+                  >Please provide a valid delivery.</span
+                >
+              </div>
             </div>
           </div>
-        </div>
-        <!-- Storage Location -->
-        <div class="col-md-3">
-          <label class="brandcolor" for="storageLocationfrom"
+          <!-- Storage Location -->
+          <div class="col-md-3">
+            <label class="brandcolor" for="storageLocationfrom"
               >STORAGE LOCATION FROM</label
             >
-          <div class="mb-3">
-            <input
-              type="text"
-              class="form-control"
-              id="storageLocationfrom"
-              formControlName="storageLocationfrom"
-              placeholder="Storage Location From"
-              [bsConfig]="bsConfig"
-              [ngClass]="{
-                'is-invalid': submit && form.storageLocationfrom.errors
-              }"
-              bsDatepicker
-            />
-            <div
-              *ngIf="submit && form.storageLocationfrom.errors"
-              class="invalid-feedback"
-            >
-              <span *ngIf="form.storageLocationfrom.errors.required"
-                >Please provide a valid STORAGE LOCATION.</span
+            <div class="mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="storageLocationfrom"
+                formControlName="storageLocationfrom"
+                placeholder="Storage Location From"
+                [bsConfig]="bsConfig"
+                [ngClass]="{
+                  'is-invalid': submit && form.storageLocationfrom.errors
+                }"
+                bsDatepicker
+              />
+              <div
+                *ngIf="submit && form.storageLocationfrom.errors"
+                class="invalid-feedback"
               >
+                <span *ngIf="form.storageLocationfrom.errors.required"
+                  >Please provide a valid STORAGE LOCATION.</span
+                >
+              </div>
             </div>
           </div>
-        </div>
-        <div class="col-md-3">
-          <label class="brandcolor" for="storageLocationfrom"
+          <div class="col-md-3">
+            <label class="brandcolor" for="storageLocationfrom"
               >STORAGE LOCATION TO</label
             >
-          <div class="mb-3">
-            <input
-              type="text"
-              class="form-control"
-              id="storageLocationto"
-              formControlName="storageLocationto"
-              placeholder="Storage Location To"
-              [bsConfig]="bsConfig"
-              [ngClass]="{
-                'is-invalid': submit && form.storageLocationto.errors
-              }"
-              bsDatepicker
-            />
-            <div
-              *ngIf="submit && form.storageLocationto.errors"
-              class="invalid-feedback"
-            >
-              <span *ngIf="form.storageLocationto.errors.required"
-                >Please provide a valid STORAGE LOCATION.</span
+            <div class="mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="storageLocationto"
+                formControlName="storageLocationto"
+                placeholder="Storage Location To"
+                [bsConfig]="bsConfig"
+                [ngClass]="{
+                  'is-invalid': submit && form.storageLocationto.errors
+                }"
+                bsDatepicker
+              />
+              <div
+                *ngIf="submit && form.storageLocationto.errors"
+                class="invalid-feedback"
               >
+                <span *ngIf="form.storageLocationto.errors.required"
+                  >Please provide a valid STORAGE LOCATION.</span
+                >
+              </div>
+            </div>
+          </div>
+          <!--row 2-->
+          <!--IBD CREATED ON-->
+          <div class="col-md-3">
+            <label class="brandcolor" for="ibdCreadtedOn">IBD CREATED ON</label>
+            <div class="mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="ibdCreadtedOn"
+                formControlName="ibdCreadtedOn"
+                placeholder="IBD CREATED ON"
+                [ngClass]="{
+                  'is-invalid': submit && form.ibdCreadtedOn.errors
+                }"
+              />
+              <div
+                *ngIf="submit && form.ibdCreadtedOn.errors"
+                class="invalid-feedback"
+              >
+                <span *ngIf="form.ibdCreadtedOn.errors.required"
+                  >Please provide a valid IBD CREATED ON.</span
+                >
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <label class="brandcolor" for="ibdCreadtedTo">IBD CREATED TO</label>
+            <div class="mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="ibdCreadtedTo"
+                formControlName="ibdCreadtedTo"
+                placeholder="IBD CREATED To"
+                [ngClass]="{
+                  'is-invalid': submit && form.ibdCreadtedOn.errors
+                }"
+              />
+              <div
+                *ngIf="submit && form.ibdCreadtedTo.errors"
+                class="invalid-feedback"
+              >
+                <span *ngIf="form.ibdCreadtedTo.errors.required"
+                  >Please provide a valid IBD CREATED ON.</span
+                >
+              </div>
             </div>
           </div>
         </div>
-        <!--row 2-->
-        <!--IBD CREATED ON-->
-        <div class="col-md-3">
-          <label class="brandcolor" for="ibdCreadtedOn"
-              >IBD CREATED ON</label
-            >
-          <div class="mb-3">
-            <input
-              type="text"
-              class="form-control"
-              id="ibdCreadtedOn"
-              formControlName="ibdCreadtedOn"
-              placeholder="IBD CREATED ON"
-              [ngClass]="{
-                'is-invalid': submit && form.ibdCreadtedOn.errors
-              }"
-            />
-            <div
-              *ngIf="submit && form.ibdCreadtedOn.errors"
-              class="invalid-feedback"
-            >
-              <span *ngIf="form.ibdCreadtedOn.errors.required"
-                >Please provide a valid IBD CREATED ON.</span
-              >
-            </div>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <label class="brandcolor" for="ibdCreadtedTo"
-              >IBD CREATED TO</label
-            >
-          <div class="mb-3">
-            <input
-              type="text"
-              class="form-control"
-              id="ibdCreadtedTo"
-              formControlName="ibdCreadtedTo"
-              placeholder="IBD CREATED To"
-              [ngClass]="{
-                'is-invalid': submit && form.ibdCreadtedOn.errors
-              }"
-            />
-            <div
-              *ngIf="submit && form.ibdCreadtedTo.errors"
-              class="invalid-feedback"
-            >
-              <span *ngIf="form.ibdCreadtedTo.errors.required"
-                >Please provide a valid IBD CREATED ON.</span
-              >
-            </div>
-          </div>
-        </div>
-      </div>
 
         <div class="row mt-4">
           <!-- Button Row -->
@@ -292,36 +288,34 @@
               </th>
               <th
                 class="brandcolor"
-                sortable="materialDocYear"
+                sortable="postingDate"
                 (sort)="onSort($event)"
               >
                 Posting Date
               </th>
-              <!-- <th>Actions</th> -->
             </tr>
           </thead>
-          @for(table of tables$ | async;track $index){
-          <tbody>
+          <tbody *ngFor="let table of tables$ | async; let i = index">
             <tr>
               <td align="center">
-                <a class="expand-row" (click)="changeValue($index)">+</a>
+                <a class="expand-row" (click)="changeValue(i)">+</a>
               </td>
-              <td>{{ table.EBELN }}</td>
-              <!-- Purchase Document Number -->
-              <td>{{ table.EBELP }}</td>
-              <!-- Item Number -->
+              <td>{{ table.WERKS }}</td>
+              <!-- Plant -->
+              <td>{{ table.VBELN }}</td>
+              <!-- Inbound Delivery -->
+              <td>{{ table.POSNR }}</td>
+              <!-- Inbound Delivery Item -->
               <td>{{ table.EKGRP }}</td>
-              <!-- Purchase Group -->
-              <td>{{ table.BEDAT }}</td>
-              <!-- Purchase Document Date -->
-              <td>{{ table.LIFNR }}</td>
-              <!-- Supplier Code -->
-              <td>{{ table.NAME1 }}</td>
-              <!-- Vendor Address -->
-              <td>{{ table.MATNR }}</td>
-              <!-- Material -->
+              <!-- Purchasing Group -->
+              <td>{{ table.ERDAT }}</td>
+              <!-- Inbound Created on -->
+              <td>{{ table.MBLNR }}</td>
+              <!-- Material Doc -->
+              <td>{{ table.BUDAT }}</td>
+              <!-- Posting Date -->
             </tr>
-            <ng-container *ngIf="!hideme[$index]">
+            <ng-container *ngIf="!hideme[i]">
               <tr class="sub-table no-bg">
                 <td align="center"></td>
                 <td colspan="15" class="p-0">
@@ -350,36 +344,42 @@
                     </thead>
                     <tbody>
                       <tr>
-                        <td>{{ table.TXZ01 }}</td>
-                        <!-- Updating Text Field -->
-                        <td>{{ table.MEINS1 }}</td>
-                        <!-- Base Unit of Measure -->
-                        <td>{{ table.WERKS }}</td>
-                        <!-- Plant -->
-                        <td>{{ table.MENGE }}</td>
-                        <!-- Alternative Unit of Measure -->
+                        <td>{{ table.AGE }}</td>
+                        <!-- Days Taken for GR -->
+                        <td>{{ table.BELNR_MIRO }}</td>
+                        <!-- MIRO No -->
+                        <td>{{ table.BUDAT_MIRO }}</td>
+                        <!-- MIRO Date -->
+                        <td>{{ table.XBLNR }}</td>
+                        <!-- Invoice No -->
+                        <td>{{ table.BLDAT }}</td>
+                        <!-- Invoice Date -->
+                        <td>{{ table.VGBEL }}</td>
+                        <!-- PO -->
+                        <td>{{ table.VGPOS }}</td>
+                        <!-- PO Item -->
+                        <td>{{ table.AEDAT }}</td>
+                        <!-- PO Date -->
+                        <td>{{ table.ERNAM }}</td>
+                        <!-- Created by -->
+                        <td>{{ table.LGORT }}</td>
+                        <!-- Storage Location -->
+                        <td>{{ table.LGOBE }}</td>
+                        <!-- Storage Location Name -->
+                        <td>{{ table.MATNR }}</td>
+                        <!-- Material -->
+                        <td>{{ table.MAKTX }}</td>
+                        <!-- Material Desc -->
                         <td>{{ table.MEINS }}</td>
-                        <!-- Unit of Measure -->
-                        <td>{{ table.MENGE1 }}</td>
-                        <!-- Bill of Quantity (BOM) -->
-                        <td>{{ table.sku }}</td>
-                        <!-- Stockkeeping Unit -->
-                        <td>{{ table.DMBTR1 }}</td>
-                        <!-- Sum of Amount -->
-                        <td>{{ table.NETWR }}</td>
-                        <!-- Net Price -->
-                        <td>{{ table.LV_MENGE_SUM }}</td>
-                        <!-- Still to be delivered (qty) -->
-                        <td>{{ table.WRBTR }}</td>
-                        <!-- Still to be delivered (value) -->
-                        <td>{{ table.LIFNR }}</td>
-                        <!-- Still to be invoiced (qty) -->
-                        <td>{{ table.DAYS }}</td>
-                        <!-- Still to be invoiced (value) -->
-                        <td>{{ table.EINDT }}</td>
-                        <!-- Delivery Date -->
-                        <td>{{ table.BUYER }}</td>
-                        <!-- Supplier Email ID -->
+                        <!-- UOM -->
+                        <td>{{ table.LFIMG }}</td>
+                        <!-- Qty -->
+                        <td>{{ table.GATEENTRY }}</td>
+                        <!-- Gate Entry No -->
+                        <td>{{ table.GATEDATE }}</td>
+                        <!-- Gate Entry Date -->
+                        <td>{{ table.AGE1 }}</td>
+                        <!-- Days taken for IBD -->
                       </tr>
                     </tbody>
                   </table>
@@ -387,10 +387,9 @@
               </tr>
             </ng-container>
           </tbody>
-
-          }
         </table>
       </div>
+
       <div class="row justify-content-md-between align-items-md-center mt-2">
         <div class="col-sm-12 col-md-5">
           <div

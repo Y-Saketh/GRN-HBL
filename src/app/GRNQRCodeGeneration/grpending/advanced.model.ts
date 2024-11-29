@@ -48,7 +48,38 @@ export interface Table {
     BUYER: string; // Supplier Email ID
     CREAT: string; // Created By
     ELIKZ: string; // Open PO
+  
+    // New API Keys
+    VBELN: string; // Inbound Delivery
+    POSNR: string; // Inbound Delivery Item
+    ERDAT: string; // Inbound Created On
+    MBLNR: string; // Material Document
+    BUDAT: string; // Posting Date
+    AGE: number; // Days Taken for GR
+    BELNR_MIRO: string; // MIRO No
+    BUDAT_MIRO: string; // MIRO Date
+    XBLNR: string; // Invoice No
+    BLDAT: string; // Invoice Date
+    VGBEL: string; // PO
+    VGPOS: string; // PO Item
+    AEDAT: string; // PO Date
+    LGORT: string; // Storage Location
+    LGOBE: string; // Storage Location Name
+    MAKTX: string; // Material Description
+    LFIMG: number; // Quantity
+    GATEENTRY: string; // Gate Entry No
+    GATEDATE: string; // Gate Entry Date
+    AGE1: number; // Days Taken for IBD
+    BADAT: string; // Requisition Date
+    BSART: string; // Document Type
+    AFNAM: string; // Requisitioner
+    LFDAT: string; // Delivery Date
+    FRGDT: string; // Release Date
+    TOT_VAL: number; // Total Value
+    R1: string; // IBD Done GR Pending
+    R2: string; // IBD Done GR Done
   }
+  
   
   
   export interface SearchResult {

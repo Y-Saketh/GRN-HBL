@@ -12,7 +12,6 @@
         (ngSubmit)="validSubmit()"
         [formGroup]="validationform"
       >
-        
         <div class="row">
           <!-- Row 1 -->
           <!-- Plant -->
@@ -45,7 +44,7 @@
                 formControlName="deliveryfrom"
                 placeholder="Delivery From"
                 [bsConfig]="bsConfig"
-                [ngClass]="{ 'is-invalid': submit && form.delivery.errors }"
+                [ngClass]="{ 'is-invalid': submit && form.deliveryfrom.errors }"
                 bsDatepicker
               />
               <div
@@ -65,10 +64,10 @@
                 type="text"
                 class="form-control"
                 id="deliveryto"
-                formControlName="delivery"
+                formControlName="deliveryto"
                 placeholder="Delivery To"
                 [bsConfig]="bsConfig"
-                [ngClass]="{ 'is-invalid': submit && form.delivery.errors }"
+                [ngClass]="{ 'is-invalid': submit && form.deliveryto.errors }"
                 bsDatepicker
               />
               <div
@@ -84,8 +83,8 @@
           <!-- Storage Location -->
           <div class="col-md-3">
             <label class="brandcolor" for="storageLocationfrom"
-                >STORAGE LOCATION FROM</label
-              >
+              >STORAGE LOCATION FROM</label
+            >
             <div class="mb-3">
               <input
                 type="text"
@@ -110,9 +109,9 @@
             </div>
           </div>
           <div class="col-md-3">
-            <label class="brandcolor" for="storageLocationfrom"
-                >STORAGE LOCATION TO</label
-              >
+            <label class="brandcolor" for="storageLocationto"
+              >STORAGE LOCATION TO</label
+            >
             <div class="mb-3">
               <input
                 type="text"
@@ -139,9 +138,7 @@
           <!--row 2-->
           <!--IBD CREATED ON-->
           <div class="col-md-3">
-            <label class="brandcolor" for="ibdCreadtedOn"
-                >IBD CREATED ON</label
-              >
+            <label class="brandcolor" for="ibdCreadtedOn">IBD CREATED ON</label>
             <div class="mb-3">
               <input
                 type="text"
@@ -164,9 +161,7 @@
             </div>
           </div>
           <div class="col-md-3">
-            <label class="brandcolor" for="ibdCreadtedTo"
-                >IBD CREATED TO</label
-              >
+            <label class="brandcolor" for="ibdCreadtedTo">IBD CREATED TO</label>
             <div class="mb-3">
               <input
                 type="text"
@@ -296,36 +291,34 @@
               </th>
               <th
                 class="brandcolor"
-                sortable="materialDocYear"
+                sortable="postingDate"
                 (sort)="onSort($event)"
               >
                 Posting Date
               </th>
-              <!-- <th>Actions</th> -->
             </tr>
           </thead>
-          @for(table of tables$ | async;track $index){
-          <tbody>
+          <tbody *ngFor="let table of tables$ | async; let i = index">
             <tr>
               <td align="center">
-                <a class="expand-row" (click)="changeValue($index)">+</a>
+                <a class="expand-row" (click)="changeValue(i)">+</a>
               </td>
-              <td>{{ table.EBELN }}</td>
-              <!-- Purchase Document Number -->
-              <td>{{ table.EBELP }}</td>
-              <!-- Item Number -->
+              <td>{{ table.WERKS }}</td>
+              <!-- Plant -->
+              <td>{{ table.VBELN }}</td>
+              <!-- Inbound Delivery -->
+              <td>{{ table.POSNR }}</td>
+              <!-- Inbound Delivery Item -->
               <td>{{ table.EKGRP }}</td>
-              <!-- Purchase Group -->
-              <td>{{ table.BEDAT }}</td>
-              <!-- Purchase Document Date -->
-              <td>{{ table.LIFNR }}</td>
-              <!-- Supplier Code -->
-              <td>{{ table.NAME1 }}</td>
-              <!-- Vendor Address -->
-              <td>{{ table.MATNR }}</td>
-              <!-- Material -->
+              <!-- Purchasing Group -->
+              <td>{{ table.ERDAT }}</td>
+              <!-- Inbound Created on -->
+              <td>{{ table.MBLNR }}</td>
+              <!-- Material Doc -->
+              <td>{{ table.BUDAT }}</td>
+              <!-- Posting Date -->
             </tr>
-            <ng-container *ngIf="!hideme[$index]">
+            <ng-container *ngIf="!hideme[i]">
               <tr class="sub-table no-bg">
                 <td align="center"></td>
                 <td colspan="15" class="p-0">
@@ -354,36 +347,42 @@
                     </thead>
                     <tbody>
                       <tr>
-                        <td>{{ table.TXZ01 }}</td>
-                        <!-- Updating Text Field -->
-                        <td>{{ table.MEINS1 }}</td>
-                        <!-- Base Unit of Measure -->
-                        <td>{{ table.WERKS }}</td>
-                        <!-- Plant -->
-                        <td>{{ table.MENGE }}</td>
-                        <!-- Alternative Unit of Measure -->
+                        <td>{{ table.AGE }}</td>
+                        <!-- Days Taken for GR -->
+                        <td>{{ table.BELNR_MIRO }}</td>
+                        <!-- MIRO No -->
+                        <td>{{ table.BUDAT_MIRO }}</td>
+                        <!-- MIRO Date -->
+                        <td>{{ table.XBLNR }}</td>
+                        <!-- Invoice No -->
+                        <td>{{ table.BLDAT }}</td>
+                        <!-- Invoice Date -->
+                        <td>{{ table.VGBEL }}</td>
+                        <!-- PO -->
+                        <td>{{ table.VGPOS }}</td>
+                        <!-- PO Item -->
+                        <td>{{ table.AEDAT }}</td>
+                        <!-- PO Date -->
+                        <td>{{ table.ERNAM }}</td>
+                        <!-- Created by -->
+                        <td>{{ table.LGORT }}</td>
+                        <!-- Storage Location -->
+                        <td>{{ table.LGOBE }}</td>
+                        <!-- Storage Location Name -->
+                        <td>{{ table.MATNR }}</td>
+                        <!-- Material -->
+                        <td>{{ table.MAKTX }}</td>
+                        <!-- Material Desc -->
                         <td>{{ table.MEINS }}</td>
-                        <!-- Unit of Measure -->
-                        <td>{{ table.MENGE1 }}</td>
-                        <!-- Bill of Quantity (BOM) -->
-                        <td>{{ table.sku }}</td>
-                        <!-- Stockkeeping Unit -->
-                        <td>{{ table.DMBTR1 }}</td>
-                        <!-- Sum of Amount -->
-                        <td>{{ table.NETWR }}</td>
-                        <!-- Net Price -->
-                        <td>{{ table.LV_MENGE_SUM }}</td>
-                        <!-- Still to be delivered (qty) -->
-                        <td>{{ table.WRBTR }}</td>
-                        <!-- Still to be delivered (value) -->
-                        <td>{{ table.LIFNR }}</td>
-                        <!-- Still to be invoiced (qty) -->
-                        <td>{{ table.DAYS }}</td>
-                        <!-- Still to be invoiced (value) -->
-                        <td>{{ table.EINDT }}</td>
-                        <!-- Delivery Date -->
-                        <td>{{ table.BUYER }}</td>
-                        <!-- Supplier Email ID -->
+                        <!-- UOM -->
+                        <td>{{ table.LFIMG }}</td>
+                        <!-- Qty -->
+                        <td>{{ table.GATEENTRY }}</td>
+                        <!-- Gate Entry No -->
+                        <td>{{ table.GATEDATE }}</td>
+                        <!-- Gate Entry Date -->
+                        <td>{{ table.AGE1 }}</td>
+                        <!-- Days taken for IBD -->
                       </tr>
                     </tbody>
                   </table>
@@ -391,8 +390,6 @@
               </tr>
             </ng-container>
           </tbody>
-
-          }
         </table>
       </div>
       <div class="row justify-content-md-between align-items-md-center mt-2">
