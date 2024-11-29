@@ -43,24 +43,18 @@ function sort(tables: Table[], column: string, direction: string): Table[] {
  */
 function matches(tables: Table, term: string, pipe: PipeTransform) {
     return (
-      tables.gateEntryNumber.toLowerCase().includes(term.toLowerCase()) ||
-      tables.vehicleNumber.toLowerCase().includes(term.toLowerCase()) ||
-      tables.invoiceDate.toLowerCase().includes(term.toLowerCase()) ||
-      tables.material.toLowerCase().includes(term.toLowerCase()) ||
-      tables.description.toLowerCase().includes(term.toLowerCase()) ||
-      pipe.transform(tables.deliveryQuantity).toLowerCase().includes(term.toLowerCase()) ||
-      tables.storageLocation.toLowerCase().includes(term.toLowerCase()) ||
-      tables.incoterms.toLowerCase().includes(term.toLowerCase()) ||
-      tables.transportationGroup.toLowerCase().includes(term.toLowerCase()) ||
-      tables.transporterName.toLowerCase().includes(term.toLowerCase()) ||
-      tables.supplier.toLowerCase().includes(term.toLowerCase()) ||
-      tables.plant.toLowerCase().includes(term.toLowerCase()) ||
-      tables.tolerance.toLowerCase().includes(term.toLowerCase())
+      tables.MATNR.toLowerCase().includes(term.toLowerCase()) || // Material Number
+      tables.WERKS.toLowerCase().includes(term.toLowerCase()) || // Plant
+      tables.LGORT.toLowerCase().includes(term.toLowerCase()) || // Storage Location
+      tables.BWART.toLowerCase().includes(term.toLowerCase()) || // Movement Type
+      pipe.transform(tables.MENGE).toLowerCase().includes(term.toLowerCase()) || // Quantity
+      tables.MEINS.toLowerCase().includes(term.toLowerCase()) || // Base Unit of Measure
+      tables.EBELN.toLowerCase().includes(term.toLowerCase()) || // Purchasing Document Number
+      tables.EBELP.toLowerCase().includes(term.toLowerCase()) || // Item Number of Purchasing Document
+      tables.MAKT.toLowerCase().includes(term.toLowerCase())     // Material Group
     );
   }
   
-  
-
 @Injectable({
     providedIn: 'root'
 })

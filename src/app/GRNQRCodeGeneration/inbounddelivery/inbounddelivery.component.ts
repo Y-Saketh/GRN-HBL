@@ -63,7 +63,52 @@ export class InbounddeliveryComponent implements OnInit {
   changeValue(i) {
     this.hideme[i] = !this.hideme[i];
   }
-
+  
+  saveBound(tab) {
+    console.log("tab", tab);
+    if (this.validationform.valid) {
+      this.submit = true;
+      const payload = {
+        "DETAIL": {
+          "PO_NUMBER": this.form.inbounddeliverynumber.value,
+          "DCNUMBER": "1234", 
+          "INVOICE": "ABD", 
+          "DC_DATE": "2024-11-27", 
+          "IN_DATE": "",
+          "PACKLIST": "",
+          "VEHICLE_NO": "APIS26", 
+          "LR_NUMBER": "",
+          "LR_DATE": "",
+          "TRANSPORTER": "Container",
+          "ITEM": [
+            {
+              "MATNR": "000000001000059735", //Material Number
+              "DMENGE": 80.000, 
+              "MEINS": "NOS", //Base Unit of Measurement
+              "SHORT_TEXT": "FUSE_240AC/DC_E1 FUSE_20_SC-20 HOLDER",
+              "ORGQTY": 800.000,
+              "PO_NUMBER": this.form.inbounddeliverynumber.value, // PO number
+              "PO_ITEM": 1, // item number
+              "WERKS": "1300", //  plant
+              "LGORT": "S061" // storage location
+            }
+          ]
+        }
+      };
+  
+      this.apiService.saveInbound(payload).subscribe({
+        next: (res: any) => {
+          console.log('Inbound Delivery Created:', res);
+          alert('Inbound Delivery Created Successfully!');
+        },
+        error: (error: any) => {
+          console.error('Error saving inbound delivery:', error);
+          alert('Error saving inbound delivery.');
+        }
+      });
+    }
+  }
+  
 
   /**
    * fetches the table value
