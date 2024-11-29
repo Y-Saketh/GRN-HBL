@@ -1,23 +1,15 @@
+
 export interface Table {
-    MaterialDocYear: string;
-    materialDocItem: string;
-    identification: string;
-    movementType: string;
-    Material: string;
-    Plant: string;
-    storageLocation: string;
-    batch: string;
-    stockType: string;
-    supplier: string;
-    currency: string;
-    amountInLocCur: string;
-    valuationType: string;
-    quantity: number;
-    baseUnitofMeasure: string; 
-    qtyinunitofentry: string;  
-    unitofEntry: string;       
-    qtyinOPUn: string;         
+    MATNR: string;           // Material
+    WERKS: string;           // Plant
+    LGORT: string;           // Storage Location
+    BWART: string;           // Movement Type
+    MENGE: number;           // Quantity
+    MEINS: string;           // Base Unit of Measure
+    EBELN: string;           // Supplier
+    EBELP: number;           // Material Document Item
 }
+
 
 // Search Data
 export interface SearchResult {

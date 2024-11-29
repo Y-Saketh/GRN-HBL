@@ -35,6 +35,11 @@ export class UserProfileService {
         return this.http.post(`${environment.API_URL_DEV}api/external/InboundCreate`,data)
      
     }
+    grnlist(data){
+        console.log("environment.API_URL_DEV",environment.API_URL_DEV)
+        return this.http.post(`${environment.API_URL_DEV}api/external/grnlist`,data)
+     
+    }
 
     GrPending(data){
         console.log("environment.API_URL_DEV",environment.API_URL_DEV)

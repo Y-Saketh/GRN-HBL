@@ -6,9 +6,12 @@ import { AdvancedService } from './advanced.service';
 import { PagetitleComponent } from 'src/app/shared/ui/pagetitle/pagetitle.component';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { AdvancedSortableDirective, SortEvent } from './advanced-sortable.directive';
-import { Observable } from 'rxjs';
+import { Observable, take } from 'rxjs';
 import { tableData } from './data';
 import { UserProfileService } from 'src/app/core/services/user.service';
+import Swal from 'sweetalert2';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+
 
 @Component({
   selector: 'app-inbounddelivery',
@@ -20,7 +23,7 @@ import { UserProfileService } from 'src/app/core/services/user.service';
             CommonModule, 
             FormsModule, 
             PaginationModule, 
-            AdvancedSortableDirective]
+            AdvancedSortableDirective,BsDatepickerModule,PagetitleComponent]
 })
 
 export class InbounddeliveryComponent implements OnInit {
@@ -28,7 +31,7 @@ export class InbounddeliveryComponent implements OnInit {
   // Table data
   tableData: Table[];
   public selected: any;
-  hideme: boolean[] = [];
+  hideme:boolean=false;
   tables$: Observable<Table[]>;
   total$: Observable<number>;
 
@@ -38,6 +41,19 @@ export class InbounddeliveryComponent implements OnInit {
   lotReportsData: any;
   // POLIST: any;
   INBOUND: Table[];
+  plant: string;
+  supplier: string;
+  Originalquantity: any;
+  gateEntryNumber: any;
+  vehicleNumber: string;
+  invoiceDate: string;
+  gateEntryDate: string;
+  DocumentDate: string;
+  MATNR: string;
+  SHORT_TEXT: string;
+  deleveryChallanNumber: any;
+  PackingList: any;
+  isSubmitting: boolean= false;
   constructor(public formBuilder: UntypedFormBuilder, public service: AdvancedService,private apiService:UserProfileService) {
     this.tables$ = service.tables$;
     console.log("this.tables$", this.tables$)
@@ -52,7 +68,7 @@ export class InbounddeliveryComponent implements OnInit {
 
     });
 
-    this.breadCrumbItems = [{ label: 'Tables' }, { label: 'Advanced Table', active: true }];
+    this.breadCrumbItems = [{ label: 'GRN' }, { label: 'InBound Delivery', active: true }];
     /**
      * fetch data
      */
@@ -60,56 +76,71 @@ export class InbounddeliveryComponent implements OnInit {
 
   }
 
-  changeValue(i) {
-    this.hideme[i] = !this.hideme[i];
+  changeValue() {
+    this.hideme = !this.hideme;
   }
+  saveBound(tables$: Observable<any[]>) {
+    // Disable the submit button to prevent multiple clicks
+    this.isSubmitting = true;
   
-  saveBound(tab) {
-    console.log("tab", tab);
-    if (this.validationform.valid) {
-      this.submit = true;
-      const payload = {
-        "DETAIL": {
-          "PO_NUMBER": this.form.inbounddeliverynumber.value,
-          "DCNUMBER": "1234", 
-          "INVOICE": "ABD", 
-          "DC_DATE": "2024-11-27", 
-          "IN_DATE": "",
-          "PACKLIST": "",
-          "VEHICLE_NO": "APIS26", 
-          "LR_NUMBER": "",
-          "LR_DATE": "",
-          "TRANSPORTER": "Container",
-          "ITEM": [
-            {
-              "MATNR": "000000001000059735", //Material Number
-              "DMENGE": 80.000, 
-              "MEINS": "NOS", //Base Unit of Measurement
-              "SHORT_TEXT": "FUSE_240AC/DC_E1 FUSE_20_SC-20 HOLDER",
-              "ORGQTY": 800.000,
-              "PO_NUMBER": this.form.inbounddeliverynumber.value, // PO number
-              "PO_ITEM": 1, // item number
-              "WERKS": "1300", //  plant
-              "LGORT": "S061" // storage location
-            }
-          ]
-        }
-      };
+    tables$
+      .pipe(take(1)) // Ensure subscription happens only once
+      .subscribe({
+        next: (tables) => {
+          // Start with the common header data
+          const payload = {
+            DETAIL: {
+              PO_NUMBER: this.form.inbounddeliverynumber.value, // PO Number from form
+              DCNUMBER: this.deleveryChallanNumber, // Delivery Challan Number
+              INVOICE: this.invoiceDate || "DefaultInvoice", // Invoice Date
+              DC_DATE: this.DocumentDate || "2024-11-29", // Document Date
+              PACKLIST: this.PackingList, // Packing List
+              VEHICLE_NO: this.vehicleNumber, // Vehicle Number
+              LR_NUMBER: this.MATNR || this.SHORT_TEXT, // Material/LR number
+              LR_DATE: this.gateEntryDate, // LR Date
+              TRANSPORTER: this.plant || this.supplier, // Transporter or Supplier
+              ITEM: [], // Initialize the ITEM array
+            },
+          };
   
-      this.apiService.saveInbound(payload).subscribe({
-        next: (res: any) => {
-          console.log('Inbound Delivery Created:', res);
-          alert('Inbound Delivery Created Successfully!');
+          // Loop through the table data and add rows to ITEM array
+          tables.forEach((table) => {
+            const item = {
+              MATNR: table.MATNR, // Material Number
+              DMENGE: parseFloat(table.DMENGE) || 0, // Delivered Quantity
+              MEINS: table.MEINS, // Unit of Measurement
+              SHORT_TEXT: table.SHORT_TEXT, // Material Description
+              ORGQTY: parseFloat(table.ORGQTY) || 0, // Original Quantity
+              PO_NUMBER: this.form.inbounddeliverynumber.value, // PO Number
+              PO_ITEM: table.PO_ITEM || 1, // Item Number
+              WERKS: table.WERKS, // Plant
+              LGORT: table.LGORT, // Storage Location
+            };
+            payload.DETAIL.ITEM.push(item); // Add to ITEM array
+          });
+  
+          console.log("Final Payload:", payload);
+  
+          // Call API to save data
+          this.apiService.saveInbound(payload).subscribe({
+            next: (res) => {
+              console.log("Inbound Delivery Saved:", res);
+              Swal.fire("", res[0].MSGTXT, "success");
+              this.isSubmitting = false; // Re-enable the button
+            },
+            error: (err) => {
+              console.error("Error while saving:", err);
+              Swal.fire("", "Error occurred while saving", "error");
+              this.isSubmitting = false; // Re-enable the button
+            },
+          });
         },
-        error: (error: any) => {
-          console.error('Error saving inbound delivery:', error);
-          alert('Error saving inbound delivery.');
-        }
+        error: (err) => {
+          console.error("Error in subscription:", err);
+          this.isSubmitting = false; // Re-enable the button
+        },
       });
-    }
   }
-  
-
   /**
    * fetches the table value
    */
@@ -117,7 +148,7 @@ export class InbounddeliveryComponent implements OnInit {
     this.tableData = this.INBOUND || [];
     console.log("this.tableData ", this.tableData)
     for (let i = 0; i <= this.tableData.length; i++) {
-      this.hideme.push(true);
+      // this.hideme.push(true);
     }
   }
 
@@ -144,24 +175,27 @@ export class InbounddeliveryComponent implements OnInit {
   validSubmit(){
     this.submit = true;
     console.log("validationform",this.form) 
-    let obj = {
-      "EBELN":"4500181937"
-    }
-    console.log("objobj",obj)
-    this.apiService.OpenINBOUND(obj).subscribe({
-      next: (res: any) => {
-        console.log('Data:', res);
-        this.INBOUND = res;
-        this.service.setTableData(res || []);
-        this._fetchData();
-      },
-      error: (error: any) => {
-        console.error('Error fetching lot reports:', error);
-      },
-      complete: () => {
-        console.log('API call completed.');
+    if(this.form.inbounddeliverynumber.value){
+      let obj = {
+        "EBELN": this.form.inbounddeliverynumber.value//"4500181937"
       }
-    });
+      console.log("objobj",obj)
+      this.apiService.OpenINBOUND(obj).subscribe({
+        next: (res: any) => {
+          console.log('Data:', res);
+          this.INBOUND = res;
+          this.service.setTableData(res || []);
+          this._fetchData();
+        },
+        error: (error: any) => {
+          console.error('Error fetching lot reports:', error);
+        },
+        complete: () => {
+          console.log('API call completed.');
+        }
+      });
+    }
+   
   }
 
 }

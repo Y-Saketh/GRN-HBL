@@ -18,7 +18,7 @@ import { ModalDirective } from 'ngx-bootstrap/modal';
   styleUrl: './openpolist.component.css',
   standalone: true,
   providers: [AdvancedService, DecimalPipe,UserProfileService],
-  imports: [ReactiveFormsModule, CommonModule, FormsModule, PaginationModule, AdvancedSortableDirective,BsDatepickerModule]
+  imports: [ReactiveFormsModule, CommonModule, FormsModule, PaginationModule, AdvancedSortableDirective,BsDatepickerModule,PagetitleComponent]
   // imports:[CommonModule,ReactiveFormsModule,]
 })
 export class OpenpolistComponent implements OnInit {
@@ -66,7 +66,7 @@ export class OpenpolistComponent implements OnInit {
 
     });
 
-    this.breadCrumbItems = [{ label: 'Tables' }, { label: 'Advanced Table', active: true }];
+    this.breadCrumbItems = [{ label: 'GRN' }, { label: 'Open PO List', active: true }];
     /**
      * fetch data
      */
