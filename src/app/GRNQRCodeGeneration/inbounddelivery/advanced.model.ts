@@ -1,20 +1,17 @@
 // Table data
 
-  export interface Table {
-    gateEntryNumber: string;
-    vehicleNumber: string;
-    invoiceDate: string;
-    material: string;
-    description: string;
-    deliveryQuantity: string;
-    storageLocation: string;
-    incoterms: string;
-    transportationGroup: string;
-    transporterName: string;
-    supplier: string;
-    plant: string;
-    tolerance: string;
-  }
+export interface Table {
+  MATNR: string; // Material Number
+  WERKS: string; // Plant
+  LGORT: string; // Storage Location
+  BWART: string; // Movement Type (Inventory Management)
+  MENGE: number; // Quantity
+  MEINS: string; // Base Unit of Measure
+  EBELN: string; // Purchasing Document Number
+  EBELP: string; // Item Number of Purchasing Document
+  MAKT: string; // Material Description
+}
+
   
 
 
