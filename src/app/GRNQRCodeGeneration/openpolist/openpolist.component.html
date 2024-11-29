@@ -1,8 +1,15 @@
+<div class="container-fluid">
+  <app-page-title
+   
+    [breadcrumbItems]="breadCrumbItems"
+  ></app-page-title>
+  <div class="row">
+
 <div class="col-xl-12">
   <div class="card" style="background-color: beige">
     <div class="card-body">
       <h4 class="card-title">
-        <span style="color: black"></span>
+        <span style="color: black">></span>
         Open Purchase Order List
       </h4>
       <!-- <p class="card-title-desc">Provide valuable, actionable feedback to your users with HTML5 form
@@ -178,7 +185,7 @@
                 class="invalid-feedback"
               >
                 <span *ngIf="form.deliveryDateTo.errors.required"
-                  >Please provide a valid deliveryDateTo.</span
+                  >Please provide a valid delivery Date To.</span
                 >
               </div>
             </div>
@@ -484,5 +491,7 @@
     <!-- </div> -->
     <!-- </div> -->
     <!-- </div> -->
+  </div>
+</div>
   </div>
 </div>

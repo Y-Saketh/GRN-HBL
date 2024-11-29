@@ -1,14 +1,70 @@
 <div class="container-fluid">
   <app-page-title
-    title="Advanced Table"
+   
     [breadcrumbItems]="breadCrumbItems"
   ></app-page-title>
   <div class="row">
     <div class="col-12">
       <div class="card">
         <div class="card-body">
-          <h4 class="card-title">Advanced Data Table</h4>
-          <p class="card-sub-title">Example of datatable.</p>
+          <h4 class="card-title">
+            <span style="color: black">></span> GRN Against Inbound Delivery
+          </h4>
+          <!-- <p class="card-title-desc">Provide valuable, actionable feedback to your users with HTML5 form
+                validation–available in all our supported browsers.</p> -->
+          <form
+            class="needs-validation"
+            (ngSubmit)="validSubmit()"
+            [formGroup]="validationform"
+          >
+            <div class="row mt-4">
+              <!-- Row 1 -->
+              <div class="col-md-4">
+                <div class="mb-3">
+                  <label
+                    class="brandcolor"
+                    class="brandcolor"
+                    for="inbounddeliverynumber"
+                    >InBound Delivery Number</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="inbounddeliverynumber"
+                    formControlName="inbounddeliverynumber"
+                    placeholder="InBound Delivery Number"
+                    [ngClass]="{
+                      'is-invalid': submit && form.inbounddeliverynumber.errors
+                    }"
+                  />
+                  <div
+                    *ngIf="submit && form.inbounddeliverynumber.errors"
+                    class="invalid-feedback"
+                  >
+                    <span *ngIf="form.inbounddeliverynumber.errors.required"
+                      >Please provide a valid Purchase Order Number.</span
+                    >
+                  </div>
+                </div>
+              </div>
+    
+              <!-- <div class="row"> -->
+              <!-- Button Row -->
+              <div class="col-md-4 mt-4"></div>
+              <div class="col-md-4 text-center">
+                <button class="btn btn-success mt-4" type="submit">
+                  Get Details
+                </button>
+              </div>
+              <div class="col-md-4"></div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <!-- <h4 class="card-title">Advanced Data Table</h4>
+          <p class="card-sub-title">Example of datatable.</p> -->
           <div class="row mb-md-2">
             <div class="col-sm-12 col-md-6">
               <div class="dataTables_length" id="tickets-table_length">
@@ -56,394 +112,48 @@
               class="table table-bordered dt-responsive nowrap datatables no-footer dtr-inline"
             >
               <thead>
-                <tr>
-                  <th></th>
-                  <th sortable="MaterialDocumnet" (sort)="onSort($event)">
-                    Material Document
-                  </th>
-                  <th sortable="MaterialDocYear" (sort)="onSort($event)">
-                    Material Doc. Year
-                  </th>
-                  <th sortable="materialDocItem" (sort)="onSort($event)">
-                    Material Doc. Item
-                  </th>
-                  <th sortable="identification" (sort)="onSort($event)">
-                    Identification
-                  </th>
-                  <th sortable="movementType" (sort)="onSort($event)">
-                    Movement Type
-                  </th>
-                  <th sortable="Material" (sort)="onSort($event)">Material</th>
-                  <th sortable="Plant" (sort)="onSort($event)">Plant</th>
-                  <th sortable="storageLocation" (sort)="onSort($event)">
-                    Storage Location
-                  </th>
-                  <th sortable="batch" (sort)="onSort($event)">Batch</th>
-                  <th sortable="stockType" (sort)="onSort($event)">
-                    Stock Type
-                  </th>
-                  <th sortable="supplier" (sort)="onSort($event)">Supplier</th>
-                  <th sortable="currency" (sort)="onSort($event)">Currency</th>
-                </tr>
+                <th sortable="MATNR" (sort)="onSort($event)">Material Number</th>
+                <th sortable="WERKS" (sort)="onSort($event)">Plant</th>
+                <th sortable="LGORT" (sort)="onSort($event)">Storage Location</th>
+                <th sortable="BWART" (sort)="onSort($event)">Movement Type</th>
+                <th sortable="MENGE" (sort)="onSort($event)">Quantity</th>
+                <th sortable="MEINS" (sort)="onSort($event)">UOM</th>
+                <th sortable="EBELN" (sort)="onSort($event)">Purchase Order</th>
+                <th sortable="EBELP" (sort)="onSort($event)">PO Item</th>
               </thead>
               @for(table of tables$ | async;track $index){
               <tbody>
                 <tr>
-                  <td align="center">
+                  <!-- <td align="center">
                     <a class="expand-row" (click)="changeValue($index)"> + </a>
-                  </td>
-                  <td>{{ table.MaterialDocumnet }}</td>
-                  <td>{{ table.MaterialDocYear }}</td>
-                  <td>{{ table.materialDocItem }}</td>
-                  <td>{{ table.identification }}</td>
-                  <td>{{ table.movementType }}</td>
-                  <td>{{ table.Material }}</td>
-                  <td>{{ table.Plant }}</td>
-                  <td>{{ table.storageLocation }}</td>
-                  <td>{{ table.batch }}</td>
-                  <td>{{ table.stockType }}</td>
-                  <td>{{ table.supplier }}</td>
-                  <td>{{ table.currency }}</td>
+                  </td> -->
+                  <td>{{ table.MATNR }}</td>
+                  <td>{{ table.WERKS }}</td>
+                  <td><input type="text" [(ngModel)]="table.LGORT" class="form-control form-control-sm" /></td>
+                  <!-- <td>{{ table.LGORT }}</td> -->
+                  <td>{{ table.BWART }}</td>
+                  <!-- <td>{{ table.MENGE }}</td> -->
+                  <td><input type="text" [(ngModel)]="table.MENGE" class="form-control form-control-sm" /></td>
+                  <td>{{ table.MEINS }}</td>
+                  <td>{{ table.EBELN }}</td>
+                  <td>{{ table.EBELP }}</td>
                 </tr>
-                @if(!hideme[$index]){
-                <tr class="sub-table no-bg">
-                  <td align="center"></td>
-                  <td colspan="15" class="p-0">
-                    <table class="table mb-0 table-striped">
-                      <thead class="bg-dark">
-                        <tr>
-                          <th>Amt. in loc. cur.</th>
-                          <th>Valuation Type</th>
-                          <th>Quantity</th>
-                          <th>Base Unit of Measure</th>
-                          <th>Qty in unit of entry</th>
-                          <th>Unit of Entry</th>
-                          <th>Qty in OPUn</th>
-                          <th>Order Price Unit</th>
-                          <th>Purchase Order</th>
-                          <th>Item</th>
-                          <th>Fisc. Year Ref. Doc.</th>
-                          <th>Reference Document</th>
-                          <th>Reference Doc. Item</th>
-                          <th>Material Doc.Item</th>
-                          <th>Delivery Completed</th>
-                          <th>Text</th>
-                          <th>Goods recipient</th>
-                          <th>Controlling Area</th>
-                          <th>Fiscal Year</th>
-                          <th>Company Code</th>
-                          <th>Quantity</th>
-                          <th>Statistically relev.</th>
-                          <th>Receiving Material</th>
-                          <th>Receiving plant</th>
-                          <th>Receiving stor. loc.</th>
-                          <th>Receiving Batch</th>
-                          <th>Restricted-Use</th>
-                          <th>Stat. key tfr. batch</th>
-                          <th>Val. Type Tfr Batch</th>
-                          <th>Sp. ind. stock tfr.</th>
-                          <th>Movement indicator</th>
-                          <th>Consumption</th>
-                          <th>Receipt Indicator</th>
-                          <th>GR non-valuated</th>
-                          <th>No. of pallets</th>
-                          <th>Warehouse Number</th>
-                          <th>Storage Type</th>
-                          <th>Storage Bin</th>
-                          <th>Stock Category</th>
-                          <th>Movement Type</th>
-                          <th>TR Number</th>
-                          <th>TR Item</th>
-                          <th>Posting in WM</th>
-                          <th>Int.st.post.source</th>
-                          <th>Interim stor.p.dest.</th>
-                          <th>Dynamic storage bin</th>
-                          <th>PostingChange Number</th>
-                          <th>Transfer Priority</th>
-                          <th>Transfer Order Number</th>
-                          <th>Number of GR Slips</th>
-                          <th>Reason for Movement</th>
-                          <th>Shipping Instr.</th>
-                          <th>Compliance with Shipping Instr.</th>
-                          <th>Real Estate Key</th>
-                          <th>Cost Object</th>
-                          <th>Profitab. Segmt No.</th>
-                          <th>Profit Center</th>
-                          <th>WBS Element</th>
-                          <th>Network</th>
-                          <th>Routing number for operations</th>
-                          <th>Counter</th>
-                          <th>Order item number</th>
-                          <th>Partner</th>
-                          <th>Commitment item</th>
-                          <th>G/L Account</th>
-                          <th>Qty in order unit</th>
-                          <th>Order Unit</th>
-                          <th>RevGR despite IR</th>
-                          <th>Vendor</th>
-                          <th>Ref SD</th>
-                          <th>Addit.text 3</th>
-                          <th>Ticket Date</th>
-                          <th>Ticket No</th>
-                          <th>Ticket Status</th>
-                          <th>Vendor Name</th>
-                          <th>Vendor GSTIN</th>
-                          <th>Remarks</th>
-                          <th>Ext. Amount in Local Currency</th>
-                          <th>Sales Value inc. VAT</th>
-                          <th>Promotion</th>
-                          <th>Seq. No. of Account Assgt</th>
-                          <th>SLED/BBD</th>
-                          <th>Internal object no.</th>
-                          <th>Sales Value</th>
-                          <th>Partner Profit Ctr</th>
-                          <th>Record type</th>
-                          <th>Fund</th>
-                          <th>Funds Center</th>
-                          <th>Stock Material</th>
-                          <th>Receiving Material</th>
-                          <th>Quantity string</th>
-                          <th>Value String</th>
-                          <th>Quantity updating</th>
-                          <th>Value updating</th>
-                          <th>Total valuated stock before the posting</th>
-                          <th>Totl val. bf.posting</th>
-                          <th>Price control</th>
-                          <th>Functional Area</th>
-                          <th>Reference date</th>
-                          <th>Sales value w/o VAT</th>
-                          <th>Reference date</th>
-                          <th>Automatic PO</th>
-                          <th>Del. Note Quantity</th>
-                          <th>Delivery Note Unit</th>
-                          <th>Spec. stk valuation</th>
-                          <th>Inspection Status in GR Document</th>
-                          <th>Original line item</th>
-                          <th>Alt. base amount</th>
-                          <th>Tax Code</th>
-                          <th>Tax Jurisdiction</th>
-                          <th>MPN material</th>
-                          <th>Goods issue revaluation performed</th>
-                          <th>Tax Code</th>
-                          <th>Date of Manufacture</th>
-                          <th>Mat.Staging Indicat.</th>
-                          <th>Sales order</th>
-                          <th>Sales order item</th>
-                          <th>WBS Element</th>
-                          <th>Calcn of value open</th>
-                          <th>Accounting Indicator</th>
-                          <th>Business Process</th>
-                          <th>Supplying Vendor</th>
-                          <th>Activity Type</th>
-                          <th>Vendor stock valuation</th>
-                          <th>Grant</th>
-                          <th>Stock Type Modif.</th>
-                          <th>GTS Stock Type</th>
-                          <th>Earmarked Funds</th>
-                          <th>Document Item</th>
-                          <th>Multiple Account Assignment</th>
-                          <th>Trans./Event Type</th>
-                          <th>Posting Date</th>
-                          <th>Entry Date</th>
-                          <th>Time of Entry</th>
-                          <th>User Name</th>
-                          <th>Reference</th>
-                          <th>Transaction Code</th>
-                          <th>Delivery</th>
-                          <th>Item</th>
-                          <th>Stock Segment</th>
-                          <th>Receiving Stock Segment</th>
-                          <th>Requirement Segment</th>
-                          <th>ED Status</th>
-                          <th>User Name</th>
-                          <th>Changed On</th>
-                          <th>Time</th>
-                          <th>Owner of stock</th>
-                          <th>Season Year</th>
-                          <th>Season</th>
-                          <th>Collection</th>
-                          <th>Theme</th>
-                          <th>Receiving/Issuing Season Year</th>
-                          <th>Receiving/Issuing Season</th>
-                          <th>Receiving/Issuing Collection</th>
-                          <th>Receiving/Issuing Theme</th>
-                          <th>Discrete Batch No.</th>
-                          <th>Allocated Quantity</th>
-                          <th>Non-deductible</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>{{ table.amountInLocCur }}</td>
-                          <td>{{ table.valuationType }}</td>
-                          <td>{{ table.quantity }}</td>
-                          <td>{{ table.baseUnitofMeasure }}</td>
-                          <td>{{ table.qtyinunitofentry }}</td>
-                          <td>{{ table.unitofEntry }}</td>
-                          <td>{{ table.qtyinOPUn }}</td>
-                          <td>{{ table.orderPriceUnit }}</td>
-                          <td>{{ table.purchaseOrder }}</td>
-                          <td>{{ table.Item }}</td>
-                          <td>{{ table.FiscYearRefDoc }}</td>
-                          <td>{{ table.ReferenceDocument }}</td>
-                          <td>{{ table.ReferenceDocItem }}</td>
-                          <td>{{ table.MaterialDocItem }}</td>
-                          <td>{{ table.DeliveryCompleted }}</td>
-                          <td>{{ table.Goodsrecipient }}</td>
-                          <td>{{ table.ControllingArea }}</td>
-                          <td>{{ table.FiscalYear }}</td>
-                          <td>{{ table.CompanyCode }}</td>
-                          <td>{{ table.Quantity }}</td>
-                          <td>{{ table.Statisticallyrelev }}</td>
-                          <td>{{ table.Receivingmaterial }}</td>
-                          <td>{{ table.Receivingplant }}</td>
-                          <td>{{ table.Receivingstorloc }}</td>
-                          <td>{{ table.ReceivingBatch }}</td>
-                          <td>{{ table.RestrictedUse }}</td>
-                          <td>{{ table.Statkeytfrbatch }}</td>
-                          <td>{{ table.Spindstocktfr }}</td>
-                          <td>{{ table.Movementindicator }}</td>
-                          <td>{{ table.Consumption }}</td>
-                          <td>{{ table.ReceiptIndicator }}</td>
-                          <td>{{ table.GRnonvaluated }}</td>
-                          <td>{{ table.Noofpallets }}</td>
-                          <td>{{ table.WarehouseNumber }}</td>
-                          <td>{{ table.StorageType }}</td>
-                          <td>{{ table.StorageBin }}</td>
-                          <td>{{ table.StockCategory }}</td>
-                          <td>{{ table.MovementType }}</td>
-                          <td>{{ table.TRNumber }}</td>
-                          <td>{{ table.TRItem }}</td>
-                          <td>{{ table.PostinginWM }}</td>
-                          <td>{{ table.Intstpostsource }}</td>
-                          <td>{{ table.Interimstorpdest }}</td>
-                          <td>{{ table.Dynamicstoragebin }}</td>
-                          <td>{{ table.PostingChangeNumber }}</td>
-                          <td>{{ table.TransferPriority }}</td>
-                          <td>{{ table.TransferOrderNumber }}</td>
-                          <td>{{ table.NumberofGRSlips }}</td>
-                          <td>{{ table.ReasonforMovement }}</td>
-                          <td>{{ table.ShippingInstr }}</td>
-                          <td>{{ table.CompliancewithShippingInstr }}</td>
-                          <td>{{ table.RealEstateKey }}</td>
-                          <td>{{ table.CostObject }}</td>
-                          <td>{{ table.ProfitabSegmtNo }}</td>
-                          <td>{{ table.ProfitCenter }}</td>
-                          <td>{{ table.WBSElement }}</td>
-                          <td>{{ table.Network }}</td>
-                          <td>{{ table.Routingnumberforoperations }}</td>
-                          <td>{{ table.Counter }}</td>
-                          <td>{{ table.Orderitemnumber }}</td>
-                          <td>{{ table.Partner }}</td>
-                          <td>{{ table.Commitmentitem }}</td>
-                          <td>{{ table.GLAccount }}</td>
-                          <td>{{ table.Qtyinorderunit }}</td>
-                          <td>{{ table.OrderUnit }}</td>
-                          <td>{{ table.RevGRdespiteIR }}</td>
-                          <td>{{ table.Vendor }}</td>
-                          <td>{{ table.RefSD }}</td>
-                          <td>{{ table.Addittext3 }}</td>
-                          <td>{{ table.TicketDate }}</td>
-                          <td>{{ table.TicketNO }}</td>
-                          <td>{{ table.TicketStatus }}</td>
-                          <td>{{ table.VendorName }}</td>
-                          <td>{{ table.VendorGSTIN }}</td>
-                          <td>{{ table.Remarks }}</td>
-                          <td>{{ table.ExtAmountinLocalCurrency }}</td>
-                          <td>{{ table.SeasoSalesValueincVATnYear }}</td>
-                          <td>{{ table.Promotion }}</td>
-                          <td>{{ table.SeqNoofAccountAssgt }}</td>
-                          <td>{{ table.SLEDBBD }}</td>
-                          <td>{{ table.Internalobjectno }}</td>
-                          <td>{{ table.SalesValue }}</td>
-                          <td>{{ table.PartnerProfitCtr }}</td>
-                          <td>{{ table.Recordtype }}</td>
-                          <td>{{ table.Fund }}</td>
-                          <td>{{ table.FundsCenter }}</td>
-                          <td>{{ table.StockMaterial }}</td>
-                          <td>{{ table.ReceivingMaterial }}</td>
-                          <td>{{ table.Quantitystring }}</td>
-                          <td>{{ table.ValueString }}</td>
-                          <td>{{ table.Quantityupdating }}</td>
-                          <td>{{ table.Valueupdating }}</td>
-                          <td>
-                            {{ table.Totalvaluatedstockbeforetheposting }}
-                          </td>
-                          <td>{{ table.Totlvalbfposting }}</td>
-                          <td>{{ table.Pricecontrol }}</td>
-                          <td>{{ table.FunctionalArea }}</td>
-                          <td>{{ table.Referencedate }}</td>
-                          <td>{{ table.Salesvaluew / oVAT }}</td>
-                          <td>{{ table.Referencedate }}</td>
-                          <td>{{ table.AutomaticPO }}</td>
-                          <td>{{ table.DelNoteQuantity }}</td>
-                          <td>{{ table.DeliveryNoteUnit }}</td>
-                          <td>{{ table.Specstkvaluation }}</td>
-                          <td>{{ table.InspectionStatusinGRDocument }}</td>
-                          <td>{{ table.Originallineitem }}</td>
-                          <td>{{ table.Altbaseamount }}</td>
-                          <td>{{ table.TaxCode }}</td>
-                          <td>{{ table.TaxJurisdiction }}</td>
-                          <td>{{ table.MPNmaterial }}</td>
-                          <td>{{ table.Goodsissuerevaluationperformed }}</td>
-                          <td>{{ table.Taxcode }}</td>
-                          <td>{{ table.DateofManufacture }}</td>
-                          <td>{{ table.MatStagingIndicat }}</td>
-                          <td>{{ table.Salesorder }}</td>
-                          <td>{{ table.Salesorderitem }}</td>
-                          <td>{{ table.WBSelement }}</td>
-                          <td>{{ table.Calcnofvalueopen }}</td>
-                          <td>{{ table.AccountingIndicator }}</td>
-                          <td>{{ table.BusinessProcess }}</td>
-                          <td>{{ table.SupplyingVendor }}</td>
-                          <td>{{ table.ActivityType }}</td>
-                          <td>{{ table.Vendorstockvaluation }}</td>
-                          <td>{{ table.Grant }}</td>
-                          <td>{{ table.StockTypeModif }}</td>
-                          <td>{{ table.GTSStockType }}</td>
-                          <td>{{ table.EarmarkedFunds }}</td>
-                          <td>{{ table.DocumentItem }}</td>
-                          <td>{{ table.MultipleAccountAssignment }}</td>
-                          <td>{{ table.TransEventType }}</td>
-                          <td>{{ table.PostingDate }}</td>
-                          <td>{{ table.EntryDate }}</td>
-                          <td>{{ table.TimeofEntry }}</td>
-                          <td>{{ table.UserName }}</td>
-                          <td>{{ table.Reference }}</td>
-                          <td>{{ table.TransactionCode }}</td>
-                          <td>{{ table.Delivery }}</td>
-                          <td>{{ table.item }}</td>
-                          <td>{{ table.StockSegment }}</td>
-                          <td>{{ table.ReceivingStockSegment }}</td>
-                          <td>{{ table.RequirementSegment }}</td>
-                          <td>{{ table.EDStatus }}</td>
-                          <td>{{ table.Username }}</td>
-                          <td>{{ table.ChangedOn }}</td>
-                          <td>{{ table.Time }}</td>
-                          <td>{{ table.Ownerofstock }}</td>
-                          <td>{{ table.SeasonYear }}</td>
-                          <td>{{ table.Season }}</td>
-                          <td>{{ table.Collection }}</td>
-                          <td>{{ table.Theme }}</td>
-                          <td>
-                            {{ table.
-                            ReceivingIssuingSeasonYear }}
-                          </td>
-                          <td>{{ table.ReceivingIssuingSeason }}</td>
-                          <td>{{ table.ReceivingIssuingCollection }}</td>
-                          <td>{{ table.ReceivingIssuingTheme }}</td>
-                          <td>{{ table.DiscreteBatchNo }}</td>
-                          <td>{{ table.AllocatedQuantity }}</td>
-                          <td>{{ table.Nondeductible }}</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </td>
-                </tr>
-                }
+              
               </tbody>
               }
             </table>
+          </div>
+          <div class="col-md-4 text-left">
+            <button
+              class="btn btn-success mt-4"
+              type="button"
+              (click)="saveBound(tables$)"
+            >
+              Save
+            </button>
+          </div>
+          <div>
+
           </div>
           <!-- End table -->
           <div
@@ -478,7 +188,7 @@
     </div>
   </div>
 </div>
-<ng-template #content role="document" let-modal>
+<!-- <ng-template #content role="document" let-modal>
   <div class="modal-header">
     <h5 class="modal-title mt-0">Modal Heading</h5>
     <button
@@ -500,4 +210,4 @@
     </button>
     <button type="button" class="btn btn-primary">Save changes</button>
   </div>
-</ng-template>
+</ng-template> -->

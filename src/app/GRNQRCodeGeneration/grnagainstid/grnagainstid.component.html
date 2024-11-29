@@ -1,8 +1,14 @@
+<div class="container-fluid">
+    <app-page-title
+     
+      [breadcrumbItems]="breadCrumbItems"
+    ></app-page-title>
+    <div class="row">
 <div class="col-xl-12">
 
     <div class="card">
         <div class="card-body">
-            <h4 class="card-title"><span style="color: black;">></span> GRN Against Inbound Delivery</h4>
+            <h4 class="card-title"><span style="color: black;">></span> QR Code Generation</h4>
             <!-- <p class="card-title-desc">Provide valuable, actionable feedback to your users with HTML5 form
             validation–available in all our supported browsers.</p> -->
 
@@ -181,11 +187,11 @@
                             </ul>
                         </td>
                         <td>
-                            <button class="btn btn-success btn-sm" (click)="matchMaterial(i)">
+                            <!-- <button class="btn btn-success btn-sm" (click)="matchMaterial(i)">
                                 Match
-                            </button>
+                            </button> -->
                             <button class="btn btn-warning btn-sm" (click)="openUnmatchPopup(i)">
-                                Unmatch
+                                Edit Quantity
                             </button>
                         </td>
                     </tr>
@@ -268,3 +274,6 @@
 
 
     </div>
+</div>
+    </div>
+</div>

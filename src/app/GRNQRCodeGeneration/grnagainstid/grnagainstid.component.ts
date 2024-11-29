@@ -17,7 +17,7 @@ import { ModalDirective, ModalModule } from 'ngx-bootstrap/modal';
   styleUrl: './grnagainstid.component.css',
   standalone:true,
   providers: [AdvancedService, DecimalPipe],
-  imports: [ReactiveFormsModule, CommonModule, FormsModule, PaginationModule, AdvancedSortableDirective,ModalModule]
+  imports: [ReactiveFormsModule, CommonModule, FormsModule, PaginationModule, AdvancedSortableDirective,ModalModule,PagetitleComponent]
 
 })
 export class GrnagainstidComponent implements OnInit {
@@ -97,7 +97,7 @@ export class GrnagainstidComponent implements OnInit {
 
     });
 
-    this.breadCrumbItems = [{ label: 'Tables' }, { label: 'Advanced Table', active: true }];
+    this.breadCrumbItems = [{ label: 'GRN' }, { label: 'QR Code Generation', active: true }];
     /**
      * fetch data
      */
@@ -154,63 +154,7 @@ export class GrnagainstidComponent implements OnInit {
     }));
   }
 
-  // onUnmatch(index: number): void {
-  //   this.selectedMaterialIndex = index;
 
-  //   // Initialize editable items based on the material
-  //   const material = this.materials[index];
-  //   const packetCount = material.itemCount;
-  //   const perPacketQuantity = material.expectedQuantity / packetCount;
-
-  //   this.editableItems = Array.from({ length: packetCount }, (_, i) => ({
-  //     packet: i + 1,
-  //     quantity: perPacketQuantity, // Set default expected quantity
-  //   }));
-
-  //   // Mark the material as unmatched
-  //   this.materials[index].matched = false;
-  // }
-
-  // saveUnmatchedMaterial(): void {
-  //   if (this.selectedMaterialIndex === null) return;
-
-  //   // Get the selected material and update its data
-  //   const material = this.materials[this.selectedMaterialIndex];
-
-  //   this.savedData.push(
-  //     ...this.editableItems.map((item) => ({
-  //       material: material.name,
-  //       packet: item.packet,
-  //       quantity: item.quantity,
-  //     }))
-  //   );
-
-  //   // Close the editable card
-  //   this.selectedMaterialIndex = null;
-
-  //   console.log('Saved Data:', this.savedData);
-  // }
-  // onUnmatch(index: number): void {
-  //   this.selectedMaterialIndex = index;
-
-  //   // Get selected material details
-  //   const material = this.materials[index];
-
-  //   // Prepare editable items based on the material's item count
-  //   const packetCount = material.itemCount;
-  //   const perPacketQuantity = material.expectedQuantity / packetCount;
-
-  //   this.editableItems = Array.from({ length: packetCount }, (_, i) => ({
-  //     packet: i + 1,
-  //     quantity: perPacketQuantity, // Set default expected quantity
-  //   }));
-
-  //   // Copy the material's details to editableDetails
-  //   this.editableDetails = { ...material };
-
-  //   // Mark the material as unmatched
-  //   this.materials[index].matched = false;
-  // }
 
   saveUnmatchedMaterial(): void {
     if (this.selectedMaterialIndex === null) return;
@@ -303,20 +247,7 @@ export class GrnagainstidComponent implements OnInit {
     this.initializeSecondTableData(); // Initialize the second table data
   }
 
-  // initializeSecondTableData() {
-  //   const itemCount = 10; // Number of items
-  //   const itemQuantityPerItem = 5000; // Expected quantity per item
 
-  //   this.totalExpectedQuantity = itemCount * itemQuantityPerItem;
-
-  //   this.secondTableData = Array.from({ length: itemCount }, (_, index) => ({
-  //     item: index + 1,
-  //     itemQuantity: null, // Input for quantity
-  //     matched: true, // Default to matched
-  //   }));
-
-  //   this.updateMatchStatus(); // Check the match status on initialization
-  // }
 
   updateMatchStatus() {
     let totalEnteredQuantity = 44000;
@@ -401,34 +332,5 @@ export class GrnagainstidComponent implements OnInit {
       });
     });
   }
-  // Method to generate QR codes
-  // generateQR() {
-  //   this.selectedMaterial = false;
 
-  //   this.grnscreen = false;
-  //   this.qrscreen = true;
-  //   this.isGenerating = true;
-
-  //   let index = 0;
-  //   const interval = setInterval(() => {
-  //     if (index < this.items.length) {
-  //       const item = this.items[index];
-  //       const qrData = `
-  //         GRN Number: ${item.grnNumber}
-  //         Vendor Code: ${item.vendorCode}
-  //         SAP Code: ${item.sapCode}
-  //         Material Description: ${item.materialDescription}
-  //         Date of GRN: ${item.dateOfGrn}
-  //         Reel Number: ${item.reelNumber}
-  //         Reel Quantity: ${item.reelQuantity}
-  //       `;
-  //       console.log("QR Data: ", qrData); // Debugging step
-  //       this.qrCodes.push(qrData);
-  //       index++;
-  //     } else {
-  //       this.isGenerating = false;
-  //       clearInterval(interval);
-  //     }
-  //   }, 1000); // Animation delay for each QR code generation
-  // }
 }

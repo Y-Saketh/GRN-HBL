@@ -1,8 +1,14 @@
+<div class="container-fluid">
+    <app-page-title
+     
+      [breadcrumbItems]="breadCrumbItems"
+    ></app-page-title>
+    <div class="row">
 <div class="col-xl-12">
   <div class="card">
     <div class="card-body">
       <h4 class="card-title">
-        <span style="color: black"></span> In Bound Delivery
+        <span style="color: black">></span> In Bound Delivery
       </h4>
       <!-- <p class="card-title-desc">Provide valuable, actionable feedback to your users with HTML5 form
             validation–available in all our supported browsers.</p> -->
@@ -61,7 +67,7 @@
     <!-- <div class="col-12"> -->
     <!-- <div class="card"> -->
     <div class="card-body">
-      <div class="row mb-md-2">
+      <!-- <div class="row mb-md-2">
         <div class="col-sm-12 col-md-6">
           <div class="dataTables_length">
             <label class="d-inline-flex align-items-center">
@@ -95,7 +101,7 @@
             </label>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <div class="table-responsive">
         <table
@@ -105,130 +111,149 @@
           <thead>
             <tr>
               <th></th>
-              <th sortable="gateEntryNumber" (sort)="onSort($event)">
+              <th sortable="gateEntryNumber" >
                 Entry Gate Pass Number
               </th>
-              <th sortable="vehicleNumber" (sort)="onSort($event)">
+              <th sortable="vehicleNumber" >
                 Vehicle Number
               </th>
-              <th sortable="invoiceDate" (sort)="onSort($event)">
-                Invoice Date/Gate Entry Date/Document Date
+              <th sortable="invoiceDate" >
+                Invoice Date
               </th>
-              <th sortable="material" (sort)="onSort($event)">
-                Material/SAP Code
+              <th sortable="invoiceDate" >
+               Gate Entry Date
               </th>
-              <th sortable="description" (sort)="onSort($event)">
-                Material Description
+              <th sortable="invoiceDate" >
+                Document Date
               </th>
-              <th sortable="deliveryQuantity" (sort)="onSort($event)">
+
+              <!-- <th sortable="deliveryQuantity" >
                 Delivered Quantity
-              </th>
-              <th sortable="supplier" (sort)="onSort($event)">
+              </th> -->
+              <th sortable="supplier" >
                 Supplier/Vendor Code
               </th>
-              <th sortable="plant" (sort)="onSort($event)">Plant</th>
-              <th sortable="tolerance" (sort)="onSort($event)">
-                Over & Under Tolerance
+              <th sortable="plant" >Delevery Challan Number</th>
+              <th sortable="packinglist" (sort)="onSort($event)">
+                Packing List
               </th>
             </tr>
           </thead>
-          @for(table of tables$ | async;track $index){
+          <!-- @for(table of tables$ | async;track $index){ -->
           <tbody>
             <tr>
               <td align="center">
-                <a class="expand-row" (click)="changeValue($index)">+</a>
+                <a class="expand-row" >+</a>
               </td>
 
               <td>
                 <input
                   type="text"
-                  [(ngModel)]="table.gateEntryNumber"
+                  [(ngModel)]="gateEntryNumber"
+                  placeholder="Entry Gate Pass Number"
                   class="form-control form-control-sm"
                 />
               </td>
               <td>
                 <input
                   type="text"
-                  [(ngModel)]="table.vehicleNumber"
+                  [(ngModel)]="vehicleNumber"
+                  placeholder="enter vehicleNumber"
                   class="form-control form-control-sm"
                 />
               </td>
               <td>
                 <input
                   type="text"
-                  [(ngModel)]="table.invoiceDate"
+                  [(ngModel)]="invoiceDate"
+                  placeholder="enter invoice date"
+                  class="form-control form-control-sm" bsDatepicker
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  [(ngModel)]="gateEntryDate"
+                  placeholder="enter invoice date"
+                  class="form-control form-control-sm" bsDatepicker
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  [(ngModel)]="DocumentDate"
+                  placeholder="enter invoice date"
+                  class="form-control form-control-sm" bsDatepicker
+                />
+              </td>
+
+              <!-- <td>
+                <input
+                  type="text"
+                  [(ngModel)]="Originalquantity"
+                  class="form-control form-control-sm"
+                />
+              </td> -->
+              <td>
+                <input
+                  type="text"
+                  [(ngModel)]="supplier"
+                  class="form-control form-control-sm"
+                />
+              </td>
+              <td>
+              
+                <input
+                  type="text"
+                  [(ngModel)]="deleveryChallanNumber"
                   class="form-control form-control-sm"
                 />
               </td>
               <td>
                 <input
                   type="text"
-                  [(ngModel)]="table.MATNR"
-                  class="form-control form-control-sm"
-                />
-              </td>
-              <td>
-                <input
-                  type="text"
-                  [(ngModel)]="table.MAKT"
-                  class="form-control form-control-sm"
-                />
-              </td>
-              <td>
-                <input
-                  type="text"
-                  [(ngModel)]="table.MENGE"
-                  class="form-control form-control-sm"
-                />
-              </td>
-              <td>
-                <input
-                  type="text"
-                  [(ngModel)]="table.supplier"
-                  class="form-control form-control-sm"
-                />
-              </td>
-              <td>
-                <input
-                  type="text"
-                  [(ngModel)]="table.WERKS"
-                  class="form-control form-control-sm"
-                />
-              </td>
-              <td>
-                <input
-                  type="text"
-                  [(ngModel)]="table.tolerance"
+                  [(ngModel)]="PackingList"
                   class="form-control form-control-sm"
                 />
               </td>
             </tr>
 
-            @if(!hideme[$index]){
+            @if(!hideme){
             <tr class="sub-table no-bg">
               <td align="center"></td>
               <td colspan="9" class="p-0">
                 <table class="table mb-0 table-striped">
                   <thead class="bg-dark text-white">
                     <tr>
+                        <th>Plant</th>
                       <th>Storage Location</th>
-                      <th>Incoterms</th>
-                      <th>Transportation Group</th>
+                    <th>Original DEL.Quantity</th>
+                    <th>Delivery Quantity</th>
                       <th>Transporter Name</th>
                       <th>Base Unit of Measure</th>
                       <th>Purchasing Document Number</th>
                       <th>Item Number of Purchasing Document</th>
+                      <!-- <th>Over & Under Tolarance</th> -->
+                      <th>Material Number</th>
+                      <th>Material Description</th>
                     </tr>
                   </thead>
+                  @for(table of tables$ | async;track $index){
                   <tbody>
                     <tr>
+                        <td>{{table.WERKS}}</td>
                       <td>{{ table.LGORT }}</td>
-                      <td>{{ table.incoterms }}</td>
-                      <td>{{ table.transportationGroup }}</td>
+                        <td>{{table.ORGQTY}}</td>
+                        <td><input type="text" [(ngModel)]="table.DMENGE" class="form-control form-control-sm" /></td>
+                        <!-- <td>{{table.DMENGE}}</td> -->
+                       
                       <td>{{ table.transporterName }}</td>
                       <td>{{ table.MEINS }}</td>
-                      <td>{{ table.EBELN }}</td>
-                      <td>{{ table.EBELP }}</td>
+                      <td>{{ table.PO_NUMBER }}</td>
+                      <td>{{ table.PO_ITEM }}</td>
+                      <!-- <td>{{table.tolerance}}</td> -->
+                      <td>{{table.MATNR}}</td>
+                      <td>{{table.tolerance}}</td>
 
                       <!-- <td><input type="text" [(ngModel)]="table.storageLocation" class="form-control form-control-sm" /></td>
                                             <td><input type="text" [(ngModel)]="table.incoterms" class="form-control form-control-sm" /></td>
@@ -237,12 +262,13 @@
                  -->
                     </tr>
                   </tbody>
+                }
                 </table>
               </td>
             </tr>
             }
           </tbody>
-          }
+          <!-- } -->
         </table>
       </div>
       <div class="col-md-4 text-left">
@@ -260,4 +286,6 @@
     <!-- </div> -->
     <!-- </div> -->
   </div>
+</div>
+    </div>
 </div>

@@ -42,25 +42,17 @@ function sort(tables: Table[], column: string, direction: string): Table[] {
  * @param term Search the value
  */
 function matches(tables: Table, term: string, pipe: PipeTransform) {
-    return tables.MaterialDocYear.toLowerCase().includes(term.toLowerCase())
-        || tables.materialDocItem.toLowerCase().includes(term)
-        || tables.identification.toLowerCase().includes(term)
-        || tables.movementType.toLowerCase().includes(term)
-        || tables.Material.toLowerCase().includes(term)
-        || tables.Plant.toLowerCase().includes(term)
-        || tables.storageLocation.toLowerCase().includes(term)
-        || tables.batch.toLowerCase().includes(term)
-        || tables.stockType.toLowerCase().includes(term)
-        || tables.supplier.toLowerCase().includes(term)
-        || tables.currency.toLowerCase().includes(term)
-        || tables.amountInLocCur.toLowerCase().includes(term)
-        || tables.valuationType.toLowerCase().includes(term)
-        || pipe.transform(tables.quantity).includes(term)
-        || tables.baseUnitofMeasure.toLowerCase().includes(term)
-        || tables.qtyinunitofentry.toLowerCase().includes(term)
-        || tables.unitofEntry.toLowerCase().includes(term)
-        || tables.qtyinOPUn.toLowerCase().includes(term);
+    return tables.MATNR.toLowerCase().includes(term.toLowerCase())   // Material
+        || tables.WERKS.toLowerCase().includes(term.toLowerCase())  // Plant
+        || tables.LGORT.toLowerCase().includes(term.toLowerCase())  // Storage Location
+        || tables.BWART.toLowerCase().includes(term.toLowerCase())  // Movement Type
+        || pipe.transform(tables.MENGE).includes(term)              // Quantity
+        || tables.MEINS.toLowerCase().includes(term.toLowerCase())  // Base Unit of Measure
+        || tables.EBELN.toLowerCase().includes(term.toLowerCase())  // Supplier
+        || pipe.transform(tables.EBELP).includes(term);             // Material Document Item
 }
+
+
 
 @Injectable({
     providedIn: 'root'
@@ -86,7 +78,7 @@ export class qrcodegenrationService {
         endIndex: 9,
         totalRecords: 0
     };
-
+    private apiData: Table[] = [];
     constructor(private pipe: DecimalPipe) {
         this._search$.pipe(
             tap(() => this._loading$.next(true)),
@@ -100,7 +92,10 @@ export class qrcodegenrationService {
         });
         this._search$.next();
     }
-
+    setTableData(data: Table[]) {
+        this.apiData = data;
+        this._search$.next(); // Trigger a refresh
+      }
     /**
      * Returns the value
      */
@@ -146,7 +141,7 @@ export class qrcodegenrationService {
         const { sortColumn, sortDirection, pageSize, page, searchTerm } = this._state;
 
         // 1. sort
-        let tables = sort(tableData, sortColumn, sortDirection);
+        let tables = sort(this.apiData, sortColumn, sortDirection);
 
         // 2. filter
         tables = tables.filter(table => matches(table, searchTerm, this.pipe));

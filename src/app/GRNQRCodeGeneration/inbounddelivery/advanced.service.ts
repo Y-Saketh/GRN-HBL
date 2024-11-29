@@ -41,17 +41,26 @@ function sort(tables: Table[], column: string, direction: string): Table[] {
  * @param tables Table field value fetch
  * @param term Search the value
  */
-function matches(tables: Table, term: string, pipe: PipeTransform) {
+function matches(table: Table, term: string, pipe: PipeTransform): boolean {
     return (
-      tables.MATNR.toLowerCase().includes(term.toLowerCase()) || // Material Number
-      tables.WERKS.toLowerCase().includes(term.toLowerCase()) || // Plant
-      tables.LGORT.toLowerCase().includes(term.toLowerCase()) || // Storage Location
-      tables.BWART.toLowerCase().includes(term.toLowerCase()) || // Movement Type
-      pipe.transform(tables.MENGE).toLowerCase().includes(term.toLowerCase()) || // Quantity
-      tables.MEINS.toLowerCase().includes(term.toLowerCase()) || // Base Unit of Measure
-      tables.EBELN.toLowerCase().includes(term.toLowerCase()) || // Purchasing Document Number
-      tables.EBELP.toLowerCase().includes(term.toLowerCase()) || // Item Number of Purchasing Document
-      tables.MAKT.toLowerCase().includes(term.toLowerCase())     // Material Group
+      table.gateEntryNumber?.toLowerCase().includes(term.toLowerCase()) || // Entry Gate Pass Number
+      table.vehicleNumber?.toLowerCase().includes(term.toLowerCase()) || // Vehicle Number
+      table.invoiceDate?.toLowerCase().includes(term.toLowerCase()) || // Invoice Date
+      table.gateEntryDate?.toLowerCase().includes(term.toLowerCase()) || // Gate Entry Date
+      table.DocumentDate?.toLowerCase().includes(term.toLowerCase()) || // Document Date
+      table.MATNR?.toLowerCase().includes(term.toLowerCase()) || // Material Number
+      table.SHORT_TEXT?.toLowerCase().includes(term.toLowerCase()) || // Material Description
+      pipe.transform(table.ORGQTY)?.toLowerCase().includes(term.toLowerCase()) || // Original Quantity
+      table.supplier?.toLowerCase().includes(term.toLowerCase()) || // Supplier/Vendor Code
+      table.WERKS?.toLowerCase().includes(term.toLowerCase()) || // Plant
+      table.LGORT?.toLowerCase().includes(term.toLowerCase()) || // Storage Location
+      table.incoterms?.toLowerCase().includes(term.toLowerCase()) || // Incoterms
+      table.transportationGroup?.toLowerCase().includes(term.toLowerCase()) || // Transportation Group
+      table.transporterName?.toLowerCase().includes(term.toLowerCase()) || // Transporter Name
+      table.MEINS?.toLowerCase().includes(term.toLowerCase()) || // Base Unit of Measure
+      table.PO_NUMBER?.toLowerCase().includes(term.toLowerCase()) || // Purchasing Document Number
+      table.PO_ITEM?.toLowerCase().includes(term.toLowerCase()) || // Item Number of Purchasing Document
+      table.tolerance?.toLowerCase().includes(term.toLowerCase()) // Over & Under Tolerance
     );
   }
   
