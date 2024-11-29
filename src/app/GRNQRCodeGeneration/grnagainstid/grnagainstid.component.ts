@@ -1,5 +1,5 @@
 import { CommonModule, DecimalPipe } from '@angular/common';
-import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Table } from './advanced.model';
 import { AdvancedService } from './advanced.service';
@@ -10,16 +10,18 @@ import { Observable } from 'rxjs';
 import { tableData } from './data';
 
 import QRCode from 'qrcode';
+import { ModalDirective, ModalModule } from 'ngx-bootstrap/modal';
 @Component({
   selector: 'app-grnagainstid',
   templateUrl: './grnagainstid.component.html',
   styleUrl: './grnagainstid.component.css',
   standalone:true,
   providers: [AdvancedService, DecimalPipe],
-  imports: [ReactiveFormsModule, CommonModule, FormsModule, PaginationModule, AdvancedSortableDirective]
+  imports: [ReactiveFormsModule, CommonModule, FormsModule, PaginationModule, AdvancedSortableDirective,ModalModule]
 
 })
 export class GrnagainstidComponent implements OnInit {
+  @ViewChild('unmatchModal', { static: false }) unmatchModal?: ModalDirective;
   breadCrumbItems: Array<{}>;
   // Table data
   tableData: Table[];
@@ -27,13 +29,55 @@ export class GrnagainstidComponent implements OnInit {
   hideme: boolean[] = [];
   tables$: Observable<Table[]>;
   total$: Observable<number>;
-  selectedMaterial: any = null; // Selected material object
+  // selectedMaterial: any = null; // Selected material object
   secondTableData: any[] = []; // Data for the second table
-  totalExpectedQuantity = 0;
+  // totalExpectedQuantity = 0;
   // qrCodes: string[] = [];
   qrCodes: { qrCodeUrl: string, data: any }[] = []; 
   isGenerating = false;
 
+  // secondTableData: any[] = [];
+  unmatchedItemIndex: number | null = null;
+  // editableItems: any[] = [];
+  // savedData: any[] = []; // To store final objects
+  totalExpectedQuantity = 50000;
+
+  editableDetails: any = {};
+
+  materials = [
+    {
+      name: 'Material A',
+      invoiceDate: '2022-08-19',
+      vendorCode: '2000812',
+      materialCode: '1000030342',
+      materialDescription: 'CONN_12-10_RECIPTICAL_CBL_62IN16F-12-10S',
+      realQuantity: 5000,
+      packets: [
+        { packet: 1, quantity: 4000 },
+        { packet: 2, quantity: 4000 },
+      ],
+    },
+    {
+      name: 'Material B',
+      invoiceDate: '2022-08-20',
+      vendorCode: '2000813',
+      materialCode: '1000030343',
+      materialDescription: 'CONN_12-10_RECIPTICAL_CBL_62IN16F-12-10S',
+      realQuantity: 4800,
+      packets: [
+        { packet: 1, quantity: 4000 },
+        { packet: 2, quantity: 800 },
+      ],
+    },
+  ];
+
+  isPopupOpen = false;
+  selectedMaterial: any = null;
+  selectedIndex: number | null = null;
+
+  selectedMaterialIndex: number | null = null;
+  editableItems: { packet: number; quantity: number }[] = [];
+  savedData: any[] = [];
   @ViewChildren(AdvancedSortableDirective) headers: QueryList<AdvancedSortableDirective>;
   public isCollapsed = true;
   expandedRows: { [key: string]: boolean } = {};
@@ -59,6 +103,155 @@ export class GrnagainstidComponent implements OnInit {
      */
     this._fetchData();
 
+  }
+  openUnmatchPopup(index: number): void {
+    this.selectedMaterial = JSON.parse(JSON.stringify(this.materials[index])); // Deep copy
+    this.selectedIndex = index;
+    this.unmatchModal?.show();
+  }
+
+  // Save updated unmatched material
+  saveUnmatched(): void {
+    if (this.selectedIndex !== null) {
+      this.materials[this.selectedIndex] = this.selectedMaterial;
+      console.log('Updated Materials:', this.materials);
+    }
+    this.closePopup();
+  }
+
+  // Close the popup
+  closePopup(): void {
+    this.selectedMaterial = true;
+    this.grnscreen = false;
+    this.selectedIndex = null;
+    this.unmatchModal?.hide();
+
+  }
+
+  // Placeholder for matchMaterial
+  matchMaterial(index: number): void {
+    console.log('Material matched:', this.materials[index]);
+  }
+  saveMaterial(index: number): void {
+    const material = this.materials[index];
+    this.savedData.push({ ...material });
+    console.log('Saved Data:', this.savedData);
+  }
+
+  isMaterialValid(material: any): boolean {
+    // Ensure all packet quantities are filled and real quantity is valid
+    const allPacketsValid = material.packets.every(
+      (packet: any) => packet.quantity > 0
+    );
+    return allPacketsValid && material.realQuantity > 0;
+  }
+  initializeSecondTableData() {
+    const itemCount = 10; // Number of items
+    this.secondTableData = Array.from({ length: itemCount }, (_, index) => ({
+      item: index + 1,
+      itemQuantity: 5000, // Default quantity
+      matched: true,
+    }));
+  }
+
+  // onUnmatch(index: number): void {
+  //   this.selectedMaterialIndex = index;
+
+  //   // Initialize editable items based on the material
+  //   const material = this.materials[index];
+  //   const packetCount = material.itemCount;
+  //   const perPacketQuantity = material.expectedQuantity / packetCount;
+
+  //   this.editableItems = Array.from({ length: packetCount }, (_, i) => ({
+  //     packet: i + 1,
+  //     quantity: perPacketQuantity, // Set default expected quantity
+  //   }));
+
+  //   // Mark the material as unmatched
+  //   this.materials[index].matched = false;
+  // }
+
+  // saveUnmatchedMaterial(): void {
+  //   if (this.selectedMaterialIndex === null) return;
+
+  //   // Get the selected material and update its data
+  //   const material = this.materials[this.selectedMaterialIndex];
+
+  //   this.savedData.push(
+  //     ...this.editableItems.map((item) => ({
+  //       material: material.name,
+  //       packet: item.packet,
+  //       quantity: item.quantity,
+  //     }))
+  //   );
+
+  //   // Close the editable card
+  //   this.selectedMaterialIndex = null;
+
+  //   console.log('Saved Data:', this.savedData);
+  // }
+  // onUnmatch(index: number): void {
+  //   this.selectedMaterialIndex = index;
+
+  //   // Get selected material details
+  //   const material = this.materials[index];
+
+  //   // Prepare editable items based on the material's item count
+  //   const packetCount = material.itemCount;
+  //   const perPacketQuantity = material.expectedQuantity / packetCount;
+
+  //   this.editableItems = Array.from({ length: packetCount }, (_, i) => ({
+  //     packet: i + 1,
+  //     quantity: perPacketQuantity, // Set default expected quantity
+  //   }));
+
+  //   // Copy the material's details to editableDetails
+  //   this.editableDetails = { ...material };
+
+  //   // Mark the material as unmatched
+  //   this.materials[index].matched = false;
+  // }
+
+  saveUnmatchedMaterial(): void {
+    if (this.selectedMaterialIndex === null) return;
+
+    // Get the selected material
+    const material = this.materials[this.selectedMaterialIndex];
+
+    // Update material details and save the data
+    const updatedMaterial = {
+      ...material,
+      ...this.editableDetails, // Update additional fields
+      packets: this.editableItems, // Add packet quantities
+    };
+
+    this.savedData.push(updatedMaterial);
+
+    // Close the editable card
+    this.selectedMaterialIndex = null;
+
+    console.log('Saved Data:', this.savedData);
+  }
+  saveUnmatchedItem() {
+    if (this.unmatchedItemIndex === null) return;
+
+    const updatedRow = {
+      ...this.secondTableData[this.unmatchedItemIndex],
+      items: this.editableItems, // Store updated quantities
+    };
+
+    // Save the updated data as individual objects
+    updatedRow.items.forEach((item: any) => {
+      this.savedData.push({
+        ...updatedRow,
+        itemQuantity: item.itemQuantity, // Update with new quantity
+        item: item.item, // Individual item details
+      });
+    });
+
+    // Update the row as matched and close the card
+    this.secondTableData[this.unmatchedItemIndex].matched = true;
+    this.unmatchedItemIndex = null;
   }
 
   changeValue(i) {
@@ -110,20 +303,20 @@ export class GrnagainstidComponent implements OnInit {
     this.initializeSecondTableData(); // Initialize the second table data
   }
 
-  initializeSecondTableData() {
-    const itemCount = 10; // Number of items
-    const itemQuantityPerItem = 5000; // Expected quantity per item
+  // initializeSecondTableData() {
+  //   const itemCount = 10; // Number of items
+  //   const itemQuantityPerItem = 5000; // Expected quantity per item
 
-    this.totalExpectedQuantity = itemCount * itemQuantityPerItem;
+  //   this.totalExpectedQuantity = itemCount * itemQuantityPerItem;
 
-    this.secondTableData = Array.from({ length: itemCount }, (_, index) => ({
-      item: index + 1,
-      itemQuantity: null, // Input for quantity
-      matched: true, // Default to matched
-    }));
+  //   this.secondTableData = Array.from({ length: itemCount }, (_, index) => ({
+  //     item: index + 1,
+  //     itemQuantity: null, // Input for quantity
+  //     matched: true, // Default to matched
+  //   }));
 
-    this.updateMatchStatus(); // Check the match status on initialization
-  }
+  //   this.updateMatchStatus(); // Check the match status on initialization
+  // }
 
   updateMatchStatus() {
     let totalEnteredQuantity = 44000;

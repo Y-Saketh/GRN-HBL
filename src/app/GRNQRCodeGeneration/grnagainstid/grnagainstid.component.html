@@ -117,7 +117,7 @@
             <button class="btn btn-primary" style="float: left; margin-left: 10px;" type="button"
                 (click)="back()">Back</button><br><br>
             <h5>Item Quantity: Detailed Items for Material {{ selectedMaterial.material }}</h5>
-            <table class="table table-bordered">
+            <!-- <table class="table table-bordered">
                 <thead>
                     <tr>
                         <th>Item</th>
@@ -147,7 +147,90 @@
                         <td>{{ selectedMaterial.transporterName }}</td>
                     </tr>
                 </tbody>
+            </table> -->
+
+            <!-- Table for Materials -->
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Material Name</th>
+                        <th>Invoice Date</th>
+                        <th>Vendor Code</th>
+                        <th>Material Code</th>
+                        <th>Material Description</th>
+                        <th>Real Quantity</th>
+                        <th>Packets</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let material of materials; let i = index">
+                        <td>{{ i + 1 }}</td>
+                        <td>{{ material.name }}</td>
+                        <td>{{ material.invoiceDate }}</td>
+                        <td>{{ material.vendorCode }}</td>
+                        <td>{{ material.materialCode }}</td>
+                        <td>{{ material.materialDescription }}</td>
+                        <td>{{ material.realQuantity }}</td>
+                        <td>
+                            <ul>
+                                <li *ngFor="let packet of material.packets">
+                                    Packet {{ packet.packet }}: {{ packet.quantity }}
+                                </li>
+                            </ul>
+                        </td>
+                        <td>
+                            <button class="btn btn-success btn-sm" (click)="matchMaterial(i)">
+                                Match
+                            </button>
+                            <button class="btn btn-warning btn-sm" (click)="openUnmatchPopup(i)">
+                                Unmatch
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
             </table>
+
+            <!-- Modal for Unmatch -->
+            <div bsModal #unmatchModal="bs-modal" class="modal fade" tabindex="-1" aria-labelledby="unmatchModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="unmatchModalLabel">Edit Quantities</h5>
+                            <button type="button" class="btn-close" (click)="closePopup()" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <h6>Material: {{ selectedMaterial?.name }}</h6>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Packet</th>
+                                        <th>Quantity</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let packet of selectedMaterial?.packets; let j = index">
+                                        <td>Packet {{ j + 1 }}</td>
+                                        <td>
+                                            <input type="number" class="form-control" [(ngModel)]="packet.quantity" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" (click)="saveUnmatched()">Save</button>
+                            <button class="btn btn-secondary" (click)="closePopup()">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
             <div class="custom-btn-group mt-4">
                 <button class="btn btn-success" type="button">Save</button>
                 <button class="btn btn-primary" (click)="generateQR()" type="button">Continue to Generate QR</button>

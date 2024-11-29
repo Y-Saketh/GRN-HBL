@@ -10,47 +10,55 @@ export const MENU: MenuItem[] = [
                 id: 3,
                 label: 'MENUITEMS.DASHBOARDS.LIST.OPENPOLIST',
                 link: 'openpolist',
+                icon: 'bx-archive',
                 parentId: 2
             },
             {
                 id: 4,
                 label: 'MENUITEMS.DASHBOARDS.LIST.INBOUNDDELIVERY',
                 link: 'inbounddelivery',
+                icon: 'bx-archive-in',
                 parentId: 2
             },
             {
                 id: 5,
                 label: 'MENUITEMS.DASHBOARDS.LIST.GRNAGAINSTID',
                 link: 'grnagainstid',
+                icon: 'bx-aperture',
                 parentId: 2
             },
             {
                 id: 6,
                 label: 'MENUITEMS.DASHBOARDS.LIST.QRCODEGENERATION',
                 link: 'QRcodegenration',
+                icon: 'bx-bar-chart',
                 parentId: 2
             },
             {
                 id: 7,
                 label: 'ZPRClose-Download',
                 link: 'closeDownload',
+                icon: 'bx-cloud-download',
                 parentId: 2
             },
             {
                 id: 8,
-                label: 'ZGR PENDING',
+                label: 'ZGR & IBD Status',
+                icon: 'bx-cloud-download',
                 parentId: 2,
                 subItems: [
                     {
                         id: 9,
-                        label: 'IBD Done GR Pending',
+                        label: 'GR Pending',
                         link: 'grpending',
+                        icon: 'bx-badge',
                         parentId: 8
                     },
                     {
                         id: 10,
-                        label: 'IBD Done GR Done',
+                        label: 'GR Done',
                         link: 'grdone',
+                        icon: 'bx-badge-check',
                         parentId: 8
                     }
                 ]
