@@ -31,11 +31,12 @@ const routes: Routes = [
     },
     {
         path: 'grnagainstid',
-        component: GrnagainstidComponent
+        component: QRcodegenrationComponent
     },
     {
         path: 'QRcodegenration',
-        component: QRcodegenrationComponent
+        component: GrnagainstidComponent
+ 
     },
     {
         path: 'grpending',
