@@ -11,6 +11,9 @@ import { tableData } from './data';
 import { UserProfileService } from 'src/app/core/services/user.service';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { ModalDirective } from 'ngx-bootstrap/modal';
+// import {moment} from 'moment';
+import * as moment from 'moment';
+
 
 @Component({
   selector: 'app-openpolist',
@@ -54,13 +57,15 @@ export class OpenpolistComponent implements OnInit {
     this.submit = false;
     this.validationform = this.formBuilder.group({
       plant: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]+')]],
-      documentTypeFrom: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
-      documentTypeTo: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
+      documentFrom: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
+      documentTo: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
       deliveryDateFrom: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
       deliveryDateTo: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
       purchaseGroup: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
       poNumber: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
       vendor: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
+      documentTypeFrom:['', [ Validators.pattern('[a-zA-Z0-9]+')]],
+      documentTypeTo:['', [ Validators.pattern('[a-zA-Z0-9]+')]],
       material: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
       materialgroup: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
 
@@ -112,59 +117,26 @@ export class OpenpolistComponent implements OnInit {
   validSubmit() {
     this.submit = true;
   }
-  // WERKS: 	PLANT
-  // EKGRP	PURCHASE GROUP
-  // EBELN	PURCHASE DOCUMENT NUMBER
-  //     "EBELP": 2,	ITEM NUMBER
-  //     "ELIKZ": "",	OPEN PO
-  //     "BEDAT": "05.04.2024",	PURCHASE DOCUMENT DATE
-  //     "LIFNR": "2003411",	SUPPLIER CODE
-  //     "NAME1": "RAVICHANDRA TECHNICAL LINES",	VENDR ADREES 
-  //     "LOEKZ": "",	DELETION/BLOCKED
-  //     "MATNR": "",	MATERIAL
-  //     "TXZ01": "4' 20 W LED tube Light fitting",	UPDATING TEXT FIELD
-  //     "MENGE": 7,	ALTERNATIVE UNIT OF MEASURE
-  //     "MEINS": "NOS",	UNIT OF MEASURE
-  //     "NETWR": 2161.25,	CURRENCY
-  //     "MENGE1": 0,	BILL OF QUANTITY (BOM)
-  //     "MEINS1": "",	BASE UNIT OF MEASURE
-  //     "DMBTR1": 1543.75,	SUM OF AMOUNT
-  //     "EINDT": "15.04.2024",	DELIVERY DATE
-  //     "DATUM": "25.11.2024",	CURRENT DATE
-  //     "LV_MENGE_SUM": 0,	-
-  //     "DAYS": 224,	-
-  //     "EKNAM": "PurGroup-PE",	Descripion of Purch
-  //     "WRBTR": 0,	LOCAL CURRENT amount 
-  //     "BUYER": "subbarao.parsepu@hbl.in",	SUPPLIER EMAIL ID
-  //     "CREAT": "130202-EG-PUR"	-
 
-  
+
   getPOLIST(){
     console.log("validationform",this.form) 
-    // let obj = {
-    //   "WERKS":"1300",// this.form['plant'].value , //"1300", 
-    //   "EBELN": "",//this.form['poNumber'].value , //"",
-    //   "BSART": "ZPDM",//this.form['plant'].value , //"ZPDM",
-    //   "LIFNR": "",// this.form['plant'].value ,
-    //   "MATNR": this.form['material'].value , //"",
-    //   "BEDAT_F":"2024-04-01",// this.form['documentTypeFrom'].value , //"2024-04-01",
-    //   "BEDAT_T":"2024-04-01",//this.form['documentTypeTo'].value , // "2024-05-30",
-    //   "EINDT_F": "",//this.form['plant'].value , // "",
-    //   "EINDT_T":"",//this.form['plant'].value , // "",
-    //   "MATKL": "",//this.form['plant'].value , //""
-    // }
-
+  
+    // if (this.validationform.valid) {
     let obj ={
-      "WERKS": "1300",
-      "EBELN": "",
-      "BSART": "ZPDM",
-      "LIFNR":  "",
-      "MATNR": "",
-      "BEDAT_F": "2024-04-01",
-      "BEDAT_T": "2024-05-30",
-      "EINDT_F": "",
-      "EINDT_T": "",
-      "MATKL":   ""
+      WERKS: this.form.plant.value, // Plant
+      EBELN: this.form.poNumber.value, // Purchasing Document Number
+      LIFNR: this.form.vendor.value, // Vendor
+      MATNR: this.form.material.value, // Material
+      BSART_F: this.form.documentTypeFrom.value,//"ZPDM", //Document Type
+      BSART_T: this.form.documentTypeTo.value,//"ZPDM", //Document Type
+      BEDAT_F: this.form.documentFrom.value?moment(this.form.documentFrom.value).format('DD/MM/YYYY') :'',// Purchasing Document  From
+      BEDAT_T: this.form.documentTo.value?moment(this.form.documentTo.value).format('DD/MM/YYYY') :'',// Purchasing Document  To
+      EINDT_F:this.form.deliveryDateFrom.value?moment(this.form.deliveryDateFrom.value).format('DD/MM/YYYY') :'', // Item Delivery Date From
+      EINDT_T: this.form.deliveryDateTo.value.value? moment(this.form.deliveryDateTo.value.value).format('DD/MM/YYYY'):'', // Item Delivery Date To
+      MATKL: this.form.materialgroup.value, // Material Group
+
+   
     }
     console.log("objobj",obj)
     this.apiService.OpenPoList(obj).subscribe({
@@ -173,40 +145,23 @@ export class OpenpolistComponent implements OnInit {
         this.POLIST = res;
         this.service.setTableData(res || []);
         this._fetchData();
-        // if (res.status === true) {
-        //   if (res.data && res.data.TABLE) {
-        //     this.lotReportsData.data = res.data.TABLE;
-        //   } else {
-        //     console.warn('No table data returned.');
-        //   }
-        // } else {
-        //   console.error('API responded with an error status.');
-        // }
+        this.validationform.reset()
+        
       },
       error: (error: any) => {
         console.error('Error fetching lot reports:', error);
+        this.validationform.reset()
       },
       complete: () => {
         console.log('API call completed.');
+        this.validationform.reset()
       }
     });
     
-    // this.apiService.OpenPoList(obj).subscribe(
-    //   (res: any) => {
-    //     console.log("data RESPONSE",res)
-    //     if (res.status === true) {
-    //       if (res.data && res.data.TABLE) {
-    //         this.lotReportsData.data = res.data.TABLE;
-    //         console.log("data",this.lotReportsData.data)
-    //       } else {
-    //         console.error('No table data returned.');
-    //       }}
-    //   },
-    //   (error) => {
-    //     console.error('Error fetching lot reports:', error);
-    //   }
-    // );
+    
+
+  // }
+  
+
   }
-
-
 }

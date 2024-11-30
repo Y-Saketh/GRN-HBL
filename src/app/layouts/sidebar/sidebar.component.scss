@@ -9,7 +9,16 @@
     background-image: linear-gradient(to bottom, #103554, #031c2e) !important;
  
 }
+/* Default icon color (brown) for both main menu and dropdown items */
+/* Specifically target sub-menu icons */
+.vertical-menu .sub-menu i {
+  color: brown !important; /* Default brown color for dropdown icons */
+}
 
+.vertical-menu .sub-menu li:hover i,
+.vertical-menu .sub-menu li.mm-active i {
+  color: white !important; /* Change to white on hover or active */
+}
 
 
 .sub-menu .active {
@@ -24,4 +33,9 @@
     background-color: #454754; 
     color: #303773;
   }
-  
+  // .bx-bar-chart:before {
+  //   font-family: "Boxicons"; /* or the appropriate font-family */
+  //   content: "\e98a";
+  //   font-size: 16px;
+  //   color: #7a0808;
+  // }

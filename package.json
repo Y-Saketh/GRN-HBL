@@ -73,6 +73,7 @@
     "leaflet": "^1.9.4",
     "masonry-layout": "^4.2.2",
     "metismenujs": "^1.4.0",
+    "moment": "^2.30.1",
     "ng-apexcharts": "^1.11.0",
     "ng-chartist": "^8.3.2",
     "ng-otp-input": "^1.9.3",
