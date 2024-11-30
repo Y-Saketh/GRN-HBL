@@ -44,9 +44,9 @@
                 id="delivery"
                 formControlName="delivery"
                 placeholder="Delivery"
-                [bsConfig]="bsConfig"
+              
                 [ngClass]="{ 'is-invalid': submit && form.delivery.errors }"
-                bsDatepicker
+               
               />
               <div
                 *ngIf="!submit && form.delivery.errors"
@@ -100,6 +100,11 @@
                 class="form-control"
                 id="ibdCreadtedOn"
                 formControlName="ibdCreadtedOn"
+                [bsConfig]="bsConfig"
+                bsDatepicker
+                #datePicker="bsDatepicker"
+                (focus)="datePicker.show()" 
+                (blur)="datePicker.hide()" 
                 placeholder="IBD CREATED ON"
                 [ngClass]="{
                   'is-invalid': submit && form.ibdCreadtedOn.errors
@@ -125,6 +130,11 @@
                 class="form-control"
                 id="ibdCreadtedFrom"
                 formControlName="ibdCreadtedFrom"
+                [bsConfig]="bsConfig"
+                bsDatepicker
+                #datePicker="bsDatepicker"
+                (focus)="datePicker.show()" 
+                (blur)="datePicker.hide()" 
                 placeholder="IBD CREATED From DATE"
                 [ngClass]="{
                   'is-invalid': submit && form.ibdCreadtedFrom.errors
@@ -150,6 +160,11 @@
                 class="form-control"
                 id="ibdCreadtedTo"
                 formControlName="ibdCreadtedTo"
+                [bsConfig]="bsConfig"
+                bsDatepicker
+                #datePicker="bsDatepicker"
+                (focus)="datePicker.show()" 
+                (blur)="datePicker.hide()" 
                 placeholder="IBD CREATED To"
                 [ngClass]="{
                   'is-invalid': submit && form.ibdCreadtedOn.errors

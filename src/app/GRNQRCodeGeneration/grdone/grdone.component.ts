@@ -59,7 +59,7 @@ export class GrdoneComponent implements OnInit {
       ibdCreadtedTo: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
     });
 
-    this.breadCrumbItems = [{ label: 'Tables' }, { label: 'Advanced Table', active: true }];
+    this.breadCrumbItems = [{ label: 'GRN' }, { label: 'GRN Done Table', active: true }];
     /**
      * fetch data
      */

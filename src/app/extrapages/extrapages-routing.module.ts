@@ -7,8 +7,7 @@ import { Page500Component } from './page500/page500.component';
 import { LockscreenComponent } from './lockscreen/lockscreen.component';
 import { Login2Component } from '../account/auth/login2/login2.component';
 import { Lockscreen2Component } from './lockscreen2/lockscreen2.component';
-import { ConfirmmailComponent } from './confirmmail/confirmmail.component';
-import { Confirmmail2Component } from './confirmmail2/confirmmail2.component';
+
 import { VerificationComponent } from './verification/verification.component';
 import { Verification2Component } from './verification2/verification2.component';
 import { SteptwoverificationComponent } from './steptwoverification/steptwoverification.component';
@@ -48,14 +47,7 @@ const routes: Routes = [
         path: 'lock-screen-2',
         component: Lockscreen2Component
     },
-    {
-        path: 'confirm-mail',
-        component: ConfirmmailComponent
-    },
-    {
-        path: 'confirm-mail-2',
-        component: Confirmmail2Component
-    },
+
     {
         path: 'email-verification',
         component: VerificationComponent

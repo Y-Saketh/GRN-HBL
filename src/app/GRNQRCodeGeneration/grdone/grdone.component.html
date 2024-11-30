@@ -100,6 +100,11 @@
                       class="form-control"
                       id="ibdCreadtedOn"
                       formControlName="ibdCreadtedOn"
+                      [bsConfig]="bsConfig"
+                      bsDatepicker
+                      #datePicker="bsDatepicker"
+                      (focus)="datePicker.show()" 
+                      (blur)="datePicker.hide()" 
                       placeholder="IBD CREATED ON"
                       [ngClass]="{
                         'is-invalid': submit && form.ibdCreadtedOn.errors
@@ -124,6 +129,11 @@
                       type="text"
                       class="form-control"
                       id="ibdCreadtedFrom"
+                      [bsConfig]="bsConfig"
+                      bsDatepicker
+                      #datePicker="bsDatepicker"
+                      (focus)="datePicker.show()" 
+                      (blur)="datePicker.hide()" 
                       formControlName="ibdCreadtedFrom"
                       placeholder="IBD CREATED From DATE"
                       [ngClass]="{
@@ -149,6 +159,11 @@
                       type="text"
                       class="form-control"
                       id="ibdCreadtedTo"
+                      [bsConfig]="bsConfig"
+                      bsDatepicker
+                      #datePicker="bsDatepicker"
+                      (focus)="datePicker.show()" 
+                      (blur)="datePicker.hide()" 
                       formControlName="ibdCreadtedTo"
                       placeholder="IBD CREATED To"
                       [ngClass]="{

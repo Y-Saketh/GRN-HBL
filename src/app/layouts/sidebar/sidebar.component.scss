@@ -1,27 +1,15 @@
-.vertical-menu{
-    background-image: linear-gradient(to bottom, #6ba3cd, #031c2e) !important;
- 
- 
-    // background-image: linear-gradient(to bottom, #ABC8D7, #676F13) !important;
-}
-.navbar-brand-box{
-    background-color:#103554 !important ;
-    background-image: linear-gradient(to bottom, #103554, #031c2e) !important;
- 
-}
-/* Default icon color (brown) for both main menu and dropdown items */
-/* Specifically target sub-menu icons */
-.vertical-menu .sub-menu i {
+
+.vertical-menu i {
   color: brown !important; /* Default brown color for dropdown icons */
 }
 
-.vertical-menu .sub-menu li:hover i,
-.vertical-menu .sub-menu li.mm-active i {
+.vertical-menu li:hover i,
+.vertical-menu li.mm-active i {
   color: white !important; /* Change to white on hover or active */
 }
 
 
-.sub-menu .active {
+.vertical-menu .active {
     background-color: #454754; 
     color: #303773;       
     font-weight: bold;        
@@ -29,7 +17,7 @@
   }
   
 
-  .sub-menu .active:hover {
+  .vertical-menu .active:hover {
     background-color: #454754; 
     color: #303773;
   }

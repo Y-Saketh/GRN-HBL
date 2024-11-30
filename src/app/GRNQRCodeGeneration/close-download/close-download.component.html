@@ -71,10 +71,14 @@
                   formControlName="fromdate"
                   placeholder="FROM DATE"
                   [bsConfig]="bsConfig"
+                  bsDatepicker
+                  #datePicker="bsDatepicker"
+                  (focus)="datePicker.show()" 
+                  (blur)="datePicker.hide()" 
                   [ngClass]="{
                     'is-invalid': submit && form.fromdate.errors
                   }"
-                  bsDatepicker
+                
                 />
                 <div
                   *ngIf="submit && form.fromdate.errors"
@@ -97,10 +101,14 @@
                   formControlName="todate"
                   placeholder="TO DATE"
                   [bsConfig]="bsConfig"
+                  bsDatepicker
+                  #datePicker="bsDatepicker"
+                  (focus)="datePicker.show()" 
+                  (blur)="datePicker.hide()" 
                   [ngClass]="{
                     'is-invalid': submit && form.todate.errors
                   }"
-                  bsDatepicker
+                 
                 />
                 <div
                   *ngIf="submit && form.todate.errors"
