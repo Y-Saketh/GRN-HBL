@@ -40,6 +40,9 @@ export class UserProfileService {
         return this.http.post(`${environment.API_URL_DEV}api/external/grnlist`,data)
      
     }
+    zprClose(data){
+        return this.http.post(`${environment.API_URL_DEV}api/external/zprClose`,data)
+    }
 
     GrPending(data){
         console.log("environment.API_URL_DEV",environment.API_URL_DEV)

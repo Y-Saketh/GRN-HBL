@@ -1,27 +1,44 @@
-.vertical-menu{
-    background-image: linear-gradient(to bottom, #6ba3cd, #031c2e) !important;
- 
- 
-    // background-image: linear-gradient(to bottom, #ABC8D7, #676F13) !important;
-}
-.navbar-brand-box{
-    background-color:#103554 !important ;
-    background-image: linear-gradient(to bottom, #103554, #031c2e) !important;
- 
+.vertical-menu {
+  background-image: linear-gradient(to bottom, #6ba3cd, #031c2e) !important;
 }
 
+.navbar-brand-box {
+  background-color: #103554 !important;
+  background-image: linear-gradient(to bottom, #103554, #031c2e) !important;
+}
 
+.vertical-menu li:hover i,
+.vertical-menu li.mm-active i {
+  color: white !important;
+}
+
+.vertical-menu i {
+  color: brown !important;
+}
 
 .sub-menu .active {
-    background-color: #454754; 
-    color: #303773;       
-    font-weight: bold;        
-    border-left: 4px solid #7e56b6; 
-  }
-  
+  background-image: linear-gradient(to bottom, #828b84, #031c2e) !important;
+  color: #303773;
+  font-weight: bold;
+  border-left: 4px solid #7e56b6;
+}
 
-  .sub-menu .active:hover {
-    background-color: #454754; 
-    color: #303773;
-  }
-  
+.sub-menu .active:hover {
+  background-color: #454754;
+  color: #303773;
+}
+
+.mm-active {
+  background-image: linear-gradient(to bottom,  #6ba3cd, #031c2e) !important;
+  color: #303773;
+  font-weight: bold;
+  border-left: 4px solid #7e56b6;
+}
+
+/* Override mm-active when a sub-menu item is active */
+.vertical-menu li.mm-active:has(.sub-menu .active) {
+  background: none !important;
+  color: inherit !important;
+  font-weight: normal !important;
+  border-left: none !important;
+}

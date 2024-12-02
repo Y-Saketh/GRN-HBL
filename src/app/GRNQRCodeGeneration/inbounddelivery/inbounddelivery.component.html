@@ -102,6 +102,7 @@
           </div>
         </div>
       </div> -->
+      <form [formGroup]="tableForm">
 
       <div class="table-responsive">
         <table
@@ -140,6 +141,7 @@
             </tr>
           </thead>
           <!-- @for(table of tables$ | async;track $index){ -->
+          <!-- <form [formGroup]="tableForm" (ngSubmit)="submitForm()"> -->
           <tbody>
             <tr>
               <td align="center">
@@ -149,70 +151,111 @@
               <td>
                 <input
                   type="text"
-                  [(ngModel)]="gateEntryNumber"
+                  formControlName="gateEntryNumber"
                   placeholder="Entry Gate Pass Number"
                   class="form-control form-control-sm"
                 />
+                <small
+                  class="text-danger"
+                  *ngIf="isFieldInvalid('gateEntryNumber')"
+                  >Gate Entry Number is required and should contain only alphanumeric characters.</small
+                >
               </td>
               <td>
                 <input
                   type="text"
-                  [(ngModel)]="vehicleNumber"
-                  placeholder="enter vehicleNumber"
+                  formControlName="vehicleNumber"
+                  placeholder="Enter Vehicle Number"
                   class="form-control form-control-sm"
                 />
+                <small
+                  class="text-danger"
+                  *ngIf="isFieldInvalid('vehicleNumber')"
+                  >Vehicle Number is required and should contain only valid characters.</small
+                >
               </td>
               <td>
                 <input
                   type="text"
-                  [(ngModel)]="invoiceDate"
-                  placeholder="enter invoice date"
-                  class="form-control form-control-sm" bsDatepicker
+                  formControlName="invoiceDate"
+                  placeholder="Enter Invoice Date"
+                  class="form-control form-control-sm"
+                  [bsConfig]="bsConfig"
+                bsDatepicker
+                #datePicker="bsDatepicker"
+                (focus)="datePicker.show()" 
+                (blur)="datePicker.hide()" 
                 />
+                <small
+                  class="text-danger"
+                  *ngIf="isFieldInvalid('invoiceDate')"
+                  >Gate Entry Date is required.</small
+                >
               </td>
               <td>
                 <input
                   type="text"
-                  [(ngModel)]="gateEntryDate"
-                  placeholder="enter invoice date"
-                  class="form-control form-control-sm" bsDatepicker
+                  formControlName="gateEntryDate"
+                  placeholder="Enter Gate Entry Date"
+                  class="form-control form-control-sm"
+                  [bsConfig]="bsConfig"
+                bsDatepicker
+                #datePicker="bsDatepicker"
+                (focus)="datePicker.show()" 
+                (blur)="datePicker.hide()" 
                 />
+                <small
+                  class="text-danger"
+                  *ngIf="isFieldInvalid('gateEntryDate')"
+                  >Gate Entry Date is required.</small
+                >
               </td>
               <td>
                 <input
                   type="text"
-                  [(ngModel)]="DocumentDate"
-                  placeholder="enter invoice date"
-                  class="form-control form-control-sm" bsDatepicker
+                  formControlName="DocumentDate"
+                  placeholder="Enter Document Date"
+                  class="form-control form-control-sm"
+                  [bsConfig]="bsConfig"
+                bsDatepicker
+                #datePicker="bsDatepicker"
+                (focus)="datePicker.show()" 
+                (blur)="datePicker.hide()" 
                 />
+                <small
+                  class="text-danger"
+                  *ngIf="isFieldInvalid('DocumentDate')"
+                  >Document Date is required.</small
+                >
               </td>
-
-              <!-- <td>
+              <td>
                 <input
                   type="text"
-                  [(ngModel)]="Originalquantity"
+                  formControlName="supplier"
                   class="form-control form-control-sm"
                 />
-              </td> -->
-              <td>
-                <input
-                  type="text"
-                  [(ngModel)]="supplier"
-                  class="form-control form-control-sm"
-                />
-              </td>
-              <td>
-              
-                <input
-                  type="text"
-                  [(ngModel)]="deleveryChallanNumber"
-                  class="form-control form-control-sm"
-                />
+                <small
+                  class="text-danger"
+                  *ngIf="isFieldInvalid('supplier')"
+                  >Supplier/Vendor Code is required.</small
+                >
               </td>
               <td>
                 <input
                   type="text"
-                  [(ngModel)]="PackingList"
+                  formControlName="deleveryChallanNumber"
+                  class="form-control form-control-sm"
+                />
+                <small
+                  class="text-danger"
+                  *ngIf="isFieldInvalid('deleveryChallanNumber')"
+                  >Delevery Challan Number is required.</small
+                >
+              </td>
+              <td>
+                <input
+                  type="text"
+                  formControlName="PackingList"
                   class="form-control form-control-sm"
                 />
               </td>
@@ -244,7 +287,7 @@
                         <td>{{table.WERKS}}</td>
                       <td>{{ table.LGORT }}</td>
                         <td>{{table.ORGQTY}}</td>
-                        <td><input type="text" [(ngModel)]="table.DMENGE" class="form-control form-control-sm" /></td>
+                        <td><input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="table.DMENGE" class="form-control form-control-sm" /></td>
                         <!-- <td>{{table.DMENGE}}</td> -->
                        
                       <td>{{ table.transporterName }}</td>
@@ -253,7 +296,7 @@
                       <td>{{ table.PO_ITEM }}</td>
                       <!-- <td>{{table.tolerance}}</td> -->
                       <td>{{table.MATNR}}</td>
-                      <td>{{table.tolerance}}</td>
+                      <td>{{table.SHORT_TEXT}}</td>
 
                       <!-- <td><input type="text" [(ngModel)]="table.storageLocation" class="form-control form-control-sm" /></td>
                                             <td><input type="text" [(ngModel)]="table.incoterms" class="form-control form-control-sm" /></td>
@@ -268,6 +311,7 @@
             </tr>
             }
           </tbody>
+          <!-- </form> -->
           <!-- } -->
         </table>
       </div>
@@ -280,6 +324,7 @@
           Save
         </button>
       </div>
+      </form>
     </div>
 
     <!-- </div> -->

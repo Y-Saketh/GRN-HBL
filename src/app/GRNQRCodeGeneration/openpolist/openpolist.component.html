@@ -41,60 +41,6 @@
           </div>
           <div class="col-md-3">
             <div class="mb-3">
-              <label class="brandcolor" for="documentType"
-                >DOCUMENT TYPE FROM</label
-              >
-              <input
-                type="text"
-                class="form-control"
-                id="documentTypeFrom"
-                formControlName="documentTypeFrom"
-                placeholder="Document Type From"
-                [bsConfig]="bsConfig"
-                [ngClass]="{
-                  'is-invalid': submit && form.documentTypeFrom.errors
-                }"
-                bsDatepicker
-              />
-              <div
-                *ngIf="!submit && form.documentTypeFrom.errors"
-                class="invalid-feedback"
-              >
-                <span *ngIf="form.documentTypeFrom.errors.required"
-                  >Please provide a valid document type From.</span
-                >
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3">
-            <div class="mb-3">
-              <label class="brandcolor" for="documentTypeTo"
-                >DOCUMENT TYPE TO</label
-              >
-              <input
-                type="text"
-                class="form-control"
-                id="documentTypeTo"
-                formControlName="documentTypeTo"
-                placeholder="Document Type"
-                [bsConfig]="bsConfig"
-                [ngClass]="{
-                  'is-invalid': submit && form.documentTypeTo.errors
-                }"
-                bsDatepicker
-              />
-              <div
-                *ngIf="submit && form.documentTypeTo.errors"
-                class="invalid-feedback"
-              >
-                <span *ngIf="form.documentTypeTo.errors.required"
-                  >Please provide a valid document type To Date.</span
-                >
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3">
-            <div class="mb-3">
               <label class="brandcolor" for="vendor">VENDOR</label>
               <input
                 type="text"
@@ -114,26 +60,124 @@
               </div>
             </div>
           </div>
-        </div>
-        <div class="row">
-          <!-- Row 2 -->
           <div class="col-md-3">
             <div class="mb-3">
-              <label class="brandcolor" for="material">MATERIAL</label>
+              <label class="brandcolor" for="documentTypeFrom"
+                >DOCUMENT TYPE FROM</label
+              >
               <input
                 type="text"
                 class="form-control"
-                id="material"
-                formControlName="material"
-                placeholder="Material"
-                [ngClass]="{ 'is-invalid': submit && form.material.errors }"
+                id="documentTypeFrom"
+                formControlName="documentTypeFrom"
+                placeholder="Document Type From"
+              
+                [ngClass]="{
+                  'is-invalid': submit && form.documentTypeFrom.errors
+                }"
+         
               />
               <div
-                *ngIf="submit && form.material.errors"
+                *ngIf="!submit && form.documentTypeFrom.errors"
                 class="invalid-feedback"
               >
-                <span *ngIf="form.material.errors.required"
-                  >Please provide a valid material.</span
+                <span *ngIf="form.documentTypeFrom.errors.required"
+                  >Please provide a valid document type.</span
+                >
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="mb-3">
+              <label class="brandcolor" for="documentTypeTo"
+                >DOCUMENT TYPE TO</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="documentTypeTo"
+                formControlName="documentTypeTo"
+                placeholder="Document Type To"
+              
+                [ngClass]="{
+                  'is-invalid': submit && form.documentTypeTo.errors
+                }"
+         
+              />
+              <div
+                *ngIf="!submit && form.documentTypeTo.errors"
+                class="invalid-feedback"
+              >
+                <span *ngIf="form.documentTypeTo.errors.required"
+                  >Please provide a valid document type.</span
+                >
+              </div>
+            </div>
+          </div>
+         
+
+        </div>
+        <div class="row">
+          <!-- Row 2 -->
+         
+          <div class="col-md-3">
+            <div class="mb-3">
+              <label class="brandcolor" for="documentType"
+                >DOCUMENT TYPE FROM DATE</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="documentFrom"
+                formControlName="documentFrom"
+                placeholder="Document Type From"
+                [bsConfig]="bsConfig"
+                bsDatepicker
+                #datePicker="bsDatepicker"
+                (focus)="datePicker.show()" 
+                (blur)="datePicker.hide()" 
+                [ngClass]="{
+                  'is-invalid': submit && form.documentFrom.errors
+                }"
+         
+              />
+              <div
+                *ngIf="!submit && form.documentFrom.errors"
+                class="invalid-feedback"
+              >
+                <span *ngIf="form.documentFrom.errors.required"
+                  >Please provide a valid document type From.</span
+                >
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="mb-3">
+              <label class="brandcolor" for="documentTo"
+                >DOCUMENT TYPE TO DATE</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="documentTo"
+                formControlName="documentTo"
+                placeholder="Document Type To"
+                [bsConfig]="bsConfig"
+                bsDatepicker
+                #datePicker="bsDatepicker"
+                (focus)="datePicker.show()" 
+                (blur)="datePicker.hide()" 
+                [ngClass]="{
+                  'is-invalid': submit && form.documentTo.errors
+                }"
+            
+              />
+              <div
+                *ngIf="submit && form.documentTo.errors"
+                class="invalid-feedback"
+              >
+                <span *ngIf="form.documentTo.errors.required"
+                  >Please provide a valid document type To Date.</span
                 >
               </div>
             </div>
@@ -149,10 +193,14 @@
                 id="deliveryDateFrom"
                 formControlName="deliveryDateFrom"
                 placeholder="Delivery Date From"
+                [bsConfig]="bsConfig"
                 [ngClass]="{
                   'is-invalid': submit && form.deliveryDateFrom.errors
                 }"
                 bsDatepicker
+                #datePicker="bsDatepicker"
+                (focus)="datePicker.show()" 
+                (blur)="datePicker.hide()" 
               />
               <div
                 *ngIf="submit && form.deliveryDateFrom.errors"
@@ -173,12 +221,17 @@
                 type="text"
                 class="form-control"
                 id="deliveryDateTo"
+                [bsConfig]="bsConfig"
+                bsDatepicker
+                #datePicker="bsDatepicker"
+                (focus)="datePicker.show()" 
+                (blur)="datePicker.hide()" 
                 formControlName="deliveryDateTo"
                 placeholder="Delivery Date To"
                 [ngClass]="{
                   'is-invalid': submit && form.purchaseGroup.errors
                 }"
-                bsDatepicker
+              
               />
               <div
                 *ngIf="submit && form.deliveryDateTo.errors"
@@ -186,6 +239,31 @@
               >
                 <span *ngIf="form.deliveryDateTo.errors.required"
                   >Please provide a valid delivery Date To.</span
+                >
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="row">
+           
+          <div class="col-md-3">
+            <div class="mb-3">
+              <label class="brandcolor" for="material">MATERIAL</label>
+              <input
+                type="text"
+                class="form-control"
+                id="material"
+                formControlName="material"
+                placeholder="Material"
+                [ngClass]="{ 'is-invalid': submit && form.material.errors }"
+              />
+              <div
+                *ngIf="submit && form.material.errors"
+                class="invalid-feedback"
+              >
+                <span *ngIf="form.material.errors.required"
+                  >Please provide a valid material.</span
                 >
               </div>
             </div>
@@ -215,8 +293,6 @@
               </div>
             </div>
           </div>
-        </div>
-        <div class="row">
           <div class="col-md-3">
             <div class="mb-3">
               <label class="brandcolor" for="poNumber">PO NUMBER</label>

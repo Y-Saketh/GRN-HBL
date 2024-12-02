@@ -35,83 +35,61 @@
           </div>
           <!-- Delivery -->
           <div class="col-md-3">
-            <label class="brandcolor" for="deliveryfrom">DELIVERY FROM</label>
+            <label class="brandcolor" for="deliveryfrom">DELIVERY</label>
             <div class="mb-3">
               <input
                 type="text"
                 class="form-control"
-                id="deliveryfrom"
-                formControlName="deliveryfrom"
-                placeholder="Delivery From"
-                [bsConfig]="bsConfig"
-                [ngClass]="{ 'is-invalid': submit && form.deliveryfrom.errors }"
-                bsDatepicker
+                id="delivery"
+                formControlName="delivery"
+                placeholder="Delivery"
+              
+                [ngClass]="{ 'is-invalid': submit && form.delivery.errors }"
+               
               />
               <div
-                *ngIf="!submit && form.deliveryfrom.errors"
+                *ngIf="!submit && form.delivery.errors"
                 class="invalid-feedback"
               >
-                <span *ngIf="form.deliveryfrom.errors.required"
+                <span *ngIf="form.delivery.errors.required"
                   >Please provide a valid delivery.</span
                 >
               </div>
             </div>
           </div>
-          <div class="col-md-3">
-            <label class="brandcolor" for="deliveryto">DELIVERY TO</label>
-            <div class="mb-3">
-              <input
-                type="text"
-                class="form-control"
-                id="deliveryto"
-                formControlName="deliveryto"
-                placeholder="Delivery To"
-                [bsConfig]="bsConfig"
-                [ngClass]="{ 'is-invalid': submit && form.deliveryto.errors }"
-                bsDatepicker
-              />
-              <div
-                *ngIf="!submit && form.deliveryto.errors"
-                class="invalid-feedback"
-              >
-                <span *ngIf="form.deliveryto.errors.required"
-                  >Please provide a valid delivery.</span
-                >
-              </div>
-            </div>
-          </div>
+        
           <!-- Storage Location -->
           <div class="col-md-3">
             <label class="brandcolor" for="storageLocationfrom"
-              >STORAGE LOCATION FROM</label
-            >
+                >STORAGE LOCATION FROM</label
+              >
             <div class="mb-3">
               <input
                 type="text"
                 class="form-control"
-                id="storageLocationfrom"
-                formControlName="storageLocationfrom"
-                placeholder="Storage Location From"
+                id="storageLocation"
+                formControlName="storageLocation"
+                placeholder="Storage Location"
                 [bsConfig]="bsConfig"
                 [ngClass]="{
-                  'is-invalid': submit && form.storageLocationfrom.errors
+                  'is-invalid': submit && form.storageLocation.errors
                 }"
                 bsDatepicker
               />
               <div
-                *ngIf="submit && form.storageLocationfrom.errors"
+                *ngIf="submit && form.storageLocation.errors"
                 class="invalid-feedback"
               >
-                <span *ngIf="form.storageLocationfrom.errors.required"
+                <span *ngIf="form.storageLocation.errors.required"
                   >Please provide a valid STORAGE LOCATION.</span
                 >
               </div>
             </div>
           </div>
           <div class="col-md-3">
-            <label class="brandcolor" for="storageLocationto"
-              >STORAGE LOCATION TO</label
-            >
+            <label class="brandcolor" for="storageLocationfrom"
+                >STORAGE LOCATION TO</label
+              >
             <div class="mb-3">
               <input
                 type="text"
@@ -145,6 +123,11 @@
                 class="form-control"
                 id="ibdCreadtedOn"
                 formControlName="ibdCreadtedOn"
+                [bsConfig]="bsConfig"
+                bsDatepicker
+                #datePicker="bsDatepicker"
+                (focus)="datePicker.show()" 
+                (blur)="datePicker.hide()" 
                 placeholder="IBD CREATED ON"
                 [ngClass]="{
                   'is-invalid': submit && form.ibdCreadtedOn.errors
@@ -161,6 +144,36 @@
             </div>
           </div>
           <div class="col-md-3">
+            <label class="brandcolor" for="ibdCreadtedFrom"
+                >IBD CREATED FROM DATE</label
+              >
+            <div class="mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="ibdCreadtedFrom"
+                formControlName="ibdCreadtedFrom"
+                [bsConfig]="bsConfig"
+                bsDatepicker
+                #datePicker="bsDatepicker"
+                (focus)="datePicker.show()" 
+                (blur)="datePicker.hide()" 
+                placeholder="IBD CREATED From DATE"
+                [ngClass]="{
+                  'is-invalid': submit && form.ibdCreadtedFrom.errors
+                }"
+              />
+              <div
+                *ngIf="submit && form.ibdCreadtedFrom.errors"
+                class="invalid-feedback"
+              >
+                <span *ngIf="form.ibdCreadtedFrom.errors.required"
+                  >Please provide a valid IBD CREATED FROM DATE.</span
+                >
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
             <label class="brandcolor" for="ibdCreadtedTo">IBD CREATED TO</label>
             <div class="mb-3">
               <input
@@ -168,6 +181,11 @@
                 class="form-control"
                 id="ibdCreadtedTo"
                 formControlName="ibdCreadtedTo"
+                [bsConfig]="bsConfig"
+                bsDatepicker
+                #datePicker="bsDatepicker"
+                (focus)="datePicker.show()" 
+                (blur)="datePicker.hide()" 
                 placeholder="IBD CREATED To"
                 [ngClass]="{
                   'is-invalid': submit && form.ibdCreadtedOn.errors

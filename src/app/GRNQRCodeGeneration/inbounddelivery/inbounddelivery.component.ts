@@ -11,6 +11,7 @@ import { tableData } from './data';
 import { UserProfileService } from 'src/app/core/services/user.service';
 import Swal from 'sweetalert2';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import * as moment from 'moment';
 
 
 @Component({
@@ -60,12 +61,24 @@ export class InbounddeliveryComponent implements OnInit {
     this.total$ = service.total$;
   }
   validationform: UntypedFormGroup;
+  tableForm: UntypedFormGroup;
   submit: boolean;
   ngOnInit(): void {
     this.submit = false;
     this.validationform = this.formBuilder.group({
       inbounddeliverynumber: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]+')]],
 
+    });
+
+    this.tableForm = this.formBuilder.group({
+      gateEntryNumber: ['', Validators.required],
+      vehicleNumber: ['', Validators.required],
+      invoiceDate: ['', Validators.required],
+      gateEntryDate: ['', Validators.required],
+      DocumentDate: ['', Validators.required],
+      supplier: ['', Validators.required],
+      deleveryChallanNumber: ['', Validators.required],
+      PackingList: [''], // Optional field
     });
 
     this.breadCrumbItems = [{ label: 'GRN' }, { label: 'InBound Delivery', active: true }];
@@ -75,7 +88,15 @@ export class InbounddeliveryComponent implements OnInit {
     this._fetchData();
 
   }
-
+  isFieldInvalid(fieldName: string): boolean {
+    const control = this.tableForm.get(fieldName);
+    return control?.invalid && (control.dirty || control.touched);
+  }
+  bsConfig = {
+    dateInputFormat: 'DD/MM/YYYY', // Set the date format
+    // showWeekNumbers: false, // Optional: Hide week numbers
+    containerClass: 'theme-blue', // Optional: Use a predefined theme
+  };
   changeValue() {
     this.hideme = !this.hideme;
   }
@@ -90,15 +111,15 @@ export class InbounddeliveryComponent implements OnInit {
           // Start with the common header data
           const payload = {
             DETAIL: {
-              PO_NUMBER: this.form.inbounddeliverynumber.value, // PO Number from form
-              DCNUMBER: this.deleveryChallanNumber, // Delivery Challan Number
-              INVOICE: this.invoiceDate || "DefaultInvoice", // Invoice Date
-              DC_DATE: this.DocumentDate || "2024-11-29", // Document Date
-              PACKLIST: this.PackingList, // Packing List
-              VEHICLE_NO: this.vehicleNumber, // Vehicle Number
-              LR_NUMBER: this.MATNR || this.SHORT_TEXT, // Material/LR number
-              LR_DATE: this.gateEntryDate, // LR Date
-              TRANSPORTER: this.plant || this.supplier, // Transporter or Supplier
+              PO_NUMBER: this.form.inbounddeliverynumber.value,
+              DCNUMBER: this.tableForm.value.deleveryChallanNumber,
+              INVOICE: this.tableForm.value.invoiceDate?moment(this.tableForm.value.invoiceDate).format('DD/MM/YYYY') :"",//'DefaultInvoice',
+              DC_DATE: this.tableForm.value.DocumentDate?moment(this.tableForm.value.DocumentDate).format('DD/MM/YYYY')  :"", //'2024-11-29',
+              PACKLIST: this.tableForm.value.PackingList,
+              VEHICLE_NO: this.tableForm.value.vehicleNumber,
+              LR_NUMBER: this.tableForm.value.deleveryChallanNumber || 'DefaultMaterial',
+              LR_DATE: this.tableForm.value.gateEntryDate?moment(this.tableForm.value.gateEntryDate).format('DD/MM/YYYY')  :"", //,
+              TRANSPORTER: this.tableForm.value.supplier || 'DefaultTransporter',
               ITEM: [], // Initialize the ITEM array
             },
           };
@@ -127,17 +148,23 @@ export class InbounddeliveryComponent implements OnInit {
               console.log("Inbound Delivery Saved:", res);
               Swal.fire("", res[0].MSGTXT, "success");
               this.isSubmitting = false; // Re-enable the button
+              this.validationform.reset();
+              this.tableForm.reset();
             },
             error: (err) => {
               console.error("Error while saving:", err);
               Swal.fire("", "Error occurred while saving", "error");
               this.isSubmitting = false; // Re-enable the button
+              this.validationform.reset();
+              this.tableForm.reset();
             },
           });
         },
         error: (err) => {
           console.error("Error in subscription:", err);
           this.isSubmitting = false; // Re-enable the button
+          this.validationform.reset();
+              this.tableForm.reset();
         },
       });
   }

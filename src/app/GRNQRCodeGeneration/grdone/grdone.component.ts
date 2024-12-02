@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 import { tableData } from './data';
 import { UserProfileService } from 'src/app/core/services/user.service';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-grdone',
@@ -54,9 +55,11 @@ export class GrdoneComponent implements OnInit {
       delivery: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
       storageLocation: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
       ibdCreadtedOn: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
+      ibdCreadtedFrom: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
+      ibdCreadtedTo: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
     });
 
-    this.breadCrumbItems = [{ label: 'Tables' }, { label: 'Advanced Table', active: true }];
+    this.breadCrumbItems = [{ label: 'GRN' }, { label: 'GRN Done Table', active: true }];
     /**
      * fetch data
      */
@@ -102,40 +105,18 @@ export class GrdoneComponent implements OnInit {
   validSubmit() {
     this.submit = true;
   }
-  // WERKS: 	PLANT
-  // EKGRP	PURCHASE GROUP
-  // EBELN	PURCHASE DOCUMENT NUMBER
-  //     "EBELP": 2,	ITEM NUMBER
-  //     "ELIKZ": "",	OPEN PO
-  //     "BEDAT": "05.04.2024",	PURCHASE DOCUMENT DATE
-  //     "LIFNR": "2003411",	SUPPLIER CODE
-  //     "NAME1": "RAVICHANDRA TECHNICAL LINES",	VENDR ADREES 
-  //     "LOEKZ": "",	DELETION/BLOCKED
-  //     "MATNR": "",	MATERIAL
-  //     "TXZ01": "4' 20 W LED tube Light fitting",	UPDATING TEXT FIELD
-  //     "MENGE": 7,	ALTERNATIVE UNIT OF MEASURE
-  //     "MEINS": "NOS",	UNIT OF MEASURE
-  //     "NETWR": 2161.25,	CURRENCY
-  //     "MENGE1": 0,	BILL OF QUANTITY (BOM)
-  //     "MEINS1": "",	BASE UNIT OF MEASURE
-  //     "DMBTR1": 1543.75,	SUM OF AMOUNT
-  //     "EINDT": "15.04.2024",	DELIVERY DATE
-  //     "DATUM": "25.11.2024",	CURRENT DATE
-  //     "LV_MENGE_SUM": 0,	-
-  //     "DAYS": 224,	-
-  //     "EKNAM": "PurGroup-PE",	Descripion of Purch
-  //     "WRBTR": 0,	LOCAL CURRENT amount 
-  //     "BUYER": "subbarao.parsepu@hbl.in",	SUPPLIER EMAIL ID
-  //     "CREAT": "130202-EG-PUR"	-
-
-  
+ 
   getGrDone(){
     console.log("validationform",this.form) 
     let obj = {
-      "WERKS":"",
-      "EBELN": "",
-      "BSART": "",
-      "LIFNR": "",
+ 
+      "WERKS": this.form.plant.value,//"1300",
+      "VBELN":this.form.delivery.value ,//"180390138",
+      "LGORT": this.form.storageLocation.value,// "S048",
+      "BUDAT_F":this.form.ibdCreadtedFrom?moment(this.form.ibdCreadtedFrom.value):'',//"2024-04-01",
+      "BUDAT_T": this.form.ibdCreadtedFrom?moment(this.form.ibdCreadtedTo.value):'',//""2024-11-25",
+      "R1": "",
+      "R2": "X"
     }
     console.log("objobj",obj)
     this.apiService.OpenPoList(obj).subscribe({
@@ -144,39 +125,18 @@ export class GrdoneComponent implements OnInit {
         this.POLIST = res;
         this.service.setTableData(res || []);
         this._fetchData();
-        // if (res.status === true) {
-        //   if (res.data && res.data.TABLE) {
-        //     this.lotReportsData.data = res.data.TABLE;
-        //   } else {
-        //     console.warn('No table data returned.');
-        //   }
-        // } else {
-        //   console.error('API responded with an error status.');
-        // }
+        this.validationform.reset()
       },
       error: (error: any) => {
         console.error('Error fetching lot reports:', error);
+        this.validationform.reset()
       },
       complete: () => {
         console.log('API call completed.');
+        this.validationform.reset()
       }
     });
     
-    // this.apiService.OpenPoList(obj).subscribe(
-    //   (res: any) => {
-    //     console.log("data RESPONSE",res)
-    //     if (res.status === true) {
-    //       if (res.data && res.data.TABLE) {
-    //         this.lotReportsData.data = res.data.TABLE;
-    //         console.log("data",this.lotReportsData.data)
-    //       } else {
-    //         console.error('No table data returned.');
-    //       }}
-    //   },
-    //   (error) => {
-    //     console.error('Error fetching lot reports:', error);
-    //   }
-    // );
   }
 
 

@@ -35,112 +35,93 @@
           </div>
           <!-- purchasegroupfrom -->
           <div class="col-md-3">
-            <label class="brandcolor" for="purchasegroupfrom">PURCHASE GROUP FROM</label>
+            <label class="brandcolor" for="purchasegroup">PURCHASE GROUP</label>
             <div class="mb-3">
               <input
                 type="text"
                 class="form-control"
-                id="purchasegroupfrom"
-                formControlName="purchasegroupfrom"
-                placeholder="PURCHASE GROUP FROM"
-                [bsConfig]="bsConfig"
+                id="purchasegroup"
+                formControlName="purchasegroup"
+                placeholder="PURCHASE GROUP"
+             
                 [ngClass]="{
-                  'is-invalid': submit && form.purchasegroupfrom.errors
+                  'is-invalid': submit && form.purchasegroup.errors
                 }"
-                bsDatepicker
+             
               />
               <div
-                *ngIf="!submit && form.purchasegroupfrom.errors"
+                *ngIf="!submit && form.purchasegroup.errors"
                 class="invalid-feedback"
               >
-                <span *ngIf="form.purchasegroupfrom.errors.required"
+                <span *ngIf="form.purchasegroup.errors.required"
                   >Please provide a valid purchase group.</span
                 >
               </div>
             </div>
           </div>
-          <!--purchasegroupto-->
-          <div class="col-md-3">
-            <label class="brandcolor" for="purchasegroupto">PURCHASE GROUP TO</label>
-            <div class="mb-3">
-              <input
-                type="text"
-                class="form-control"
-                id="purchasegroupto"
-                formControlName="purchasegroupto"
-                placeholder="PURCHASE GROUP TO"
-                [bsConfig]="bsConfig"
-                [ngClass]="{
-                  'is-invalid': submit && form.purchasegroupto.errors
-                }"
-                bsDatepicker
-              />
-              <div
-                *ngIf="!submit && form.purchasegroupto.errors"
-                class="invalid-feedback"
-              >
-                <span *ngIf="form.purchasegroupto.errors.required"
-                  >Please provide a valid purchase group.</span
+
+             <!-- Current Date From-->
+             <div class="col-md-3">
+              <label class="brandcolor" for="fromdate">CURRENT DATE FROM</label>
+              <div class="mb-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="fromdate"
+                  formControlName="fromdate"
+                  placeholder="FROM DATE"
+                  [bsConfig]="bsConfig"
+                  bsDatepicker
+                  #datePicker="bsDatepicker"
+                  (focus)="datePicker.show()" 
+                  (blur)="datePicker.hide()" 
+                  [ngClass]="{
+                    'is-invalid': submit && form.fromdate.errors
+                  }"
+                
+                />
+                <div
+                  *ngIf="submit && form.fromdate.errors"
+                  class="invalid-feedback"
                 >
+                  <span *ngIf="form.fromdate.errors.required"
+                    >Please provide a valid From Date.</span
+                  >
+                </div>
               </div>
             </div>
-          </div>
+            <!-- Current Date To-->
+            <div class="col-md-3">
+              <label class="brandcolor" for="todate">CURRENT DATE TO</label>
+              <div class="mb-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="todate"
+                  formControlName="todate"
+                  placeholder="TO DATE"
+                  [bsConfig]="bsConfig"
+                  bsDatepicker
+                  #datePicker="bsDatepicker"
+                  (focus)="datePicker.show()" 
+                  (blur)="datePicker.hide()" 
+                  [ngClass]="{
+                    'is-invalid': submit && form.todate.errors
+                  }"
+                 
+                />
+                <div
+                  *ngIf="submit && form.todate.errors"
+                  class="invalid-feedback"
+                >
+                  <span *ngIf="form.todate.errors.required"
+                    >Please provide a valid To Date.</span
+                  >
+                </div>
+              </div>
+            </div>
         </div>
-        <div class="row">
-          <!-- Row 2 -->
-           <!-- Current Date From-->
-          <div class="col-md-3">
-            <label class="brandcolor" for="curentdatefrom">CURRENT DATE FROM</label>
-            <div class="mb-3">
-              <input
-                type="text"
-                class="form-control"
-                id="curentdatefrom"
-                formControlName="curentdatefrom"
-                placeholder="FROM DATE"
-                [bsConfig]="bsConfig"
-                [ngClass]="{
-                  'is-invalid': submit && form.curentdatefrom.errors
-                }"
-                bsDatepicker
-              />
-              <div
-                *ngIf="submit && form.curentdatefrom.errors"
-                class="invalid-feedback"
-              >
-                <span *ngIf="form.curentdatefrom.errors.required"
-                  >Please provide a valid From Date.</span
-                >
-              </div>
-            </div>
-          </div>
-          <!-- Current Date To-->
-          <div class="col-md-3">
-            <label class="brandcolor" for="curentdateto">CURRENT DATE TO</label>
-            <div class="mb-3">
-              <input
-                type="text"
-                class="form-control"
-                id="curentdateto"
-                formControlName="curentdateto"
-                placeholder="TO DATE"
-                [bsConfig]="bsConfig"
-                [ngClass]="{
-                  'is-invalid': submit && form.curentdateto.errors
-                }"
-                bsDatepicker
-              />
-              <div
-                *ngIf="submit && form.curentdateto.errors"
-                class="invalid-feedback"
-              >
-                <span *ngIf="form.curentdateto.errors.required"
-                  >Please provide a valid To Date.</span
-                >
-              </div>
-            </div>
-          </div>
-        </div>
+   
         <!-- Button Row -->
         <div class="row mt-4">
           <div class="col-md-4"></div>
