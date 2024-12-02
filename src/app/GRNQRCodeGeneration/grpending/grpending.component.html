@@ -12,7 +12,6 @@
         (ngSubmit)="validSubmit()"
         [formGroup]="validationform"
       >
-        
         <div class="row">
           <!-- Row 1 -->
           <!-- Plant -->
@@ -44,9 +43,7 @@
                 id="delivery"
                 formControlName="delivery"
                 placeholder="Delivery"
-              
                 [ngClass]="{ 'is-invalid': submit && form.delivery.errors }"
-               
               />
               <div
                 *ngIf="!submit && form.delivery.errors"
@@ -58,12 +55,12 @@
               </div>
             </div>
           </div>
-        
+
           <!-- Storage Location -->
           <div class="col-md-3">
             <label class="brandcolor" for="storageLocation"
-                >STORAGE LOCATION</label
-              >
+              >STORAGE LOCATION</label
+            >
             <div class="mb-3">
               <input
                 type="text"
@@ -87,13 +84,11 @@
               </div>
             </div>
           </div>
-          
+
           <!--row 2-->
           <!--IBD CREATED ON-->
           <div class="col-md-3">
-            <label class="brandcolor" for="ibdCreadtedOn"
-                >IBD CREATED ON</label
-              >
+            <label class="brandcolor" for="ibdCreadtedOn">IBD CREATED ON</label>
             <div class="mb-3">
               <input
                 type="text"
@@ -103,8 +98,8 @@
                 [bsConfig]="bsConfig"
                 bsDatepicker
                 #datePicker="bsDatepicker"
-                (focus)="datePicker.show()" 
-                (blur)="datePicker.hide()" 
+                (focus)="datePicker.show()"
+                (blur)="datePicker.hide()"
                 placeholder="IBD CREATED ON"
                 [ngClass]="{
                   'is-invalid': submit && form.ibdCreadtedOn.errors
@@ -122,8 +117,8 @@
           </div>
           <div class="col-md-3">
             <label class="brandcolor" for="ibdCreadtedFrom"
-                >IBD CREATED FROM DATE</label
-              >
+              >IBD CREATED FROM DATE</label
+            >
             <div class="mb-3">
               <input
                 type="text"
@@ -133,8 +128,8 @@
                 [bsConfig]="bsConfig"
                 bsDatepicker
                 #datePicker="bsDatepicker"
-                (focus)="datePicker.show()" 
-                (blur)="datePicker.hide()" 
+                (focus)="datePicker.show()"
+                (blur)="datePicker.hide()"
                 placeholder="IBD CREATED From DATE"
                 [ngClass]="{
                   'is-invalid': submit && form.ibdCreadtedFrom.errors
@@ -151,9 +146,7 @@
             </div>
           </div>
           <div class="col-md-3">
-            <label class="brandcolor" for="ibdCreadtedTo"
-                >IBD CREATED TO</label
-              >
+            <label class="brandcolor" for="ibdCreadtedTo">IBD CREATED TO</label>
             <div class="mb-3">
               <input
                 type="text"
@@ -163,8 +156,8 @@
                 [bsConfig]="bsConfig"
                 bsDatepicker
                 #datePicker="bsDatepicker"
-                (focus)="datePicker.show()" 
-                (blur)="datePicker.hide()" 
+                (focus)="datePicker.show()"
+                (blur)="datePicker.hide()"
                 placeholder="IBD CREATED To"
                 [ngClass]="{
                   'is-invalid': submit && form.ibdCreadtedOn.errors
@@ -203,7 +196,7 @@
     <!-- <div class="row"> -->
     <!-- <div class="col-12"> -->
     <!-- <div class="card"> -->
-    <div class="card-body">
+    <div *ngIf="grnscreen" class="card-body">
       <div class="row mb-md-2">
         <div class="col-sm-12 col-md-6">
           <div class="dataTables_length">
@@ -302,20 +295,29 @@
               <td align="center">
                 <a class="expand-row" (click)="changeValue($index)">+</a>
               </td>
-              <td>{{ table.EBELN }}</td>
-              <!-- Purchase Document Number -->
-              <td>{{ table.EBELP }}</td>
-              <!-- Item Number -->
+              <td>{{ table.WERKS }}</td>
+              <!-- Plant -->
+              <td
+                (click)="onSelectInBound(table)"
+                style="
+                  cursor: pointer;
+                  text-decoration: underline;
+                  color: brown;
+                "
+              >
+                >{{ table.VBELN }}
+              </td>
+              <!-- Inbound Delivery -->
+              <td>{{ table.POSNR }}</td>
+              <!-- Inbound Delivery Item -->
               <td>{{ table.EKGRP }}</td>
-              <!-- Purchase Group -->
-              <td>{{ table.BEDAT }}</td>
-              <!-- Purchase Document Date -->
-              <td>{{ table.LIFNR }}</td>
-              <!-- Supplier Code -->
-              <td>{{ table.NAME1 }}</td>
-              <!-- Vendor Address -->
-              <td>{{ table.MATNR }}</td>
-              <!-- Material -->
+              <!-- Purchasing Group -->
+              <td>{{ table.ERDAT }}</td>
+              <!-- Inbound Created on -->
+              <td>{{ table.MBLNR }}</td>
+              <!-- Material Doc -->
+              <td>{{ table.BUDAT }}</td>
+              <!-- Posting Date -->
             </tr>
             <ng-container *ngIf="!hideme[$index]">
               <tr class="sub-table no-bg">
@@ -346,36 +348,42 @@
                     </thead>
                     <tbody>
                       <tr>
-                        <td>{{ table.TXZ01 }}</td>
-                        <!-- Updating Text Field -->
-                        <td>{{ table.MEINS1 }}</td>
-                        <!-- Base Unit of Measure -->
-                        <td>{{ table.WERKS }}</td>
-                        <!-- Plant -->
-                        <td>{{ table.MENGE }}</td>
-                        <!-- Alternative Unit of Measure -->
+                        <td>{{ table.AGE }}</td>
+                        <!-- Days Taken for GR -->
+                        <td>{{ table.BELNR_MIRO }}</td>
+                        <!-- MIRO No -->
+                        <td>{{ table.BUDAT_MIRO }}</td>
+                        <!-- MIRO Date -->
+                        <td>{{ table.XBLNR }}</td>
+                        <!-- Invoice No -->
+                        <td>{{ table.BLDAT }}</td>
+                        <!-- Invoice Date -->
+                        <td>{{ table.VGBEL }}</td>
+                        <!-- PO -->
+                        <td>{{ table.VGPOS }}</td>
+                        <!-- PO Item -->
+                        <td>{{ table.AEDAT }}</td>
+                        <!-- PO Date -->
+                        <td>{{ table.ERNAM }}</td>
+                        <!-- Created by -->
+                        <td>{{ table.LGORT }}</td>
+                        <!-- Storage Location -->
+                        <td>{{ table.LGOBE }}</td>
+                        <!-- Storage Location Name -->
+                        <td>{{ table.MATNR }}</td>
+                        <!-- Material -->
+                        <td>{{ table.MAKTX }}</td>
+                        <!-- Material Desc -->
                         <td>{{ table.MEINS }}</td>
-                        <!-- Unit of Measure -->
-                        <td>{{ table.MENGE1 }}</td>
-                        <!-- Bill of Quantity (BOM) -->
-                        <td>{{ table.sku }}</td>
-                        <!-- Stockkeeping Unit -->
-                        <td>{{ table.DMBTR1 }}</td>
-                        <!-- Sum of Amount -->
-                        <td>{{ table.NETWR }}</td>
-                        <!-- Net Price -->
-                        <td>{{ table.LV_MENGE_SUM }}</td>
-                        <!-- Still to be delivered (qty) -->
-                        <td>{{ table.WRBTR }}</td>
-                        <!-- Still to be delivered (value) -->
-                        <td>{{ table.LIFNR }}</td>
-                        <!-- Still to be invoiced (qty) -->
-                        <td>{{ table.DAYS }}</td>
-                        <!-- Still to be invoiced (value) -->
-                        <td>{{ table.EINDT }}</td>
-                        <!-- Delivery Date -->
-                        <td>{{ table.BUYER }}</td>
-                        <!-- Supplier Email ID -->
+                        <!-- UOM -->
+                        <td>{{ table.LFIMG }}</td>
+                        <!-- Qty -->
+                        <td>{{ table.GATEENTRY }}</td>
+                        <!-- Gate Entry No -->
+                        <td>{{ table.GATEDATE }}</td>
+                        <!-- Gate Entry Date -->
+                        <td>{{ table.AGE1 }}</td>
+                        <!-- Days taken for IBD -->
                       </tr>
                     </tbody>
                   </table>
@@ -411,6 +419,178 @@
           </div>
         </div>
         <!-- End Pagination -->
+      </div>
+    </div>
+
+    <div *ngIf="selectedInBound" class="mt-4">
+      <button
+        class="btn btn-primary"
+        style="float: left; margin-left: 10px"
+        type="button"
+        (click)="back()"
+      >
+        Back</button
+      ><br /><br />
+      <h5>
+        Item Quantity: Detailed Items for Material
+        {{ selectedInBound.inbound }}
+      </h5>
+
+      <!-- Table for Inbound -->
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Plant</th>
+            <th>Storage Location</th>
+            <th>Original DEL.Quantity</th>
+            <th>Delivery Quantity</th>
+            <th>Transporter Name</th>
+            <th>Base Unit of Measure</th>
+            <th>Purchasing Document Number</th>
+            <th>Item Number of Purchasing Document</th>
+            <th>Material Number</th>
+            <th>Material Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let items of inbound; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ items.WERKS }}</td>
+            <td>{{ items.LGORT }}</td>
+            <td>{{ items.ORGQTY }}</td>
+            <td>
+              <input
+                type="text"
+                [ngModelOptions]="{ standalone: true }"
+                [(ngModel)]="items.DMENGE"
+                class="form-control form-control-sm"
+              />
+            </td>
+            <!-- <td>{{items.DMENGE}}</td> -->
+            <td>{{ items.transporterName }}</td>
+            <td>{{ items.MEINS }}</td>
+            <td>{{ items.PO_NUMBER }}</td>
+            <td>{{ items.PO_ITEM }}</td>
+            <!-- <td>{{items.tolerance}}</td> -->
+            <td>{{ items.MATNR }}</td>
+            <td>{{ items.SHORT_TEXT }}</td>
+            <td>
+              <ul>
+                <li *ngFor="let packet of material.packets">
+                  Packet {{ packet.packet }}: {{ packet.quantity }}
+                </li>
+              </ul>
+            </td>
+            <td>
+              <button
+                class="btn btn-warning btn-sm"
+                (click)="openUnmatchPopup(i)"
+              >
+                Edit Quantity
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Modal for Unmatch -->
+      <div
+        bsModal
+        #unmatchModal="bs-modal"
+        class="modal fade"
+        tabindex="-1"
+        aria-labelledby="unmatchModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="unmatchModalLabel">
+                Edit Quantities
+              </h5>
+              <button
+                type="button"
+                class="btn-close"
+                (click)="closePopup()"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <h6>Material: {{ selectedMaterial?.name }}</h6>
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th>Packet</th>
+                    <th>Quantity</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    *ngFor="
+                      let packet of selectedMaterial?.packets;
+                      let j = index
+                    "
+                  >
+                    <td>Packet {{ j + 1 }}</td>
+                    <td>
+                      <input
+                        type="number"
+                        class="form-control"
+                        [(ngModel)]="packet.quantity"
+                      />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-primary" (click)="saveUnmatched()">
+                Save
+              </button>
+              <button class="btn btn-secondary" (click)="closePopup()">
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="custom-btn-group mt-4">
+        <button class="btn btn-success" type="button">Save</button>
+        <button class="btn btn-primary" (click)="generateQR()" type="button">
+          Inbound
+        </button>
+      </div>
+
+      <div *ngIf="qrscreen">
+        <h3>QR Code Generation</h3>
+        <p *ngIf="isGenerating" class="text-primary">
+          Generating QR codes for all items...
+        </p>
+
+        <div class="qr-container">
+          <div *ngFor="let qrData of qrCodes; let i = index" class="qr-item">
+            <div class="qr-code-wrapper">
+              <!-- Display QR code as image -->
+              <img
+                [src]="qrData.qrCodeUrl"
+                alt="QR Code for Item {{ i + 1 }}"
+                width="150"
+                height="150"
+              />
+            </div>
+
+            <div class="qr-info">
+              <!-- Display fields beside the QR code -->
+              <p>{{ qrData.data.grnNumber }}</p>
+              <p>{{ qrData.data.vendorCode }}</p>
+              <p>{{ qrData.data.sapCode }}</p>
+              <p>{{ qrData.data.reelNumber }}</p>
+              <p>{{ qrData.data.reelQuantity }}</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 

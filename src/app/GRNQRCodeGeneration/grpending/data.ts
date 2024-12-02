@@ -20,6 +20,7 @@ const tableData = [
       stillToBeDeliveredValue: '200,000.00',
       stillToBeInvoicedQty: '20',
       stillToBeInvoicedValue: '200,000.00',
+      InBound: '5400000130',
     },
 ]
 

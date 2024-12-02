@@ -42,36 +42,117 @@ function sort(tables: Table[], column: string, direction: string): Table[] {
  * @param term Search the value
  */
 function matches(tables: Table, term: string, pipe: PipeTransform) {
-  return (
-    tables.EBELN.toLowerCase().includes(term.toLowerCase()) || // Purchase Document Number
-    tables.EBELP.toLowerCase().includes(term.toLowerCase()) || // Item Number
-    tables.EKGRP.toLowerCase().includes(term.toLowerCase()) || // Purchase Group
-    tables.BEDAT.toLowerCase().includes(term.toLowerCase()) || // Purchase Document Date
-    tables.LIFNR.toLowerCase().includes(term.toLowerCase()) || // Supplier Code
-    tables.NAME1.toLowerCase().includes(term.toLowerCase()) || // Vendor Address
-    tables.LOEKZ.toLowerCase().includes(term.toLowerCase()) || // Deletion/Blocked
-    tables.MATNR.toLowerCase().includes(term.toLowerCase()) || // Material
-    tables.TXZ01.toLowerCase().includes(term.toLowerCase()) || // Updating Text Field
-    tables.WERKS.toLowerCase().includes(term.toLowerCase()) || // Plant
-    pipe.transform(tables.MENGE).includes(term) || // Alternative Unit of Measure
-    tables.MEINS.toLowerCase().includes(term.toLowerCase()) || // Unit of Measure
-    pipe.transform(tables.MENGE1).includes(term) || // Bill of Quantity (BOM)
-    tables.MEINS1.toLowerCase().includes(term.toLowerCase()) || // Base Unit of Measure
-    pipe.transform(tables.NETWR).includes(term) || // Net Price
-    pipe.transform(tables.DMBTR1).includes(term) || // Sum of Amount
-    tables.EINDT.toLowerCase().includes(term.toLowerCase()) || // Delivery Date
-    tables.DATUM.toLowerCase().includes(term.toLowerCase()) || // Current Date
-    pipe.transform(tables.LV_MENGE_SUM).includes(term) || // -
-    pipe.transform(tables.DAYS).includes(term) || // -
-    tables.EKNAM.toLowerCase().includes(term.toLowerCase()) || // Description of Purchase Group
-    pipe.transform(tables.WRBTR).includes(term) || // Local Current Amount
-    tables.BUYER.toLowerCase().includes(term.toLowerCase()) || // Supplier Email ID
-    tables.CREAT.toLowerCase().includes(term.toLowerCase()) || // Created By
-    tables.ELIKZ.toLowerCase().includes(term.toLowerCase()) // Open PO
-  );
-}
+    return (
+      // Search by Purchase Document Number
+      tables.EBELN.toLowerCase().includes(term.toLowerCase()) || 
+      // Search by Item Number
+      tables.EBELP.toLowerCase().includes(term.toLowerCase()) || 
+      // Search by Purchase Group
+      tables.EKGRP.toLowerCase().includes(term.toLowerCase()) || 
+      // Search by Purchase Document Date
+      tables.BEDAT.toLowerCase().includes(term.toLowerCase()) || 
+      // Search by Supplier Code
+      tables.LIFNR.toLowerCase().includes(term.toLowerCase()) || 
+      // Search by Vendor Address
+      tables.NAME1.toLowerCase().includes(term.toLowerCase()) || 
+      // Search by Deletion/Blocked Status
+      tables.LOEKZ.toLowerCase().includes(term.toLowerCase()) || 
+      // Search by Material
+      tables.MATNR.toLowerCase().includes(term.toLowerCase()) || 
+      // Search by Updating Text Field
+      tables.TXZ01.toLowerCase().includes(term.toLowerCase()) || 
+      // Search by Plant
+      tables.WERKS.toLowerCase().includes(term.toLowerCase()) || 
+      // Search by Alternative Unit of Measure (transformed numeric field)
+      pipe.transform(tables.MENGE).includes(term) || 
+      // Search by Unit of Measure
+      tables.MEINS.toLowerCase().includes(term.toLowerCase()) || 
+      // Search by Bill of Quantity (transformed numeric field)
+      pipe.transform(tables.MENGE1).includes(term) || 
+      // Search by Base Unit of Measure
+      tables.MEINS1.toLowerCase().includes(term.toLowerCase()) || 
+      // Search by Net Price (transformed numeric field)
+      pipe.transform(tables.NETWR).includes(term) || 
+      // Search by Sum of Amount (transformed numeric field)
+      pipe.transform(tables.DMBTR1).includes(term) || 
+      // Search by Delivery Date
+      tables.EINDT.toLowerCase().includes(term.toLowerCase()) || 
+      // Search by Current Date
+      tables.DATUM.toLowerCase().includes(term.toLowerCase()) || 
+      // Search by Sum of Quantity (transformed numeric field)
+      pipe.transform(tables.LV_MENGE_SUM).includes(term) || 
+      // Search by Days Count (transformed numeric field)
+      pipe.transform(tables.DAYS).includes(term) || 
+      // Search by Description of Purchase Group
+      tables.EKNAM.toLowerCase().includes(term.toLowerCase()) || 
+      // Search by Local Current Amount (transformed numeric field)
+      pipe.transform(tables.WRBTR).includes(term) || 
+      // Search by Supplier Email ID
+      tables.BUYER.toLowerCase().includes(term.toLowerCase()) || 
+      // Search by Created By
+      tables.CREAT.toLowerCase().includes(term.toLowerCase()) || 
+      // Search by Open PO Status
+      tables.ELIKZ.toLowerCase().includes(term.toLowerCase()) || 
 
-  
+      // Search by Inbound Delivery
+      tables.VBELN.toLowerCase().includes(term.toLowerCase()) ||
+      // Search by Inbound Delivery Item
+      tables.POSNR.toLowerCase().includes(term.toLowerCase()) ||
+      // Search by Inbound Created On
+      tables.ERDAT.toLowerCase().includes(term.toLowerCase()) ||
+      // Search by Material Document
+      tables.MBLNR.toLowerCase().includes(term.toLowerCase()) ||
+      // Search by Posting Date
+      tables.BUDAT.toLowerCase().includes(term.toLowerCase()) ||
+      // Search by Days Taken for GR (transformed numeric field)
+      pipe.transform(tables.AGE).includes(term) ||
+      // Search by MIRO Number
+      tables.BELNR_MIRO.toLowerCase().includes(term.toLowerCase()) ||
+      // Search by MIRO Date
+      tables.BUDAT_MIRO.toLowerCase().includes(term.toLowerCase()) ||
+      // Search by Invoice Number
+      tables.XBLNR.toLowerCase().includes(term.toLowerCase()) ||
+      // Search by Invoice Date
+      tables.BLDAT.toLowerCase().includes(term.toLowerCase()) ||
+      // Search by PO
+      tables.VGBEL.toLowerCase().includes(term.toLowerCase()) ||
+      // Search by PO Item
+      tables.VGPOS.toLowerCase().includes(term.toLowerCase()) ||
+      // Search by PO Date
+      tables.AEDAT.toLowerCase().includes(term.toLowerCase()) ||
+      // Search by Storage Location
+      tables.LGORT.toLowerCase().includes(term.toLowerCase()) ||
+      // Search by Storage Location Name
+      tables.LGOBE.toLowerCase().includes(term.toLowerCase()) ||
+      // Search by Material Description
+      tables.MAKTX.toLowerCase().includes(term.toLowerCase()) ||
+      // Search by Quantity (transformed numeric field)
+      pipe.transform(tables.LFIMG).includes(term) ||
+      // Search by Gate Entry Number
+      tables.GATEENTRY.toLowerCase().includes(term.toLowerCase()) ||
+      // Search by Gate Entry Date
+      tables.GATEDATE.toLowerCase().includes(term.toLowerCase()) ||
+      // Search by Days Taken for IBD (transformed numeric field)
+      pipe.transform(tables.AGE1).includes(term) ||
+      // Search by Requisition Date
+      tables.BADAT.toLowerCase().includes(term.toLowerCase()) ||
+      // Search by Document Type
+      tables.BSART.toLowerCase().includes(term.toLowerCase()) ||
+      // Search by Requisitioner
+      tables.AFNAM.toLowerCase().includes(term.toLowerCase()) ||
+      // Search by Delivery Date
+      tables.LFDAT.toLowerCase().includes(term.toLowerCase()) ||
+      // Search by Release Date
+      tables.FRGDT.toLowerCase().includes(term.toLowerCase()) ||
+      // Search by Total Value (transformed numeric field)
+      pipe.transform(tables.TOT_VAL).includes(term) ||
+      // Search by IBD Done GR Pending
+      tables.R1.toLowerCase().includes(term.toLowerCase()) ||
+      // Search by IBD Done GR Done
+      tables.R2.toLowerCase().includes(term.toLowerCase())
+    );
+  }
+
 
 @Injectable({
     providedIn: 'root'
