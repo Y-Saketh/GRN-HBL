@@ -41,6 +41,7 @@ export class QRcodegenrationComponent {
   GrnResponse: any;
   submit: boolean;
   isSubmitting: boolean;
+  shadowRows = [];
 
   constructor(public service: qrcodegenrationService,public formBuilder: UntypedFormBuilder,private apiService:UserProfileService) {
     this.tables$ = service.tables$;
@@ -77,62 +78,162 @@ export class QRcodegenrationComponent {
       this.hideme.push(true);
     }
   }
+  splitRows(index: number, splitCount: number) {
+    // Get the table row at the specified index
+    this.tables$.pipe(take(1)).subscribe((tables) => {
+      const mainRow = tables[index];
+
+      // Initialize shadowRows array if not already present
+      if (!mainRow.shadowRows) {
+        mainRow.shadowRows = [];
+      }
+
+      // Add the specified number of shadow rows
+      for (let i = 0; i < splitCount; i++) {
+        mainRow.shadowRows.push({
+          MATNR: mainRow.MATNR,
+          WERKS: mainRow.WERKS,
+          LGORT: '',
+          BWART: mainRow.BWART,
+          Batch: '',
+          PostingDate: '',
+          MENGE: '',
+          MEINS: mainRow.MEINS,
+          EBELN: mainRow.EBELN,
+          EBELP: mainRow.EBELP,
+          shadowRows: [],
+        });
+      }
+    });
+  }
+
   saveBound(tables$: Observable<any[]>) {
-    // Disable the submit button to prevent multiple clicks
     this.isSubmitting = true;
-  
-    tables$
-      .pipe(take(1)) // Ensure subscription happens only once
-      .subscribe({
-        next: (tables) => {
-          // Start with the common header data
-          const payload = {
-            DETAIL: {
-             
-              SAVE: [], // Initialize the ITEM array
-            },
+
+    tables$.pipe(take(1)).subscribe({
+      next: (tables) => {
+        const payload = { SAVE: [] };
+
+        tables.forEach((table) => {
+          const mainRow = {
+            MATNR: table.MATNR,
+            MENGE: parseFloat(table.MENGE) || 0,
+            MEINS: table.MEINS,
+            SHORT_TEXT: table.SHORT_TEXT,
+            ORGQTY: parseFloat(table.ORGQTY) || 0,
+            EBELN: table.EBELN,
+            EBELP: table.EBELP || 1,
+            WERKS: table.WERKS,
+            LGORT: table.LGORT,
+            BWART: table.BWART,
+            BUDAT:table.PostingDate
           };
+          // payload.SAVE.push(mainRow);
+         
+          // Add shadow rows
+          if (table.shadowRows) {
+            table.shadowRows.forEach((shadowRow: any) => {
+              payload.SAVE.push({
+                MATNR: shadowRow.MATNR,
+                MENGE: parseFloat(shadowRow.MENGE) || 0,
+                MEINS: shadowRow.MEINS,
+                SHORT_TEXT: shadowRow.SHORT_TEXT,
+                ORGQTY: parseFloat(shadowRow.ORGQTY) || 0,
+                EBELN: shadowRow.EBELN,
+                EBELP: shadowRow.EBELP || 1,
+                WERKS: shadowRow.WERKS,
+                LGORT: shadowRow.LGORT,
+                BWART: shadowRow.BWART,
+              });
+            });
+          }
+        });
+
+        console.log('Final Payload:', payload, );
+
+        this.apiService.grnlist(payload).subscribe({
+          next: (res) => {
+            console.log('Saved:', res);
+            this.isSubmitting = false;
+          },
+          error: (err) => {
+            console.error('Error:', err);
+            this.isSubmitting = false;
+          },
+        });
+      },
+      error: (err) => {
+        console.error('Error:', err);
+        this.isSubmitting = false;
+      },
+    });
+  }
   
-          // Loop through the table data and add rows to ITEM array
-          tables.forEach((table) => {
-            const item = {
-              MATNR: table.MATNR, // Material Number
-              MENGE: parseFloat(table.MENGE) || 0, // Quantity
-              MEINS: table.MEINS, // Base Unit of Measure
-              SHORT_TEXT: table.SHORT_TEXT, // Material Description
-              ORGQTY: parseFloat(table.ORGQTY) || 0, // Original Quantity
-              EBELN: table.EBELN, // Purchasing Document Number
-              EBELP: table.EBELP || 1, // Item Number of Purchasing Document
-              WERKS: table.WERKS, // Plant
-              LGORT: table.LGORT, // Storage Location
-              BWART: table.BWART, // Movement Type
-            };
-            payload.DETAIL.SAVE.push(item); // Add to ITEM array
-          });
+  // saveBound(tables$: Observable<any[]>) {
+  //   // Disable the submit button to prevent multiple clicks
+  //   this.isSubmitting = true;
+  
+  //   tables$
+  //     .pipe(take(1)) // Ensure subscription happens only once
+  //     .subscribe({
+  //       next: (tables) => {
+  //         // Start with the common header data
+  //         const payload = {
+  //           // DETAIL: {
+             
+  //             SAVE: [], // Initialize the ITEM array
+  //           // },
+  //         };
+  
+  //         // Loop through the table data and add rows to ITEM array
+  //         tables.forEach((table) => {
+  //           const item = {
+  //             MATNR: table.MATNR, // Material Number
+  //             MENGE: parseFloat(table.MENGE) || 0, // Quantity
+  //             MEINS: table.MEINS, // Base Unit of Measure
+  //             SHORT_TEXT: table.SHORT_TEXT, // Material Description
+  //             ORGQTY: parseFloat(table.ORGQTY) || 0, // Original Quantity
+  //             EBELN: table.EBELN, // Purchasing Document Number
+  //             EBELP: table.EBELP || 1, // Item Number of Purchasing Document
+  //             WERKS: table.WERKS, // Plant
+  //             LGORT: table.LGORT, // Storage Location
+  //             BWART: table.BWART, // Movement Type
+  //           };
+  //           payload.SAVE.push(item); // Add to ITEM array
+  //         });
           
   
-          console.log("Final Payload:", payload);
+  //         console.log("Final Payload:", payload);
   
-          // Call API to save data
-          this.apiService.grnlist(payload).subscribe({
-            next: (res) => {
-              console.log("Inbound Delivery Saved:", res);
-              Swal.fire("", res[0].MSGTXT, "success");
-              this.isSubmitting = false; // Re-enable the button
-            },
-            error: (err) => {
-              console.error("Error while saving:", err);
-              Swal.fire("", "Error occurred while saving", "error");
-              this.isSubmitting = false; // Re-enable the button
-            },
-          });
-        },
-        error: (err) => {
-          console.error("Error in subscription:", err);
-          this.isSubmitting = false; // Re-enable the button
-        },
-      });
-  }
+  //         // Call API to save data
+  //         this.apiService.grnlist(payload).subscribe({
+  //           next: (res) => {
+  //             console.log("Inbound Delivery Saved:", res);
+  //             // if(res[0].NUMBER==300 || res[0].NUMBER==264){
+  //             //   Swal.fire("", res[0].MESSAGE, "error");
+  //             // }
+  //             // else
+  //              if(res[0].NUMBER==200){
+  //               Swal.fire("", res[0].MESSAGE, "success");
+  //             }
+  //             else{
+  //               Swal.fire("", res[0].MESSAGE, "error");
+  //             }
+  //             this.isSubmitting = false; // Re-enable the button
+  //           },
+  //           error: (err) => {
+  //             console.error("Error while saving:", err);
+  //             Swal.fire("", "Error occurred while saving", "error");
+  //             this.isSubmitting = false; // Re-enable the button
+  //           },
+  //         });
+  //       },
+  //       error: (err) => {
+  //         console.error("Error in subscription:", err);
+  //         this.isSubmitting = false; // Re-enable the button
+  //       },
+  //     });
+  // }
   
   validSubmit(){
     this.submit = true;

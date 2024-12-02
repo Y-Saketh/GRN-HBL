@@ -112,35 +112,64 @@
               class="table table-bordered dt-responsive nowrap datatables no-footer dtr-inline"
             >
               <thead>
-                <th sortable="MATNR" (sort)="onSort($event)">Material Number</th>
-                <th sortable="WERKS" (sort)="onSort($event)">Plant</th>
-                <th sortable="LGORT" (sort)="onSort($event)">Storage Location</th>
-                <th sortable="BWART" (sort)="onSort($event)">Movement Type</th>
-                <th sortable="MENGE" (sort)="onSort($event)">Quantity</th>
-                <th sortable="MEINS" (sort)="onSort($event)">UOM</th>
-                <th sortable="EBELN" (sort)="onSort($event)">Purchase Order</th>
-                <th sortable="EBELP" (sort)="onSort($event)">PO Item</th>
-              </thead>
-              @for(table of tables$ | async;track $index){
-              <tbody>
                 <tr>
-                  <!-- <td align="center">
-                    <a class="expand-row" (click)="changeValue($index)"> + </a>
-                  </td> -->
+                  <th sortable="MATNR" (sort)="onSort($event)">Material Number</th>
+                  <th sortable="WERKS" (sort)="onSort($event)">Plant</th>
+                  <th sortable="LGORT" (sort)="onSort($event)">Storage Location</th>
+                  <th sortable="BWART" (sort)="onSort($event)">Movement Type</th>
+                  <th sortable="Batch" (sort)="onSort($event)">Batch</th>
+                  <th sortable="PostingDate" (sort)="onSort($event)">Posting Date</th>
+                  <th sortable="MENGE" (sort)="onSort($event)">Quantity</th>
+                  <th sortable="MEINS" (sort)="onSort($event)">UOM</th>
+                  <th sortable="EBELN" (sort)="onSort($event)">Purchase Order</th>
+                  <th sortable="EBELP" (sort)="onSort($event)">PO Item</th>
+                  <th>Split</th>
+                </tr>
+              </thead>
+              <tbody *ngFor="let table of tables$ | async; let i = index">
+                <!-- Main row -->
+                <tr>
                   <td>{{ table.MATNR }}</td>
                   <td>{{ table.WERKS }}</td>
-                  <td><input type="text" [(ngModel)]="table.LGORT" class="form-control form-control-sm" /></td>
-                  <!-- <td>{{ table.LGORT }}</td> -->
+                  <td>{{table.LGORT}}</td>
+                  <!-- <td><input type="text" [(ngModel)]="table.LGORT" class="form-control form-control-sm" /></td> -->
                   <td>{{ table.BWART }}</td>
-                  <!-- <td>{{ table.MENGE }}</td> -->
-                  <td><input type="text" [(ngModel)]="table.MENGE" class="form-control form-control-sm" /></td>
+                  <td>{{table.Batch}}</td>
+                  <td><input type="text" [(ngModel)]="table.PostingDate" class="form-control form-control-sm" /></td>
+                  <td>{{table.MENGE}}</td>
+                  <!-- <td><input type="text" [(ngModel)]="table.Batch" class="form-control form-control-sm" /></td>
+                  <td><input type="text" [(ngModel)]="table.PostingDate" class="form-control form-control-sm" /></td>
+                  <td><input type="text" [(ngModel)]="table.MENGE" class="form-control form-control-sm" /></td> -->
                   <td>{{ table.MEINS }}</td>
                   <td>{{ table.EBELN }}</td>
                   <td>{{ table.EBELP }}</td>
+                  <td>
+                    <input
+                      type="number"
+                      min="1"
+                      [(ngModel)]="table.splitCount"
+                      placeholder="Rows"
+                      class="form-control form-control-sm"
+                    />
+                    <button (click)="splitRows(i, table.splitCount)" class="btn btn-sm btn-primary">Split</button>
+                  </td>
                 </tr>
-              
+                <!-- Shadow rows -->
+                <tr *ngFor="let shadow of table.shadowRows">
+                  <td>{{ shadow.MATNR }}</td>
+                  <td>{{ shadow.WERKS }}</td>
+                  <td><input type="text" [(ngModel)]="shadow.LGORT" class="form-control form-control-sm" /></td>
+                  <td>{{ shadow.BWART }}</td>
+                  <td><input type="text" [(ngModel)]="shadow.Batch" class="form-control form-control-sm" /></td>
+                  <td>{{shadow.PostingDate}}</td>
+                  <!-- <td><input type="text" [(ngModel)]="shadow.PostingDate" class="form-control form-control-sm" /></td> -->
+                  <td><input type="text" [(ngModel)]="shadow.MENGE" class="form-control form-control-sm" /></td>
+                  <td>{{ shadow.MEINS }}</td>
+                  <td>{{ shadow.EBELN }}</td>
+                  <td>{{ shadow.EBELP }}</td>
+                  <td></td>
+                </tr>
               </tbody>
-              }
             </table>
           </div>
           <div class="col-md-4 text-left">
@@ -152,6 +181,8 @@
               Save
             </button>
           </div>
+          
+          
           <div>
 
           </div>

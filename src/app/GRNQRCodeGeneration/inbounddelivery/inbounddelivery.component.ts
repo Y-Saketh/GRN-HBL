@@ -113,12 +113,12 @@ export class InbounddeliveryComponent implements OnInit {
             DETAIL: {
               PO_NUMBER: this.form.inbounddeliverynumber.value,
               DCNUMBER: this.tableForm.value.deleveryChallanNumber,
-              INVOICE: this.tableForm.value.invoiceDate?moment(this.tableForm.value.invoiceDate) :"",//'DefaultInvoice',
-              DC_DATE: this.tableForm.value.DocumentDate?moment(this.tableForm.value.DocumentDate) :"", //'2024-11-29',
+              INVOICE: this.tableForm.value.invoiceDate?moment(this.tableForm.value.invoiceDate).format('DD/MM/YYYY') :"",//'DefaultInvoice',
+              DC_DATE: this.tableForm.value.DocumentDate?moment(this.tableForm.value.DocumentDate).format('DD/MM/YYYY')  :"", //'2024-11-29',
               PACKLIST: this.tableForm.value.PackingList,
               VEHICLE_NO: this.tableForm.value.vehicleNumber,
               LR_NUMBER: this.tableForm.value.deleveryChallanNumber || 'DefaultMaterial',
-              LR_DATE: this.tableForm.value.gateEntryDate?moment(this.tableForm.value.gateEntryDate) :"", //,
+              LR_DATE: this.tableForm.value.gateEntryDate?moment(this.tableForm.value.gateEntryDate).format('DD/MM/YYYY')  :"", //,
               TRANSPORTER: this.tableForm.value.supplier || 'DefaultTransporter',
               ITEM: [], // Initialize the ITEM array
             },
