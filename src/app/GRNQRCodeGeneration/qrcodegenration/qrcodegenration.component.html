@@ -135,7 +135,11 @@
                   <!-- <td><input type="text" [(ngModel)]="table.LGORT" class="form-control form-control-sm" /></td> -->
                   <td>{{ table.BWART }}</td>
                   <td>{{table.Batch}}</td>
-                  <td><input type="text" [(ngModel)]="table.PostingDate" class="form-control form-control-sm" /></td>
+                  <td><input type="text"   
+                      [bsConfig]="bsConfig"
+                bsDatepicker
+               
+              [(ngModel)]="table.PostingDate" class="form-control form-control-sm" /></td>
                   <td>{{table.MENGE}}</td>
                   <!-- <td><input type="text" [(ngModel)]="table.Batch" class="form-control form-control-sm" /></td>
                   <td><input type="text" [(ngModel)]="table.PostingDate" class="form-control form-control-sm" /></td>

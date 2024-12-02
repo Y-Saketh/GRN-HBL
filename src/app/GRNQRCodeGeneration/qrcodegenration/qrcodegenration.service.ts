@@ -41,18 +41,9 @@ function sort(tables: Table[], column: string, direction: string): Table[] {
  * @param tables Table field value fetch
  * @param term Search the value
  */
-// function matches(tables: Table, term: string, pipe: PipeTransform) {
-//     return tables.MATNR.toLowerCase().includes(term.toLowerCase())   // Material
-//         || tables.WERKS.toLowerCase().includes(term.toLowerCase())  // Plant
-//         || tables.LGORT.toLowerCase().includes(term.toLowerCase())  // Storage Location
-//         || tables.BWART.toLowerCase().includes(term.toLowerCase())  // Movement Type
-//         || pipe.transform(tables.MENGE).includes(term)              // Quantity
-//         || tables.MEINS.toLowerCase().includes(term.toLowerCase())  // Base Unit of Measure
-//         || tables.EBELN.toLowerCase().includes(term.toLowerCase())  // Supplier
-//         || pipe.transform(tables.EBELP).includes(term);             // Material Document Item
-// }
+
 function matches(tables: Table, term: string, pipe: PipeTransform): boolean {
-    if (!term) return true; // If no search term, return true for all rows
+    // if (!term) return true; // If no search term, return true for all rows
 
     const lowerTerm = term.toLowerCase();
 

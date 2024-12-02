@@ -3,7 +3,7 @@ import { MenuItem } from './menu.model';
 export const MENU: MenuItem[] = [
     //main row items 
     {
-        id: 2,
+        id: "menu",
         label: 'MENUITEMS.DASHBOARDS.TEXT',
         icon: 'bx-home-circle',
 
@@ -71,62 +71,62 @@ export const MENU: MenuItem[] = [
         ]
     },
     {
-        id: 3,
+        id: "openpolist",//3,
         label: 'MENUITEMS.DASHBOARDS.LIST.OPENPOLIST',
         link: 'openpolist',
         icon: 'bx-archive',
-        parentId: 2
+        parentId: "menu"
     },
     {
-        id: 4,
+        id: "zgribdstatus",
         label: 'ZGR & IBD Status',
         icon: 'bx-cloud-download',
-        parentId: 2,
+        parentId: "menu",
         subItems: [
             {
-                id: 5,
+                id: "grpending",
                 label: 'GR Pending',
                 link: 'grpending',
                 icon: 'bx-badge',
-                parentId: 4
+                parentId: "zgribdstatus"
             },
             {
-                id: 6,
+                id: "grdone",
                 label: 'GR Done',
                 link: 'grdone',
                 icon: 'bx-badge-check',
-                parentId: 4
+                parentId: "zgribdstatus"
             }
         ]
     },
     {
-        id: 7,
+        id: "QRcodegenration",
         label: 'MENUITEMS.DASHBOARDS.LIST.QRCODEGENERATION',
         link: 'QRcodegenration',
         icon: 'bx-bar-chart',
-        parentId: 2
+        parentId: "menu"
     },
     {
-        id: 8,
+        id: "inbounddelivery",
         label: 'MENUITEMS.DASHBOARDS.LIST.INBOUNDDELIVERY',
         link: 'inbounddelivery',
         icon: 'bx-archive-in',
-        parentId: 2
+        parentId: "menu"
     },
     {
-        id: 9,
+        id: "grnagainstid",
         label: 'MENUITEMS.DASHBOARDS.LIST.GRNAGAINSTID',
         link: 'grnagainstid',
         icon: 'bx-aperture',
-        parentId: 2
+        parentId: "menu"
     },
     
     {
-        id: 10,
+        id: "closeDownload",
         label: 'ZPRClose-Download',
         link: 'closeDownload',
         icon: 'bx-cloud-download',
-        parentId: 2
+        parentId: "menu"
     },
    
     

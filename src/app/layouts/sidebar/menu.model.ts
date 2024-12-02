@@ -1,5 +1,5 @@
 export interface MenuItem {
-    id?: number;
+    id?: string;
     label?: string;
     icon?: string;
     link?: string;
@@ -9,7 +9,7 @@ export interface MenuItem {
       variant: string;
       text: string;
     };
-    parentId?: number;
+    parentId?: string;
     isLayout?: boolean;
 }
   
