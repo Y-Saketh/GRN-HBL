@@ -43,7 +43,7 @@ function sort(tables: Table[], column: string, direction: string): Table[] {
  */
 function matches(tables: Table, term: string, pipe: PipeTransform) {
     return (
-      // Search by Purchase Document Number
+      // Search by Purchase Order
       tables.EBELN.toLowerCase().includes(term.toLowerCase()) || 
       // Search by Item Number
       tables.EBELP.toLowerCase().includes(term.toLowerCase()) || 
@@ -93,7 +93,8 @@ function matches(tables: Table, term: string, pipe: PipeTransform) {
       tables.CREAT.toLowerCase().includes(term.toLowerCase()) || 
       // Search by Open PO Status
       tables.ELIKZ.toLowerCase().includes(term.toLowerCase()) || 
-
+      // Search by Movement Type
+      tables.BWART.toLowerCase().includes(term.toLowerCase()) ||
       // Search by Inbound Delivery
       tables.VBELN.toLowerCase().includes(term.toLowerCase()) ||
       // Search by Inbound Delivery Item
@@ -130,6 +131,8 @@ function matches(tables: Table, term: string, pipe: PipeTransform) {
       pipe.transform(tables.LFIMG).includes(term) ||
       // Search by Gate Entry Number
       tables.GATEENTRY.toLowerCase().includes(term.toLowerCase()) ||
+      // Search by Batch
+      tables.Batch.toLowerCase().includes(term.toLowerCase()) ||
       // Search by Gate Entry Date
       tables.GATEDATE.toLowerCase().includes(term.toLowerCase()) ||
       // Search by Days Taken for IBD (transformed numeric field)
@@ -149,7 +152,11 @@ function matches(tables: Table, term: string, pipe: PipeTransform) {
       // Search by IBD Done GR Pending
       tables.R1.toLowerCase().includes(term.toLowerCase()) ||
       // Search by IBD Done GR Done
-      tables.R2.toLowerCase().includes(term.toLowerCase())
+      tables.R2.toLowerCase().includes(term.toLowerCase()) ||
+      // Search by Organizational Quantity
+      pipe.transform(tables.ORGQT).includes(term) ||
+      // Search by Short Text
+      tables.SHORT_TEXT.toLowerCase().includes(term.toLowerCase())
     );
   }
 

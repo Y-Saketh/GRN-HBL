@@ -298,7 +298,7 @@
               <td>{{ table.WERKS }}</td>
               <!-- Plant -->
               <td
-                (click)="onSelectInBound(table)"
+                (click)="onSelectInBound(tables$)"
                 style="
                   cursor: pointer;
                   text-decoration: underline;
@@ -441,159 +441,103 @@
         <thead>
           <tr>
             <th>#</th>
+            <th>Material Number</th>
             <th>Plant</th>
             <th>Storage Location</th>
-            <th>Original DEL.Quantity</th>
-            <th>Delivery Quantity</th>
-            <th>Transporter Name</th>
-            <th>Base Unit of Measure</th>
-            <th>Purchasing Document Number</th>
-            <th>Item Number of Purchasing Document</th>
-            <th>Material Number</th>
-            <th>Material Description</th>
+            <th>Movement Type</th>
+            <th>Batch</th>
+            <th>Posting Date</th>
+            <th>Quantity</th>
+            <th>UOM</th>
+            <th>Purchase Order</th>
+            <th>PO Item</th>
+            <th>Split</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let items of inbound; let i = index">
             <td>{{ i + 1 }}</td>
+            <td>{{ items.MATNR }}</td>
             <td>{{ items.WERKS }}</td>
             <td>{{ items.LGORT }}</td>
-            <td>{{ items.ORGQTY }}</td>
+            <td>{{ items.BWART }}</td>
+            <td>{{ items.Batch }}</td>
             <td>
               <input
                 type="text"
-                [ngModelOptions]="{ standalone: true }"
-                [(ngModel)]="items.DMENGE"
+                [bsConfig]="bsConfig"
+                bsDatepicker
+                [(ngModel)]="items.PostingDate"
                 class="form-control form-control-sm"
               />
             </td>
-            <!-- <td>{{items.DMENGE}}</td> -->
-            <td>{{ items.transporterName }}</td>
+            <td>{{ items.MENGE }}</td>
             <td>{{ items.MEINS }}</td>
-            <td>{{ items.PO_NUMBER }}</td>
-            <td>{{ items.PO_ITEM }}</td>
-            <!-- <td>{{items.tolerance}}</td> -->
-            <td>{{ items.MATNR }}</td>
-            <td>{{ items.SHORT_TEXT }}</td>
+            <td>{{ items.EBELN }}</td>
+            <td>{{ items.EBELP }}</td>
             <td>
-              <ul>
-                <li *ngFor="let packet of material.packets">
-                  Packet {{ packet.packet }}: {{ packet.quantity }}
-                </li>
-              </ul>
-            </td>
-            <td>
+              <input
+                type="number"
+                min="1"
+                [(ngModel)]="items.splitCount"
+                placeholder="Rows"
+                class="form-control form-control-sm"
+              />
               <button
-                class="btn btn-warning btn-sm"
-                (click)="openUnmatchPopup(i)"
+                (click)="splitRows(i, items.splitCount)"
+                class="btn btn-sm btn-primary"
               >
-                Edit Quantity
+                Split
               </button>
             </td>
+          </tr>
+          <!-- Shadow rows -->
+          <tr *ngFor="let shadow of table.shadowRows">
+            <td>{{ shadow.MATNR }}</td>
+            <td>{{ shadow.WERKS }}</td>
+            <td>
+              <input
+                type="text"
+                [(ngModel)]="shadow.LGORT"
+                class="form-control form-control-sm"
+              />
+            </td>
+            <td>{{ shadow.BWART }}</td>
+            <td>
+              <input
+                type="text"
+                [(ngModel)]="shadow.Batch"
+                class="form-control form-control-sm"
+              />
+            </td>
+            <td>{{ shadow.PostingDate }}</td>
+            <td>
+              <input
+                type="text"
+                [(ngModel)]="shadow.MENGE"
+                class="form-control form-control-sm"
+              />
+            </td>
+            <td>{{ shadow.MEINS }}</td>
+            <td>{{ shadow.EBELN }}</td>
+            <td>{{ shadow.EBELP }}</td>
+            <td></td>
           </tr>
         </tbody>
       </table>
 
-      <!-- Modal for Unmatch -->
-      <div
-        bsModal
-        #unmatchModal="bs-modal"
-        class="modal fade"
-        tabindex="-1"
-        aria-labelledby="unmatchModalLabel"
-        aria-hidden="true"
-      >
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="unmatchModalLabel">
-                Edit Quantities
-              </h5>
-              <button
-                type="button"
-                class="btn-close"
-                (click)="closePopup()"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div class="modal-body">
-              <h6>Material: {{ selectedMaterial?.name }}</h6>
-              <table class="table table-bordered">
-                <thead>
-                  <tr>
-                    <th>Packet</th>
-                    <th>Quantity</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr
-                    *ngFor="
-                      let packet of selectedMaterial?.packets;
-                      let j = index
-                    "
-                  >
-                    <td>Packet {{ j + 1 }}</td>
-                    <td>
-                      <input
-                        type="number"
-                        class="form-control"
-                        [(ngModel)]="packet.quantity"
-                      />
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div class="modal-footer">
-              <button class="btn btn-primary" (click)="saveUnmatched()">
-                Save
-              </button>
-              <button class="btn btn-secondary" (click)="closePopup()">
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <div class="custom-btn-group mt-4">
-        <button class="btn btn-success" type="button">Save</button>
-        <button class="btn btn-primary" (click)="generateQR()" type="button">
-          Inbound
+      <div class="col-md-4 text-left">
+        <button
+          class="btn btn-success mt-4"
+          type="button"
+          (click)="saveBound(tables$)"
+        >
+          Save
         </button>
       </div>
 
-      <div *ngIf="qrscreen">
-        <h3>QR Code Generation</h3>
-        <p *ngIf="isGenerating" class="text-primary">
-          Generating QR codes for all items...
-        </p>
-
-        <div class="qr-container">
-          <div *ngFor="let qrData of qrCodes; let i = index" class="qr-item">
-            <div class="qr-code-wrapper">
-              <!-- Display QR code as image -->
-              <img
-                [src]="qrData.qrCodeUrl"
-                alt="QR Code for Item {{ i + 1 }}"
-                width="150"
-                height="150"
-              />
-            </div>
-
-            <div class="qr-info">
-              <!-- Display fields beside the QR code -->
-              <p>{{ qrData.data.grnNumber }}</p>
-              <p>{{ qrData.data.vendorCode }}</p>
-              <p>{{ qrData.data.sapCode }}</p>
-              <p>{{ qrData.data.reelNumber }}</p>
-              <p>{{ qrData.data.reelQuantity }}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
+      
     <!-- </div> -->
     <!-- </div> -->
     <!-- </div> -->

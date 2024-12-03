@@ -6,12 +6,12 @@ import { AdvancedService } from './advanced.service';
 import { PagetitleComponent } from 'src/app/shared/ui/pagetitle/pagetitle.component';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { AdvancedSortableDirective, SortEvent } from './Advanced-sortable.directive';
-import { Observable } from 'rxjs';
+import { Observable, take } from 'rxjs';
 import { tableData } from './data';
 import { UserProfileService } from 'src/app/core/services/user.service';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import * as moment from 'moment';
-
+import Swal from 'sweetalert2';
 import { ModalDirective, ModalModule } from 'ngx-bootstrap/modal';
 
 @Component({
@@ -40,14 +40,15 @@ export class GrpendingComponent implements OnInit {
   inbound = [
     {
       MATNR: "000000001000059735",
-      DMENGE: 800.000,
+      WERKS: 1300,
+      LGORT: "S061",
+      BWART: "Z001",
+      Batch: "20220228",
+      PostingDate: "2022-02-28",
+      MENGE: 1000.000,
       MEINS: "NOS",
-      SHORT_TEXT: "FUSE_240AC/DC_E1 FUSE_20_SC-20 HOLDER",
-      ORGQTY: 800.000,
-      PO_NUMBER: "4500181937",
-      PO_ITEM: 1,
-      WERKS: "1300",
-      LGORT: "S061"
+      EBELN: "4500181937",
+      EBELP: 1,
   }
 ]
   isPopupOpen = false;
@@ -62,8 +63,10 @@ export class GrpendingComponent implements OnInit {
   public isCollapsed = true;
   expandedRows: { [key: string]: boolean } = {};
   grnscreen: boolean = true;
-  qrscreen: boolean;
+  inboundscreen: boolean;
   lotReportsData: any;
+  isSubmitting: boolean;
+  shadowRows = [];
   // POLIST: any;
   INBOUND: Table[];
   GrPending: Table[];
@@ -121,9 +124,9 @@ export class GrpendingComponent implements OnInit {
 
   }
 
-  // Placeholder for matchMaterial
+  // Placeholder for matchInBound
   matchinbound(index: number): void {
-    console.log('Material matched:', this.inbound[index]);
+    console.log('InBound matched:', this.inbound[index]);
   }
   saveinbound(index: number): void {
     const inbound = this.inbound[index];
@@ -206,6 +209,103 @@ export class GrpendingComponent implements OnInit {
     }
   }
 
+  splitRows(index: number, splitCount: number) {
+    // Get the table row at the specified index
+    this.tables$.pipe(take(1)).subscribe((tables) => {
+      const mainRow = tables[index];
+
+      if (!mainRow) {
+        console.error(`Row at index ${index} does not exist.`);
+        return;
+      }
+
+      // Initialize shadowRows array if not already present
+      if (!mainRow.shadowRows) {
+        mainRow.shadowRows = [];
+      }
+
+      // Add the specified number of shadow rows
+      for (let i = 0; i < splitCount; i++) {
+        mainRow.shadowRows.push({
+          MATNR: mainRow.MATNR,
+          WERKS: mainRow.WERKS,
+          LGORT: '',
+          BWART: mainRow.BWART,
+          Batch: '',
+          PostingDate: '',
+          MENGE: '',
+          MEINS: mainRow.MEINS,
+          EBELN: mainRow.EBELN,
+          EBELP: mainRow.EBELP,
+          shadowRows: [],
+        });
+      }
+    });
+  }
+
+  saveBound(tables$: Observable<any[]>) {
+    this.isSubmitting = true;
+
+    tables$.pipe(take(1)).subscribe({
+      next: (tables) => {
+        const payload = { BUDAT:'',SAVE: [] };
+
+        tables.forEach((table) => {
+          const mainRow = {
+            MATNR: table.MATNR,
+            MENGE: parseFloat(table.MENGE) || 0,
+            MEINS: table.MEINS,
+            SHORT_TEXT: table.SHORT_TEXT,
+            ORGQTY: parseFloat(table.ORGQTY) || 0,
+            EBELN: table.EBELN,
+            EBELP: table.EBELP || 1,
+            WERKS: table.WERKS,
+            LGORT: table.LGORT,
+            BWART: table.BWART,
+            BUDAT:table.PostingDate
+          };
+          // payload.SAVE.push(mainRow);
+          payload.BUDAT= table.PostingDate
+          // Add shadow rows
+          if (table.shadowRows) {
+            table.shadowRows.forEach((shadowRow: any) => {
+              payload.SAVE.push({
+                MATNR: shadowRow.MATNR,
+                MENGE: parseFloat(shadowRow.MENGE) || 0,
+                MEINS: shadowRow.MEINS,
+                SHORT_TEXT: shadowRow.SHORT_TEXT,
+                ORGQTY: parseFloat(shadowRow.ORGQTY) || 0,
+                EBELN: shadowRow.EBELN,
+                EBELP: shadowRow.EBELP || 1,
+                WERKS: shadowRow.WERKS,
+                LGORT: shadowRow.LGORT,
+                BWART: shadowRow.BWART,
+              });
+            });
+          }
+        });
+       
+        console.log('Final Payload:', payload, );
+        this.apiService.grnlist(payload).subscribe({
+          next: (res) => {
+            console.log('Saved:', res);
+           if(res[0].NUMBER){}
+            Swal.fire("", res[0].MESSAGE, "success");
+            this.isSubmitting = false;
+          },
+          error: (err) => {
+            console.error('Error:', err);
+            this.isSubmitting = false;
+          },
+        });
+      },
+      error: (err) => {
+        console.error('Error:', err);
+        this.isSubmitting = false;
+      },
+    });
+  }
+
   /**
    * Sort table data
    * @param param0 sort the column
@@ -233,7 +333,7 @@ export class GrpendingComponent implements OnInit {
         "EBELN": this.form.inbounddeliverynumber.value//"4500181937"
       }
       console.log("objobj",obj)
-      this.apiService.OpenINBOUND(obj).subscribe({
+      this.apiService.grnlist(obj).subscribe({
         next: (res: any) => {
           console.log('Data:', res);
           this.INBOUND = res;
@@ -253,7 +353,7 @@ export class GrpendingComponent implements OnInit {
 
   back(){
     this.selectedInBound = false;
-    this.grnscreen = false
+    this.grnscreen = true;
   }
   
   onSelectInBound(table: any) {
@@ -264,12 +364,11 @@ export class GrpendingComponent implements OnInit {
   getGrPending(){
     console.log("validationform",this.form) 
     let obj = {
-   
     "WERKS": this.form.plant.value,//"1300",
     "VBELN":this.form.delivery.value ,//"180390138",
     "LGORT": this.form.storageLocation.value,// "S048",
     "BUDAT_F":this.form.ibdCreadtedFrom?moment(this.form.ibdCreadtedFrom.value):'',//"2024-04-01",
-    "BUDAT_T": this.form.ibdCreadtedFrom?moment(this.form.ibdCreadtedTo.value):'',//""2024-11-25",
+    "BUDAT_T": this.form.ibdCreadtedTo?moment(this.form.ibdCreadtedTo.value):'',//""2024-11-25",
     "R1": "X",
     "R2": ""
     }

@@ -87,6 +87,7 @@ export class QRcodegenrationComponent {
     // Get the table row at the specified index
     this.tables$.pipe(take(1)).subscribe((tables) => {
       const mainRow = tables[index];
+      console.log("mainrow", mainRow)
 
       // Initialize shadowRows array if not already present
       if (!mainRow.shadowRows) {
@@ -109,6 +110,7 @@ export class QRcodegenrationComponent {
           shadowRows: [],
         });
       }
+      console.log("mainrow",mainRow.shadowRows);
     });
   }
 
@@ -155,7 +157,6 @@ export class QRcodegenrationComponent {
         });
        
         console.log('Final Payload:', payload, );
-
         this.apiService.grnlist(payload).subscribe({
           next: (res) => {
             console.log('Saved:', res);
@@ -200,7 +201,6 @@ export class QRcodegenrationComponent {
         }
       });
     }
-   
   }
 
   /**

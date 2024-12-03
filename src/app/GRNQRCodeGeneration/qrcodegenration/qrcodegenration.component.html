@@ -1,8 +1,5 @@
 <div class="container-fluid">
-  <app-page-title
-   
-    [breadcrumbItems]="breadCrumbItems"
-  ></app-page-title>
+  <app-page-title [breadcrumbItems]="breadCrumbItems"></app-page-title>
   <div class="row">
     <div class="col-12">
       <div class="card">
@@ -47,7 +44,7 @@
                   </div>
                 </div>
               </div>
-    
+
               <!-- <div class="row"> -->
               <!-- Button Row -->
               <div class="col-md-4 mt-4"></div>
@@ -113,15 +110,25 @@
             >
               <thead>
                 <tr>
-                  <th sortable="MATNR" (sort)="onSort($event)">Material Number</th>
+                  <th sortable="MATNR" (sort)="onSort($event)">
+                    Material Number
+                  </th>
                   <th sortable="WERKS" (sort)="onSort($event)">Plant</th>
-                  <th sortable="LGORT" (sort)="onSort($event)">Storage Location</th>
-                  <th sortable="BWART" (sort)="onSort($event)">Movement Type</th>
+                  <th sortable="LGORT" (sort)="onSort($event)">
+                    Storage Location
+                  </th>
+                  <th sortable="BWART" (sort)="onSort($event)">
+                    Movement Type
+                  </th>
                   <th sortable="Batch" (sort)="onSort($event)">Batch</th>
-                  <th sortable="PostingDate" (sort)="onSort($event)">Posting Date</th>
+                  <th sortable="PostingDate" (sort)="onSort($event)">
+                    Posting Date
+                  </th>
                   <th sortable="MENGE" (sort)="onSort($event)">Quantity</th>
                   <th sortable="MEINS" (sort)="onSort($event)">UOM</th>
-                  <th sortable="EBELN" (sort)="onSort($event)">Purchase Order</th>
+                  <th sortable="EBELN" (sort)="onSort($event)">
+                    Purchase Order
+                  </th>
                   <th sortable="EBELP" (sort)="onSort($event)">PO Item</th>
                   <th>Split</th>
                 </tr>
@@ -131,16 +138,20 @@
                 <tr>
                   <td>{{ table.MATNR }}</td>
                   <td>{{ table.WERKS }}</td>
-                  <td>{{table.LGORT}}</td>
+                  <td>{{ table.LGORT }}</td>
                   <!-- <td><input type="text" [(ngModel)]="table.LGORT" class="form-control form-control-sm" /></td> -->
                   <td>{{ table.BWART }}</td>
-                  <td>{{table.Batch}}</td>
-                  <td><input type="text"   
+                  <td>{{ table.Batch }}</td>
+                  <td>
+                    <input
+                      type="text"
                       [bsConfig]="bsConfig"
-                bsDatepicker
-               
-              [(ngModel)]="table.PostingDate" class="form-control form-control-sm" /></td>
-                  <td>{{table.MENGE}}</td>
+                      bsDatepicker
+                      [(ngModel)]="table.PostingDate"
+                      class="form-control form-control-sm"
+                    />
+                  </td>
+                  <td>{{ table.MENGE }}</td>
                   <!-- <td><input type="text" [(ngModel)]="table.Batch" class="form-control form-control-sm" /></td>
                   <td><input type="text" [(ngModel)]="table.PostingDate" class="form-control form-control-sm" /></td>
                   <td><input type="text" [(ngModel)]="table.MENGE" class="form-control form-control-sm" /></td> -->
@@ -155,19 +166,42 @@
                       placeholder="Rows"
                       class="form-control form-control-sm"
                     />
-                    <button (click)="splitRows(i, table.splitCount)" class="btn btn-sm btn-primary">Split</button>
+                    <button
+                      (click)="splitRows(i, table.splitCount)"
+                      class="btn btn-sm btn-primary"
+                    >
+                      Split
+                    </button>
                   </td>
                 </tr>
                 <!-- Shadow rows -->
                 <tr *ngFor="let shadow of table.shadowRows">
                   <td>{{ shadow.MATNR }}</td>
                   <td>{{ shadow.WERKS }}</td>
-                  <td><input type="text" [(ngModel)]="shadow.LGORT" class="form-control form-control-sm" /></td>
+                  <td>
+                    <input
+                      type="text"
+                      [(ngModel)]="shadow.LGORT"
+                      class="form-control form-control-sm"
+                    />
+                  </td>
                   <td>{{ shadow.BWART }}</td>
-                  <td><input type="text" [(ngModel)]="shadow.Batch" class="form-control form-control-sm" /></td>
-                  <td>{{shadow.PostingDate}}</td>
+                  <td>
+                    <input
+                      type="text"
+                      [(ngModel)]="shadow.Batch"
+                      class="form-control form-control-sm"
+                    />
+                  </td>
+                  <td>{{ shadow.PostingDate }}</td>
                   <!-- <td><input type="text" [(ngModel)]="shadow.PostingDate" class="form-control form-control-sm" /></td> -->
-                  <td><input type="text" [(ngModel)]="shadow.MENGE" class="form-control form-control-sm" /></td>
+                  <td>
+                    <input
+                      type="text"
+                      [(ngModel)]="shadow.MENGE"
+                      class="form-control form-control-sm"
+                    />
+                  </td>
                   <td>{{ shadow.MEINS }}</td>
                   <td>{{ shadow.EBELN }}</td>
                   <td>{{ shadow.EBELP }}</td>
@@ -185,11 +219,8 @@
               Save
             </button>
           </div>
-          
-          
-          <div>
 
-          </div>
+          <div></div>
           <!-- End table -->
           <div
             class="row justify-content-md-between align-items-md-center mt-2"
