@@ -455,7 +455,7 @@
               <td align="center">
                 <a class="expand-row" (click)="changeValue($index)">+</a>
               </td>
-              <td>{{ table.EBELN }}</td>
+              <td   (click)="openinbounddeleveryPopup(table.EBELN, $index)" style="color: brown;" >{{ table.EBELN }} </td>
               <!-- Purchase Document Number -->
               <td>{{ table.EBELP }}</td>
               <!-- Item Number -->
@@ -562,6 +562,285 @@
         </div>
         <!-- End Pagination -->
       </div>
+    </div>
+    <div>
+      <div bsModal #newContactModal="bs-modal" class="modal fade" tabindex="-1" aria-labelledby="newContactModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered  modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="newContactModalLabel">In-Bound Delivery</h5>
+                            <button type="button" class="btn-close" (click)="closePopup()" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          <form [formGroup]="tableForm">
+
+                            <div class="table-responsive">
+                              <table
+                                id="basic-datatable"
+                                class="table table-bordered dt-responsive nowrap"
+                              >
+                                <thead>
+                                  <tr>
+                                    <th></th>
+                                    <th sortable="gateEntryNumber" >
+                                      Entry Gate Pass Number
+                                    </th>
+                                    <th sortable="vehicleNumber" >
+                                      Vehicle Number
+                                    </th>
+                                    <th sortable="invoiceDate" >
+                                      Invoice Date
+                                    </th>
+                                    <th sortable="invoiceDate" >
+                                     Gate Entry Date
+                                    </th>
+                                    <th sortable="invoiceDate" >
+                                      Document Date
+                                    </th>
+                      
+                                    <!-- <th sortable="deliveryQuantity" >
+                                      Delivered Quantity
+                                    </th> -->
+                                    <th sortable="supplier" >
+                                      Supplier/Vendor Code
+                                    </th>
+                                    <th sortable="plant" >Delevery Challan Number</th>
+                                    <th sortable="packinglist" (sort)="onSort($event)">
+                                      Packing List
+                                    </th>
+                                  </tr>
+                                </thead>
+                                <!-- @for(table of tables$ | async;track $index){ -->
+                                <!-- <form [formGroup]="tableForm" (ngSubmit)="submitForm()"> -->
+                                <tbody>
+                                  <tr>
+                                    <td align="center">
+                                      <a class="expand-row" >+</a>
+                                    </td>
+                      
+                                    <td>
+                                      <input
+                                        type="text"
+                                        formControlName="gateEntryNumber"
+                                        placeholder="Entry Gate Pass Number"
+                                        class="form-control form-control-sm"
+                                      />
+                                      <small
+                                        class="text-danger"
+                                        *ngIf="isFieldInvalid('gateEntryNumber')"
+                                        >Gate Entry Number is required and should contain only alphanumeric characters.</small
+                                      >
+                                    </td>
+                                    <td>
+                                      <input
+                                        type="text"
+                                        formControlName="vehicleNumber"
+                                        placeholder="Enter Vehicle Number"
+                                        class="form-control form-control-sm"
+                                      />
+                                      <small
+                                        class="text-danger"
+                                        *ngIf="isFieldInvalid('vehicleNumber')"
+                                        >Vehicle Number is required and should contain only valid characters.</small
+                                      >
+                                    </td>
+                                    <td>
+                                      <input
+                                        type="text"
+                                        formControlName="invoiceDate"
+                                        placeholder="Enter Invoice Date"
+                                        class="form-control form-control-sm"
+                                        [bsConfig]="bsConfig"
+                                      bsDatepicker
+                                      #datePicker="bsDatepicker"
+                                      (focus)="datePicker.show()" 
+                                      (blur)="datePicker.hide()" 
+                                      />
+                                      <small
+                                        class="text-danger"
+                                        *ngIf="isFieldInvalid('invoiceDate')"
+                                        >Gate Entry Date is required.</small
+                                      >
+                                    </td>
+                                    <td>
+                                      <input
+                                        type="text"
+                                        formControlName="gateEntryDate"
+                                        placeholder="Enter Gate Entry Date"
+                                        class="form-control form-control-sm"
+                                        [bsConfig]="bsConfig"
+                                      bsDatepicker
+                                      #datePicker="bsDatepicker"
+                                      (focus)="datePicker.show()" 
+                                      (blur)="datePicker.hide()" 
+                                      />
+                                      <small
+                                        class="text-danger"
+                                        *ngIf="isFieldInvalid('gateEntryDate')"
+                                        >Gate Entry Date is required.</small
+                                      >
+                                    </td>
+                                    <td>
+                                      <input
+                                        type="text"
+                                        formControlName="DocumentDate"
+                                        placeholder="Enter Document Date"
+                                        class="form-control form-control-sm"
+                                        [bsConfig]="bsConfig"
+                                      bsDatepicker
+                                      #datePicker="bsDatepicker"
+                                      (focus)="datePicker.show()" 
+                                      (blur)="datePicker.hide()" 
+                                      />
+                                      <small
+                                        class="text-danger"
+                                        *ngIf="isFieldInvalid('DocumentDate')"
+                                        >Document Date is required.</small
+                                      >
+                                    </td>
+                                    <td>
+                                      <input
+                                        type="text"
+                                        formControlName="supplier"
+                                        class="form-control form-control-sm"
+                                      />
+                                      <small
+                                        class="text-danger"
+                                        *ngIf="isFieldInvalid('supplier')"
+                                        >Supplier/Vendor Code is required.</small
+                                      >
+                                    </td>
+                                    <td>
+                                      <input
+                                        type="text"
+                                        formControlName="deleveryChallanNumber"
+                                        class="form-control form-control-sm"
+                                      />
+                                      <small
+                                        class="text-danger"
+                                        *ngIf="isFieldInvalid('deleveryChallanNumber')"
+                                        >Delevery Challan Number is required.</small
+                                      >
+                                    </td>
+                                    <td>
+                                      <input
+                                        type="text"
+                                        formControlName="PackingList"
+                                        class="form-control form-control-sm"
+                                      />
+                                    </td>
+                                  </tr>
+                                  <tr class="sub-table no-bg" >
+                                    <td align="center"></td>
+                                    <td colspan="9" class="p-0">
+                                      <table class="table mb-0 table-striped">
+                                        <thead class="bg-dark text-white">
+                                          <tr>
+                                            <th>Plant</th>
+                                            <th>Storage Location</th>
+                                            <th>Original DEL.Quantity</th>
+                                            <th>Delivery Quantity</th>
+                                            <th>Transporter Name</th>
+                                            <th>Base Unit of Measure</th>
+                                            <th>Purchasing Document Number</th>
+                                            <th>Item Number of Purchasing Document</th>
+                                            <th>Material Number</th>
+                                            <th>Material Description</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          <tr *ngFor="let tablee of INBOUND; trackBy: trackByFn">
+                                            <td>{{ tablee.WERKS }}</td>
+                                            <td>{{ tablee.LGORT }}</td>
+                                            <td>{{ tablee.ORGQTY }}</td>
+                                            <td>
+                                              <input
+                                                type="text"
+                                                [ngModelOptions]="{ standalone: true }"
+                                                [(ngModel)]="tablee.DMENGE"
+                                                class="form-control form-control-sm"
+                                              />
+                                            </td>
+                                            <td>{{ tablee.transporterName }}</td>
+                                            <td>{{ tablee.MEINS }}</td>
+                                            <td>{{ tablee.PO_NUMBER }}</td>
+                                            <td>{{ tablee.PO_ITEM }}</td>
+                                            <td>{{ tablee.MATNR }}</td>
+                                            <td>{{ tablee.SHORT_TEXT }}</td>
+                                          </tr>
+                                        </tbody>
+                                      </table>
+                                    </td>
+                                  </tr>
+                                  
+<!--                       
+                                  @if(!hidemee){
+                                  <tr class="sub-table no-bg">
+                                    <td align="center"></td>
+                                    <td colspan="9" class="p-0">
+                                      <table class="table mb-0 table-striped">
+                                        <thead class="bg-dark text-white">
+                                          <tr>
+                                              <th>Plant</th>
+                                            <th>Storage Location</th>
+                                          <th>Original DEL.Quantity</th>
+                                          <th>Delivery Quantity</th>
+                                            <th>Transporter Name</th>
+                                            <th>Base Unit of Measure</th>
+                                            <th>Purchasing Document Number</th>
+                                            <th>Item Number of Purchasing Document</th>
+                                           
+                                            <th>Material Number</th>
+                                            <th>Material Description</th>
+                                          </tr>
+                                        </thead>
+                                        @for(tablee of INBOUND | async;track $index){
+                                        <tbody>
+                                          <tr>
+                                              <td>{{tablee.WERKS}}</td>
+                                            <td>{{ tablee.LGORT }}</td>
+                                              <td>{{tablee.ORGQTY}}</td>
+                                              <td><input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="tablee.DMENGE" class="form-control form-control-sm" /></td>
+                                         
+                                             
+                                            <td>{{ tablee.transporterName }}</td>
+                                            <td>{{ tablee.MEINS }}</td>
+                                            <td>{{ tablee.PO_NUMBER }}</td>
+                                            <td>{{ tablee.PO_ITEM }}</td>
+                                     
+                                            <td>{{tablee.MATNR}}</td>
+                                            <td>{{tablee.SHORT_TEXT}}</td>
+                      
+                                       
+                                          </tr>
+                                        </tbody>
+                                      }
+                                      </table>
+                                    </td>
+                                  </tr>
+                                  } -->
+                                </tbody>
+                                <!-- </form> -->
+                                <!-- } -->
+                              </table>
+                            </div>
+                            <div class="col-md-4 text-left">
+                              <button
+                                class="btn btn-success mt-4"
+                                type="button"
+                                (click)="saveBound(INBOUND)"
+                              >
+                                Save
+                              </button>
+                            </div>
+                            </form>
+                        </div>
+                       
+                    </div>
+                </div>
+            </div>
+
     </div>
 
     <!-- </div> -->

@@ -24,5 +24,6 @@ export const routes: Routes = [
         canActivate: [AuthGuard],
     },
     // { path: "crypto-ico-landing", component: CyptolandingComponent },
-    { path: "**", component: Page404Component },
+    // { path: "**", component: Page404Component },
+    { path: '**', redirectTo: '', pathMatch: 'full' }
 ];
