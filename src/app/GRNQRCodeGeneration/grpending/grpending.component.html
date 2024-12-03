@@ -43,9 +43,7 @@
                 id="delivery"
                 formControlName="delivery"
                 placeholder="Delivery"
-              
                 [ngClass]="{ 'is-invalid': submit && form.delivery.errors }"
-               
               />
               <div
                 *ngIf="!submit && form.delivery.errors"
@@ -57,7 +55,7 @@
               </div>
             </div>
           </div>
-        
+
           <!-- Storage Location -->
           <div class="col-md-3">
             <label class="brandcolor" for="storageLocationfrom"
@@ -86,33 +84,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-3">
-            <label class="brandcolor" for="storageLocationfrom"
-                >STORAGE LOCATION TO</label
-              >
-            <div class="mb-3">
-              <input
-                type="text"
-                class="form-control"
-                id="storageLocationto"
-                formControlName="storageLocationto"
-                placeholder="Storage Location To"
-                [bsConfig]="bsConfig"
-                [ngClass]="{
-                  'is-invalid': submit && form.storageLocationto.errors
-                }"
-                bsDatepicker
-              />
-              <div
-                *ngIf="submit && form.storageLocationto.errors"
-                class="invalid-feedback"
-              >
-                <span *ngIf="form.storageLocationto.errors.required"
-                  >Please provide a valid STORAGE LOCATION.</span
-                >
-              </div>
-            </div>
-          </div>
+
           <!--row 2-->
           <!--IBD CREATED ON-->
           <div class="col-md-3">
@@ -126,8 +98,8 @@
                 [bsConfig]="bsConfig"
                 bsDatepicker
                 #datePicker="bsDatepicker"
-                (focus)="datePicker.show()" 
-                (blur)="datePicker.hide()" 
+                (focus)="datePicker.show()"
+                (blur)="datePicker.hide()"
                 placeholder="IBD CREATED ON"
                 [ngClass]="{
                   'is-invalid': submit && form.ibdCreadtedOn.errors
@@ -145,8 +117,8 @@
           </div>
           <div class="col-md-3">
             <label class="brandcolor" for="ibdCreadtedFrom"
-                >IBD CREATED FROM DATE</label
-              >
+              >IBD CREATED FROM DATE</label
+            >
             <div class="mb-3">
               <input
                 type="text"
@@ -156,8 +128,8 @@
                 [bsConfig]="bsConfig"
                 bsDatepicker
                 #datePicker="bsDatepicker"
-                (focus)="datePicker.show()" 
-                (blur)="datePicker.hide()" 
+                (focus)="datePicker.show()"
+                (blur)="datePicker.hide()"
                 placeholder="IBD CREATED From DATE"
                 [ngClass]="{
                   'is-invalid': submit && form.ibdCreadtedFrom.errors
@@ -184,8 +156,8 @@
                 [bsConfig]="bsConfig"
                 bsDatepicker
                 #datePicker="bsDatepicker"
-                (focus)="datePicker.show()" 
-                (blur)="datePicker.hide()" 
+                (focus)="datePicker.show()"
+                (blur)="datePicker.hide()"
                 placeholder="IBD CREATED To"
                 [ngClass]="{
                   'is-invalid': submit && form.ibdCreadtedOn.errors
@@ -224,7 +196,7 @@
     <!-- <div class="row"> -->
     <!-- <div class="col-12"> -->
     <!-- <div class="card"> -->
-    <div class="card-body">
+    <div *ngIf="grnscreen" class="card-body">
       <div class="row mb-md-2">
         <div class="col-sm-12 col-md-6">
           <div class="dataTables_length">
@@ -323,7 +295,16 @@
               </td>
               <td>{{ table.WERKS }}</td>
               <!-- Plant -->
-              <td>{{ table.VBELN }}</td>
+              <td
+                (click)="onSelectInBound(tables$)"
+                style="
+                  cursor: pointer;
+                  text-decoration: underline;
+                  color: brown;
+                "
+              >
+                >{{ table.VBELN }}
+              </td>
               <!-- Inbound Delivery -->
               <td>{{ table.POSNR }}</td>
               <!-- Inbound Delivery Item -->
@@ -437,6 +418,122 @@
       </div>
     </div>
 
+    <div *ngIf="selectedInBound" class="mt-4">
+      <button
+        class="btn btn-primary"
+        style="float: left; margin-left: 10px"
+        type="button"
+        (click)="back()"
+      >
+        Back</button
+      ><br /><br />
+      <h5>
+        Item Quantity: Detailed Items for Material
+        {{ selectedInBound.inbound }}
+      </h5>
+
+      <!-- Table for Inbound -->
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Material Number</th>
+            <th>Plant</th>
+            <th>Storage Location</th>
+            <th>Movement Type</th>
+            <th>Batch</th>
+            <th>Posting Date</th>
+            <th>Quantity</th>
+            <th>UOM</th>
+            <th>Purchase Order</th>
+            <th>PO Item</th>
+            <th>Split</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let items of inbound; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ items.MATNR }}</td>
+            <td>{{ items.WERKS }}</td>
+            <td>{{ items.LGORT }}</td>
+            <td>{{ items.BWART }}</td>
+            <td>{{ items.Batch }}</td>
+            <td>
+              <input
+                type="text"
+                [bsConfig]="bsConfig"
+                bsDatepicker
+                [(ngModel)]="items.PostingDate"
+                class="form-control form-control-sm"
+              />
+            </td>
+            <td>{{ items.MENGE }}</td>
+            <td>{{ items.MEINS }}</td>
+            <td>{{ items.EBELN }}</td>
+            <td>{{ items.EBELP }}</td>
+            <td>
+              <input
+                type="number"
+                min="1"
+                [(ngModel)]="items.splitCount"
+                placeholder="Rows"
+                class="form-control form-control-sm"
+              />
+              <button
+                (click)="splitRows(i, items.splitCount)"
+                class="btn btn-sm btn-primary"
+              >
+                Split
+              </button>
+            </td>
+          </tr>
+          <!-- Shadow rows -->
+          <tr *ngFor="let shadow of table.shadowRows">
+            <td>{{ shadow.MATNR }}</td>
+            <td>{{ shadow.WERKS }}</td>
+            <td>
+              <input
+                type="text"
+                [(ngModel)]="shadow.LGORT"
+                class="form-control form-control-sm"
+              />
+            </td>
+            <td>{{ shadow.BWART }}</td>
+            <td>
+              <input
+                type="text"
+                [(ngModel)]="shadow.Batch"
+                class="form-control form-control-sm"
+              />
+            </td>
+            <td>{{ shadow.PostingDate }}</td>
+            <td>
+              <input
+                type="text"
+                [(ngModel)]="shadow.MENGE"
+                class="form-control form-control-sm"
+              />
+            </td>
+            <td>{{ shadow.MEINS }}</td>
+            <td>{{ shadow.EBELN }}</td>
+            <td>{{ shadow.EBELP }}</td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+
+
+      <div class="col-md-4 text-left">
+        <button
+          class="btn btn-success mt-4"
+          type="button"
+          (click)="saveBound(tables$)"
+        >
+          Save
+        </button>
+      </div>
+
+      
     <!-- </div> -->
     <!-- </div> -->
     <!-- </div> -->

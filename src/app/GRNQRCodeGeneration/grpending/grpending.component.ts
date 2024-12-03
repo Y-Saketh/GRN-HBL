@@ -1,26 +1,29 @@
 import { CommonModule, DecimalPipe } from '@angular/common';
-import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Component, OnInit, QueryList,ViewChild, ViewChildren } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Table } from './advanced.model';
 import { AdvancedService } from './advanced.service';
 import { PagetitleComponent } from 'src/app/shared/ui/pagetitle/pagetitle.component';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { AdvancedSortableDirective, SortEvent } from './Advanced-sortable.directive';
-import { Observable } from 'rxjs';
+import { Observable, take } from 'rxjs';
 import { tableData } from './data';
 import { UserProfileService } from 'src/app/core/services/user.service';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import * as moment from 'moment';
+import Swal from 'sweetalert2';
+import { ModalDirective, ModalModule } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-grpending',
   standalone: true,
   providers: [AdvancedService, DecimalPipe,UserProfileService],
-  imports: [ReactiveFormsModule, CommonModule, FormsModule, PaginationModule, AdvancedSortableDirective,BsDatepickerModule],
+  imports: [ReactiveFormsModule, CommonModule, FormsModule, PaginationModule, ModalModule, AdvancedSortableDirective,BsDatepickerModule],
   templateUrl: './grpending.component.html',
   styleUrl: './grpending.component.css'
 })
 export class GrpendingComponent implements OnInit {
+  @ViewChild('unmatchModal', { static: false }) unmatchModal?: ModalDirective;
   breadCrumbItems: Array<{}>;
   // Table data
   tableData: Table[];
@@ -28,12 +31,44 @@ export class GrpendingComponent implements OnInit {
   hideme: boolean[] = [];
   tables$: Observable<Table[]>;
   total$: Observable<number>;
+  secondTableData: any[] = []; // Data for the second table
+  unmatchedItemIndex: number | null = null;
+  totalExpectedQuantity = 50000;
+
+  editableDetails: any = {};
+
+  inbound = [
+    {
+      MATNR: "000000001000059735",
+      WERKS: 1300,
+      LGORT: "S061",
+      BWART: "Z001",
+      Batch: "20220228",
+      PostingDate: "2022-02-28",
+      MENGE: 1000.000,
+      MEINS: "NOS",
+      EBELN: "4500181937",
+      EBELP: 1,
+  }
+]
+  isPopupOpen = false;
+  selectedInBound: any = null;
+  selectedIndex: number | null = null;
+
+  selectedInBoundIndex: number | null = null;
+  editableItems: { packet: number; quantity: number }[] = [];
+  savedData: any[] = [];
 
   @ViewChildren(AdvancedSortableDirective) headers: QueryList<AdvancedSortableDirective>;
   public isCollapsed = true;
   expandedRows: { [key: string]: boolean } = {};
+  grnscreen: boolean = true;
+  inboundscreen: boolean;
   lotReportsData: any;
+  isSubmitting: boolean;
+  shadowRows = [];
   // POLIST: any;
+  INBOUND: Table[];
   GrPending: Table[];
   constructor(public formBuilder: UntypedFormBuilder, public service: AdvancedService, private apiService:UserProfileService) {
     this.tables$ = service.tables$;
@@ -65,10 +100,101 @@ export class GrpendingComponent implements OnInit {
     /**
      * fetch data
      */
-   
+  }
+
+  openUnmatchPopup(index: number): void {
+    this.selectedInBound = JSON.parse(JSON.stringify(this.inbound[index])); // Deep copy
+    this.selectedIndex = index;
+    this.unmatchModal?.show();
+  }
+
+  // Save updated unmatched material
+  saveUnmatched(): void {
+    if (this.selectedIndex !== null) {
+      this.inbound[this.selectedIndex] = this.selectedInBound;
+      console.log('Updated Materials:', this.inbound);
+    }
+    this.closePopup();
+  }
+
+  // Close the popup
+  closePopup(): void {
+    this.selectedInBound = true;
+    this.grnscreen = false;
+    this.selectedIndex = null;
+    this.unmatchModal?.hide();
 
   }
 
+  // Placeholder for matchInBound
+  matchinbound(index: number): void {
+    console.log('InBound matched:', this.inbound[index]);
+  }
+  saveinbound(index: number): void {
+    const inbound = this.inbound[index];
+    this.savedData.push({ ...inbound });
+    console.log('Saved Data:', this.savedData);
+  }
+
+  isInBoundValid(inbound: any): boolean {
+    // Ensure all packet quantities are filled and real quantity is valid
+    const allPacketsValid = inbound.packets.every(
+      (packet: any) => packet.quantity > 0
+    );
+    return allPacketsValid && inbound.realQuantity > 0;
+  }
+
+  initializeSecondTableData() {
+    const itemCount = 10; // Number of items
+    this.secondTableData = Array.from({ length: itemCount }, (_, index) => ({
+      item: index + 1,
+      itemQuantity: 5000, // Default quantity
+      matched: true,
+    }));
+  }
+
+  saveUnmatchedInBound(): void {
+    if (this.selectedInBoundIndex === null) return;
+
+    // Get the selected material
+    const material = this.inbound[this.selectedInBoundIndex];
+
+    // Update material details and save the data
+    const updatedInBound = {
+      ...material,
+      ...this.editableDetails, // Update additional fields
+      packets: this.editableItems, // Add packet quantities
+    };
+
+    this.savedData.push(updatedInBound);
+
+    // Close the editable card
+    this.selectedInBoundIndex = null;
+
+    console.log('Saved Data:', this.savedData);
+  }
+  
+  saveUnmatchedItem() {
+    if (this.unmatchedItemIndex === null) return;
+
+    const updatedRow = {
+      ...this.secondTableData[this.unmatchedItemIndex],
+      items: this.editableItems, // Store updated quantities
+    };
+
+    // Save the updated data as individual objects
+    updatedRow.items.forEach((item: any) => {
+      this.savedData.push({
+        ...updatedRow,
+        itemQuantity: item.itemQuantity, // Update with new quantity
+        item: item.item, // Individual item details
+      });
+    });
+
+    // Update the row as matched and close the card
+    this.secondTableData[this.unmatchedItemIndex].matched = true;
+    this.unmatchedItemIndex = null;
+  }
   changeValue(i) {
     this.hideme[i] = !this.hideme[i];
   }
@@ -83,6 +209,103 @@ export class GrpendingComponent implements OnInit {
     for (let i = 0; i <= this.tableData.length; i++) {
       this.hideme.push(true);
     }
+  }
+
+  splitRows(index: number, splitCount: number) {
+    // Get the table row at the specified index
+    this.tables$.pipe(take(1)).subscribe((tables) => {
+      const mainRow = tables[index];
+
+      if (!mainRow) {
+        console.error(`Row at index ${index} does not exist.`);
+        return;
+      }
+
+      // Initialize shadowRows array if not already present
+      if (!mainRow.shadowRows) {
+        mainRow.shadowRows = [];
+      }
+
+      // Add the specified number of shadow rows
+      for (let i = 0; i < splitCount; i++) {
+        mainRow.shadowRows.push({
+          MATNR: mainRow.MATNR,
+          WERKS: mainRow.WERKS,
+          LGORT: '',
+          BWART: mainRow.BWART,
+          Batch: '',
+          PostingDate: '',
+          MENGE: '',
+          MEINS: mainRow.MEINS,
+          EBELN: mainRow.EBELN,
+          EBELP: mainRow.EBELP,
+          shadowRows: [],
+        });
+      }
+    });
+  }
+
+  saveBound(tables$: Observable<any[]>) {
+    this.isSubmitting = true;
+
+    tables$.pipe(take(1)).subscribe({
+      next: (tables) => {
+        const payload = { BUDAT:'',SAVE: [] };
+
+        tables.forEach((table) => {
+          const mainRow = {
+            MATNR: table.MATNR,
+            MENGE: parseFloat(table.MENGE) || 0,
+            MEINS: table.MEINS,
+            SHORT_TEXT: table.SHORT_TEXT,
+            ORGQTY: parseFloat(table.ORGQTY) || 0,
+            EBELN: table.EBELN,
+            EBELP: table.EBELP || 1,
+            WERKS: table.WERKS,
+            LGORT: table.LGORT,
+            BWART: table.BWART,
+            BUDAT:table.PostingDate
+          };
+          // payload.SAVE.push(mainRow);
+          payload.BUDAT= table.PostingDate
+          // Add shadow rows
+          if (table.shadowRows) {
+            table.shadowRows.forEach((shadowRow: any) => {
+              payload.SAVE.push({
+                MATNR: shadowRow.MATNR,
+                MENGE: parseFloat(shadowRow.MENGE) || 0,
+                MEINS: shadowRow.MEINS,
+                SHORT_TEXT: shadowRow.SHORT_TEXT,
+                ORGQTY: parseFloat(shadowRow.ORGQTY) || 0,
+                EBELN: shadowRow.EBELN,
+                EBELP: shadowRow.EBELP || 1,
+                WERKS: shadowRow.WERKS,
+                LGORT: shadowRow.LGORT,
+                BWART: shadowRow.BWART,
+              });
+            });
+          }
+        });
+       
+        console.log('Final Payload:', payload, );
+        this.apiService.grnlist(payload).subscribe({
+          next: (res) => {
+            console.log('Saved:', res);
+           if(res[0].NUMBER){}
+            Swal.fire("", res[0].MESSAGE, "success");
+            this.isSubmitting = false;
+          },
+          error: (err) => {
+            console.error('Error:', err);
+            this.isSubmitting = false;
+          },
+        });
+      },
+      error: (err) => {
+        console.error('Error:', err);
+        this.isSubmitting = false;
+      },
+    });
   }
 
   /**
@@ -104,17 +327,52 @@ export class GrpendingComponent implements OnInit {
     return this.validationform.controls;
   }
 
-  validSubmit() {
+  validSubmit(){
     this.submit = true;
+    console.log("validationform",this.form) 
+    if(this.form.inbounddeliverynumber.value){
+      let obj = {
+        "EBELN": this.form.inbounddeliverynumber.value//"4500181937"
+      }
+      console.log("objobj",obj)
+      this.apiService.grnlist(obj).subscribe({
+        next: (res: any) => {
+          console.log('Data:', res);
+          this.INBOUND = res;
+          this.service.setTableData(res || []);
+          this._fetchData();
+        },
+        error: (error: any) => {
+          console.error('Error fetching lot reports:', error);
+        },
+        complete: () => {
+          console.log('API call completed.');
+        }
+      });
+    }
+   
   }
- 
+
+  back(){
+    this.selectedInBound = false;
+    this.grnscreen = true;
+  }
+  
+  onSelectInBound(table: any) {
+    this.grnscreen = false
+    this.selectedInBound = table; // Store selected Inbound
+    this.initializeSecondTableData(); // Initialize the second table data
+  }
   getGrPending(){
     console.log("validationform",this.form) 
     let obj = {
-      "WERKS":"1300",// this.form['plant'].value , //"1300", 
-      "EBELN": "",//this.form['poNumber'].value , //"",
-      "BSART": "ZPDM",//this.form['plant'].value , //"ZPDM",
-      "LIFNR": "",// this.form['plant'].value ,
+    "WERKS": this.form.plant.value,//"1300",
+    "VBELN":this.form.delivery.value ,//"180390138",
+    "LGORT": this.form.storageLocation.value,// "S048",
+    "BUDAT_F":this.form.ibdCreadtedFrom?moment(this.form.ibdCreadtedFrom.value):'',//"2024-04-01",
+    "BUDAT_T": this.form.ibdCreadtedTo?moment(this.form.ibdCreadtedTo.value):'',//""2024-11-25",
+    "R1": "X",
+    "R2": ""
     }
     console.log("objobj",obj)
     this.apiService.GrPending(obj).subscribe({

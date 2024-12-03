@@ -39,7 +39,8 @@
               "polylabel",
               "@ckeditor/ckeditor5-build-classic"
             ],
-            "outputPath": "dist/skote",
+            "outputPath": "dist",
+            "baseHref": "/grn/",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",

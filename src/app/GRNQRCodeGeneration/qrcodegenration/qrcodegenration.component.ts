@@ -14,6 +14,7 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { PagetitleComponent } from 'src/app/shared/ui/pagetitle/pagetitle.component';
 import { UserProfileService } from 'src/app/core/services/user.service';
 import Swal from 'sweetalert2';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 @Component({
   selector: 'app-qrcodegenration',
@@ -23,7 +24,7 @@ import Swal from 'sweetalert2';
   standalone:true,
   imports:[PagetitleComponent,ReactiveFormsModule, 
     CommonModule, 
-    FormsModule, PaginationModule,qrSortableDirective]
+    FormsModule, PaginationModule,qrSortableDirective,BsDatepickerModule ]
 })
 
 export class QRcodegenrationComponent {
@@ -67,7 +68,11 @@ export class QRcodegenrationComponent {
   changeValue(i) {
     this.hideme[i] = !this.hideme[i];
   }
-
+  bsConfig = {
+    dateInputFormat: 'DD/MM/YYYY', // Set the date format
+    // showWeekNumbers: false, // Optional: Hide week numbers
+    containerClass: 'theme-blue', // Optional: Use a predefined theme
+  };
 
   /**
    * fetches the table value
@@ -82,6 +87,7 @@ export class QRcodegenrationComponent {
     // Get the table row at the specified index
     this.tables$.pipe(take(1)).subscribe((tables) => {
       const mainRow = tables[index];
+      console.log("mainrow", mainRow)
 
       // Initialize shadowRows array if not already present
       if (!mainRow.shadowRows) {
@@ -104,6 +110,7 @@ export class QRcodegenrationComponent {
           shadowRows: [],
         });
       }
+      console.log("mainrow",mainRow.shadowRows);
     });
   }
 
@@ -112,7 +119,7 @@ export class QRcodegenrationComponent {
 
     tables$.pipe(take(1)).subscribe({
       next: (tables) => {
-        const payload = { SAVE: [] };
+        const payload = { BUDAT:'',SAVE: [] };
 
         tables.forEach((table) => {
           const mainRow = {
@@ -129,7 +136,7 @@ export class QRcodegenrationComponent {
             BUDAT:table.PostingDate
           };
           // payload.SAVE.push(mainRow);
-         
+          payload.BUDAT= table.PostingDate
           // Add shadow rows
           if (table.shadowRows) {
             table.shadowRows.forEach((shadowRow: any) => {
@@ -148,12 +155,13 @@ export class QRcodegenrationComponent {
             });
           }
         });
-
+       
         console.log('Final Payload:', payload, );
-
         this.apiService.grnlist(payload).subscribe({
           next: (res) => {
             console.log('Saved:', res);
+           if(res[0].NUMBER){}
+            Swal.fire("", res[0].MESSAGE, "success");
             this.isSubmitting = false;
           },
           error: (err) => {
@@ -169,72 +177,7 @@ export class QRcodegenrationComponent {
     });
   }
   
-  // saveBound(tables$: Observable<any[]>) {
-  //   // Disable the submit button to prevent multiple clicks
-  //   this.isSubmitting = true;
-  
-  //   tables$
-  //     .pipe(take(1)) // Ensure subscription happens only once
-  //     .subscribe({
-  //       next: (tables) => {
-  //         // Start with the common header data
-  //         const payload = {
-  //           // DETAIL: {
-             
-  //             SAVE: [], // Initialize the ITEM array
-  //           // },
-  //         };
-  
-  //         // Loop through the table data and add rows to ITEM array
-  //         tables.forEach((table) => {
-  //           const item = {
-  //             MATNR: table.MATNR, // Material Number
-  //             MENGE: parseFloat(table.MENGE) || 0, // Quantity
-  //             MEINS: table.MEINS, // Base Unit of Measure
-  //             SHORT_TEXT: table.SHORT_TEXT, // Material Description
-  //             ORGQTY: parseFloat(table.ORGQTY) || 0, // Original Quantity
-  //             EBELN: table.EBELN, // Purchasing Document Number
-  //             EBELP: table.EBELP || 1, // Item Number of Purchasing Document
-  //             WERKS: table.WERKS, // Plant
-  //             LGORT: table.LGORT, // Storage Location
-  //             BWART: table.BWART, // Movement Type
-  //           };
-  //           payload.SAVE.push(item); // Add to ITEM array
-  //         });
-          
-  
-  //         console.log("Final Payload:", payload);
-  
-  //         // Call API to save data
-  //         this.apiService.grnlist(payload).subscribe({
-  //           next: (res) => {
-  //             console.log("Inbound Delivery Saved:", res);
-  //             // if(res[0].NUMBER==300 || res[0].NUMBER==264){
-  //             //   Swal.fire("", res[0].MESSAGE, "error");
-  //             // }
-  //             // else
-  //              if(res[0].NUMBER==200){
-  //               Swal.fire("", res[0].MESSAGE, "success");
-  //             }
-  //             else{
-  //               Swal.fire("", res[0].MESSAGE, "error");
-  //             }
-  //             this.isSubmitting = false; // Re-enable the button
-  //           },
-  //           error: (err) => {
-  //             console.error("Error while saving:", err);
-  //             Swal.fire("", "Error occurred while saving", "error");
-  //             this.isSubmitting = false; // Re-enable the button
-  //           },
-  //         });
-  //       },
-  //       error: (err) => {
-  //         console.error("Error in subscription:", err);
-  //         this.isSubmitting = false; // Re-enable the button
-  //       },
-  //     });
-  // }
-  
+
   validSubmit(){
     this.submit = true;
     console.log("validationform",this.form) 
@@ -258,7 +201,6 @@ export class QRcodegenrationComponent {
         }
       });
     }
-   
   }
 
   /**
