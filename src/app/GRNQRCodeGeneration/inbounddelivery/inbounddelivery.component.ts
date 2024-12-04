@@ -52,6 +52,7 @@ export class InbounddeliveryComponent implements OnInit {
   DocumentDate: string;
   MATNR: string;
   SHORT_TEXT: string;
+  transporterName: string;
   deleveryChallanNumber: any;
   PackingList: any;
   isSubmitting: boolean= false;
