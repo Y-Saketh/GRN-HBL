@@ -9,7 +9,7 @@
             validation–available in all our supported browsers.</p> -->
       <form
         class="needs-validation"
-        (ngSubmit)="validSubmit()"
+        
         [formGroup]="validationform"
       >
         <div class="row">
@@ -241,96 +241,96 @@
           <thead class="brandcolor tableHeader">
             <tr>
               <th></th>
-              <th class="brandcolor" sortable="plant" (sort)="onSort($event)">
+              <th class="brandcolor" sortable="WERKS" (sort)="onSort($event)">
                 Plant
               </th>
               <th
                 class="brandcolor"
-                sortable="inboundDelivery"
+                sortable="VBELN"
                 (sort)="onSort($event)"
               >
                 Inbound Delivery
               </th>
               <th
                 class="brandcolor"
-                sortable="inboundDeliveryItem"
+                sortable="POSNR"
                 (sort)="onSort($event)"
               >
                 Inbound Delivery Item
               </th>
              <!-- <th
                 class="brandcolor"
-                sortable="purchasingGroup"
+                sortable="EKGRP"
                 (sort)="onSort($event)"
               >
                 Purchasing Group
               </th> -->
               <th
                 class="brandcolor"
-                sortable="inboundCreatedOn"
+                sortable="ERDAT"
                 (sort)="onSort($event)"
               >
                 Inbound Created on
               </th>
               <th
                 class="brandcolor"
-                sortable="PurchasingOrder"
+                sortable="VGBEL"
                 (sort)="onSort($event)"
               >
                 PO
               </th>
               <th
                 class="brandcolor"
-                sortable="PurchasingOrdeItem"
+                sortable="VGPOS"
                 (sort)="onSort($event)"
               >
                 PO Item
               </th>
               <th
                 class="brandcolor"
-                sortable="storageLocation"
+                sortable="LGORT"
                 (sort)="onSort($event)"
               >
                 Storage Location
               </th>
               <th
                 class="brandcolor"
-                sortable="material"
+                sortable="MATNR"
                 (sort)="onSort($event)"
               >
                 Material
               </th>
               <th
                 class="brandcolor"
-                sortable="materialDescription"
+                sortable="MAKTX"
                 (sort)="onSort($event)"
               >
                 Material Description
               </th>
               <th
                 class="brandcolor"
-                sortable="uom"
+                sortable="MEINS"
                 (sort)="onSort($event)"
               >
                 UOM
               </th>
               <th
                 class="brandcolor"
-                sortable="qty"
+                sortable="LFIMG"
                 (sort)="onSort($event)"
               >
                 Qty
               </th>
               <th
                 class="brandcolor"
-                sortable="gateEntryNumber"
+                sortable="GATEENTRY"
                 (sort)="onSort($event)"
               >
                 Gate Entry No
               </th>
               <th
                 class="brandcolor"
-                sortable="gateEntryDate"
+                sortable="GATEDATE"
                 (sort)="onSort($event)"
               >
                 Gate Entry Date
@@ -352,16 +352,16 @@
                   color: brown;
                 "
               >
-                {{ table.VBELN }}
+                {{ table.EBELN }}
               </td>
               <!-- Inbound Delivery -->
-              <td>{{ table.EBELP }}</td>
+              <td>{{ table.POSNR }}</td>
               <!-- Inbound Delivery Item -->
              <!-- <td>{{ table.EKGRP }}</td> -->
                <!-- Purchasing Group -->
                <td>{{ table.ERDAT }}</td>
                <!-- Inbound Created on -->
-               <td>{{ table.EBELN }}</td>
+               <td>{{ table.VGBEL }}</td>
                <!-- PO -->
                <td>{{ table.VGPOS }}</td>
                <!-- PO Item -->
@@ -373,7 +373,7 @@
                <!-- Material Desc -->
                <td>{{ table.MEINS }}</td>
                <!-- UOM -->
-               <td>{{ table.MENGE }}</td>
+               <td>{{ table.LFIMG }}</td>
                <!-- Qty -->
                <td>{{ table.GATEENTRY }}</td>
                <!-- Gate Entry No -->

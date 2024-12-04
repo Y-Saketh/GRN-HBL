@@ -19,7 +19,30 @@ export interface Table {
   PO_NUMBER: string; // Purchasing Document Number
   PO_ITEM: string; // Item Number of Purchasing Document
   tolerance: string; // Over & Under Tolerance
+
+  // Newly added fields
+  VBELN: string; // Inbound Delivery
+  POSNR: string; // Inbound Delivery Item
+  ERDAT: string; // Inbound Created On
+  MBLNR: string; // Material Document
+  BUDAT: string; // Posting Date
+  AGE: string; // Days Taken for GR
+  BELNR_MIRO: string; // MIRO No
+  BUDAT_MIRO: string; // MIRO Date
+  XBLNR: string; // Invoice No
+  BLDAT: string; // Invoice Date
+  VGBEL: string; // Purchase Order
+  VGPOS: string; // Purchase Order Item
+  AEDAT: string; // Purchase Order Date
+  ERNAM: string; // Created By
+  LGOBE: string; // Storage Location Name
+  MAKTX: string; // Material Description
+  LFIMG: string; // Quantity
+  GATEENTRY: string; // Gate Entry No
+  GATEDATE: string; // Gate Entry Date
+  AGE1: string; // Days Taken for IBD
 }
+
 
   
 

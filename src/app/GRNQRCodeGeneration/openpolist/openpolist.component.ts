@@ -288,7 +288,7 @@ export class OpenpolistComponent implements OnInit {
         MEINS: table.MEINS,
         SHORT_TEXT: table.SHORT_TEXT,
         ORGQTY: parseFloat(table.ORGQTY) || 0,
-        PO_NUMBER: this.PONUMBER,
+        PO_NUMBER: table.PO_NUMBER,
         PO_ITEM: table.PO_ITEM || 1,
         WERKS: table.WERKS,
         LGORT: table.LGORT,

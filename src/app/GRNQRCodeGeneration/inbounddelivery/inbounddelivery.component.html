@@ -134,10 +134,12 @@
               <th sortable="supplier" >
                 Supplier/Vendor Code
               </th>
+              <th sortable="transporterName">Transporter Name</th>
               <th sortable="plant" >Delevery Challan Number</th>
-              <th sortable="packinglist" (sort)="onSort($event)">
+              
+              <!-- <th sortable="packinglist" (sort)="onSort($event)">
                 Packing List
-              </th>
+              </th> -->
             </tr>
           </thead>
           <!-- @for(table of tables$ | async;track $index){ -->
@@ -237,6 +239,18 @@
               <td>
                 <input
                   type="text"
+                  formControlName="transporterName"
+                  class="form-control form-control-sm"
+                />
+                <small
+                  class="text-danger"
+                  *ngIf="isFieldInvalid('transporterName')"
+                  >Transporter Name is required.</small
+                >
+              </td>
+              <td>
+                <input
+                  type="text"
                   formControlName="deleveryChallanNumber"
                   class="form-control form-control-sm"
                 />
@@ -246,13 +260,13 @@
                   >Delevery Challan Number is required.</small
                 >
               </td>
-              <td>
+              <!-- <td>
                 <input
                   type="text"
                   formControlName="PackingList"
                   class="form-control form-control-sm"
                 />
-              </td>
+              </td> -->
             </tr>
 
             @if(!hideme){
