@@ -284,9 +284,10 @@
                   </thead>
                   @for(table of tables$ | async;track $index){
                   <tbody>
-                    <tr>
-                      <td>  <tr *ngFor="let tablee of INBOUND; trackBy: trackByFn">
-                        <button class="btn btn-danger btn-sm" (click)="removeRow(i)"> - </button></td>
+                    <tr  *ngFor="let tablee of INBOUND; trackBy: trackByFn">
+                      <td> 
+                        <button class="btn btn-danger btn-sm" (click)="removeRow(i)"> - </button>
+                      </td>
                         <td>{{table.WERKS}}</td>
                       <td>{{ table.LGORT }}</td>
                         <td>{{table.ORGQTY}}</td>
