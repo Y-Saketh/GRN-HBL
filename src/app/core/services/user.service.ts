@@ -48,4 +48,8 @@ export class UserProfileService {
         console.log("environment.API_URL_DEV",environment.API_URL_DEV)
         return this.http.post(`${environment.API_URL_DEV}api/external/zprPending`,data)
     }
+    QRRequest(data){
+        console.log("environment.API_URL_DEV",environment.API_URL_DEV)
+        return this.http.post(`${environment.API_URL_DEV}api/external/qrcode`,data)
+    }
 }

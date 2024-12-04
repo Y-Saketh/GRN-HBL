@@ -178,122 +178,96 @@
       </div>
       <!-- Table -->
       <div class="table-responsive">
-        <table
-          id="basic-datatable"
-          class="table table-bordered dt-responsive nowrap"
-        >
+        <table id="basic-datatable" class="table table-bordered dt-responsive nowrap">
           <thead class="brandcolor tableHeader">
             <tr>
               <th></th>
-              <th class="brandcolor" sortable="Close" (sort)="onSort($event)">
-                Close
-              </th>
-              <th class="brandcolor" sortable="purReqn" (sort)="onSort($event)">
-                Pur Reqn
-              </th>
-              <th class="brandcolor" sortable="item" (sort)="onSort($event)">
-                Item
-              </th>
-              <th
-                class="brandcolor"
-                sortable="ReqnDate"
-                (sort)="onSort($event)"
-              >
-                Reqn Date
-              </th>
-              <th class="brandcolor" sortable="docType" (sort)="onSort($event)">
-                Doc Type
-              </th>
-              <th class="brandcolor" sortable="purGrp" (sort)="onSort($event)">
-                Pur GRP
-              </th>
-              <th class="brandcolor" sortable="purGrp" (sort)="onSort($event)">
-                Material Number
-              </th>
-              <th class="brandcolor" sortable="purGrp" (sort)="onSort($event)">
-                Plant
-              </th>
-              <th class="brandcolor" sortable="purGrp" (sort)="onSort($event)">
-                Qty Requested
-              </th>
-              <th class="brandcolor" sortable="purGrp" (sort)="onSort($event)">
-                UOM
-              </th>
-              <!-- <th>Actions</th> -->
+              <th sortable="CLOSE" (sort)="onSort($event)">Close</th>
+              <th sortable="BANFN" (sort)="onSort($event)">Pur Reqn</th>
+              <th sortable="BNFPO" (sort)="onSort($event)">Item</th>
+              <th sortable="BADAT" (sort)="onSort($event)">Reqn Date</th>
+              <th sortable="BSART" (sort)="onSort($event)">Doc Type</th>
+              <th sortable="EKGRP" (sort)="onSort($event)">Pur GRP</th>
+              <th sortable="MATNR" (sort)="onSort($event)">Material Number</th>
+              <th sortable="WERKS" (sort)="onSort($event)">Plant</th>
+              <th sortable="MENGE" (sort)="onSort($event)">Qty Requested</th>
+              <th sortable="MEINS" (sort)="onSort($event)">UOM</th>
             </tr>
           </thead>
           @for(table of tables$ | async;track $index){
-          <tbody>
-            <tr>
-              <td align="center">
-                <a class="expand-row" (click)="changeValue($index)">+</a>
-              </td>
-              <td>{{ table.close }}</td>
-              <!-- Close -->
-              <td>{{ table.purreqn }}</td>
-              <!-- Purchase Requisitioner -->
-              <td>{{ table.EBELP }}</td>
-              <!-- Purchase Item -->
-              <td>{{ table.reqndate }}</td>
-              <!-- Requistion Date -->
-              <td>{{ table.doctype }}</td>
-              <!-- Document Type -->
-              <td>{{ table.EKGRP }}</td>
-              <!-- Purchase Group -->
-              <td>{{ table.MATNR }}</td>
-              <!-- <aterial Number> -->
-              <td>{{ table.WERKS }}</td>
-              <!-- Plant -->
-              <td>{{ table.QtyRequested }}</td>
-              <!-- Qty Requested -->
-              <td>{{ table.MEINS }}</td>
-              <!-- UOM -->
-        
-            </tr>
-            <ng-container *ngIf="!hideme[$index]">
-              <tr class="sub-table no-bg">
-                <td align="center"></td>
-                <td colspan="15" class="p-0">
-                  <table class="table mb-0 table-striped">
-                    <thead class="bg-dark text-white">
-                      <tr>
-                        <th>Del Ind</th>
-                        <th>Requisitioner</th>
-                        <th>Short Text</th>
-
-                        <th>Del Date</th>
-                        <th>Rel Date</th>
-                        <th>Total Value</th>
-                        <th>Pending Days</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>{{ table.delind }}</td>
-                        <!-- Delivery Indicator -->
-                        <td>{{ table.Requisitioner }}</td>
-                        <!-- Updating Text Field -->
-                        <td>{{ table.ShortText }}</td>
-                        <!-- Base Unit of Measure -->
-
-                        
-                        <td>{{ table.DelDate }}</td>
-                        <!-- Stockkeeping Unit -->
-                        <td>{{ table.RelDate }}</td>
-                        <!-- Sum of Amount -->
-                        <td>{{ table.TotalValue }}</td>
-                        <!-- Net Price -->
-                        <td>{{ table.PendingDays }}</td>
-                      </tr>
-                    </tbody>
-                  </table>
+            <tbody>
+              <tr>
+                <td align="center">
+                  <a class="expand-row" (click)="changeValue($index)">+</a>
                 </td>
+                <td>{{ table.CLOSE }}</td>
+                <!-- Close -->
+                <td>{{ table.BANFN }}</td>
+                <!-- Purchase Requisitioner -->
+                <td>{{ table.BNFPO }}</td>
+                <!-- Purchase Item -->
+                <td>{{ table.BADAT }}</td>
+                <!-- Requistion Date -->
+                <td>{{ table.BSART }}</td>
+                <!-- Document Type -->
+                <td>{{ table.EKGRP }}</td>
+                <!-- Purchase Group -->
+                <td>{{ table.MATNR }}</td>
+                <!-- <Material Number> -->
+                <td>{{ table.WERKS }}</td>
+                <!-- Plant -->
+                <td>{{ table.MENGE }}</td>
+                <!-- Qty Requested -->
+                <td>{{ table.MEINS }}</td>
+                <!-- UOM -->
+          
               </tr>
-            </ng-container>
-          </tbody>
-
-          }
+              <ng-container *ngIf="!hideme[$index]">
+                <tr class="sub-table no-bg">
+                  <td align="center"></td>
+                  <td colspan="15" class="p-0">
+                    <table class="table mb-0 table-striped">
+                      <thead class="bg-dark text-white">
+                        <tr>
+                          <th>Del Ind</th>
+                          <th>Requisitioner</th>
+                          <th>Short Text</th>
+  
+                          <th>Del Date</th>
+                          <th>Rel Date</th>
+                          <th>Total Value</th>
+                          <th>Pending Days</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>{{ table.LOEKZ }}</td>
+                          <!-- Delivery Indicator -->
+                          <td>{{ table.AFNAM }}</td>
+                          <!-- Updating Text Field -->
+                          <td>{{ table.TXZ01 }}</td>
+                          <!-- Base Unit of Measure -->
+  
+                          
+                          <td>{{ table.LFDAT }}</td>
+                          <!-- Stockkeeping Unit -->
+                          <td>{{ table.FRGDT }}</td>
+                          <!-- Sum of Amount -->
+                          <td>{{ table.TOT_VAL }}</td>
+                          <!-- Net Price -->
+                          <td>{{ table.AGE }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </td>
+                </tr>
+              </ng-container>
+            </tbody>
+  
+            }
+  
         </table>
+        
       </div>
       <div class="row justify-content-md-between align-items-md-center mt-2">
         <div class="col-sm-12 col-md-5">

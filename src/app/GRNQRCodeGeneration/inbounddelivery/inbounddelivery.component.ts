@@ -54,6 +54,7 @@ export class InbounddeliveryComponent implements OnInit {
   SHORT_TEXT: string;
   transporterName: string;
   deleveryChallanNumber: any;
+  transporterName: string;
   PackingList: any;
   isSubmitting: boolean= false;
   constructor(public formBuilder: UntypedFormBuilder, public service: AdvancedService,private apiService:UserProfileService) {
@@ -79,6 +80,7 @@ export class InbounddeliveryComponent implements OnInit {
       DocumentDate: ['', Validators.required],
       supplier: ['', Validators.required],
       deleveryChallanNumber: ['', Validators.required],
+      transporterName:[''],
       PackingList: [''], // Optional field
     });
 
@@ -118,13 +120,14 @@ export class InbounddeliveryComponent implements OnInit {
             DETAIL: {
               PO_NUMBER: this.form.inbounddeliverynumber.value,
               DCNUMBER: this.tableForm.value.deleveryChallanNumber,
-              INVOICE: this.tableForm.value.invoiceDate?moment(this.tableForm.value.invoiceDate).format('DD/MM/YYYY') :"",//'DefaultInvoice',
-              DC_DATE: this.tableForm.value.DocumentDate?moment(this.tableForm.value.DocumentDate).format('DD/MM/YYYY')  :"", //'2024-11-29',
+              INVOICE: this.tableForm.value.invoiceDate,// this.tableForm.value.invoiceDate?moment(this.tableForm.value.invoiceDate).format('DD/MM/YYYY') :"",//'DefaultInvoice',
+              DC_DATE: this.tableForm.value.DocumentDate,//this.tableForm.value.DocumentDate?moment(this.tableForm.value.DocumentDate).format('DD/MM/YYYY')  :"", //'2024-11-29',
               PACKLIST: this.tableForm.value.PackingList,
               VEHICLE_NO: this.tableForm.value.vehicleNumber,
               LR_NUMBER: this.tableForm.value.deleveryChallanNumber || 'DefaultMaterial',
-              LR_DATE: this.tableForm.value.gateEntryDate?moment(this.tableForm.value.gateEntryDate).format('DD/MM/YYYY')  :"", //,
+              LR_DATE: this.tableForm.value.gateEntryDate,//this.tableForm.value.gateEntryDate?moment(this.tableForm.value.gateEntryDate).format('DD/MM/YYYY')  :"", //,
               TRANSPORTER: this.tableForm.value.supplier || 'DefaultTransporter',
+              // TRANSPORTER_NAME:this.tableForm.value.transporterName,
               ITEM: [], // Initialize the ITEM array
             },
           };
@@ -137,7 +140,7 @@ export class InbounddeliveryComponent implements OnInit {
               MEINS: table.MEINS, // Unit of Measurement
               SHORT_TEXT: table.SHORT_TEXT, // Material Description
               ORGQTY: parseFloat(table.ORGQTY) || 0, // Original Quantity
-              PO_NUMBER: this.form.inbounddeliverynumber.value, // PO Number
+              PO_NUMBER: table.PO_NUMBER, // PO Number
               PO_ITEM: table.PO_ITEM || 1, // Item Number
               WERKS: table.WERKS, // Plant
               LGORT: table.LGORT, // Storage Location

@@ -1,20 +1,23 @@
 // Table data
 export interface Table {
-  gateEntryNumber: string;
-  vehicleNumber: string;
-  invoiceDate: string;
-  material: string;
-  description: string;
-  deliveryQuantity: string;
-  storageLocation: string;
-  incoterms: string;
-  transportationGroup: string;
-  transporterName: string;
-  supplier: string;
-  plant: string;
-  tolerance: string;
+  MBLNR: string; // Number of Material Document
+  EBELN: string; // Purchasing Document Number
+  ZEILE: number; // Item in Material Document
+  ZRQTY: number; // Reel Quantity
+  ZRNUM: number; // Reel Number
+  ZQRGEN_DT: string; // QR Generation Date
+  ZQRSTAT: string; // QR Status
+  ZQRBAL_QTY: number; // QR Balance Qty
+  WERKS: string; // Plant
+  MATNR: string; // Material Number
+  MAKTX: string; // Material Description
+  LGORT: string; // Storage Location
+  MENGE: number; // Quantity
+  MEINS: string; // Base Unit of Measure
+  CHARG: string; // Batch Number
+  LIFNR: string; // Account Number of Supplier
 }
-  
+
 
 export interface SearchResult {
     tables: Table[];
