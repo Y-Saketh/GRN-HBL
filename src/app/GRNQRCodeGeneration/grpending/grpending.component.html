@@ -2,7 +2,7 @@
   <div class="card" style="background-color: beige">
     <div class="card-body">
       <h4 class="card-title">
-        <span style="color: black">></span>
+        <span style="color: black"></span>
         IBD Done GR Pending
       </h4>
       <!-- <p class="card-title-desc">Provide valuable, actionable feedback to your users with HTML5 form
@@ -241,50 +241,99 @@
           <thead class="brandcolor tableHeader">
             <tr>
               <th></th>
-              <th class="brandcolor" sortable="plant" (sort)="onSort($event)">
+              <th class="brandcolor" sortable="WERKS" (sort)="onSort($event)">
                 Plant
               </th>
               <th
                 class="brandcolor"
-                sortable="inboundDelivery"
+                sortable="VBELN"
                 (sort)="onSort($event)"
               >
                 Inbound Delivery
               </th>
               <th
                 class="brandcolor"
-                sortable="inboundDeliveryItem"
+                sortable="POSNR"
                 (sort)="onSort($event)"
               >
                 Inbound Delivery Item
               </th>
-              <th
+             <!-- <th
                 class="brandcolor"
-                sortable="purchasingGroup"
+                sortable="EKGRP"
                 (sort)="onSort($event)"
               >
                 Purchasing Group
-              </th>
+              </th> -->
               <th
                 class="brandcolor"
-                sortable="inboundCreatedOn"
+                sortable="ERDAT"
                 (sort)="onSort($event)"
               >
                 Inbound Created on
               </th>
               <th
                 class="brandcolor"
-                sortable="materialDocument"
+                sortable="VGBEL"
                 (sort)="onSort($event)"
               >
-                Material Doc
+                PO
               </th>
               <th
                 class="brandcolor"
-                sortable="postingDate"
+                sortable="VGPOS"
                 (sort)="onSort($event)"
               >
-                Posting Date
+                PO Item
+              </th>
+              <th
+                class="brandcolor"
+                sortable="LGORT"
+                (sort)="onSort($event)"
+              >
+                Storage Location
+              </th>
+              <th
+                class="brandcolor"
+                sortable="MATNR"
+                (sort)="onSort($event)"
+              >
+                Material
+              </th>
+              <th
+                class="brandcolor"
+                sortable="MAKTX"
+                (sort)="onSort($event)"
+              >
+                Material Description
+              </th>
+              <th
+                class="brandcolor"
+                sortable="MEINS"
+                (sort)="onSort($event)"
+              >
+                UOM
+              </th>
+              <th
+                class="brandcolor"
+                sortable="LFIMG"
+                (sort)="onSort($event)"
+              >
+                Qty
+              </th>
+              <th
+                class="brandcolor"
+                sortable="GATEENTRY"
+                (sort)="onSort($event)"
+              >
+                Gate Entry No
+              </th>
+              <th
+                class="brandcolor"
+                sortable="GATEDATE"
+                (sort)="onSort($event)"
+              >
+                Gate Entry Date
               </th>
             </tr>
           </thead>
@@ -303,19 +352,33 @@
                   color: brown;
                 "
               >
-                >{{ table.EBELN }}
+                {{ table.VBELN }}
               </td>
               <!-- Inbound Delivery -->
-              <td>{{ table.EBELP }}</td>
+              <td>{{ table.POSNR }}</td>
               <!-- Inbound Delivery Item -->
-              <td>{{ table.EKGRP }}</td>
-              <!-- Purchasing Group -->
-              <td>{{ table.ERDAT }}</td>
-              <!-- Inbound Created on -->
-              <td>{{ table.MBLNR }}</td>
-              <!-- Material Doc -->
-              <td>{{ table.BUDAT }}</td>
-              <!-- Posting Date -->
+             <!-- <td>{{ table.EKGRP }}</td> -->
+               <!-- Purchasing Group -->
+               <td>{{ table.ERDAT }}</td>
+               <!-- Inbound Created on -->
+               <td>{{ table.VGBEL }}</td>
+               <!-- PO -->
+               <td>{{ table.VGPOS }}</td>
+               <!-- PO Item -->
+               <td>{{ table.LGORT }}</td>
+               <!-- Storage Location -->
+               <td>{{ table.MATNR }}</td>
+               <!-- Material -->
+               <td>{{ table.MAKTX }}</td>
+               <!-- Material Desc -->
+               <td>{{ table.MEINS }}</td>
+               <!-- UOM -->
+               <td>{{ table.LFIMG }}</td>
+               <!-- Qty -->
+               <td>{{ table.GATEENTRY }}</td>
+               <!-- Gate Entry No -->
+               <td>{{ table.GATEDATE }}</td>
+               <!-- Gate Entry Date -->
             </tr>
             <ng-container *ngIf="!hideme[i]">
               <tr class="sub-table no-bg">
@@ -324,28 +387,25 @@
                   <table class="table mb-0 table-striped">
                     <thead class="bg-dark text-white">
                       <tr>
+                        <th>Material Doc</th>
+                        <th>Posting Date</th>
                         <th>Days Taken for GR</th>
                         <th>MIRO No</th>
                         <th>MIRO Date</th>
                         <th>Invoice No</th>
                         <th>Invoice Date</th>
-                        <th>PO</th>
-                        <th>PO Item</th>
                         <th>PO Date</th>
                         <th>Created by</th>
-                        <th>Storage Location</th>
                         <th>Storage Location Name</th>
-                        <th>Material</th>
-                        <th>Material Desc</th>
-                        <th>UOM</th>
-                        <th>Qty</th>
-                        <th>Gate Entry No</th>
-                        <th>Gate Entry Date</th>
                         <th>Days taken for IBD</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr>
+                        <td>{{ table.MBLNR }}</td>
+                        <!-- Material Doc -->
+                        <td>{{ table.BUDAT }}</td>
+                        <!-- Posting Date -->
                         <td>{{ table.AGE }}</td>
                         <!-- Days Taken for GR -->
                         <td>{{ table.BELNR_MIRO }}</td>
@@ -356,30 +416,12 @@
                         <!-- Invoice No -->
                         <td>{{ table.BLDAT }}</td>
                         <!-- Invoice Date -->
-                        <td>{{ table.VGBEL }}</td>
-                        <!-- PO -->
-                        <td>{{ table.VGPOS }}</td>
-                        <!-- PO Item -->
                         <td>{{ table.AEDAT }}</td>
                         <!-- PO Date -->
                         <td>{{ table.ERNAM }}</td>
                         <!-- Created by -->
-                        <td>{{ table.LGORT }}</td>
-                        <!-- Storage Location -->
                         <td>{{ table.LGOBE }}</td>
                         <!-- Storage Location Name -->
-                        <td>{{ table.MATNR }}</td>
-                        <!-- Material -->
-                        <td>{{ table.MAKTX }}</td>
-                        <!-- Material Desc -->
-                        <td>{{ table.MEINS }}</td>
-                        <!-- UOM -->
-                        <td>{{ table.LFIMG }}</td>
-                        <!-- Qty -->
-                        <td>{{ table.GATEENTRY }}</td>
-                        <!-- Gate Entry No -->
-                        <td>{{ table.GATEDATE }}</td>
-                        <!-- Gate Entry Date -->
                         <td>{{ table.AGE1 }}</td>
                         <!-- Days taken for IBD -->
                       </tr>
@@ -393,28 +435,38 @@
       </div>
       <div class="row justify-content-md-between align-items-md-center mt-2">
         <div class="col-sm-12 col-md-5">
-          <div
-            class="dataTables_info mb-2"
-            id="tickets-table_info"
-            role="status"
-            aria-live="polite"
-          >
-            Showing {{ service.startIndex }} to {{ service.endIndex }} of
-            {{ service.totalRecords }}
-            entries
+          <div class="dataTables_info mb-2" role="status" aria-live="polite">
+            Showing {{ service.startIndex }} to {{ service.endIndex }} of {{ service.totalRecords }} entries
           </div>
         </div>
-        <!-- Pagination -->
         <div class="col-sm-12 col-md-5">
           <div class="text-md-right float-md-end pagination-rounded">
-            <pagination
-              [totalItems]="total$ | async"
-              [(ngModel)]="service.page"
-            >
-            </pagination>
+            <ul class="pagination justify-content-end mb-0">
+              <!-- Previous Button -->
+              <li
+                class="page-item"
+                [class.disabled]="service.page === 1"
+                (click)="service.changePage(service.page - 1)"
+              >
+                <a class="page-link" href="javascript:void(0)">Previous</a>
+              </li>
+      
+              <!-- Current Page Display -->
+              <li class="page-item active">
+                <a class="page-link" href="javascript:void(0)">{{ service.page }}</a>
+              </li>
+      
+              <!-- Next Button -->
+              <li
+                class="page-item"
+                [class.disabled]="service.page === service.totalPages"
+                (click)="service.changePage(service.page + 1)"
+              >
+                <a class="page-link" href="javascript:void(0)">Next</a>
+              </li>
+            </ul>
           </div>
         </div>
-        <!-- End Pagination -->
       </div>
     </div>
 

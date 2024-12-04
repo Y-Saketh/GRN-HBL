@@ -52,8 +52,8 @@ export class CloseDownloadComponent implements OnInit {
     this.submit = false;
     this.validationform = this.formBuilder.group({
       plant: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]+')]],
-      purchasegroupfrom: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
-      purchasegroupto: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
+      // purchasegroupfrom: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
+      purchasegroup: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
       curentdatefrom: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
       curentdateto: ['', [Validators.pattern('[a-zA-Z0-9]+')]],
     });
@@ -110,8 +110,8 @@ export class CloseDownloadComponent implements OnInit {
     let obj = {
       "WERKS": this.form.plant.value,// "1300","1025"
       "EKGRP": this.form.purchasegroup.value,//"013",
-      "BADAT_F": this.form.fromdate.value?moment(this.form.fromdate.value):"",// "2024-02-01",
-      "BADAT_T": this.form.todate.value?moment(this.form.todate.value):""//"2024-02-20"
+      "BADAT_F": this.form.curentdatefrom.value?moment(this.form.curentdatefrom.value):"",// "2024-02-01",
+      "BADAT_T": this.form.curentdateto.value?moment(this.form.curentdateto.value):""//"2024-02-20"
     }
     console.log("objobj",obj)
     this.apiService.zprClose(obj).subscribe({
