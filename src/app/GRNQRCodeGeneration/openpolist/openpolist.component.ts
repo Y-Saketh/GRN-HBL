@@ -14,6 +14,7 @@ import { ModalDirective, ModalModule } from 'ngx-bootstrap/modal';
 // import {moment} from 'moment';
 import * as moment from 'moment';
 import Swal from 'sweetalert2';
+import { Inject } from '@angular/core';
 
 
 @Component({
@@ -51,7 +52,7 @@ export class OpenpolistComponent implements OnInit {
   INBOUND: any[] = []; // Stores the API response for the second table
   hidemee: any[];
   PONUMBER: any;
-  constructor(public formBuilder: UntypedFormBuilder, public service: AdvancedService, private apiService:UserProfileService) {
+  constructor(public formBuilder: UntypedFormBuilder, @Inject(AdvancedService) public service: AdvancedService, private apiService:UserProfileService) {
     this.tables$ = service.tables$;
     console.log("this.tables$", this.tables$)
     this.total$ = service.total$;

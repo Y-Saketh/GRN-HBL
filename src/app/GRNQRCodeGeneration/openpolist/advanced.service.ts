@@ -157,8 +157,12 @@ export class AdvancedService {
 
   /** Change page */
   changePage(page: number): void {
+  // Ensure the page is within valid bounds
+  if (page > 0 && page <= this.totalPages) {
     this._set({ page });
   }
+}
+
 
   setTableData(data: Table[]) {
     this.apiData = data;
