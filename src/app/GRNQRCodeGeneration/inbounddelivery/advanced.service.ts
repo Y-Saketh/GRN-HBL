@@ -60,9 +60,31 @@ function matches(table: Table, term: string, pipe: PipeTransform): boolean {
       table.MEINS?.toLowerCase().includes(term.toLowerCase()) || // Base Unit of Measure
       table.PO_NUMBER?.toLowerCase().includes(term.toLowerCase()) || // Purchasing Document Number
       table.PO_ITEM?.toLowerCase().includes(term.toLowerCase()) || // Item Number of Purchasing Document
-      table.tolerance?.toLowerCase().includes(term.toLowerCase()) // Over & Under Tolerance
+      table.tolerance?.toLowerCase().includes(term.toLowerCase()) || // Over & Under Tolerance
+      // New fields
+      table.VBELN?.toLowerCase().includes(term.toLowerCase()) || // Inbound Delivery
+      table.POSNR?.toLowerCase().includes(term.toLowerCase()) || // Inbound Delivery Item
+      table.ERDAT?.toLowerCase().includes(term.toLowerCase()) || // Inbound Created On
+      table.MBLNR?.toLowerCase().includes(term.toLowerCase()) || // Material Document
+      table.BUDAT?.toLowerCase().includes(term.toLowerCase()) || // Posting Date
+      table.AGE?.toLowerCase().includes(term.toLowerCase()) || // Days Taken for GR
+      table.BELNR_MIRO?.toLowerCase().includes(term.toLowerCase()) || // MIRO No
+      table.BUDAT_MIRO?.toLowerCase().includes(term.toLowerCase()) || // MIRO Date
+      table.XBLNR?.toLowerCase().includes(term.toLowerCase()) || // Invoice No
+      table.BLDAT?.toLowerCase().includes(term.toLowerCase()) || // Invoice Date
+      table.VGBEL?.toLowerCase().includes(term.toLowerCase()) || // Purchase Order
+      table.VGPOS?.toLowerCase().includes(term.toLowerCase()) || // Purchase Order Item
+      table.AEDAT?.toLowerCase().includes(term.toLowerCase()) || // Purchase Order Date
+      table.ERNAM?.toLowerCase().includes(term.toLowerCase()) || // Created By
+      table.LGOBE?.toLowerCase().includes(term.toLowerCase()) || // Storage Location Name
+      table.MAKTX?.toLowerCase().includes(term.toLowerCase()) || // Material Description
+      pipe.transform(table.LFIMG)?.toLowerCase().includes(term.toLowerCase()) || // Quantity
+      table.GATEENTRY?.toLowerCase().includes(term.toLowerCase()) || // Gate Entry No
+      table.GATEDATE?.toLowerCase().includes(term.toLowerCase()) || // Gate Entry Date
+      table.AGE1?.toLowerCase().includes(term.toLowerCase()) // Days Taken for IBD
     );
   }
+  
   
 @Injectable({
     providedIn: 'root'

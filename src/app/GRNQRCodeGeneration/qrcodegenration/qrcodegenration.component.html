@@ -5,7 +5,7 @@
       <div class="card">
         <div class="card-body">
           <h4 class="card-title">
-            <span style="color: black">></span> GRN Against Inbound Delivery
+            <span style="color: black"></span> GRN Against Inbound Delivery
           </h4>
           <!-- <p class="card-title-desc">Provide valuable, actionable feedback to your users with HTML5 form
                 validation–available in all our supported browsers.</p> -->
@@ -224,33 +224,7 @@
 
           <div></div>
           <!-- End table -->
-          <div
-            class="row justify-content-md-between align-items-md-center mt-2"
-          >
-            <div class="col-sm-12 col-md-5">
-              <div
-                class="dataTables_info mb-2"
-                id="tickets-table_info"
-                role="status"
-                aria-live="polite"
-              >
-                Showing {{ service.startIndex }} to {{ service.endIndex }} of
-                {{ service.totalRecords }}
-                entries
-              </div>
-            </div>
-            <!-- Pagination -->
-            <div class="col-sm-12 col-md-5">
-              <div class="text-md-right float-md-end pagination-rounded">
-                <pagination
-                  [totalItems]="total$ | async"
-                  [(ngModel)]="service.page"
-                >
-                </pagination>
-              </div>
-            </div>
-            <!-- End Pagination -->
-          </div>
+          
         </div>
       </div>
     </div>

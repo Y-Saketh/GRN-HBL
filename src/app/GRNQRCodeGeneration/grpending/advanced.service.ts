@@ -36,34 +36,36 @@ function sort(tables: Table[], column: string, direction: string): Table[] {
  * Check if the table row matches the search term
  */
 function matches(tables: Table, term: string, pipe: PipeTransform) {
-    return (
-      tables.EBELN.toLowerCase().includes(term.toLowerCase()) || // Purchase Document Number
-      tables.EBELP.toLowerCase().includes(term.toLowerCase()) || // Item Number
-      tables.EKGRP.toLowerCase().includes(term.toLowerCase()) || // Purchase Group
-      tables.BEDAT.toLowerCase().includes(term.toLowerCase()) || // Purchase Document Date
-      tables.LIFNR.toLowerCase().includes(term.toLowerCase()) || // Supplier Code
-      tables.NAME1.toLowerCase().includes(term.toLowerCase()) || // Vendor Address
-      tables.LOEKZ.toLowerCase().includes(term.toLowerCase()) || // Deletion/Blocked
-      tables.MATNR.toLowerCase().includes(term.toLowerCase()) || // Material
-      tables.TXZ01.toLowerCase().includes(term.toLowerCase()) || // Updating Text Field
-      tables.WERKS.toLowerCase().includes(term.toLowerCase()) || // Plant
-      pipe.transform(tables.MENGE).includes(term) || // Alternative Unit of Measure
-      tables.MEINS.toLowerCase().includes(term.toLowerCase()) || // Unit of Measure
-      pipe.transform(tables.MENGE1).includes(term) || // Bill of Quantity (BOM)
-      tables.MEINS1.toLowerCase().includes(term.toLowerCase()) || // Base Unit of Measure
-      pipe.transform(tables.NETWR).includes(term) || // Net Price
-      pipe.transform(tables.DMBTR1).includes(term) || // Sum of Amount
-      tables.EINDT.toLowerCase().includes(term.toLowerCase()) || // Delivery Date
-      tables.DATUM.toLowerCase().includes(term.toLowerCase()) || // Current Date
-      pipe.transform(tables.LV_MENGE_SUM).includes(term) || // -
-      pipe.transform(tables.DAYS).includes(term) || // -
-      tables.EKNAM.toLowerCase().includes(term.toLowerCase()) || // Description of Purchase Group
-      pipe.transform(tables.WRBTR).includes(term) || // Local Current Amount
-      tables.BUYER.toLowerCase().includes(term.toLowerCase()) || // Supplier Email ID
-      tables.CREAT.toLowerCase().includes(term.toLowerCase()) || // Created By
-      tables.ELIKZ.toLowerCase().includes(term.toLowerCase()) // Open PO
-    );
-  }
+  return (
+    tables.WERKS.toLowerCase().includes(term.toLowerCase()) || // Plant
+    tables.VBELN?.toLowerCase().includes(term.toLowerCase()) || // Inbound Delivery
+    tables.POSNR?.toLowerCase().includes(term.toLowerCase()) || // Inbound Delivery Item
+    tables.ERDAT?.toLowerCase().includes(term.toLowerCase()) || // Inbound Created On
+    tables.VGBEL?.toLowerCase().includes(term.toLowerCase()) ||// PO
+    tables.VGPOS?.toLowerCase().includes(term.toLowerCase()) || // PO Item
+    tables.LGORT?.toLowerCase().includes(term.toLowerCase()) || // Storage Location
+    tables.MATNR?.toLowerCase().includes(term.toLowerCase()) || // Material
+    tables.MAKTX?.toLowerCase().includes(term.toLowerCase()) || // Material Description
+    tables.MEINS?.toLowerCase().includes(term.toLowerCase()) || // Unit of Measure
+    pipe.transform(tables.LFIMG)?.toString().includes(term) || // Quantity
+    tables.GATEENTRY?.toLowerCase().includes(term.toLowerCase()) || // Gate Entry No
+    tables.GATEDATE?.toLowerCase().includes(term.toLowerCase()) || // Gate Entry Date
+
+    tables.MBLNR?.toLowerCase().includes(term.toLowerCase()) || // Material Doc
+    tables.BUDAT?.toLowerCase().includes(term.toLowerCase()) || // Posting Date
+    pipe.transform(tables.AGE)?.toString().includes(term) || // Days Taken for GR
+    tables.BELNR_MIRO?.toLowerCase().includes(term.toLowerCase()) || // MIRO No
+    tables.BUDAT_MIRO?.toLowerCase().includes(term.toLowerCase()) || // MIRO Date
+    tables.XBLNR?.toLowerCase().includes(term.toLowerCase()) || // Invoice No
+    tables.BLDAT?.toLowerCase().includes(term.toLowerCase()) || // Invoice Date
+    tables.AEDAT?.toLowerCase().includes(term.toLowerCase()) || // PO Date
+    tables.ERNAM?.toLowerCase().includes(term.toLowerCase()) || // Created By
+    tables.LGOBE?.toLowerCase().includes(term.toLowerCase()) || // Storage Location Name
+    pipe.transform(tables.AGE1)?.toString().includes(term)  // 'Days taken for IBD
+  );
+}
+
+
 
 @Injectable({
   providedIn: 'root',
