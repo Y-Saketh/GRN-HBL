@@ -264,31 +264,31 @@ export class GrpendingComponent implements OnInit {
     return this.validationform.controls;
   }
 
-  validSubmit(){
-    this.submit = true;
-    console.log("validationform",this.form) 
-    if(this.form.inbounddeliverynumber.value){
-      let obj = {
-        "EBELN": this.form.inbounddeliverynumber.value//"4500181937"
-      }
-      console.log("objobj",obj)
-      this.apiService.grnlist(obj).subscribe({
-        next: (res: any) => {
-          console.log('Data:', res);
-          this.INBOUND = res;
-          this.service.setTableData(res || []);
-          this._fetchData();
-        },
-        error: (error: any) => {
-          console.error('Error fetching lot reports:', error);
-        },
-        complete: () => {
-          console.log('API call completed.');
-        }
-      });
-    }
+  // validSubmit(){
+  //   this.submit = true;
+  //   console.log("validationform",this.form) 
+  //   if(this.form.inbounddeliverynumber.value){
+  //     let obj = {
+  //       "EBELN": this.form.inbounddeliverynumber.value//"4500181937"
+  //     }
+  //     console.log("objobj",obj)
+  //     this.apiService.grnlist(obj).subscribe({
+  //       next: (res: any) => {
+  //         console.log('Data:', res);
+  //         this.INBOUND = res;
+  //         this.service.setTableData(res || []);
+  //         this._fetchData();
+  //       },
+  //       error: (error: any) => {
+  //         console.error('Error fetching lot reports:', error);
+  //       },
+  //       complete: () => {
+  //         console.log('API call completed.');
+  //       }
+  //     });
+  //   }
    
-  }
+  // }
 
   back(){
     this.selectedInBound = false;
@@ -326,17 +326,19 @@ export class GrpendingComponent implements OnInit {
     "WERKS": this.form.plant.value,//"1300",
     "VBELN":this.form.delivery.value ,//"180390138",
     "LGORT": this.form.storageLocation.value,// "S048",
-    "BUDAT_F":this.form.ibdCreadtedFrom?moment(this.form.ibdCreadtedFrom.value):'',//"2024-04-01",
-    "BUDAT_T": this.form.ibdCreadtedTo?moment(this.form.ibdCreadtedTo.value):'',//""2024-11-25",
+    "BUDAT_F":this.form.ibdCreadtedFrom?this.form.ibdCreadtedFrom.value:'',//"2024-04-01",
+    "BUDAT_T": this.form.ibdCreadtedTo?this.form.ibdCreadtedTo.value:'',//""2024-11-25",
     "R1": "X",
     "R2": ""
     }
     console.log("objobj",obj)
     this.apiService.GrPending(obj).subscribe({
       next: (res: any) => {
+    
+        this.service.setTableData(res);
         console.log('Data:', res);
         this.GrPending = res;
-        this.service.setTableData(res || []);
+        // this.service.setTableData(res || []);
         this._fetchData();
         this.validationform.reset()
       },
