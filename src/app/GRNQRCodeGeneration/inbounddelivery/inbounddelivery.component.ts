@@ -54,7 +54,6 @@ export class InbounddeliveryComponent implements OnInit {
   SHORT_TEXT: string;
   transporterName: string;
   deleveryChallanNumber: any;
-  transporterName: string;
   PackingList: any;
   isSubmitting: boolean= false;
   constructor(public formBuilder: UntypedFormBuilder, public service: AdvancedService,private apiService:UserProfileService) {
