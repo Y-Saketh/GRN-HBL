@@ -52,8 +52,10 @@ export class CloseDownloadComponent implements OnInit {
     this.submit = false;
     this.validationform = this.formBuilder.group({
       plant: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]+')]],
-      purchasegroup: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
-      curentdate: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
+      purchasegroupfrom: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
+      purchasegroupto: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
+      curentdatefrom: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
+      curentdateto: ['', [Validators.pattern('[a-zA-Z0-9]+')]],
     });
 
     this.breadCrumbItems = [{ label: 'Tables' }, { label: 'Advanced Table', active: true }];

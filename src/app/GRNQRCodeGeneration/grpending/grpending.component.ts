@@ -90,8 +90,10 @@ export class GrpendingComponent implements OnInit {
     this.submit = false;
     this.validationform = this.formBuilder.group({
       plant: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]+')]],
-      delivery: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
-      storageLocation: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
+      deliveryfrom: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
+      deliveryto: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
+      storageLocationfrom: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
+      storageLocationto: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
       ibdCreadtedOn: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
       ibdCreadtedFrom: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
       ibdCreadtedTo: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
@@ -330,7 +332,7 @@ export class GrpendingComponent implements OnInit {
     "R2": ""
     }
     console.log("objobj",obj)
-    this.apiService.OpenPoList(obj).subscribe({
+    this.apiService.GrPending(obj).subscribe({
       next: (res: any) => {
         console.log('Data:', res);
         this.GrPending = res;

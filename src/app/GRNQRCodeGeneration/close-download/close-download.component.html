@@ -227,7 +227,7 @@
               <!-- Purchase Document Number -->
               <td>{{ table.purreqn }}</td>
               <!-- Item Number -->
-              <td>{{ table.item }}</td>
+              <td>{{ table.EBELP }}</td>
               <!-- Purchase Group -->
               <td>{{ table.reqndate }}</td>
               <!-- Purchase Document Date -->
@@ -235,7 +235,7 @@
               <!-- Supplier Code -->
               <td>{{ table.delind }}</td>
               <!-- Vendor Address -->
-              <td>{{ table.purgrp }}</td>
+              <td>{{ table.EKGRP }}</td>
               <!-- Material -->
             </tr>
             <ng-container *ngIf="!hideme[$index]">
@@ -263,13 +263,13 @@
                         <!-- Updating Text Field -->
                         <td>{{ table.ShortText }}</td>
                         <!-- Base Unit of Measure -->
-                        <td>{{ table.MaterialNumber }}</td>
+                        <td>{{ table.MATNR }}</td>
                         <!-- Plant -->
-                        <td>{{ table.Plant }}</td>
+                        <td>{{ table.WERKS }}</td>
                         <!-- Alternative Unit of Measure -->
                         <td>{{ table.QtyRequested }}</td>
                         <!-- Unit of Measure -->
-                        <td>{{ table.UOM }}</td>
+                        <td>{{ table.MEINS }}</td>
                         <!-- Bill of Quantity (BOM) -->
                         <td>{{ table.DelDate }}</td>
                         <!-- Stockkeeping Unit -->

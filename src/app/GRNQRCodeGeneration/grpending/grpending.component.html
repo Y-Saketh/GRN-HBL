@@ -58,9 +58,9 @@
 
           <!-- Storage Location -->
           <div class="col-md-3">
-            <label class="brandcolor" for="storageLocation"
-              >STORAGE LOCATION</label
-            >
+            <label class="brandcolor" for="storageLocationfrom"
+                >STORAGE LOCATION FROM</label
+              >
             <div class="mb-3">
               <input
                 type="text"
@@ -281,19 +281,17 @@
               </th>
               <th
                 class="brandcolor"
-                sortable="materialDocYear"
+                sortable="postingDate"
                 (sort)="onSort($event)"
               >
                 Posting Date
               </th>
-              <!-- <th>Actions</th> -->
             </tr>
           </thead>
-          @for(table of tables$ | async;track $index){
-          <tbody>
+          <tbody *ngFor="let table of tables$ | async; let i = index">
             <tr>
               <td align="center">
-                <a class="expand-row" (click)="changeValue($index)">+</a>
+                <a class="expand-row" (click)="changeValue(i)">+</a>
               </td>
               <td>{{ table.WERKS }}</td>
               <!-- Plant -->
@@ -319,7 +317,7 @@
               <td>{{ table.BUDAT }}</td>
               <!-- Posting Date -->
             </tr>
-            <ng-container *ngIf="!hideme[$index]">
+            <ng-container *ngIf="!hideme[i]">
               <tr class="sub-table no-bg">
                 <td align="center"></td>
                 <td colspan="15" class="p-0">
@@ -391,8 +389,6 @@
               </tr>
             </ng-container>
           </tbody>
-
-          }
         </table>
       </div>
       <div class="row justify-content-md-between align-items-md-center mt-2">
