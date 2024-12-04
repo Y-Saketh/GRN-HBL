@@ -19,7 +19,7 @@
             <label class="brandcolor" for="plant">PLANT</label>
             <div class="mb-3">
               <input
-                type="text"
+                type="text" 
                 class="form-control"
                 id="plant"
                 formControlName="plant"
@@ -298,17 +298,17 @@
               <td>{{ table.WERKS }}</td>
               <!-- Plant -->
               <td
-                (click)="onSelectInBound(tables$)"
+                (click)="onSelectInBound(table.EBELN)"
                 style="
                   cursor: pointer;
                   text-decoration: underline;
                   color: brown;
                 "
               >
-                >{{ table.VBELN }}
+                >{{ table.EBELN }}
               </td>
               <!-- Inbound Delivery -->
-              <td>{{ table.POSNR }}</td>
+              <td>{{ table.EBELP }}</td>
               <!-- Inbound Delivery Item -->
               <td>{{ table.EKGRP }}</td>
               <!-- Purchasing Group -->
@@ -455,7 +455,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let items of inbound; let i = index">
+          <tr *ngFor="let items of inBound; let i = index">
             <td>{{ i + 1 }}</td>
             <td>{{ items.MATNR }}</td>
             <td>{{ items.WERKS }}</td>
@@ -467,7 +467,7 @@
                 type="text"
                 [bsConfig]="bsConfig"
                 bsDatepicker
-                [(ngModel)]="items.PostingDate"
+                [(ngModel)]="PostingDate"
                 class="form-control form-control-sm"
               />
             </td>
@@ -475,13 +475,14 @@
             <td>{{ items.MEINS }}</td>
             <td>{{ items.EBELN }}</td>
             <td>{{ items.EBELP }}</td>
-            <td>
+            <td class="d-flex align-items-center">
               <input
                 type="number"
                 min="1"
                 [(ngModel)]="items.splitCount"
                 placeholder="Rows"
-                class="form-control form-control-sm"
+                class="form-control form-control-sm me-2"
+                style="width: 80px;"
               />
               <button
                 (click)="splitRows(i, items.splitCount)"
@@ -490,9 +491,11 @@
                 Split
               </button>
             </td>
+            
           </tr>
           <!-- Shadow rows -->
-          <tr *ngFor="let shadow of table.shadowRows">
+          <tr *ngFor="let shadow of inBoundshadow">
+            <td></td>
             <td>{{ shadow.MATNR }}</td>
             <td>{{ shadow.WERKS }}</td>
             <td>
@@ -510,7 +513,7 @@
                 class="form-control form-control-sm"
               />
             </td>
-            <td>{{ shadow.PostingDate }}</td>
+            <td>{{ PostingDate | date: 'dd/MM/yyyy'}}</td>
             <td>
               <input
                 type="text"
@@ -531,7 +534,7 @@
         <button
           class="btn btn-success mt-4"
           type="button"
-          (click)="saveBound(tables$)"
+          (click)="saveBound(inBoundshadow)"
         >
           Save
         </button>

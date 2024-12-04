@@ -1,7 +1,7 @@
 import { CommonModule, DecimalPipe } from '@angular/common';
 import { Component, OnInit, QueryList,ViewChild, ViewChildren } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
-import { Table } from './advanced.model';
+import { Table , TableRow } from './advanced.model';
 import { AdvancedService } from './advanced.service';
 import { PagetitleComponent } from 'src/app/shared/ui/pagetitle/pagetitle.component';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
@@ -70,6 +70,9 @@ export class GrpendingComponent implements OnInit {
   // POLIST: any;
   INBOUND: Table[];
   GrPending: Table[];
+  inBound: TableRow[] = [];
+  inBoundshadow: TableRow[] = [];
+  PostingDate: string;
   constructor(public formBuilder: UntypedFormBuilder, public service: AdvancedService, private apiService:UserProfileService) {
     this.tables$ = service.tables$;
     console.log("this.tables$", this.tables$)
@@ -98,21 +101,6 @@ export class GrpendingComponent implements OnInit {
     /**
      * fetch data
      */
-  }
-
-  openUnmatchPopup(index: number): void {
-    this.selectedInBound = JSON.parse(JSON.stringify(this.inbound[index])); // Deep copy
-    this.selectedIndex = index;
-    this.unmatchModal?.show();
-  }
-
-  // Save updated unmatched material
-  saveUnmatched(): void {
-    if (this.selectedIndex !== null) {
-      this.inbound[this.selectedIndex] = this.selectedInBound;
-      console.log('Updated Materials:', this.inbound);
-    }
-    this.closePopup();
   }
 
   // Close the popup
@@ -172,27 +160,8 @@ export class GrpendingComponent implements OnInit {
     console.log('Saved Data:', this.savedData);
   }
   
-  saveUnmatchedItem() {
-    if (this.unmatchedItemIndex === null) return;
-
-    const updatedRow = {
-      ...this.secondTableData[this.unmatchedItemIndex],
-      items: this.editableItems, // Store updated quantities
-    };
-
-    // Save the updated data as individual objects
-    updatedRow.items.forEach((item: any) => {
-      this.savedData.push({
-        ...updatedRow,
-        itemQuantity: item.itemQuantity, // Update with new quantity
-        item: item.item, // Individual item details
-      });
-    });
-
-    // Update the row as matched and close the card
-    this.secondTableData[this.unmatchedItemIndex].matched = true;
-    this.unmatchedItemIndex = null;
-  }
+  
+ 
   changeValue(i) {
     this.hideme[i] = !this.hideme[i];
   }
@@ -210,101 +179,69 @@ export class GrpendingComponent implements OnInit {
   }
 
   splitRows(index: number, splitCount: number) {
-    // Get the table row at the specified index
-    this.tables$.pipe(take(1)).subscribe((tables) => {
-      const mainRow = tables[index];
+    console.log("this.inBound:", this.inBound);
+  
+    // Type inBound as an array of TableRow
+    const mainRow: TableRow | undefined = this.inBound?.[index];
+    if (!mainRow) {
+      console.error(`Row at index ${index} does not exist.`);
+      return;
+    }
+  
+    // Initialize the shadow rows array
+    // this.inBoundshadow = this.inBoundshadow || [];
+    this.inBoundshadow =  [];
 
-      if (!mainRow) {
-        console.error(`Row at index ${index} does not exist.`);
-        return;
-      }
-
-      // Initialize shadowRows array if not already present
-      if (!mainRow.shadowRows) {
-        mainRow.shadowRows = [];
-      }
-
-      // Add the specified number of shadow rows
-      for (let i = 0; i < splitCount; i++) {
-        mainRow.shadowRows.push({
-          MATNR: mainRow.MATNR,
-          WERKS: mainRow.WERKS,
-          LGORT: '',
-          BWART: mainRow.BWART,
-          Batch: '',
-          PostingDate: '',
-          MENGE: '',
-          MEINS: mainRow.MEINS,
-          EBELN: mainRow.EBELN,
-          EBELP: mainRow.EBELP,
-          shadowRows: [],
-        });
-      }
-    });
+  if(splitCount){
+    var splitCounts = parseInt(`${mainRow.MENGE}`)/splitCount
   }
-
-  saveBound(tables$: Observable<any[]>) {
-    this.isSubmitting = true;
-
-    tables$.pipe(take(1)).subscribe({
-      next: (tables) => {
-        const payload = { BUDAT:'',SAVE: [] };
-
-        tables.forEach((table) => {
-          const mainRow = {
-            MATNR: table.MATNR,
-            MENGE: parseFloat(table.MENGE) || 0,
-            MEINS: table.MEINS,
-            SHORT_TEXT: table.SHORT_TEXT,
-            ORGQTY: parseFloat(table.ORGQTY) || 0,
-            EBELN: table.EBELN,
-            EBELP: table.EBELP || 1,
-            WERKS: table.WERKS,
-            LGORT: table.LGORT,
-            BWART: table.BWART,
-            BUDAT:table.PostingDate
-          };
-          // payload.SAVE.push(mainRow);
-          payload.BUDAT= table.PostingDate
-          // Add shadow rows
-          if (table.shadowRows) {
-            table.shadowRows.forEach((shadowRow: any) => {
-              payload.SAVE.push({
-                MATNR: shadowRow.MATNR,
-                MENGE: parseFloat(shadowRow.MENGE) || 0,
-                MEINS: shadowRow.MEINS,
-                SHORT_TEXT: shadowRow.SHORT_TEXT,
-                ORGQTY: parseFloat(shadowRow.ORGQTY) || 0,
-                EBELN: shadowRow.EBELN,
-                EBELP: shadowRow.EBELP || 1,
-                WERKS: shadowRow.WERKS,
-                LGORT: shadowRow.LGORT,
-                BWART: shadowRow.BWART,
-              });
-            });
-          }
-        });
-       
-        console.log('Final Payload:', payload, );
-        this.apiService.grnlist(payload).subscribe({
-          next: (res) => {
-            console.log('Saved:', res);
-           if(res[0].NUMBER){}
-            Swal.fire("", res[0].MESSAGE, "success");
-            this.isSubmitting = false;
-          },
-          error: (err) => {
-            console.error('Error:', err);
-            this.isSubmitting = false;
-          },
-        });
-      },
-      error: (err) => {
-        console.error('Error:', err);
-        this.isSubmitting = false;
-      },
-    });
+    // Add the specified number of shadow rows
+    for (let i = 0; i < splitCount; i++) {
+      this.inBoundshadow.push({
+        MATNR: mainRow.MATNR,
+        WERKS: mainRow.WERKS,
+        LGORT: mainRow.LGORT,//'',
+        BWART: mainRow.BWART,
+        Batch: '',
+        PostingDate: '',
+        MENGE: splitCounts,//'',
+        MEINS: mainRow.MEINS,
+        EBELN: mainRow.EBELN,
+        EBELP: mainRow.EBELP,
+      });
+    }
+    console.log('Shadow rows:', this.inBoundshadow);
   }
+  
+
+ saveBound(inBoundshadow: any[]) {
+  this.isSubmitting = true;
+
+  // Construct payload
+  const payload = { BUDAT: '', SAVE: [] };
+  console.log("inBoundshadow", inBoundshadow);
+  payload.BUDAT = this.PostingDate; // Keep the first PostingDate
+  payload.SAVE = inBoundshadow;
+
+
+  console.log('Final Payload:', payload);
+
+  // API Call
+  this.apiService.grnlist(payload).subscribe({
+    next: (res) => {
+      console.log('Saved:', res);
+      if (res[0]?.NUMBER) {
+        Swal.fire('', res[0].MESSAGE, 'success');
+      }
+      this.isSubmitting = false;
+    },
+    error: (err) => {
+      console.error('Error:', err);
+      this.isSubmitting = false;
+    },
+  });
+}
+
 
   /**
    * Sort table data
@@ -355,10 +292,30 @@ export class GrpendingComponent implements OnInit {
     this.selectedInBound = false;
     this.grnscreen = true;
   }
+
   
-  onSelectInBound(table: any) {
+  onSelectInBound(ibdnum) {
     this.grnscreen = false
-    this.selectedInBound = table; // Store selected Inbound
+    this.selectedInBound = ibdnum; // Store selected Inbound
+    let obj = {
+      "VBELN": "180390184" //ibdnum//"4500181937"
+    }
+    console.log("objobj",obj)
+    this.apiService.grnlist(obj).subscribe( {
+      next: (res: TableRow[]) => {
+        console.log('Data:', res);
+        this.inBound = res;
+        // this.service.setTableData(res || []);
+        // this._fetchData();
+      },
+      error: (error: any) => {
+        console.error('Error fetching lot reports:', error);
+      },
+      complete: () => {
+        console.log('API call completed.');
+      }
+    });
+
     this.initializeSecondTableData(); // Initialize the second table data
   }
   getGrPending(){
@@ -390,22 +347,7 @@ export class GrpendingComponent implements OnInit {
         this.validationform.reset()
       }
     });
-    
-    // this.apiService.OpenPoList(obj).subscribe(
-    //   (res: any) => {
-    //     console.log("data RESPONSE",res)
-    //     if (res.status === true) {
-    //       if (res.data && res.data.TABLE) {
-    //         this.lotReportsData.data = res.data.TABLE;
-    //         console.log("data",this.lotReportsData.data)
-    //       } else {
-    //         console.error('No table data returned.');
-    //       }}
-    //   },
-    //   (error) => {
-    //     console.error('Error fetching lot reports:', error);
-    //   }
-    // );
+
   }
 
 

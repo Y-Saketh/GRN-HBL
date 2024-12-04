@@ -97,6 +97,10 @@ export class InbounddeliveryComponent implements OnInit {
     // showWeekNumbers: false, // Optional: Hide week numbers
     containerClass: 'theme-blue', // Optional: Use a predefined theme
   };
+
+  removeRow(index: number): void {
+    this.INBOUND.splice(index, 1);
+  }
   changeValue() {
     this.hideme = !this.hideme;
   }

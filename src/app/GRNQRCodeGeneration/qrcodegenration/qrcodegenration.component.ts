@@ -43,6 +43,7 @@ export class QRcodegenrationComponent {
   submit: boolean;
   isSubmitting: boolean;
   shadowRows = [];
+  PostingDate: string;
 
   constructor(public service: qrcodegenrationService,public formBuilder: UntypedFormBuilder,private apiService:UserProfileService) {
     this.tables$ = service.tables$;
@@ -90,20 +91,24 @@ export class QRcodegenrationComponent {
       console.log("mainrow", mainRow)
 
       // Initialize shadowRows array if not already present
-      if (!mainRow.shadowRows) {
-        mainRow.shadowRows = [];
-      }
+      // if (!mainRow.shadowRows) {
+      //   mainRow.shadowRows = [];
+      // }
+      mainRow.shadowRows =  [];
 
+      if(splitCount){
+        var splitCounts = parseInt(`${mainRow.MENGE}`)/splitCount
+      }
       // Add the specified number of shadow rows
       for (let i = 0; i < splitCount; i++) {
         mainRow.shadowRows.push({
           MATNR: mainRow.MATNR,
           WERKS: mainRow.WERKS,
-          LGORT: '',
+          LGORT: mainRow.LGORT,
           BWART: mainRow.BWART,
           Batch: '',
           PostingDate: '',
-          MENGE: '',
+          MENGE: splitCounts,//'',
           MEINS: mainRow.MEINS,
           EBELN: mainRow.EBELN,
           EBELP: mainRow.EBELP,
@@ -136,7 +141,7 @@ export class QRcodegenrationComponent {
             BUDAT:table.PostingDate
           };
           // payload.SAVE.push(mainRow);
-          payload.BUDAT= table.PostingDate
+          payload.BUDAT= this.PostingDate
           // Add shadow rows
           if (table.shadowRows) {
             table.shadowRows.forEach((shadowRow: any) => {
@@ -151,6 +156,7 @@ export class QRcodegenrationComponent {
                 WERKS: shadowRow.WERKS,
                 LGORT: shadowRow.LGORT,
                 BWART: shadowRow.BWART,
+                Batch:shadowRow.Batch,
               });
             });
           }

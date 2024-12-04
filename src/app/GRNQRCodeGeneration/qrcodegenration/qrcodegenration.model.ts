@@ -6,7 +6,7 @@ export interface Table {
     BWART: string; // Movement Type
     Batch: string; // Batch
     PostingDate: string; // Posting Date
-    MENGE: string; // Quantity
+    MENGE: number; // Quantity
     MEINS: string; // Unit of Measure
     EBELN: string; // Purchase Order
     EBELP: string; // PO Item

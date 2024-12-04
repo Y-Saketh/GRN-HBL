@@ -147,7 +147,7 @@
                       type="text"
                       [bsConfig]="bsConfig"
                       bsDatepicker
-                      [(ngModel)]="table.PostingDate"
+                      [(ngModel)]="PostingDate"
                       class="form-control form-control-sm"
                     />
                   </td>
@@ -158,13 +158,15 @@
                   <td>{{ table.MEINS }}</td>
                   <td>{{ table.EBELN }}</td>
                   <td>{{ table.EBELP }}</td>
-                  <td>
+                  <td class="d-flex align-items-center">
                     <input
                       type="number"
                       min="1"
                       [(ngModel)]="table.splitCount"
+                   
                       placeholder="Rows"
-                      class="form-control form-control-sm"
+                      class="form-control form-control-sm me-2"
+                      style="width: 80px;"
                     />
                     <button
                       (click)="splitRows(i, table.splitCount)"
@@ -193,7 +195,7 @@
                       class="form-control form-control-sm"
                     />
                   </td>
-                  <td>{{ shadow.PostingDate }}</td>
+                  <td>{{ PostingDate | date: 'dd/MM/yyyy' }}</td>
                   <!-- <td><input type="text" [(ngModel)]="shadow.PostingDate" class="form-control form-control-sm" /></td> -->
                   <td>
                     <input

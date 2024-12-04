@@ -84,7 +84,19 @@ export interface Table {
     ORGQT?: number; //
     SHORT_TEXT?: string // 
 }
-
+export interface TableRow {
+    MATNR: string;
+    WERKS: string;
+    LGORT?: string;
+    BWART: string;
+    Batch?: string;
+    PostingDate?: string;
+    MENGE?: string | number;
+    MEINS: string;
+    EBELN: string;
+    EBELP: string | number;
+  }
+  
 
   export interface SearchResult {
       tables: Table[];
