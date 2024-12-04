@@ -20,6 +20,7 @@ interface State {
 const compare = (v1: string, v2: string) => v1 < v2 ? -1 : v1 > v2 ? 1 : 0;
 
 /**
+ *
  * Sort the table data
  * @param tabless Table field value
  * @param column Fetch the column
@@ -41,23 +42,27 @@ function sort(tables: Table[], column: string, direction: string): Table[] {
  * @param tables Table field value fetch
  * @param term Search the value
  */
-function matches(tables: Table, term: string, pipe: PipeTransform) {
+function matches(table: Table, term: string, pipe: PipeTransform) {
     return (
-      tables.gateEntryNumber.toLowerCase().includes(term.toLowerCase()) ||
-      tables.vehicleNumber.toLowerCase().includes(term.toLowerCase()) ||
-      tables.invoiceDate.toLowerCase().includes(term.toLowerCase()) ||
-      tables.material.toLowerCase().includes(term.toLowerCase()) ||
-      tables.description.toLowerCase().includes(term.toLowerCase()) ||
-      pipe.transform(tables.deliveryQuantity).toLowerCase().includes(term.toLowerCase()) ||
-      tables.storageLocation.toLowerCase().includes(term.toLowerCase()) ||
-      tables.incoterms.toLowerCase().includes(term.toLowerCase()) ||
-      tables.transportationGroup.toLowerCase().includes(term.toLowerCase()) ||
-      tables.transporterName.toLowerCase().includes(term.toLowerCase()) ||
-      tables.supplier.toLowerCase().includes(term.toLowerCase()) ||
-      tables.plant.toLowerCase().includes(term.toLowerCase()) ||
-      tables.tolerance.toLowerCase().includes(term.toLowerCase())
+      table.MBLNR.toLowerCase().includes(term.toLowerCase()) || // Number of Material Document
+      table.EBELN.toLowerCase().includes(term.toLowerCase()) || // Purchasing Document Number
+      table.ZEILE.toString().toLowerCase().includes(term.toLowerCase()) || // Item in Material Document
+      table.ZRQTY.toString().toLowerCase().includes(term.toLowerCase()) || // Reel Quantity
+      table.ZRNUM.toString().toLowerCase().includes(term.toLowerCase()) || // Reel Number
+      table.ZQRGEN_DT.toLowerCase().includes(term.toLowerCase()) || // QR Generation Date
+      table.ZQRSTAT.toLowerCase().includes(term.toLowerCase()) || // QR Status
+      table.ZQRBAL_QTY.toString().toLowerCase().includes(term.toLowerCase()) || // QR Balance Qty
+      table.WERKS.toLowerCase().includes(term.toLowerCase()) || // Plant
+      table.MATNR.toLowerCase().includes(term.toLowerCase()) || // Material Number
+      table.MAKTX.toLowerCase().includes(term.toLowerCase()) || // Material Description
+      table.LGORT.toLowerCase().includes(term.toLowerCase()) || // Storage Location
+      table.MENGE.toString().toLowerCase().includes(term.toLowerCase()) || // Quantity
+      table.MEINS.toLowerCase().includes(term.toLowerCase()) || // Base Unit of Measure
+      table.CHARG.toLowerCase().includes(term.toLowerCase()) || // Batch Number
+      table.LIFNR.toLowerCase().includes(term.toLowerCase()) // Account Number of Supplier
     );
   }
+  
 
 @Injectable({
     providedIn: 'root'
@@ -83,7 +88,7 @@ export class AdvancedService {
         endIndex: 9,
         totalRecords: 0
     };
-
+    private apiData: Table[] = [];
     constructor(private pipe: DecimalPipe) {
         this._search$.pipe(
             tap(() => this._loading$.next(true)),
@@ -97,7 +102,13 @@ export class AdvancedService {
         });
         this._search$.next();
     }
-
+  
+     
+  
+      setTableData(data: Table[]) {
+        this.apiData = data;
+        this._search$.next(); // Trigger a refresh
+      }
     /**
      * Returns the value
      */
@@ -143,7 +154,8 @@ export class AdvancedService {
         const { sortColumn, sortDirection, pageSize, page, searchTerm } = this._state;
 
         // 1. sort
-        let tables = sort(tableData, sortColumn, sortDirection);
+        // let tables = sort(tableData, sortColumn, sortDirection);
+        let tables = sort(this.apiData, sortColumn, sortDirection);
 
         // 2. filter
         tables = tables.filter(table => matches(table, searchTerm, this.pipe));

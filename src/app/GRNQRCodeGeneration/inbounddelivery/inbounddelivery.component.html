@@ -182,9 +182,7 @@
                   class="form-control form-control-sm"
                   [bsConfig]="bsConfig"
                 bsDatepicker
-                #datePicker="bsDatepicker"
-                (focus)="datePicker.show()" 
-                (blur)="datePicker.hide()" 
+            
                 />
                 <small
                   class="text-danger"
@@ -200,9 +198,7 @@
                   class="form-control form-control-sm"
                   [bsConfig]="bsConfig"
                 bsDatepicker
-                #datePicker="bsDatepicker"
-                (focus)="datePicker.show()" 
-                (blur)="datePicker.hide()" 
+         
                 />
                 <small
                   class="text-danger"
@@ -218,9 +214,7 @@
                   class="form-control form-control-sm"
                   [bsConfig]="bsConfig"
                 bsDatepicker
-                #datePicker="bsDatepicker"
-                (focus)="datePicker.show()" 
-                (blur)="datePicker.hide()" 
+             
                 />
                 <small
                   class="text-danger"
@@ -284,7 +278,7 @@
                   </thead>
                   @for(table of tables$ | async;track $index){
                   <tbody>
-                    <tr  *ngFor="let tablee of INBOUND; trackBy: trackByFn">
+                    <tr >
                       <td> 
                         <button class="btn btn-danger btn-sm" (click)="removeRow(i)"> - </button>
                       </td>
