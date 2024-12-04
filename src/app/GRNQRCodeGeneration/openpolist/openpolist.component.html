@@ -9,7 +9,7 @@
   <div class="card" style="background-color: beige">
     <div class="card-body">
       <h4 class="card-title">
-        <span style="color: black">></span>
+        <span style="color: black"></span>
         Open Purchase Order List
       </h4>
       <!-- <p class="card-title-desc">Provide valuable, actionable feedback to your users with HTML5 form
@@ -567,13 +567,13 @@
       <div class="row justify-content-md-between align-items-md-center mt-2">
         <div class="col-sm-12 col-md-5">
           <div class="dataTables_info mb-2" role="status" aria-live="polite">
-            Showing {{ service.startIndex }} to {{ service.endIndex }} of
-            {{ service.totalRecords }} entries
+            Showing {{ service.startIndex }} to {{ service.endIndex }} of {{ service.totalRecords }} entries
           </div>
         </div>
         <div class="col-sm-12 col-md-5">
           <div class="text-md-right float-md-end pagination-rounded">
             <ul class="pagination justify-content-end mb-0">
+              <!-- Previous Button -->
               <li
                 class="page-item"
                 [class.disabled]="service.page === 1"
@@ -581,11 +581,13 @@
               >
                 <a class="page-link" href="javascript:void(0)">Previous</a>
               </li>
+      
+              <!-- Current Page Display -->
               <li class="page-item active">
-                <a class="page-link" href="javascript:void(0)">
-                  {{ service.page }}
-                </a>
+                <a class="page-link" href="javascript:void(0)">{{ service.page }}</a>
               </li>
+      
+              <!-- Next Button -->
               <li
                 class="page-item"
                 [class.disabled]="service.page === service.totalPages"
@@ -597,6 +599,7 @@
           </div>
         </div>
       </div>
+      
       
     </div>
     <div>
