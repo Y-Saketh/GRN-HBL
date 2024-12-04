@@ -265,13 +265,13 @@
               >
                 Inbound Delivery Item
               </th>
-              <th
+             <!-- <th
                 class="brandcolor"
                 sortable="purchasingGroup"
                 (sort)="onSort($event)"
               >
                 Purchasing Group
-              </th>
+              </th> -->
               <th
                 class="brandcolor"
                 sortable="inboundCreatedOn"
@@ -281,17 +281,66 @@
               </th>
               <th
                 class="brandcolor"
-                sortable="materialDocument"
+                sortable="PurchasingOrder"
                 (sort)="onSort($event)"
               >
-                Material Doc
+                PO
               </th>
               <th
                 class="brandcolor"
-                sortable="postingDate"
+                sortable="PurchasingOrdeItem"
                 (sort)="onSort($event)"
               >
-                Posting Date
+                PO Item
+              </th>
+              <th
+                class="brandcolor"
+                sortable="storageLocation"
+                (sort)="onSort($event)"
+              >
+                Storage Location
+              </th>
+              <th
+                class="brandcolor"
+                sortable="material"
+                (sort)="onSort($event)"
+              >
+                Material
+              </th>
+              <th
+                class="brandcolor"
+                sortable="materialDescription"
+                (sort)="onSort($event)"
+              >
+                Material Description
+              </th>
+              <th
+                class="brandcolor"
+                sortable="uom"
+                (sort)="onSort($event)"
+              >
+                UOM
+              </th>
+              <th
+                class="brandcolor"
+                sortable="qty"
+                (sort)="onSort($event)"
+              >
+                Qty
+              </th>
+              <th
+                class="brandcolor"
+                sortable="gateEntryNumber"
+                (sort)="onSort($event)"
+              >
+                Gate Entry No
+              </th>
+              <th
+                class="brandcolor"
+                sortable="gateEntryDate"
+                (sort)="onSort($event)"
+              >
+                Gate Entry Date
               </th>
             </tr>
           </thead>
@@ -306,14 +355,28 @@
               <!-- Inbound Delivery -->
               <td>{{ table.POSNR }}</td>
               <!-- Inbound Delivery Item -->
-              <td>{{ table.EKGRP }}</td>
+             <!-- <td>{{ table.EKGRP }}</td> -->
               <!-- Purchasing Group -->
               <td>{{ table.ERDAT }}</td>
               <!-- Inbound Created on -->
-              <td>{{ table.MBLNR }}</td>
-              <!-- Material Doc -->
-              <td>{{ table.BUDAT }}</td>
-              <!-- Posting Date -->
+              <td>{{ table.VGBEL }}</td>
+              <!-- PO -->
+              <td>{{ table.VGPOS }}</td>
+              <!-- PO Item -->
+              <td>{{ table.LGORT }}</td>
+              <!-- Storage Location -->
+              <td>{{ table.MATNR }}</td>
+              <!-- Material -->
+              <td>{{ table.MAKTX }}</td>
+              <!-- Material Desc -->
+              <td>{{ table.MEINS }}</td>
+              <!-- UOM -->
+              <td>{{ table.LFIMG }}</td>
+              <!-- Qty -->
+              <td>{{ table.GATEENTRY }}</td>
+              <!-- Gate Entry No -->
+              <td>{{ table.GATEDATE }}</td>
+              <!-- Gate Entry Date -->
             </tr>
             <ng-container *ngIf="!hideme[i]">
               <tr class="sub-table no-bg">
@@ -322,28 +385,25 @@
                   <table class="table mb-0 table-striped">
                     <thead class="bg-dark text-white">
                       <tr>
+                        <th>Material Doc</th>
+                        <th>Posting Date</th>
                         <th>Days Taken for GR</th>
                         <th>MIRO No</th>
                         <th>MIRO Date</th>
                         <th>Invoice No</th>
                         <th>Invoice Date</th>
-                        <th>PO</th>
-                        <th>PO Item</th>
                         <th>PO Date</th>
                         <th>Created by</th>
-                        <th>Storage Location</th>
                         <th>Storage Location Name</th>
-                        <th>Material</th>
-                        <th>Material Desc</th>
-                        <th>UOM</th>
-                        <th>Qty</th>
-                        <th>Gate Entry No</th>
-                        <th>Gate Entry Date</th>
                         <th>Days taken for IBD</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr>
+                        <td>{{ table.MBLNR }}</td>
+                        <!-- Material Doc -->
+                        <td>{{ table.BUDAT }}</td>
+                        <!-- Posting Date -->
                         <td>{{ table.AGE }}</td>
                         <!-- Days Taken for GR -->
                         <td>{{ table.BELNR_MIRO }}</td>
@@ -354,30 +414,12 @@
                         <!-- Invoice No -->
                         <td>{{ table.BLDAT }}</td>
                         <!-- Invoice Date -->
-                        <td>{{ table.VGBEL }}</td>
-                        <!-- PO -->
-                        <td>{{ table.VGPOS }}</td>
-                        <!-- PO Item -->
                         <td>{{ table.AEDAT }}</td>
                         <!-- PO Date -->
                         <td>{{ table.ERNAM }}</td>
                         <!-- Created by -->
-                        <td>{{ table.LGORT }}</td>
-                        <!-- Storage Location -->
                         <td>{{ table.LGOBE }}</td>
                         <!-- Storage Location Name -->
-                        <td>{{ table.MATNR }}</td>
-                        <!-- Material -->
-                        <td>{{ table.MAKTX }}</td>
-                        <!-- Material Desc -->
-                        <td>{{ table.MEINS }}</td>
-                        <!-- UOM -->
-                        <td>{{ table.LFIMG }}</td>
-                        <!-- Qty -->
-                        <td>{{ table.GATEENTRY }}</td>
-                        <!-- Gate Entry No -->
-                        <td>{{ table.GATEDATE }}</td>
-                        <!-- Gate Entry Date -->
                         <td>{{ table.AGE1 }}</td>
                         <!-- Days taken for IBD -->
                       </tr>

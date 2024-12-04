@@ -406,38 +406,10 @@
                 sortable="purchasingDocument"
                 (sort)="onSort($event)"
               >
-                Purchasing Document
+                PO
               </th>
               <th class="brandcolor" sortable="item" (sort)="onSort($event)">
-                Item
-              </th>
-              <th
-                class="brandcolor"
-                sortable="purchasingDocType"
-                (sort)="onSort($event)"
-              >
-                Purchasing Doc. Type
-              </th>
-              <th
-                class="brandcolor"
-                sortable="purchasingGroup"
-                (sort)="onSort($event)"
-              >
-                Purchasing Group
-              </th>
-              <th
-                class="brandcolor"
-                sortable="documentDate"
-                (sort)="onSort($event)"
-              >
-                Document Date
-              </th>
-              <th
-                class="brandcolor"
-                sortable="supplier"
-                (sort)="onSort($event)"
-              >
-                Supplier/Supplying Plant
+                PO Item
               </th>
               <th
                 class="brandcolor"
@@ -446,6 +418,70 @@
               >
                 Material
               </th>
+              <th
+                class="brandcolor"
+                sortable="materialDescription"
+                (sort)="onSort($event)"
+              >
+                Material Description
+              </th>
+             <!-- <th
+                class="brandcolor"
+                sortable="purchasingDocType"
+                (sort)="onSort($event)"
+              >
+                Purchasing Doc. Type
+              </th> -->
+             <!-- <th
+                class="brandcolor"
+                sortable="purchasingGroup"
+                (sort)="onSort($event)"
+              >
+                purchase Group
+              </th> -->
+              <th
+                class="brandcolor"
+                sortable="vendorCode"
+                (sort)="onSort($event)"
+              >
+                Vendor Code
+              </th>
+             <!-- <th
+                class="brandcolor"
+                sortable="documentDate"
+                (sort)="onSort($event)"
+              >
+                Document Date
+              </th> -->
+              <th
+                class="brandcolor"
+                sortable="vendorName"
+                (sort)="onSort($event)"
+              >
+                Vendor Name
+              </th>
+              <th
+                class="brandcolor"
+                sortable="plant"
+                (sort)="onSort($event)"
+              >
+                Plant
+              </th>
+              <th
+                class="brandcolor"
+                sortable="uom"
+                (sort)="onSort($event)"
+              >
+                UOM
+              </th>
+              <th
+                class="brandcolor"
+                sortable="poQty"
+                (sort)="onSort($event)"
+              >
+                PO Qty
+              </th>
+              
               <!-- <th>Actions</th> -->
             </tr>
           </thead>
@@ -455,20 +491,26 @@
               <td align="center">
                 <a class="expand-row" (click)="changeValue($index)">+</a>
               </td>
-              <td   (click)="openinbounddeleveryPopup(table.EBELN, $index)" style="color: brown;" >{{ table.EBELN }} </td>
               <!-- Purchase Document Number -->
+              <td   (click)="openinbounddeleveryPopup(table.EBELN, $index)" style="color: brown;" >{{ table.EBELN }} </td>
+               <!-- Item Number -->
               <td>{{ table.EBELP }}</td>
-              <!-- Item Number -->
-              <td>{{ table.EKGRP }}</td>
-              <!-- Purchase Group -->
-              <td>{{ table.BEDAT }}</td>
-              <!-- Purchase Document Date -->
-              <td>{{ table.LIFNR }}</td>
-              <!-- Supplier Code -->
-              <td>{{ table.NAME1 }}</td>
-              <!-- Vendor Address -->
-              <td>{{ table.MATNR }}</td>
               <!-- Material -->
+              <td>{{ table.MATNR }}</td>
+              <!-- Material Description -->
+              <td>{{ table.MAKTX }}</td>
+              <!-- Purchase Group -->
+            <!--  <td>{{ table.EKGRP }}</td> -->
+              <!-- Vendor Code -->
+              <td>{{ table.LIFNR }}</td>
+              <!-- Vendor Name -->
+              <td>{{ table.NAME1 }}</td>
+              <!-- Plant -->
+              <td>{{ table.WERKS }}</td>
+              <!-- UOM-->
+                <td>{{ table.MEINS }}</td>
+              <!-- PO Quantity -->
+              <td>{{ table.MENGE }}</td>
             </tr>
             <ng-container *ngIf="!hideme[$index]">
               <tr class="sub-table no-bg">
@@ -477,55 +519,40 @@
                   <table class="table mb-0 table-striped">
                     <thead class="bg-dark text-white">
                       <tr>
-                        <th>Updating Text Field</th>
-                        <th>Base Unit of Measure</th>
-                        <th>Plant</th>
-                        <th>Alternative Unit of Measure</th>
-                        <th>Unit of Measure</th>
-                        <th>Bill of Quantity (BOM)</th>
-                        <th>Stockkeeping Unit</th>
-                        <th>Sum of Amount</th>
-                        <th>Currency</th>
-                        <th>Still to be delivered (qty)</th>
-                        <th>Still to be delivered (value)</th>
-                        <th>Still to be invoiced (qty)</th>
-                        <th>Still to be invoiced (value)</th>
-                        <th>Delivery Date</th>
-                        <th>Supplier Email ID</th>
+                        <th>Document Date</th>
+                        <th>Created by</th>
+                        <th>Buyer</th>
+                        <th>Purchasing Group Description</th>
+                        <th>PO Value</th>
+                        <th>Deletion Indicator</th>
+                        <th>Delivery Completed</th>
+                        <th>UOM</th>
+                        <th>MIGO Qty</th>
+                        <th>MIGO Value</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr>
-                        <td>{{ table.TXZ01 }}</td>
-                        <!-- Updating Text Field -->
-                        <td>{{ table.MEINS1 }}</td>
-                        <!-- Base Unit of Measure -->
-                        <td>{{ table.WERKS }}</td>
-                        <!-- Plant -->
-                        <td>{{ table.MENGE }}</td>
-                        <!-- Alternative Unit of Measure -->
-                        <td>{{ table.MEINS }}</td>
-                        <!-- Unit of Measure -->
-                        <td>{{ table.MENGE1 }}</td>
-                        <!-- Bill of Quantity (BOM) -->
-                        <td>{{ table.sku }}</td>
-                        <!-- Stockkeeping Unit -->
-                        <td>{{ table.DMBTR1 }}</td>
-                        <!-- Sum of Amount -->
+                        <td>{{ table.BUDAT }}</td>
+                        <!-- Document Date -->
+                        <td>{{ table.ERNAM }}</td>
+                        <!-- Created by -->
+                         <td>{{ table.BUYER }}</td>
+                         <!-- Buyer -->
+                          <td>{{ table.EKNAM }}</td>
+                         <!-- Purchasing Group Description -->
                         <td>{{ table.NETWR }}</td>
-                        <!-- Net Price -->
-                        <td>{{ table.LV_MENGE_SUM }}</td>
-                        <!-- Still to be delivered (qty) -->
-                        <td>{{ table.WRBTR }}</td>
-                        <!-- Still to be delivered (value) -->
-                        <td>{{ table.LIFNR }}</td>
-                        <!-- Still to be invoiced (qty) -->
-                        <td>{{ table.DAYS }}</td>
-                        <!-- Still to be invoiced (value) -->
-                        <td>{{ table.EINDT }}</td>
-                        <!-- Delivery Date -->
-                        <td>{{ table.BUYER }}</td>
-                        <!-- Supplier Email ID -->
+                        <!-- PO Value -->
+                         <td>{{ table.LOEKZ }}</td>
+                        <!-- Deletion Indicator -->
+                         <td>{{ table.ELIKZ }}</td>
+                        <!-- Delivery Completed -->
+                         <td>{{ table.VRAME }}</td>
+                        <!-- UOM -->
+                         <td>{{ table.MENGE1 }}</td>
+                        <!-- MIGO Qty -->
+                         <td>{{ table.DMBTR1 }}</td>
+                        <!-- MIGO Value -->
                       </tr>
                     </tbody>
                   </table>
@@ -533,35 +560,44 @@
               </tr>
             </ng-container>
           </tbody>
-
           }
         </table>
       </div>
+
       <div class="row justify-content-md-between align-items-md-center mt-2">
         <div class="col-sm-12 col-md-5">
-          <div
-            class="dataTables_info mb-2"
-            id="tickets-table_info"
-            role="status"
-            aria-live="polite"
-          >
+          <div class="dataTables_info mb-2" role="status" aria-live="polite">
             Showing {{ service.startIndex }} to {{ service.endIndex }} of
-            {{ service.totalRecords }}
-            entries
+            {{ service.totalRecords }} entries
           </div>
         </div>
-        <!-- Pagination -->
         <div class="col-sm-12 col-md-5">
           <div class="text-md-right float-md-end pagination-rounded">
-            <pagination
-              [totalItems]="total$ | async"
-              [(ngModel)]="service.page"
-            >
-            </pagination>
+            <ul class="pagination justify-content-end mb-0">
+              <li
+                class="page-item"
+                [class.disabled]="service.page === 1"
+                (click)="service.changePage(service.page - 1)"
+              >
+                <a class="page-link" href="javascript:void(0)">Previous</a>
+              </li>
+              <li class="page-item active">
+                <a class="page-link" href="javascript:void(0)">
+                  {{ service.page }}
+                </a>
+              </li>
+              <li
+                class="page-item"
+                [class.disabled]="service.page === service.totalPages"
+                (click)="service.changePage(service.page + 1)"
+              >
+                <a class="page-link" href="javascript:void(0)">Next</a>
+              </li>
+            </ul>
           </div>
         </div>
-        <!-- End Pagination -->
       </div>
+      
     </div>
     <div>
       <div bsModal #newContactModal="bs-modal" class="modal fade" tabindex="-1" aria-labelledby="newContactModalLabel"
@@ -737,6 +773,7 @@
                                       <table class="table mb-0 table-striped">
                                         <thead class="bg-dark text-white">
                                           <tr>
+                                            <th></th>
                                             <th>Plant</th>
                                             <th>Storage Location</th>
                                             <th>Original DEL.Quantity</th>
@@ -751,6 +788,7 @@
                                         </thead>
                                         <tbody>
                                           <tr *ngFor="let tablee of INBOUND; trackBy: trackByFn">
+                                            <td>  <button class="btn btn-danger btn-sm" (click)="removeRow(i)"> - </button></td>
                                             <td>{{ tablee.WERKS }}</td>
                                             <td>{{ tablee.LGORT }}</td>
                                             <td>{{ tablee.ORGQTY }}</td>

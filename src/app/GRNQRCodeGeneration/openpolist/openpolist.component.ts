@@ -243,6 +243,11 @@ export class OpenpolistComponent implements OnInit {
     const control = this.tableForm.get(fieldName);
     return control?.invalid && (control.dirty || control.touched);
   }
+
+  removeRow(index: number): void {
+    this.INBOUND.splice(index, 1);
+  }
+
   saveBound(tables: any[]) {
     this.isSubmitting = true;
   
@@ -251,6 +256,7 @@ export class OpenpolistComponent implements OnInit {
       this.isSubmitting = false;
       return;
     }
+    const filteredTables = tables.filter((table) => !!table);
   
     const payload = {
       DETAIL: {
@@ -273,7 +279,7 @@ export class OpenpolistComponent implements OnInit {
       },
     };
   
-    tables.forEach((table) => {
+    filteredTables.forEach((table) => {
       const item = {
         MATNR: table.MATNR,
         DMENGE: parseFloat(table.DMENGE) || 0,
