@@ -86,6 +86,7 @@ export class OpenpolistComponent implements OnInit {
       gateEntryNumber: ['', Validators.required],
       vehicleNumber: ['', Validators.required],
       invoiceDate: ['', Validators.required],
+      invoiceNo: ['', Validators.required],
       gateEntryDate: ['', Validators.required],
       DocumentDate: ['', Validators.required],
       supplier: ['', Validators.required],
@@ -271,13 +272,14 @@ export class OpenpolistComponent implements OnInit {
       DETAIL: {
         PO_NUMBER: this.PONUMBER,
         DCNUMBER: this.tableForm.value.deleveryChallanNumber,
-        INVOICE: this.tableForm.value.invoiceDate,// this.tableForm.value.invoiceDate?moment(this.tableForm.value.invoiceDate).format('DD/MM/YYYY') :"",//'DefaultInvoice',
+        IN_DATE: this.tableForm.value.invoiceDate,// this.tableForm.value.invoiceDate?moment(this.tableForm.value.invoiceDate).format('DD/MM/YYYY') :"",//'DefaultInvoice',
         DC_DATE: this.tableForm.value.DocumentDate,//this.tableForm.value.DocumentDate?moment(this.tableForm.value.DocumentDate).format('DD/MM/YYYY')  :"", //'2024-11-29',
         PACKLIST: this.tableForm.value.PackingList,
         VEHICLE_NO: this.tableForm.value.vehicleNumber,
         LR_NUMBER: this.tableForm.value.deleveryChallanNumber || 'DefaultMaterial',
         LR_DATE: this.tableForm.value.gateEntryDate,//this.tableForm.value.gateEntryDate?moment(this.tableForm.value.gateEntryDate).format('DD/MM/YYYY')  :"", //,
         TRANSPORTER: this.tableForm.value.supplier || 'DefaultTransporter',
+        INVOICE: this.tableForm.value.invoiceNo,//"ABD",
         ITEM: [],
       },
     };

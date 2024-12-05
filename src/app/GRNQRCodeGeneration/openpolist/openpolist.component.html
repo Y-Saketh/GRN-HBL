@@ -1,821 +1,876 @@
 <div class="container-fluid">
-  <app-page-title
-   
-    [breadcrumbItems]="breadCrumbItems"
-  ></app-page-title>
+  <app-page-title [breadcrumbItems]="breadCrumbItems"></app-page-title>
   <div class="row">
-
-<div class="col-xl-12">
-  <div class="card" style="background-color: beige">
-    <div class="card-body">
-      <h4 class="card-title">
-        <span style="color: black"></span>
-        Open Purchase Order List
-      </h4>
-      <!-- <p class="card-title-desc">Provide valuable, actionable feedback to your users with HTML5 form
+    <div class="col-xl-12">
+      <div class="card" style="background-color: beige">
+        <div class="card-body">
+          <h4 class="card-title">
+            <span style="color: black"></span>
+            Open Purchase Order List
+          </h4>
+          <!-- <p class="card-title-desc">Provide valuable, actionable feedback to your users with HTML5 form
           validation–available in all our supported browsers.</p> -->
-      <form
-        class="needs-validation"
-        (ngSubmit)="validSubmit()"
-        [formGroup]="validationform"
-      >
-        <div class="row">
-          <!-- Row 1 -->
-          <div class="col-md-3">
-            <div class="mb-3">
-              <label class="brandcolor" for="plant">PLANT</label>
-              <input
-                type="text"
-                class="form-control"
-                id="plant"
-                formControlName="plant"
-                placeholder="Plant"
-                [ngClass]="{ 'is-invalid': submit && form.plant.errors }"
-              />
-              <div *ngIf="submit && form.plant.errors" class="invalid-feedback">
-                <span *ngIf="form.plant.errors.required"
-                  >Please provide a valid plant.</span
-                >
+          <form
+            class="needs-validation"
+            (ngSubmit)="validSubmit()"
+            [formGroup]="validationform"
+          >
+            <div class="row">
+              <!-- Row 1 -->
+              <div class="col-md-3">
+                <div class="mb-3">
+                  <label class="brandcolor" for="plant">PLANT</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="plant"
+                    formControlName="plant"
+                    placeholder="Plant"
+                    [ngClass]="{ 'is-invalid': submit && form.plant.errors }"
+                  />
+                  <div
+                    *ngIf="submit && form.plant.errors"
+                    class="invalid-feedback"
+                  >
+                    <span *ngIf="form.plant.errors.required"
+                      >Please provide a valid plant.</span
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="mb-3">
+                  <label class="brandcolor" for="vendor">VENDOR</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="vendor"
+                    formControlName="vendor"
+                    placeholder="Vendor"
+                    [ngClass]="{ 'is-invalid': submit && form.vendor.errors }"
+                  />
+                  <div
+                    *ngIf="submit && form.vendor.errors"
+                    class="invalid-feedback"
+                  >
+                    <span *ngIf="form.vendor.errors.required"
+                      >Please provide a valid vendor.</span
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="mb-3">
+                  <label class="brandcolor" for="documentTypeFrom"
+                    >DOCUMENT TYPE FROM</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="documentTypeFrom"
+                    formControlName="documentTypeFrom"
+                    placeholder="Document Type From"
+                    [ngClass]="{
+                      'is-invalid': submit && form.documentTypeFrom.errors
+                    }"
+                  />
+                  <div
+                    *ngIf="!submit && form.documentTypeFrom.errors"
+                    class="invalid-feedback"
+                  >
+                    <span *ngIf="form.documentTypeFrom.errors.required"
+                      >Please provide a valid document type.</span
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="mb-3">
+                  <label class="brandcolor" for="documentTypeTo"
+                    >DOCUMENT TYPE TO</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="documentTypeTo"
+                    formControlName="documentTypeTo"
+                    placeholder="Document Type To"
+                    [ngClass]="{
+                      'is-invalid': submit && form.documentTypeTo.errors
+                    }"
+                  />
+                  <div
+                    *ngIf="!submit && form.documentTypeTo.errors"
+                    class="invalid-feedback"
+                  >
+                    <span *ngIf="form.documentTypeTo.errors.required"
+                      >Please provide a valid document type.</span
+                    >
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="col-md-3">
-            <div class="mb-3">
-              <label class="brandcolor" for="vendor">VENDOR</label>
-              <input
-                type="text"
-                class="form-control"
-                id="vendor"
-                formControlName="vendor"
-                placeholder="Vendor"
-                [ngClass]="{ 'is-invalid': submit && form.vendor.errors }"
-              />
-              <div
-                *ngIf="submit && form.vendor.errors"
-                class="invalid-feedback"
-              >
-                <span *ngIf="form.vendor.errors.required"
-                  >Please provide a valid vendor.</span
-                >
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3">
-            <div class="mb-3">
-              <label class="brandcolor" for="documentTypeFrom"
-                >DOCUMENT TYPE FROM</label
-              >
-              <input
-                type="text"
-                class="form-control"
-                id="documentTypeFrom"
-                formControlName="documentTypeFrom"
-                placeholder="Document Type From"
-              
-                [ngClass]="{
-                  'is-invalid': submit && form.documentTypeFrom.errors
-                }"
-         
-              />
-              <div
-                *ngIf="!submit && form.documentTypeFrom.errors"
-                class="invalid-feedback"
-              >
-                <span *ngIf="form.documentTypeFrom.errors.required"
-                  >Please provide a valid document type.</span
-                >
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3">
-            <div class="mb-3">
-              <label class="brandcolor" for="documentTypeTo"
-                >DOCUMENT TYPE TO</label
-              >
-              <input
-                type="text"
-                class="form-control"
-                id="documentTypeTo"
-                formControlName="documentTypeTo"
-                placeholder="Document Type To"
-              
-                [ngClass]="{
-                  'is-invalid': submit && form.documentTypeTo.errors
-                }"
-         
-              />
-              <div
-                *ngIf="!submit && form.documentTypeTo.errors"
-                class="invalid-feedback"
-              >
-                <span *ngIf="form.documentTypeTo.errors.required"
-                  >Please provide a valid document type.</span
-                >
-              </div>
-            </div>
-          </div>
-         
+            <div class="row">
+              <!-- Row 2 -->
 
-        </div>
-        <div class="row">
-          <!-- Row 2 -->
-         
-          <div class="col-md-3">
-            <div class="mb-3">
-              <label class="brandcolor" for="documentType"
-                >DOCUMENT TYPE FROM DATE</label
-              >
-              <input
-                type="text"
-                class="form-control"
-                id="documentFrom"
-                formControlName="documentFrom"
-                placeholder="Document Type From"
-                [bsConfig]="bsConfig"
-                bsDatepicker
-                #datePicker="bsDatepicker"
-                (focus)="datePicker.show()" 
-                (blur)="datePicker.hide()" 
-                [ngClass]="{
-                  'is-invalid': submit && form.documentFrom.errors
-                }"
-         
-              />
-              <div
-                *ngIf="!submit && form.documentFrom.errors"
-                class="invalid-feedback"
-              >
-                <span *ngIf="form.documentFrom.errors.required"
-                  >Please provide a valid document type From.</span
-                >
+              <div class="col-md-3">
+                <div class="mb-3">
+                  <label class="brandcolor" for="documentType"
+                    >DOCUMENT TYPE FROM DATE</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="documentFrom"
+                    formControlName="documentFrom"
+                    placeholder="Document Type From"
+                    [bsConfig]="bsConfig"
+                    bsDatepicker
+                    #datePicker="bsDatepicker"
+                    (focus)="datePicker.show()"
+                    (blur)="datePicker.hide()"
+                    [ngClass]="{
+                      'is-invalid': submit && form.documentFrom.errors
+                    }"
+                  />
+                  <div
+                    *ngIf="!submit && form.documentFrom.errors"
+                    class="invalid-feedback"
+                  >
+                    <span *ngIf="form.documentFrom.errors.required"
+                      >Please provide a valid document type From.</span
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="mb-3">
+                  <label class="brandcolor" for="documentTo"
+                    >DOCUMENT TYPE TO DATE</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="documentTo"
+                    formControlName="documentTo"
+                    placeholder="Document Type To"
+                    [bsConfig]="bsConfig"
+                    bsDatepicker
+                    #datePicker="bsDatepicker"
+                    (focus)="datePicker.show()"
+                    (blur)="datePicker.hide()"
+                    [ngClass]="{
+                      'is-invalid': submit && form.documentTo.errors
+                    }"
+                  />
+                  <div
+                    *ngIf="submit && form.documentTo.errors"
+                    class="invalid-feedback"
+                  >
+                    <span *ngIf="form.documentTo.errors.required"
+                      >Please provide a valid document type To Date.</span
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="mb-3">
+                  <label class="brandcolor" for="deliveryDateFrom"
+                    >DELIVERY DATE FROM</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="deliveryDateFrom"
+                    formControlName="deliveryDateFrom"
+                    placeholder="Delivery Date From"
+                    [bsConfig]="bsConfig"
+                    [ngClass]="{
+                      'is-invalid': submit && form.deliveryDateFrom.errors
+                    }"
+                    bsDatepicker
+                    #datePicker="bsDatepicker"
+                    (focus)="datePicker.show()"
+                    (blur)="datePicker.hide()"
+                  />
+                  <div
+                    *ngIf="submit && form.deliveryDateFrom.errors"
+                    class="invalid-feedback"
+                  >
+                    <span *ngIf="form.deliveryDateFrom.errors.required"
+                      >Please provide a valid deliveryDateFrom.</span
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="mb-3">
+                  <label class="brandcolor" for="deliveryDateTo"
+                    >DELIVERY DATE TO</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="deliveryDateTo"
+                    [bsConfig]="bsConfig"
+                    bsDatepicker
+                    #datePicker="bsDatepicker"
+                    (focus)="datePicker.show()"
+                    (blur)="datePicker.hide()"
+                    formControlName="deliveryDateTo"
+                    placeholder="Delivery Date To"
+                    [ngClass]="{
+                      'is-invalid': submit && form.purchaseGroup.errors
+                    }"
+                  />
+                  <div
+                    *ngIf="submit && form.deliveryDateTo.errors"
+                    class="invalid-feedback"
+                  >
+                    <span *ngIf="form.deliveryDateTo.errors.required"
+                      >Please provide a valid delivery Date To.</span
+                    >
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="col-md-3">
-            <div class="mb-3">
-              <label class="brandcolor" for="documentTo"
-                >DOCUMENT TYPE TO DATE</label
-              >
-              <input
-                type="text"
-                class="form-control"
-                id="documentTo"
-                formControlName="documentTo"
-                placeholder="Document Type To"
-                [bsConfig]="bsConfig"
-                bsDatepicker
-                #datePicker="bsDatepicker"
-                (focus)="datePicker.show()" 
-                (blur)="datePicker.hide()" 
-                [ngClass]="{
-                  'is-invalid': submit && form.documentTo.errors
-                }"
-            
-              />
-              <div
-                *ngIf="submit && form.documentTo.errors"
-                class="invalid-feedback"
-              >
-                <span *ngIf="form.documentTo.errors.required"
-                  >Please provide a valid document type To Date.</span
-                >
+            <div class="row">
+              <div class="col-md-3">
+                <div class="mb-3">
+                  <label class="brandcolor" for="material">MATERIAL</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="material"
+                    formControlName="material"
+                    placeholder="Material"
+                    [ngClass]="{ 'is-invalid': submit && form.material.errors }"
+                  />
+                  <div
+                    *ngIf="submit && form.material.errors"
+                    class="invalid-feedback"
+                  >
+                    <span *ngIf="form.material.errors.required"
+                      >Please provide a valid material.</span
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="mb-3">
+                  <label class="brandcolor" for="purchaseGroup"
+                    >PURCHASE GROUP</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="purchaseGroup"
+                    formControlName="purchaseGroup"
+                    placeholder="Purchase Group"
+                    [ngClass]="{
+                      'is-invalid': submit && form.purchaseGroup.errors
+                    }"
+                  />
+                  <div
+                    *ngIf="submit && form.purchaseGroup.errors"
+                    class="invalid-feedback"
+                  >
+                    <span *ngIf="form.purchaseGroup.errors.required"
+                      >Please provide a valid purchase group.</span
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="mb-3">
+                  <label class="brandcolor" for="poNumber">PO NUMBER</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="poNumber"
+                    formControlName="poNumber"
+                    placeholder="PO Number"
+                    [ngClass]="{ 'is-invalid': submit && form.poNumber.errors }"
+                  />
+                  <div
+                    *ngIf="submit && form.poNumber.errors"
+                    class="invalid-feedback"
+                  >
+                    <span *ngIf="form.poNumber.errors.required"
+                      >Please provide a valid PO number.</span
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="mb-3">
+                  <label class="brandcolor" for="materialgroup"
+                    >MATERIAL GROUP</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="materialgroup"
+                    formControlName="materialgroup"
+                    placeholder="Material Group"
+                    [ngClass]="{ 'is-invalid': submit && form.material.errors }"
+                  />
+                  <div
+                    *ngIf="submit && form.materialgroup.errors"
+                    class="invalid-feedback"
+                  >
+                    <span *ngIf="form.materialgroup.errors.required"
+                      >Please provide a valid material group.</span
+                    >
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="col-md-3">
-            <div class="mb-3">
-              <label class="brandcolor" for="deliveryDateFrom"
-                >DELIVERY DATE FROM</label
-              >
-              <input
-                type="text"
-                class="form-control"
-                id="deliveryDateFrom"
-                formControlName="deliveryDateFrom"
-                placeholder="Delivery Date From"
-                [bsConfig]="bsConfig"
-                [ngClass]="{
-                  'is-invalid': submit && form.deliveryDateFrom.errors
-                }"
-                bsDatepicker
-                #datePicker="bsDatepicker"
-                (focus)="datePicker.show()" 
-                (blur)="datePicker.hide()" 
-              />
-              <div
-                *ngIf="submit && form.deliveryDateFrom.errors"
-                class="invalid-feedback"
-              >
-                <span *ngIf="form.deliveryDateFrom.errors.required"
-                  >Please provide a valid deliveryDateFrom.</span
+            <div class="row">
+              <!-- Button Row -->
+              <div class="col-md-4"></div>
+              <div class="col-md-4 text-center">
+                <button
+                  class="btn btn-success"
+                  type="submit"
+                  (click)="getPOLIST()"
                 >
+                  Get Details
+                </button>
               </div>
+              <div class="col-md-4"></div>
             </div>
-          </div>
-          <div class="col-md-3">
-            <div class="mb-3">
-              <label class="brandcolor" for="deliveryDateTo"
-                >DELIVERY DATE TO</label
-              >
-              <input
-                type="text"
-                class="form-control"
-                id="deliveryDateTo"
-                [bsConfig]="bsConfig"
-                bsDatepicker
-                #datePicker="bsDatepicker"
-                (focus)="datePicker.show()" 
-                (blur)="datePicker.hide()" 
-                formControlName="deliveryDateTo"
-                placeholder="Delivery Date To"
-                [ngClass]="{
-                  'is-invalid': submit && form.purchaseGroup.errors
-                }"
-              
-              />
-              <div
-                *ngIf="submit && form.deliveryDateTo.errors"
-                class="invalid-feedback"
-              >
-                <span *ngIf="form.deliveryDateTo.errors.required"
-                  >Please provide a valid delivery Date To.</span
-                >
-              </div>
-            </div>
-          </div>
-
-        </div>
-        <div class="row">
-           
-          <div class="col-md-3">
-            <div class="mb-3">
-              <label class="brandcolor" for="material">MATERIAL</label>
-              <input
-                type="text"
-                class="form-control"
-                id="material"
-                formControlName="material"
-                placeholder="Material"
-                [ngClass]="{ 'is-invalid': submit && form.material.errors }"
-              />
-              <div
-                *ngIf="submit && form.material.errors"
-                class="invalid-feedback"
-              >
-                <span *ngIf="form.material.errors.required"
-                  >Please provide a valid material.</span
-                >
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3">
-            <div class="mb-3">
-              <label class="brandcolor" for="purchaseGroup"
-                >PURCHASE GROUP</label
-              >
-              <input
-                type="text"
-                class="form-control"
-                id="purchaseGroup"
-                formControlName="purchaseGroup"
-                placeholder="Purchase Group"
-                [ngClass]="{
-                  'is-invalid': submit && form.purchaseGroup.errors
-                }"
-              />
-              <div
-                *ngIf="submit && form.purchaseGroup.errors"
-                class="invalid-feedback"
-              >
-                <span *ngIf="form.purchaseGroup.errors.required"
-                  >Please provide a valid purchase group.</span
-                >
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3">
-            <div class="mb-3">
-              <label class="brandcolor" for="poNumber">PO NUMBER</label>
-              <input
-                type="text"
-                class="form-control"
-                id="poNumber"
-                formControlName="poNumber"
-                placeholder="PO Number"
-                [ngClass]="{ 'is-invalid': submit && form.poNumber.errors }"
-              />
-              <div
-                *ngIf="submit && form.poNumber.errors"
-                class="invalid-feedback"
-              >
-                <span *ngIf="form.poNumber.errors.required"
-                  >Please provide a valid PO number.</span
-                >
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3">
-            <div class="mb-3">
-              <label class="brandcolor" for="materialgroup"
-                >MATERIAL GROUP</label
-              >
-              <input
-                type="text"
-                class="form-control"
-                id="materialgroup"
-                formControlName="materialgroup"
-                placeholder="Material Group"
-                [ngClass]="{ 'is-invalid': submit && form.material.errors }"
-              />
-              <div
-                *ngIf="submit && form.materialgroup.errors"
-                class="invalid-feedback"
-              >
-                <span *ngIf="form.materialgroup.errors.required"
-                  >Please provide a valid material group.</span
-                >
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <!-- Button Row -->
-          <div class="col-md-4"></div>
-          <div class="col-md-4 text-center">
-            <button class="btn btn-success" type="submit" (click)="getPOLIST()">
-              Get Details
-            </button>
-          </div>
-          <div class="col-md-4"></div>
-        </div>
-      </form>
-    </div>
-  </div>
-  <!-- end card -->
-  <div class="card">
-    <!-- <div class="row"> -->
-    <!-- <div class="col-12"> -->
-    <!-- <div class="card"> -->
-    <div class="card-body">
-      <div class="row mb-md-2">
-        <div class="col-sm-12 col-md-6">
-          <div class="dataTables_length">
-            <label class="d-inline-flex align-items-center">
-              Show
-              <select
-                name="tickets-table_length"
-                aria-controls="tickets-table"
-                class="form-control form-control-sm mx-2"
-                [(ngModel)]="service.pageSize"
-              >
-                <option [ngValue]="10">10</option>
-                <option [ngValue]="25">25</option>
-                <option [ngValue]="50">50</option>
-                <option [ngValue]="100">100</option>
-              </select>
-              entries
-            </label>
-          </div>
-        </div>
-        <div class="col-sm-12 col-md-6">
-          <div id="tickets-table_filter" class="dataTables_filter text-md-end">
-            <label class="d-inline-flex align-items-center">
-              Search:
-              <input
-                type="text"
-                name="searchTerm"
-                class="form-control form-control-sm ms-2"
-                aria-controls="tickets-table"
-                [(ngModel)]="service.searchTerm"
-              />
-            </label>
-          </div>
+          </form>
         </div>
       </div>
+      <!-- end card -->
+      <div class="card">
+        <!-- <div class="row"> -->
+        <!-- <div class="col-12"> -->
+        <!-- <div class="card"> -->
+        <div class="card-body">
+          <div class="row mb-md-2">
+            <div class="col-sm-12 col-md-6">
+              <div class="dataTables_length">
+                <label class="d-inline-flex align-items-center">
+                  Show
+                  <select
+                    name="tickets-table_length"
+                    aria-controls="tickets-table"
+                    class="form-control form-control-sm mx-2"
+                    [(ngModel)]="service.pageSize"
+                  >
+                    <option [ngValue]="10">10</option>
+                    <option [ngValue]="25">25</option>
+                    <option [ngValue]="50">50</option>
+                    <option [ngValue]="100">100</option>
+                  </select>
+                  entries
+                </label>
+              </div>
+            </div>
+            <div class="col-sm-12 col-md-6">
+              <div
+                id="tickets-table_filter"
+                class="dataTables_filter text-md-end"
+              >
+                <label class="d-inline-flex align-items-center">
+                  Search:
+                  <input
+                    type="text"
+                    name="searchTerm"
+                    class="form-control form-control-sm ms-2"
+                    aria-controls="tickets-table"
+                    [(ngModel)]="service.searchTerm"
+                  />
+                </label>
+              </div>
+            </div>
+          </div>
 
-      <div class="table-responsive">
-        <table
-          id="basic-datatable"
-          class="table table-bordered dt-responsive nowrap"
-        >
-          <thead class="brandcolor tableHeader">
-            <tr>
-              <th></th>
-              <th
-                class="brandcolor"
-                sortable="purchasingDocument"
-                (sort)="onSort($event)"
-              >
-                PO
-              </th>
-              <th class="brandcolor" sortable="item" (sort)="onSort($event)">
-                PO Item
-              </th>
-              <th
-                class="brandcolor"
-                sortable="material"
-                (sort)="onSort($event)"
-              >
-                Material
-              </th>
-              <th
-                class="brandcolor"
-                sortable="materialDescription"
-                (sort)="onSort($event)"
-              >
-                Material Description
-              </th>
-             <!-- <th
+          <div class="table-responsive">
+            <table
+              id="basic-datatable"
+              class="table table-bordered dt-responsive nowrap"
+            >
+              <thead class="brandcolor tableHeader">
+                <tr>
+                  <th></th>
+                  <th
+                    class="brandcolor"
+                    sortable="purchasingDocument"
+                    (sort)="onSort($event)"
+                  >
+                    PO
+                  </th>
+                  <th
+                    class="brandcolor"
+                    sortable="item"
+                    (sort)="onSort($event)"
+                  >
+                    PO Item
+                  </th>
+                  <th
+                    class="brandcolor"
+                    sortable="material"
+                    (sort)="onSort($event)"
+                  >
+                    Material
+                  </th>
+                  <th
+                    class="brandcolor"
+                    sortable="materialDescription"
+                    (sort)="onSort($event)"
+                  >
+                    Material Description
+                  </th>
+                  <!-- <th
                 class="brandcolor"
                 sortable="purchasingDocType"
                 (sort)="onSort($event)"
               >
                 Purchasing Doc. Type
               </th> -->
-             <!-- <th
-                class="brandcolor"
-                sortable="purchasingGroup"
-                (sort)="onSort($event)"
-              >
-                purchase Group
-              </th> -->
-              <th
-                class="brandcolor"
-                sortable="vendorCode"
-                (sort)="onSort($event)"
-              >
-                Vendor Code
-              </th>
-             <!-- <th
+                  <th
+                    class="brandcolor"
+                    sortable="vendorCode"
+                    (sort)="onSort($event)"
+                  >
+                    Vendor Code
+                  </th>
+                  <!-- <th
                 class="brandcolor"
                 sortable="documentDate"
                 (sort)="onSort($event)"
               >
                 Document Date
               </th> -->
-              <th
-                class="brandcolor"
-                sortable="vendorName"
-                (sort)="onSort($event)"
-              >
-                Vendor Name
-              </th>
-              <th
-                class="brandcolor"
-                sortable="plant"
-                (sort)="onSort($event)"
-              >
-                Plant
-              </th>
-              <th
-                class="brandcolor"
-                sortable="uom"
-                (sort)="onSort($event)"
-              >
-                UOM
-              </th>
-              <th
-                class="brandcolor"
-                sortable="poQty"
-                (sort)="onSort($event)"
-              >
-                PO Qty
-              </th>
-              
-              <!-- <th>Actions</th> -->
-            </tr>
-          </thead>
-          @for(table of tables$ | async;track $index){
-          <tbody>
-            <tr>
-              <td align="center">
-                <a class="expand-row" (click)="changeValue($index)">+</a>
-              </td>
-              <!-- Purchase Document Number -->
-              <td   (click)="openinbounddeleveryPopup(table.EBELN, $index)" style="color: brown;" >{{ table.EBELN }} </td>
-               <!-- Item Number -->
-              <td>{{ table.EBELP }}</td>
-              <!-- Material -->
-              <td>{{ table.MATNR }}</td>
-              <!-- Material Description -->
-              <td>{{ table.MAKTX }}</td>
-              <!-- Purchase Group -->
-            <!--  <td>{{ table.EKGRP }}</td> -->
-              <!-- Vendor Code -->
-              <td>{{ table.LIFNR }}</td>
-              <!-- Vendor Name -->
-              <td>{{ table.NAME1 }}</td>
-              <!-- Plant -->
-              <td>{{ table.WERKS }}</td>
-              <!-- UOM-->
-                <td>{{ table.MEINS }}</td>
-              <!-- PO Quantity -->
-              <td>{{ table.MENGE }}</td>
-            </tr>
-            <ng-container *ngIf="!hideme[$index]">
-              <tr class="sub-table no-bg">
-                <td align="center"></td>
-                <td colspan="15" class="p-0">
-                  <table class="table mb-0 table-striped">
-                    <thead class="bg-dark text-white">
-                      <tr>
-                        <th>Document Date</th>
-                        <th>Created by</th>
-                        <th>Buyer</th>
-                        <th>Purchasing Group Description</th>
-                        <th>PO Value</th>
-                        <th>Deletion Indicator</th>
-                        <th>Delivery Completed</th>
-                        <th>UOM</th>
-                        <th>MIGO Qty</th>
-                        <th>MIGO Value</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>{{ table.BUDAT }}</td>
-                        <!-- Document Date -->
-                        <td>{{ table.ERNAM }}</td>
-                        <!-- Created by -->
-                         <td>{{ table.BUYER }}</td>
-                         <!-- Buyer -->
-                          <td>{{ table.EKNAM }}</td>
-                         <!-- Purchasing Group Description -->
-                        <td>{{ table.NETWR }}</td>
-                        <!-- PO Value -->
-                         <td>{{ table.LOEKZ }}</td>
-                        <!-- Deletion Indicator -->
-                         <td>{{ table.ELIKZ }}</td>
-                        <!-- Delivery Completed -->
-                         <td>{{ table.VRAME }}</td>
-                        <!-- UOM -->
-                         <td>{{ table.MENGE1 }}</td>
-                        <!-- MIGO Qty -->
-                         <td>{{ table.DMBTR1 }}</td>
-                        <!-- MIGO Value -->
-                      </tr>
-                    </tbody>
-                  </table>
-                </td>
-              </tr>
-            </ng-container>
-          </tbody>
-          }
-        </table>
-      </div>
+                  <th
+                    class="brandcolor"
+                    sortable="vendorName"
+                    (sort)="onSort($event)"
+                  >
+                    Vendor Name
+                  </th>
+                  <th
+                    class="brandcolor"
+                    sortable="purchasingGroup"
+                    (sort)="onSort($event)"
+                  >
+                    purchase Group
+                  </th>
+                  <th
+                    class="brandcolor"
+                    sortable="plant"
+                    (sort)="onSort($event)"
+                  >
+                    Plant
+                  </th>
+                  <th class="brandcolor" sortable="uom" (sort)="onSort($event)">
+                    UOM
+                  </th>
+                  <th
+                    class="brandcolor"
+                    sortable="poQty"
+                    (sort)="onSort($event)"
+                  >
+                    PO Qty
+                  </th>
 
-      <div class="row justify-content-md-between align-items-md-center mt-2">
-        <div class="col-sm-12 col-md-5">
-          <div class="dataTables_info mb-2" role="status" aria-live="polite">
-            Showing {{ service.startIndex }} to {{ service.endIndex }} of {{ service.totalRecords }} entries
+                  <!-- <th>Actions</th> -->
+                </tr>
+              </thead>
+              @for(table of tables$ | async;track $index){
+              <tbody>
+                <tr>
+                  <td align="center">
+                    <a class="expand-row" (click)="changeValue($index)">+</a>
+                  </td>
+                  <!-- Purchase Document Number -->
+                  <td
+                    (click)="openinbounddeleveryPopup(table.EBELN, $index)"
+                    style="color: brown"
+                  >
+                    {{ table.EBELN }}
+                  </td>
+                  <!-- Item Number -->
+                  <td>{{ table.EBELP }}</td>
+                  <!-- Material -->
+                  <td>{{ table.MATNR }}</td>
+                  <!-- Material Description -->
+                  <td>{{ table.MAKTX }}</td>
+                  <!-- Vendor Code -->
+                  <td>{{ table.LIFNR }}</td>
+                  <!-- Vendor Name -->
+                  <td>{{ table.NAME1 }}</td>
+                  <!-- Purchase Group -->
+                  <td>{{ table.EKGRP }}</td>
+                  <!-- Plant -->
+                  <td>{{ table.WERKS }}</td>
+                  <!-- UOM-->
+                  <td>{{ table.MEINS }}</td>
+                  <!-- PO Quantity -->
+                  <td>{{ table.MENGE }}</td>
+                </tr>
+                <ng-container *ngIf="!hideme[$index]">
+                  <tr class="sub-table no-bg">
+                    <td align="center"></td>
+                    <td colspan="15" class="p-0">
+                      <table class="table mb-0 table-striped">
+                        <thead class="bg-dark text-white">
+                          <tr>
+                            <th>Document Date</th>
+                            <th>Created by</th>
+                            <th>Buyer</th>
+                            <th>Purchasing Group Description</th>
+                            <th>PO Value</th>
+                            <th>Deletion Indicator</th>
+                            <th>Delivery Completed</th>
+                            <th>UOM</th>
+                            <th>MIGO Qty</th>
+                            <th>MIGO Value</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>{{ table.BUDAT }}</td>
+                            <!-- Document Date -->
+                            <td>{{ table.ERNAM }}</td>
+                            <!-- Created by -->
+                            <td>{{ table.BUYER }}</td>
+                            <!-- Buyer -->
+                            <td>{{ table.EKNAM }}</td>
+                            <!-- Purchasing Group Description -->
+                            <td>{{ table.NETWR }}</td>
+                            <!-- PO Value -->
+                            <td>{{ table.LOEKZ }}</td>
+                            <!-- Deletion Indicator -->
+                            <td>{{ table.ELIKZ }}</td>
+                            <!-- Delivery Completed -->
+                            <td>{{ table.VRAME }}</td>
+                            <!-- UOM -->
+                            <td>{{ table.MENGE1 }}</td>
+                            <!-- MIGO Qty -->
+                            <td>{{ table.DMBTR1 }}</td>
+                            <!-- MIGO Value -->
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                </ng-container>
+              </tbody>
+              }
+            </table>
+          </div>
+
+          <div
+            class="row justify-content-md-between align-items-md-center mt-2"
+          >
+            <div class="col-sm-12 col-md-5">
+              <div
+                class="dataTables_info mb-2"
+                role="status"
+                aria-live="polite"
+              >
+                Showing {{ service.startIndex }} to {{ service.endIndex }} of
+                {{ service.totalRecords }} entries
+              </div>
+            </div>
+            <div class="col-sm-12 col-md-5">
+              <div class="text-md-right float-md-end pagination-rounded">
+                <ul class="pagination justify-content-end mb-0">
+                  <!-- Previous Button -->
+                  <li
+                    class="page-item"
+                    [class.disabled]="service.page === 1"
+                    (click)="service.changePage(service.page - 1)"
+                  >
+                    <a class="page-link" href="javascript:void(0)">Previous</a>
+                  </li>
+
+                  <!-- Current Page Display -->
+                  <li class="page-item active">
+                    <a class="page-link" href="javascript:void(0)">{{
+                      service.page
+                    }}</a>
+                  </li>
+
+                  <!-- Next Button -->
+                  <li
+                    class="page-item"
+                    [class.disabled]="service.page === service.totalPages"
+                    (click)="service.changePage(service.page + 1)"
+                  >
+                    <a class="page-link" href="javascript:void(0)">Next</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="col-sm-12 col-md-5">
-          <div class="text-md-right float-md-end pagination-rounded">
-            <ul class="pagination justify-content-end mb-0">
-              <!-- Previous Button -->
-              <li
-                class="page-item"
-                [class.disabled]="service.page === 1"
-                (click)="service.changePage(service.page - 1)"
-              >
-                <a class="page-link" href="javascript:void(0)">Previous</a>
-              </li>
-      
-              <!-- Current Page Display -->
-              <li class="page-item active">
-                <a class="page-link" href="javascript:void(0)">{{ service.page }}</a>
-              </li>
-      
-              <!-- Next Button -->
-              <li
-                class="page-item"
-                [class.disabled]="service.page === service.totalPages"
-                (click)="service.changePage(service.page + 1)"
-              >
-                <a class="page-link" href="javascript:void(0)">Next</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      
-      
-    </div>
-    <div>
-      <div bsModal #newContactModal="bs-modal" class="modal fade" tabindex="-1" aria-labelledby="newContactModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered  modal-xl">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="newContactModalLabel">In-Bound Delivery</h5>
-                            <button type="button" class="btn-close" (click)="closePopup()" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                          <form [formGroup]="tableForm">
+        <div>
+          <div
+            bsModal
+            #newContactModal="bs-modal"
+            class="modal fade"
+            tabindex="-1"
+            aria-labelledby="newContactModalLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog modal-dialog-centered modal-xl">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="newContactModalLabel">
+                    In-Bound Delivery
+                  </h5>
+                  <button
+                    type="button"
+                    class="btn-close"
+                    (click)="closePopup()"
+                    aria-label="Close"
+                  ></button>
+                </div>
+                <div class="modal-body">
+                  <form [formGroup]="tableForm">
+                    <div class="table-responsive">
+                      <table
+                        id="basic-datatable"
+                        class="table table-bordered dt-responsive nowrap"
+                      >
+                        <thead>
+                          <tr>
+                            <th></th>
+                            <th sortable="gateEntryNumber">
+                              Entry Gate Pass Number
+                            </th>
+                            <th sortable="vehicleNumber">Vehicle Number</th>
+                            <th sortable="invoiceDate">Invoice Date</th>
+                            <th sortable="invoiceDate">Invoice NO</th>
+                            <th sortable="invoiceDate">Gate Entry Date</th>
+                            <th sortable="invoiceDate">Document Date</th>
 
-                            <div class="table-responsive">
-                              <table
-                                id="basic-datatable"
-                                class="table table-bordered dt-responsive nowrap"
-                              >
-                                <thead>
-                                  <tr>
-                                    <th></th>
-                                    <th sortable="gateEntryNumber" >
-                                      Entry Gate Pass Number
-                                    </th>
-                                    <th sortable="vehicleNumber" >
-                                      Vehicle Number
-                                    </th>
-                                    <th sortable="invoiceDate" >
-                                      Invoice Date
-                                    </th>
-                                    <th sortable="invoiceDate" >
-                                     Gate Entry Date
-                                    </th>
-                                    <th sortable="invoiceDate" >
-                                      Document Date
-                                    </th>
-                      
-                                    <!-- <th sortable="deliveryQuantity" >
+                            <!-- <th sortable="deliveryQuantity" >
                                       Delivered Quantity
                                     </th> -->
-                                    <th sortable="supplier" >
-                                      Supplier/Vendor Code
-                                    </th>
-                                    <th sortable="plant" >Delevery Challan Number</th>
-                                    <th sortable="packinglist" (sort)="onSort($event)">
-                                      Packing List
-                                    </th>
+                            <th sortable="supplier">Supplier/Vendor Code</th>
+                            <th sortable="plant">Delevery Challan Number</th>
+                            <th>Transporter Name</th>
+                            <!--  <th sortable="packinglist" (sort)="onSort($event)">
+                              Packing List
+                            </th> -->
+                          </tr>
+                        </thead>
+                        <!-- @for(table of tables$ | async;track $index){ -->
+                        <!-- <form [formGroup]="tableForm" (ngSubmit)="submitForm()"> -->
+                        <tbody>
+                          <tr>
+                            <td align="center">
+                              <a class="expand-row">+</a>
+                            </td>
+
+                            <td>
+                              <input
+                                type="text"
+                                formControlName="gateEntryNumber"
+                                placeholder="Entry Gate Pass Number"
+                                class="form-control form-control-sm"
+                              />
+                              <small
+                                class="text-danger"
+                                *ngIf="isFieldInvalid('gateEntryNumber')"
+                                >Gate Entry Number is required and should
+                                contain only alphanumeric characters.</small
+                              >
+                            </td>
+                            <td>
+                              <input
+                                type="text"
+                                formControlName="vehicleNumber"
+                                placeholder="Enter Vehicle Number"
+                                class="form-control form-control-sm"
+                              />
+                              <small
+                                class="text-danger"
+                                *ngIf="isFieldInvalid('vehicleNumber')"
+                                >Vehicle Number is required and should contain
+                                only valid characters.</small
+                              >
+                            </td>
+
+                            <td>
+                              <input
+                                type="text"
+                                formControlName="invoiceDate"
+                                placeholder="Enter Invoice Date"
+                                class="form-control form-control-sm"
+                                [bsConfig]="bsConfig"
+                                bsDatepicker
+                                #datePicker="bsDatepicker"
+                                (focus)="datePicker.show()"
+                                (blur)="datePicker.hide()"
+                              />
+                              <small
+                                class="text-danger"
+                                *ngIf="isFieldInvalid('invoiceDate')"
+                                >Gate Entry Date is required.</small
+                              >
+                            </td>
+                            <td>
+                              <input
+                                type="text"
+                                formControlName="invoiceNo"
+                                placeholder="Enter Invoice No"
+                                class="form-control form-control-sm"
+                              />
+                              <small
+                                class="text-danger"
+                                *ngIf="isFieldInvalid('invoiceNo')"
+                                >Invoice Number is required.</small
+                              >
+                            </td>
+                            <td>
+                              <input
+                                type="text"
+                                formControlName="gateEntryDate"
+                                placeholder="Enter Gate Entry Date"
+                                class="form-control form-control-sm"
+                                [bsConfig]="bsConfig"
+                                bsDatepicker
+                                #datePicker="bsDatepicker"
+                                (focus)="datePicker.show()"
+                                (blur)="datePicker.hide()"
+                              />
+                              <small
+                                class="text-danger"
+                                *ngIf="isFieldInvalid('gateEntryDate')"
+                                >Gate Entry Date is required.</small
+                              >
+                            </td>
+                            <td>
+                              <input
+                                type="text"
+                                formControlName="DocumentDate"
+                                placeholder="Enter Document Date"
+                                class="form-control form-control-sm"
+                                [bsConfig]="bsConfig"
+                                bsDatepicker
+                                #datePicker="bsDatepicker"
+                                (focus)="datePicker.show()"
+                                (blur)="datePicker.hide()"
+                              />
+                              <small
+                                class="text-danger"
+                                *ngIf="isFieldInvalid('DocumentDate')"
+                                >Document Date is required.</small
+                              >
+                            </td>
+                            <td>
+                              <input
+                                type="text"
+                                formControlName="supplier"
+                                placeholder="Enter Supplier/Vendor Code"
+                                class="form-control form-control-sm"
+                              />
+                              <small
+                                class="text-danger"
+                                *ngIf="isFieldInvalid('supplier')"
+                                >Supplier/Vendor Code is required.</small
+                              >
+                            </td>
+
+                            <td>
+                              <input
+                                type="text"
+                                formControlName="deleveryChallanNumber"
+                                placeholder="Enter Delevery Challan Number"
+                                class="form-control form-control-sm"
+                              />
+                              <small
+                                class="text-danger"
+                                *ngIf="isFieldInvalid('deleveryChallanNumber')"
+                                >Delevery Challan Number is required.</small
+                              >
+                            </td>
+                            <td>
+                              <input
+                                type="text"
+                                formControlName="transporterName"
+                                placeholder="Enter Transporter Name"
+                                class="form-control form-control-sm"
+                              />
+                              <small
+                                class="text-danger"
+                                *ngIf="isFieldInvalid('transporterName')"
+                                >Transporter Name is required.</small
+                              >
+                            </td>
+                            <!-- <td>
+                              <input
+                                type="text"
+                                formControlName="PackingList"
+                                class="form-control form-control-sm"
+                              />
+                            </td>  -->
+                          </tr>
+                          <tr class="sub-table no-bg">
+                            <td align="center"></td>
+                            <td colspan="9" class="p-0">
+                              <table class="table mb-0 table-striped">
+                                <thead class="bg-dark text-white">
+                                  <tr>
+                                    <th></th>
+                                    <th>Plant</th>
+                                    <th>Storage Location</th>
+                                    <th>Original DEL.Quantity</th>
+                                    <th>Delivery Quantity</th>
+                                    <th>Base Unit of Measure</th>
+                                    <th>Purchasing Document Number</th>
+                                    <th>Item Number of Purchasing Document</th>
+                                    <th>Material Number</th>
+                                    <th>Material Description</th>
                                   </tr>
                                 </thead>
-                                <!-- @for(table of tables$ | async;track $index){ -->
-                                <!-- <form [formGroup]="tableForm" (ngSubmit)="submitForm()"> -->
                                 <tbody>
-                                  <tr>
-                                    <td align="center">
-                                      <a class="expand-row" >+</a>
-                                    </td>
-                      
+                                  <tr
+                                    *ngFor="
+                                      let tablee of INBOUND;
+                                      let i = index;
+                                      trackBy: trackByFn
+                                    "
+                                  >
                                     <td>
-                                      <input
-                                        type="text"
-                                        formControlName="gateEntryNumber"
-                                        placeholder="Entry Gate Pass Number"
-                                        class="form-control form-control-sm"
-                                      />
-                                      <small
-                                        class="text-danger"
-                                        *ngIf="isFieldInvalid('gateEntryNumber')"
-                                        >Gate Entry Number is required and should contain only alphanumeric characters.</small
+                                      <button
+                                        class="btn btn-danger btn-sm"
+                                        (click)="removeRow(i)"
                                       >
+                                        -
+                                      </button>
                                     </td>
+                                    <td>{{ tablee.WERKS }}</td>
+                                    <td>{{ tablee.LGORT }}</td>
+                                    <td>{{ tablee.ORGQTY }}</td>
                                     <td>
                                       <input
                                         type="text"
-                                        formControlName="vehicleNumber"
-                                        placeholder="Enter Vehicle Number"
-                                        class="form-control form-control-sm"
-                                      />
-                                      <small
-                                        class="text-danger"
-                                        *ngIf="isFieldInvalid('vehicleNumber')"
-                                        >Vehicle Number is required and should contain only valid characters.</small
-                                      >
-                                    </td>
-                                    <td>
-                                      <input
-                                        type="text"
-                                        formControlName="invoiceDate"
-                                        placeholder="Enter Invoice Date"
-                                        class="form-control form-control-sm"
-                                        [bsConfig]="bsConfig"
-                                      bsDatepicker
-                                      #datePicker="bsDatepicker"
-                                      (focus)="datePicker.show()" 
-                                      (blur)="datePicker.hide()" 
-                                      />
-                                      <small
-                                        class="text-danger"
-                                        *ngIf="isFieldInvalid('invoiceDate')"
-                                        >Gate Entry Date is required.</small
-                                      >
-                                    </td>
-                                    <td>
-                                      <input
-                                        type="text"
-                                        formControlName="gateEntryDate"
-                                        placeholder="Enter Gate Entry Date"
-                                        class="form-control form-control-sm"
-                                        [bsConfig]="bsConfig"
-                                      bsDatepicker
-                                      #datePicker="bsDatepicker"
-                                      (focus)="datePicker.show()" 
-                                      (blur)="datePicker.hide()" 
-                                      />
-                                      <small
-                                        class="text-danger"
-                                        *ngIf="isFieldInvalid('gateEntryDate')"
-                                        >Gate Entry Date is required.</small
-                                      >
-                                    </td>
-                                    <td>
-                                      <input
-                                        type="text"
-                                        formControlName="DocumentDate"
-                                        placeholder="Enter Document Date"
-                                        class="form-control form-control-sm"
-                                        [bsConfig]="bsConfig"
-                                      bsDatepicker
-                                      #datePicker="bsDatepicker"
-                                      (focus)="datePicker.show()" 
-                                      (blur)="datePicker.hide()" 
-                                      />
-                                      <small
-                                        class="text-danger"
-                                        *ngIf="isFieldInvalid('DocumentDate')"
-                                        >Document Date is required.</small
-                                      >
-                                    </td>
-                                    <td>
-                                      <input
-                                        type="text"
-                                        formControlName="supplier"
-                                        class="form-control form-control-sm"
-                                      />
-                                      <small
-                                        class="text-danger"
-                                        *ngIf="isFieldInvalid('supplier')"
-                                        >Supplier/Vendor Code is required.</small
-                                      >
-                                    </td>
-                                    <td>
-                                      <input
-                                        type="text"
-                                        formControlName="deleveryChallanNumber"
-                                        class="form-control form-control-sm"
-                                      />
-                                      <small
-                                        class="text-danger"
-                                        *ngIf="isFieldInvalid('deleveryChallanNumber')"
-                                        >Delevery Challan Number is required.</small
-                                      >
-                                    </td>
-                                    <td>
-                                      <input
-                                        type="text"
-                                        formControlName="PackingList"
+                                        [ngModelOptions]="{ standalone: true }"
+                                        [(ngModel)]="tablee.DMENGE"
                                         class="form-control form-control-sm"
                                       />
                                     </td>
+
+                                    <td>{{ tablee.MEINS }}</td>
+                                    <td>{{ tablee.PO_NUMBER }}</td>
+                                    <td>{{ tablee.PO_ITEM }}</td>
+                                    <td>{{ tablee.MATNR }}</td>
+                                    <td>{{ tablee.SHORT_TEXT }}</td>
                                   </tr>
-                                  <tr class="sub-table no-bg" >
-                                    <td align="center"></td>
-                                    <td colspan="9" class="p-0">
-                                      <table class="table mb-0 table-striped">
-                                        <thead class="bg-dark text-white">
-                                          <tr>
-                                            <th></th>
-                                            <th>Plant</th>
-                                            <th>Storage Location</th>
-                                            <th>Original DEL.Quantity</th>
-                                            <th>Delivery Quantity</th>
-                                            <th>Transporter Name</th>
-                                            <th>Base Unit of Measure</th>
-                                            <th>Purchasing Document Number</th>
-                                            <th>Item Number of Purchasing Document</th>
-                                            <th>Material Number</th>
-                                            <th>Material Description</th>
-                                          </tr>
-                                        </thead>
-                                        <tbody>
-                                          <tr *ngFor="let tablee of INBOUND; let i = index; trackBy: trackByFn">
-                                            <td>  <button class="btn btn-danger btn-sm" (click)="removeRow(i)"> - </button></td>
-                                            <td>{{ tablee.WERKS }}</td>
-                                            <td>{{ tablee.LGORT }}</td>
-                                            <td>{{ tablee.ORGQTY }}</td>
-                                            <td>
-                                              <input
-                                                type="text"
-                                                [ngModelOptions]="{ standalone: true }"
-                                                [(ngModel)]="tablee.DMENGE"
-                                                class="form-control form-control-sm"
-                                              />
-                                            </td>
-                                            <td>{{ tablee.transporterName }}</td>
-                                            <td>{{ tablee.MEINS }}</td>
-                                            <td>{{ tablee.PO_NUMBER }}</td>
-                                            <td>{{ tablee.PO_ITEM }}</td>
-                                            <td>{{ tablee.MATNR }}</td>
-                                            <td>{{ tablee.SHORT_TEXT }}</td>
-                                          </tr>
-                                        </tbody>
-                                      </table>
-                                    </td>
-                                  </tr>
-                                  
-<!--                       
+                                </tbody>
+                              </table>
+                            </td>
+                          </tr>
+
+                          <!--                       
                                   @if(!hidemee){
                                   <tr class="sub-table no-bg">
                                     <td align="center"></td>
@@ -861,34 +916,32 @@
                                     </td>
                                   </tr>
                                   } -->
-                                </tbody>
-                                <!-- </form> -->
-                                <!-- } -->
-                              </table>
-                            </div>
-                            <div class="col-md-4 text-left">
-                              <button
-                                class="btn btn-success mt-4"
-                                type="button"
-                                (click)="saveBound(INBOUND)"
-                              >
-                                Save
-                              </button>
-                            </div>
-                            </form>
-                        </div>
-                       
+                        </tbody>
+                        <!-- </form> -->
+                        <!-- } -->
+                      </table>
                     </div>
+                    <div class="col-md-4 text-left">
+                      <button
+                        class="btn btn-success mt-4"
+                        type="button"
+                        (click)="saveBound(INBOUND)"
+                      >
+                        Save
+                      </button>
+                    </div>
+                  </form>
                 </div>
+              </div>
             </div>
+          </div>
+        </div>
 
+        <!-- </div> -->
+        <!-- </div> -->
+        <!-- </div> -->
+      </div>
     </div>
-
-    <!-- </div> -->
-    <!-- </div> -->
-    <!-- </div> -->
-  </div>
-</div>
   </div>
 </div>
 

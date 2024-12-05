@@ -79,7 +79,7 @@ export class InbounddeliveryComponent implements OnInit {
       DocumentDate: ['', Validators.required],
       supplier: ['', Validators.required],
       deleveryChallanNumber: ['', Validators.required],
-      transporterName:[''],
+      transporterName:['', Validators.required],
       PackingList: [''], // Optional field
     });
 
