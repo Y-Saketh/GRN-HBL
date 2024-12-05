@@ -119,7 +119,7 @@ export class GrdoneComponent implements OnInit {
       "R2": "X"
     }
     console.log("objobj",obj)
-    this.apiService.OpenPoList(obj).subscribe({
+    this.apiService.GrPending(obj).subscribe({
       next: (res: any) => {
         console.log('Data:', res);
         this.POLIST = res;

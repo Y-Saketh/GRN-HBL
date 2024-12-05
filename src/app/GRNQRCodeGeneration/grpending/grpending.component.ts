@@ -300,7 +300,7 @@ export class GrpendingComponent implements OnInit {
     this.grnscreen = false
     this.selectedInBound = ibdnum; // Store selected Inbound
     let obj = {
-      "VBELN": "180390184" //ibdnum//"4500181937"
+      "VBELN": ibdnum//"180390184" ////"4500181937"
     }
     console.log("objobj",obj)
     this.apiService.grnlist(obj).subscribe( {

@@ -248,75 +248,75 @@
           <thead class="brandcolor tableHeader">
             <tr>
               <th></th>
-              <th class="brandcolor" sortable="plant" (sort)="onSort($event)">
+              <th class="brandcolor" sortable="WERKS" (sort)="onSort($event)">
                 Plant
               </th>
               <th
                 class="brandcolor"
-                sortable="inboundDelivery"
+                sortable="VBELN"
                 (sort)="onSort($event)"
               >
                 Inbound Delivery
               </th>
               <th
                 class="brandcolor"
-                sortable="inboundDeliveryItem"
+                sortable="POSNR"
                 (sort)="onSort($event)"
               >
                 Inbound Delivery Item
               </th>
              <!-- <th
                 class="brandcolor"
-                sortable="purchasingGroup"
+                sortable="EKGRP"
                 (sort)="onSort($event)"
               >
                 Purchasing Group
               </th> -->
               <th
                 class="brandcolor"
-                sortable="inboundCreatedOn"
+                sortable="ERDAT"
                 (sort)="onSort($event)"
               >
                 Inbound Created on
               </th>
               <th
                 class="brandcolor"
-                sortable="PurchasingOrder"
+                sortable="VGBEL"
                 (sort)="onSort($event)"
               >
                 PO
               </th>
               <th
                 class="brandcolor"
-                sortable="PurchasingOrdeItem"
+                sortable="VGPOS"
                 (sort)="onSort($event)"
               >
                 PO Item
               </th>
               <th
                 class="brandcolor"
-                sortable="storageLocation"
+                sortable="LGORT"
                 (sort)="onSort($event)"
               >
                 Storage Location
               </th>
               <th
                 class="brandcolor"
-                sortable="material"
+                sortable="MATNR"
                 (sort)="onSort($event)"
               >
                 Material
               </th>
               <th
                 class="brandcolor"
-                sortable="materialDescription"
+                sortable="MAKTX"
                 (sort)="onSort($event)"
               >
                 Material Description
               </th>
               <th
                 class="brandcolor"
-                sortable="uom"
+                sortable="MEINS"
                 (sort)="onSort($event)"
               >
                 UOM
@@ -330,7 +330,7 @@
               </th>
               <th
                 class="brandcolor"
-                sortable="gateEntryNumber"
+                sortable="LFIMG"
                 (sort)="onSort($event)"
               >
                 Gate Entry No
@@ -351,17 +351,17 @@
               </td>
               <td>{{ table.WERKS }}</td>
               <!-- Plant -->
-              <td>{{ table.EBELN }}</td>
+              <td>{{ table.VBELN }}</td>
               <!-- Inbound Delivery -->
               <td>{{ table.POSNR }}</td>
               <!-- Inbound Delivery Item -->
-             <!-- <td>{{ table.EKGRP }}</td> -->
+              <!-- <td>{{ table.EKGRP }}</td> -->
               <!-- Purchasing Group -->
               <td>{{ table.ERDAT }}</td>
               <!-- Inbound Created on -->
               <td>{{ table.VGBEL }}</td>
               <!-- PO -->
-              <td>{{ table.POSNR }}</td>
+              <td>{{ table.VGPOS }}</td>
               <!-- PO Item -->
               <td>{{ table.LGORT }}</td>
               <!-- Storage Location -->
@@ -371,7 +371,7 @@
               <!-- Material Desc -->
               <td>{{ table.MEINS }}</td>
               <!-- UOM -->
-              <td>{{ table.MENGE }}</td>
+              <td>{{ table.LFIMG }}</td>
               <!-- Qty -->
               <td>{{ table.GATEENTRY }}</td>
               <!-- Gate Entry No -->

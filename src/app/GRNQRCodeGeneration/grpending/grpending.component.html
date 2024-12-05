@@ -7,11 +7,7 @@
       </h4>
       <!-- <p class="card-title-desc">Provide valuable, actionable feedback to your users with HTML5 form
             validation–available in all our supported browsers.</p> -->
-      <form
-        class="needs-validation"
-        
-        [formGroup]="validationform"
-      >
+      <form class="needs-validation" [formGroup]="validationform">
         <div class="row">
           <!-- Row 1 -->
           <!-- Plant -->
@@ -19,7 +15,7 @@
             <label class="brandcolor" for="plant">PLANT</label>
             <div class="mb-3">
               <input
-                type="text" 
+                type="text"
                 class="form-control"
                 id="plant"
                 formControlName="plant"
@@ -59,8 +55,8 @@
           <!-- Storage Location -->
           <div class="col-md-3">
             <label class="brandcolor" for="storageLocation"
-                >STORAGE LOCATION</label
-              >
+              >STORAGE LOCATION</label
+            >
             <div class="mb-3">
               <input
                 type="text"
@@ -244,81 +240,41 @@
               <th class="brandcolor" sortable="WERKS" (sort)="onSort($event)">
                 Plant
               </th>
-              <th
-                class="brandcolor"
-                sortable="VBELN"
-                (sort)="onSort($event)"
-              >
+              <th class="brandcolor" sortable="VBELN" (sort)="onSort($event)">
                 Inbound Delivery
               </th>
-              <th
-                class="brandcolor"
-                sortable="POSNR"
-                (sort)="onSort($event)"
-              >
+              <th class="brandcolor" sortable="POSNR" (sort)="onSort($event)">
                 Inbound Delivery Item
               </th>
-             <!-- <th
+              <!-- <th
                 class="brandcolor"
                 sortable="EKGRP"
                 (sort)="onSort($event)"
               >
                 Purchasing Group
               </th> -->
-              <th
-                class="brandcolor"
-                sortable="ERDAT"
-                (sort)="onSort($event)"
-              >
+              <th class="brandcolor" sortable="ERDAT" (sort)="onSort($event)">
                 Inbound Created on
               </th>
-              <th
-                class="brandcolor"
-                sortable="VGBEL"
-                (sort)="onSort($event)"
-              >
+              <th class="brandcolor" sortable="VGBEL" (sort)="onSort($event)">
                 PO
               </th>
-              <th
-                class="brandcolor"
-                sortable="VGPOS"
-                (sort)="onSort($event)"
-              >
+              <th class="brandcolor" sortable="VGPOS" (sort)="onSort($event)">
                 PO Item
               </th>
-              <th
-                class="brandcolor"
-                sortable="LGORT"
-                (sort)="onSort($event)"
-              >
+              <th class="brandcolor" sortable="LGORT" (sort)="onSort($event)">
                 Storage Location
               </th>
-              <th
-                class="brandcolor"
-                sortable="MATNR"
-                (sort)="onSort($event)"
-              >
+              <th class="brandcolor" sortable="MATNR" (sort)="onSort($event)">
                 Material
               </th>
-              <th
-                class="brandcolor"
-                sortable="MAKTX"
-                (sort)="onSort($event)"
-              >
+              <th class="brandcolor" sortable="MAKTX" (sort)="onSort($event)">
                 Material Description
               </th>
-              <th
-                class="brandcolor"
-                sortable="MEINS"
-                (sort)="onSort($event)"
-              >
+              <th class="brandcolor" sortable="MEINS" (sort)="onSort($event)">
                 UOM
               </th>
-              <th
-                class="brandcolor"
-                sortable="LFIMG"
-                (sort)="onSort($event)"
-              >
+              <th class="brandcolor" sortable="LFIMG" (sort)="onSort($event)">
                 Qty
               </th>
               <th
@@ -345,40 +301,40 @@
               <td>{{ table.WERKS }}</td>
               <!-- Plant -->
               <td
-                (click)="onSelectInBound(table.EBELN)"
+                (click)="onSelectInBound(table.VBELN)"
                 style="
                   cursor: pointer;
                   text-decoration: underline;
                   color: brown;
                 "
               >
-                {{ table.EBELN }}
+                {{ table.VBELN }}
               </td>
               <!-- Inbound Delivery -->
               <td>{{ table.POSNR }}</td>
               <!-- Inbound Delivery Item -->
-             <!-- <td>{{ table.EKGRP }}</td> -->
-               <!-- Purchasing Group -->
-               <td>{{ table.ERDAT }}</td>
-               <!-- Inbound Created on -->
-               <td>{{ table.VGBEL }}</td>
-               <!-- PO -->
-               <td>{{ table.VGPOS }}</td>
-               <!-- PO Item -->
-               <td>{{ table.LGORT }}</td>
-               <!-- Storage Location -->
-               <td>{{ table.MATNR }}</td>
-               <!-- Material -->
-               <td>{{ table.MAKTX }}</td>
-               <!-- Material Desc -->
-               <td>{{ table.MEINS }}</td>
-               <!-- UOM -->
-               <td>{{ table.LFIMG }}</td>
-               <!-- Qty -->
-               <td>{{ table.GATEENTRY }}</td>
-               <!-- Gate Entry No -->
-               <td>{{ table.GATEDATE }}</td>
-               <!-- Gate Entry Date -->
+              <!-- <td>{{ table.EKGRP }}</td> -->
+              <!-- Purchasing Group -->
+              <td>{{ table.ERDAT }}</td>
+              <!-- Inbound Created on -->
+              <td>{{ table.VGBEL }}</td>
+              <!-- PO -->
+              <td>{{ table.VGPOS }}</td>
+              <!-- PO Item -->
+              <td>{{ table.LGORT }}</td>
+              <!-- Storage Location -->
+              <td>{{ table.MATNR }}</td>
+              <!-- Material -->
+              <td>{{ table.MAKTX }}</td>
+              <!-- Material Desc -->
+              <td>{{ table.MEINS }}</td>
+              <!-- UOM -->
+              <td>{{ table.LFIMG }}</td>
+              <!-- Qty -->
+              <td>{{ table.GATEENTRY }}</td>
+              <!-- Gate Entry No -->
+              <td>{{ table.GATEDATE }}</td>
+              <!-- Gate Entry Date -->
             </tr>
             <ng-container *ngIf="!hideme[i]">
               <tr class="sub-table no-bg">
@@ -436,7 +392,8 @@
       <div class="row justify-content-md-between align-items-md-center mt-2">
         <div class="col-sm-12 col-md-5">
           <div class="dataTables_info mb-2" role="status" aria-live="polite">
-            Showing {{ service.startIndex }} to {{ service.endIndex }} of {{ service.totalRecords }} entries
+            Showing {{ service.startIndex }} to {{ service.endIndex }} of
+            {{ service.totalRecords }} entries
           </div>
         </div>
         <div class="col-sm-12 col-md-5">
@@ -450,12 +407,14 @@
               >
                 <a class="page-link" href="javascript:void(0)">Previous</a>
               </li>
-      
+
               <!-- Current Page Display -->
               <li class="page-item active">
-                <a class="page-link" href="javascript:void(0)">{{ service.page }}</a>
+                <a class="page-link" href="javascript:void(0)">{{
+                  service.page
+                }}</a>
               </li>
-      
+
               <!-- Next Button -->
               <li
                 class="page-item"
@@ -530,7 +489,7 @@
                 [(ngModel)]="items.splitCount"
                 placeholder="Rows"
                 class="form-control form-control-sm me-2"
-                style="width: 80px;"
+                style="width: 80px"
               />
               <button
                 (click)="splitRows(i, items.splitCount)"
@@ -539,7 +498,6 @@
                 Split
               </button>
             </td>
-            
           </tr>
           <!-- Shadow rows -->
           <tr *ngFor="let shadow of inBoundshadow">
@@ -561,7 +519,7 @@
                 class="form-control form-control-sm"
               />
             </td>
-            <td>{{ PostingDate | date: 'dd/MM/yyyy'}}</td>
+            <td>{{ PostingDate | date : "dd/MM/yyyy" }}</td>
             <td>
               <input
                 type="text"
@@ -577,7 +535,6 @@
         </tbody>
       </table>
 
-
       <div class="col-md-4 text-left">
         <button
           class="btn btn-success mt-4"
@@ -588,9 +545,9 @@
         </button>
       </div>
 
-      
-    <!-- </div> -->
-    <!-- </div> -->
-    <!-- </div> -->
+      <!-- </div> -->
+      <!-- </div> -->
+      <!-- </div> -->
+    </div>
   </div>
 </div>
