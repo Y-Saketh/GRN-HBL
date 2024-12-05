@@ -252,7 +252,8 @@ export class OpenpolistComponent implements OnInit {
     return control?.invalid && (control.dirty || control.touched);
   }
 
-  removeRow(index: number): void {
+  removeRow(index: number ): void {
+    console.log("track", index)
     this.INBOUND.splice(index, 1);
   }
 

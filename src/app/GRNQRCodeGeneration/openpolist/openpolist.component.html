@@ -790,7 +790,7 @@
                                           </tr>
                                         </thead>
                                         <tbody>
-                                          <tr *ngFor="let tablee of INBOUND; trackBy: trackByFn">
+                                          <tr *ngFor="let tablee of INBOUND; let i = index; trackBy: trackByFn">
                                             <td>  <button class="btn btn-danger btn-sm" (click)="removeRow(i)"> - </button></td>
                                             <td>{{ tablee.WERKS }}</td>
                                             <td>{{ tablee.LGORT }}</td>
