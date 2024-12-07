@@ -56,8 +56,8 @@ function matches(tables: Table, term: string, pipe: PipeTransform): boolean {
         (tables.MEINS?.toLowerCase().includes(lowerTerm) || false) || // Base Unit of Measure
         (tables.EBELN?.toLowerCase().includes(lowerTerm) || false) || // Supplier
         (pipe.transform(tables.EBELP || '').includes(term) || false) || // Material Document Item
-        (tables.Batch?.toLowerCase().includes(lowerTerm) || false) || // Batch
-        (tables.PostingDate?.toLowerCase().includes(lowerTerm) || false) || // Posting Date
+        (tables.CHARG?.toLowerCase().includes(lowerTerm) || false) || // Batch
+      
         (tables.SHORT_TEXT?.toLowerCase().includes(lowerTerm) || false) || // Material Description
         (pipe.transform(tables.ORGQTY || '').includes(term) || false) // Original Quantity
     );

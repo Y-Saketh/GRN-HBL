@@ -56,6 +56,12 @@ export class InbounddeliveryComponent implements OnInit {
   deleveryChallanNumber: any;
   PackingList: any;
   isSubmitting: boolean= false;
+  vendorCodeDis:any;
+  vendorName: any;
+  City: any = "Hyderabad";
+  GSTIN:any = "33333777AHQPA3613C"
+
+  
   constructor(public formBuilder: UntypedFormBuilder, public service: AdvancedService,private apiService:UserProfileService) {
     this.tables$ = service.tables$;
     console.log("this.tables$", this.tables$)
@@ -78,9 +84,11 @@ export class InbounddeliveryComponent implements OnInit {
       invoiceNo: ['', Validators.required],
       gateEntryDate: ['', Validators.required],
       DocumentDate: ['', Validators.required],
-      supplier: ['', Validators.required],
+      // supplier: ['', Validators.required],
       deleveryChallanNumber: ['', Validators.required],
       transporterName:['', Validators.required],
+      LrNo:['', Validators.required],
+      LrDate:['', Validators.required],
       PackingList: [''], // Optional field
     });
 
@@ -124,10 +132,12 @@ export class InbounddeliveryComponent implements OnInit {
               DC_DATE: this.tableForm.value.DocumentDate,//this.tableForm.value.DocumentDate?moment(this.tableForm.value.DocumentDate).format('DD/MM/YYYY')  :"", //'2024-11-29',
               PACKLIST: this.tableForm.value.PackingList,
               VEHICLE_NO: this.tableForm.value.vehicleNumber,
-              LR_NUMBER: this.tableForm.value.deleveryChallanNumber || 'DefaultMaterial',
-              LR_DATE: this.tableForm.value.gateEntryDate,//this.tableForm.value.gateEntryDate?moment(this.tableForm.value.gateEntryDate).format('DD/MM/YYYY')  :"", //,
-              TRANSPORTER: this.tableForm.value.supplier || 'DefaultTransporter',
+              LR_NUMBER: this.tableForm.value.LrNo ,//|| 'DefaultMaterial',
+              LR_DATE: this.tableForm.value.LrDate,//this.tableForm.value.gateEntryDate?moment(this.tableForm.value.gateEntryDate).format('DD/MM/YYYY')  :"", //,
+              TRANSPORTER: this.tableForm.value.transporterName ,//|| 'DefaultTransporter',
               INVOICE: this.tableForm.value.invoiceNo,//"ABD",
+              GATEENTRY:this.tableForm.value.gateEntryNumber,
+              GATEDATE: this.tableForm.value.gateEntryDate,
               // TRANSPORTER_NAME:this.tableForm.value.transporterName,
               ITEM: [], // Initialize the ITEM array
             },
@@ -155,17 +165,22 @@ export class InbounddeliveryComponent implements OnInit {
           this.apiService.saveInbound(payload).subscribe({
             next: (res) => {
               console.log("Inbound Delivery Saved:", res);
-              Swal.fire("", res[0].MSGTXT, "success");
-              this.isSubmitting = false; // Re-enable the button
+              if(res[0].VBELN){
+                Swal.fire("", res[0].MSGTXT, "success");
+              }
+              else{
+                Swal.fire("", res[0].MSGTXT, "error");
+              } 
+              this.isSubmitting = false; 
               this.validationform.reset();
               this.tableForm.reset();
             },
             error: (err) => {
               console.error("Error while saving:", err);
               Swal.fire("", "Error occurred while saving", "error");
-              this.isSubmitting = false; // Re-enable the button
-              this.validationform.reset();
-              this.tableForm.reset();
+              this.isSubmitting = false; 
+            //   this.validationform.reset();
+            //   this.tableForm.reset();
             },
           });
         },
@@ -219,9 +234,17 @@ export class InbounddeliveryComponent implements OnInit {
       this.apiService.OpenINBOUND(obj).subscribe({
         next: (res: any) => {
           console.log('Data:', res);
-          this.INBOUND = res;
-          this.service.setTableData(res || []);
-          this._fetchData();
+      
+          if(res[0]?.NUMBER){
+            Swal.fire("", res[0].MSGTXT, "error");
+          }
+          else{
+            this.INBOUND = res.ITEM;
+            this.vendorCodeDis = res.LIFNR
+            this.vendorName = res.NAME1
+            this.service.setTableData(res.ITEM || []);
+            this._fetchData();
+          } 
         },
         error: (error: any) => {
           console.error('Error fetching lot reports:', error);

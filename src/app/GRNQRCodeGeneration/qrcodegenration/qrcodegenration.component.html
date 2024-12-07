@@ -1,5 +1,5 @@
 <div class="container-fluid">
-  <app-page-title [breadcrumbItems]="breadCrumbItems"></app-page-title>
+  <!-- <app-page-title [breadcrumbItems]="breadCrumbItems"></app-page-title> -->
   <div class="row">
     <div class="col-12">
       <div class="card">
@@ -9,140 +9,165 @@
           </h4>
           <!-- <p class="card-title-desc">Provide valuable, actionable feedback to your users with HTML5 form
                 validation–available in all our supported browsers.</p> -->
-          <form
-            class="needs-validation"
-            (ngSubmit)="validSubmit()"
-            [formGroup]="validationform"
-          >
+          <form class="needs-validation" (ngSubmit)="validSubmit()" [formGroup]="validationform">
             <div class="row mt-4">
               <!-- Row 1 -->
-              <div class="col-md-4">
+              <div class="col-md-2">
                 <div class="mb-3">
-                  <label
-                    class="brandcolor"
-                    class="brandcolor"
-                    for="inbounddeliverynumber"
-                    >InBound Delivery Number</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="inbounddeliverynumber"
-                    formControlName="inbounddeliverynumber"
-                    placeholder="InBound Delivery Number"
-                    [ngClass]="{
+                  <label class="brandcolor" class="brandcolor" for="inbounddeliverynumber">InBound Delivery
+                    Number</label>
+                  <input type="text" class="form-control" id="inbounddeliverynumber"
+                    formControlName="inbounddeliverynumber" placeholder="InBound Delivery Number" [ngClass]="{
                       'is-invalid': submit && form.inbounddeliverynumber.errors
-                    }"
-                  />
-                  <div
-                    *ngIf="submit && form.inbounddeliverynumber.errors"
-                    class="invalid-feedback"
-                  >
-                    <span *ngIf="form.inbounddeliverynumber.errors.required"
-                      >Please provide a valid Purchase Order Number.</span
-                    >
+                    }" />
+                  <div *ngIf="submit && form.inbounddeliverynumber.errors" class="invalid-feedback">
+                    <span *ngIf="form.inbounddeliverynumber.errors.required">Please provide a valid Inbound Order
+                      Number.</span>
                   </div>
                 </div>
               </div>
 
               <!-- <div class="row"> -->
               <!-- Button Row -->
-              <div class="col-md-4 mt-4"></div>
-              <div class="col-md-4 text-center">
+
+              <div class="col-md-2 text-center">
                 <button class="btn btn-success mt-4" type="submit">
                   Get Details
                 </button>
               </div>
+              <div class="col-md-6 mt-4"></div>
               <div class="col-md-4"></div>
             </div>
           </form>
+          <div *ngIf="GrnResponse" class="card-body">
+            <div class="row mb-md-2">
+              <div class="col-sm-8 col-md-8">
+                <form [formGroup]="inboundDetailsForm">
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th>Plant</th>
+                        <!-- <th>S.loc</th> -->
+                        <th>Invoice Number</th>
+                        <th>Invoice Date</th>
+                        <!-- <th>Doc.Date</th> -->
+                        <th>Posting Date</th>
+                        
+                        
+                        <!-- <th>Vendor Code</th> -->
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <!-- Non-editable field displayed as plain text -->
+                          <span>{{ plant }}</span>
+                        </td>
+                        <!-- <td>
+                         
+                          <span>{{ sloc }}</span>
+                        </td> -->
+                        <!-- <td>
+                        
+                          <span>{{ documentDeliveryDate }}</span>
+                        </td> -->
+                        <td>
+                          <!-- Non-editable field displayed as plain text -->
+                          <span>{{ invoiceNumber }}</span>
+                        </td>
+                        <td>
+                          <!-- Non-editable field displayed as plain text -->
+                          <span>{{ invoiceDate }}</span>
+                        </td>
+                        <td>
+                          <!-- Editable field -->
+                          <input
+                          type="text"
+                            class="form-control"
+                            formControlName="postingDate"
+                            [bsConfig]="bsConfig"
+                            bsDatepicker
+                          />
+                        </td>
+                        
+                       
+                        <!-- <td>
+    
+                          <span>{{ vendorCode }}</span>
+                        </td> -->
+                      </tr>
+                    </tbody>
+                  </table>
+                </form>
+              </div>
+              <div class="col-sm-4 col-md-4 " style="float: right;">
+                <h5 *ngIf="documentDeliveryDate"><span class="brandcolor">Vendor Code</span> : 123456789</h5>
+                <h5 *ngIf="documentDeliveryDate"><span class="brandcolor">Vendor Name</span> : HBL Group</h5>
+                <h5 *ngIf="documentDeliveryDate"><span class="brandcolor">City</span> : Hyderabad</h5>
+                <h5 *ngIf="documentDeliveryDate"><span class="brandcolor">GSTIN</span> : 1246ADSPO0293Q1234</h5>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
+
+
       <div class="card">
         <div class="card-body">
           <!-- <h4 class="card-title">Advanced Data Table</h4>
           <p class="card-sub-title">Example of datatable.</p> -->
-          <div class="row mb-md-2">
-            <div class="col-sm-12 col-md-6">
-              <div class="dataTables_length" id="tickets-table_length">
-                <label class="d-inline-flex align-items-center"
-                  >Show
-                  <select
-                    name="tickets-table_length"
-                    aria-controls="tickets-table"
-                    name="pageSize"
-                    [(ngModel)]="service.pageSize"
-                    class="form-control form-control-sm mx-2"
-                  >
-                    <option [ngValue]="10">10</option>
-                    <option [ngValue]="25">25</option>
-                    <option [ngValue]="50">50</option>
-                    <option [ngValue]="100">100</option>
-                  </select>
-                  entries</label
-                >
-              </div>
-            </div>
-            <!-- Search -->
-            <div class="col-sm-12 col-md-6">
-              <div
-                id="tickets-table_filter"
-                class="dataTables_filter text-md-end"
-              >
-                <label class="d-inline-flex align-items-center"
-                  >Search:
-                  <input
-                    type="text"
-                    name="searchTerm"
-                    class="form-control form-control-sm ms-2"
-                    aria-controls="tickets-table"
-                    [(ngModel)]="service.searchTerm"
-                /></label>
-              </div>
-            </div>
-            <!-- End search -->
-          </div>
+
           <!-- Table -->
           <div class="table table-responsive">
-            <table
-              id="basic-datatable"
-              class="table table-bordered dt-responsive nowrap datatables no-footer dtr-inline"
-            >
+            <table id="basic-datatable"
+              class="table table-bordered dt-responsive nowrap datatables no-footer dtr-inline">
               <thead>
+                <!-- <tr></tr> -->
+
                 <tr>
+                  <th>
+                    <input type="checkbox" [checked]="selectAll" (change)="toggleSelectAll($event)" />
+                  </th>
                   <th sortable="MATNR" (sort)="onSort($event)">
                     Material Number
                   </th>
-                  <th sortable="WERKS" (sort)="onSort($event)">Plant</th>
+                  <!-- <th sortable="WERKS" (sort)="onSort($event)">Plant</th> -->
+                  <th sortable="MAKTX" (sort)="onSort($event)">Meterial Description</th>
                   <th sortable="LGORT" (sort)="onSort($event)">
-                    Storage Location
+                    S.Loc
                   </th>
                   <th sortable="BWART" (sort)="onSort($event)">
                     Movement Type
                   </th>
-                  <th sortable="Batch" (sort)="onSort($event)">Batch</th>
-                  <th sortable="PostingDate" (sort)="onSort($event)">
+                  <th sortable="CHARG" (sort)="onSort($event)">Batch</th>
+                  <!-- <th sortable="PostingDate" (sort)="onSort($event)">
                     Posting Date
-                  </th>
+                  </th> -->
                   <th sortable="MENGE" (sort)="onSort($event)">Quantity</th>
                   <th sortable="MEINS" (sort)="onSort($event)">UOM</th>
                   <th sortable="EBELN" (sort)="onSort($event)">
                     Purchase Order
                   </th>
                   <th sortable="EBELP" (sort)="onSort($event)">PO Item</th>
-                  <th>Split</th>
+                  <th>Goods Recipient</th>
+                  <th>Unloading Point</th>
+                  <th>Pkg</th>
                 </tr>
               </thead>
               <tbody *ngFor="let table of tables$ | async; let i = index">
                 <!-- Main row -->
                 <tr>
+                  <!-- <td></td> -->
+                  <td>
+                    <input type="checkbox" [(ngModel)]="table.selected" (change)="onRowCheckboxChange(table)" />
                   <td>{{ table.MATNR }}</td>
-                  <td>{{ table.WERKS }}</td>
+                  <td>{{table.MAKTX}}</td>
+                  <!-- <td>{{ table.WERKS }}</td> -->
                   <td>{{ table.LGORT }}</td>
                   <!-- <td><input type="text" [(ngModel)]="table.LGORT" class="form-control form-control-sm" /></td> -->
                   <td>{{ table.BWART }}</td>
-                  <td>{{ table.Batch }}</td>
-                  <td>
+                  <td>{{ table.CHARG }}</td>
+                  <!-- <td>
                     <input
                       type="text"
                       [bsConfig]="bsConfig"
@@ -150,7 +175,7 @@
                       [(ngModel)]="PostingDate"
                       class="form-control form-control-sm"
                     />
-                  </td>
+                  </td> -->
                   <td>{{ table.MENGE }}</td>
                   <!-- <td><input type="text" [(ngModel)]="table.Batch" class="form-control form-control-sm" /></td>
                   <td><input type="text" [(ngModel)]="table.PostingDate" class="form-control form-control-sm" /></td>
@@ -158,73 +183,62 @@
                   <td>{{ table.MEINS }}</td>
                   <td>{{ table.EBELN }}</td>
                   <td>{{ table.EBELP }}</td>
+                  <td><input type="text" [(ngModel)]="table.WEMPF" class="form-control form-control-sm" /></td>
+                  <td><input type="text" [(ngModel)]="table.ABLAD" class="form-control form-control-sm" /></td>
+       
+                  <!-- <td>{{table.WEMPF}}</td> -->
+                  <!-- <td>{{table.ABLAD}}</td> -->
                   <td class="d-flex align-items-center">
-                    <input
-                      type="number"
-                      min="1"
-                      [(ngModel)]="table.splitCount"
-                   
-                      placeholder="Rows"
-                      class="form-control form-control-sm me-2"
-                      style="width: 80px;"
-                    />
-                    <button
-                      (click)="splitRows(i, table.splitCount)"
-                      class="btn btn-sm btn-primary"
-                    >
+                    <input type="number" min="1" [(ngModel)]="table.splitCount" placeholder="Rows"
+                      class="form-control form-control-sm me-2" style="width: 80px;" />
+                    <button (click)="splitRows(i, table.splitCount)" class="btn btn-sm btn-primary">
                       Split
                     </button>
                   </td>
                 </tr>
                 <!-- Shadow rows -->
                 <tr *ngFor="let shadow of table.shadowRows">
-                  <td>{{ shadow.MATNR }}</td>
-                  <td>{{ shadow.WERKS }}</td>
+                  <!-- <td></td> -->
                   <td>
-                    <input
-                      type="text"
-                      [(ngModel)]="shadow.LGORT"
-                      class="form-control form-control-sm"
-                    />
+                    <input type="checkbox" [(ngModel)]="table.selected" (change)="onRowCheckboxChange(table)" />
+                  <td>{{ shadow.MATNR }}</td>
+                  <td>{{table.MAKTX}}</td>
+                  <!-- <td>{{ shadow.WERKS }}</td> -->
+                  <td>
+                    <input type="text" [(ngModel)]="shadow.LGORT" class="form-control form-control-sm" />
                   </td>
                   <td>{{ shadow.BWART }}</td>
                   <td>
-                    <input
-                      type="text"
-                      [(ngModel)]="shadow.Batch"
-                      class="form-control form-control-sm"
-                    />
+                    <input type="text" [(ngModel)]="shadow.CHARG" class="form-control form-control-sm" />
                   </td>
-                  <td>{{ PostingDate | date: 'dd/MM/yyyy' }}</td>
+                  <!-- <td>{{ PostingDate | date: 'dd/MM/yyyy' }}</td> -->
                   <!-- <td><input type="text" [(ngModel)]="shadow.PostingDate" class="form-control form-control-sm" /></td> -->
                   <td>
-                    <input
-                      type="text"
-                      [(ngModel)]="shadow.MENGE"
-                      class="form-control form-control-sm"
-                    />
+                    <input type="text" [(ngModel)]="shadow.MENGE" (input)="onShadowRowMengeChange(table)"
+                      class="form-control form-control-sm" />
                   </td>
                   <td>{{ shadow.MEINS }}</td>
                   <td>{{ shadow.EBELN }}</td>
                   <td>{{ shadow.EBELP }}</td>
+                  <td><input type="text" [(ngModel)]="shadow.WEMPF" class="form-control form-control-sm" /></td>
+                  <td><input type="text" [(ngModel)]="shadow.ABLAD" class="form-control form-control-sm" /></td>
+       
+                  <!-- <td>{{shadow.WEMPF}}</td>
+                  <td>{{shadow.ABLAD}}</td> -->
                   <td></td>
                 </tr>
               </tbody>
             </table>
           </div>
           <div class="col-md-4 text-left">
-            <button
-              class="btn btn-success mt-4"
-              type="button"
-              (click)="saveBound(tables$)"
-            >
+            <button class="btn btn-success mt-4" type="button" (click)="saveBound(tables$)">
               Save
             </button>
           </div>
 
           <div></div>
           <!-- End table -->
-          
+
         </div>
       </div>
     </div>

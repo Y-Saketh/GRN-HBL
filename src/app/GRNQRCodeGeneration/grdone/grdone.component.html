@@ -16,7 +16,7 @@
               <div class="row">
                 <!-- Row 1 -->
                 <!-- Plant -->
-                <div class="col-md-3">
+                <div class="col-md-1">
                   <label class="brandcolor" for="plant">PLANT</label>
                   <div class="mb-3">
                     <input
@@ -35,7 +35,7 @@
                   </div>
                 </div>
                 <!-- Delivery -->
-                <div class="col-md-3">
+                <div class="col-md-2">
                   <label class="brandcolor" for="deliveryfrom">DELIVERY</label>
                   <div class="mb-3">
                     <input
@@ -60,7 +60,7 @@
                 </div>
               
                 <!-- Storage Location -->
-                <div class="col-md-3">
+                <div class="col-md-2">
                   <label class="brandcolor" for="storageLocation"
                       >STORAGE LOCATION</label
                     >
@@ -88,9 +88,8 @@
                   </div>
                 </div>
                 
-                <!--row 2-->
-                <!--IBD CREATED ON-->
-                <div class="col-md-3">
+              
+                <!-- <div class="col-md-2">
                   <label class="brandcolor" for="ibdCreadtedOn"
                       >IBD CREATED ON</label
                     >
@@ -119,10 +118,10 @@
                       >
                     </div>
                   </div>
-                </div>
-                <div class="col-md-3">
+                </div> -->
+                <div class="col-md-2">
                   <label class="brandcolor" for="ibdCreadtedFrom"
-                      >IBD CREATED FROM DATE</label
+                      >FROM DATE</label
                     >
                   <div class="mb-3">
                     <input
@@ -131,9 +130,7 @@
                       id="ibdCreadtedFrom"
                       [bsConfig]="bsConfig"
                       bsDatepicker
-                      #datePicker="bsDatepicker"
-                      (focus)="datePicker.show()" 
-                      (blur)="datePicker.hide()" 
+                   
                       formControlName="ibdCreadtedFrom"
                       placeholder="IBD CREATED From DATE"
                       [ngClass]="{
@@ -150,9 +147,9 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                   <label class="brandcolor" for="ibdCreadtedTo"
-                      >IBD CREATED TO</label
+                      >TO DATE</label
                     >
                   <div class="mb-3">
                     <input
@@ -180,21 +177,19 @@
                     </div>
                   </div>
                 </div>
-              </div>
-              <div class="row mt-4">
-                <!-- Button Row -->
-                <div class="col-md-4"></div>
-                <div class="col-md-4 text-center">
-                  <button
-                    class="btn btn-success"
-                    type="submit"
+                <div class="col-md-1 mt-4">
+                  <div class="mb-3">
+                  <button style="margin-top: 8px; background-color: brown;
+          width: max-content; color: aliceblue;"
+                    class="btn "
                     (click)="getGrDone()"
                   >
                     Get Details
                   </button>
+                  </div>
                 </div>
-                <div class="col-md-4"></div>
               </div>
+          
             </form>
     </div>
   </div>

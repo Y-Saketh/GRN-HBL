@@ -139,7 +139,7 @@
                                 <th>Material Description</th>
                                 <th>Date Of GRN</th>
                                 <th>Real Quantity</th>
-                                <th>Reels</th>
+                                <th>No of Qty</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -185,13 +185,13 @@
                                     <table class="table table-bordered">
                                         <thead>
                                             <tr>
-                                                <th>Reels</th>
+                                                <th>Pack Size</th>
                                                 <th>Quantity</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr *ngFor="let packet of selectedMaterial?.packets; let j = index">
-                                                <td>Reel {{ packet.PACKET_NO }}</td>
+                                                <td>Pack {{ packet.PACKET_NO }}</td>
                                                 <td>
                                                     <input type="number" class="form-control"
                                                         [(ngModel)]="packet.ZRQTY" />
@@ -237,7 +237,7 @@
                                 <p>{{ qrData.data.MBLNR }}</p>
                                 <p>{{ qrData.data.LIFNR }}</p>
                                 <p>{{ qrData.data.MATNR }}</p>
-                                <p>Reel {{ i+1}}</p>
+                                <p>Pack {{ i+1}}</p>
                                 <p>{{ qrData.data.ZRQTY }}</p>
                             </div>
                         </div>

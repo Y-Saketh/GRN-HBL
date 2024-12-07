@@ -4,7 +4,7 @@ export const MENU: MenuItem[] = [
     //main row items 
     {
         id: "menu",
-        label: 'MENUITEMS.DASHBOARDS.TEXT',
+        label: 'Goods Movement',
         icon: 'bx-home-circle',
 
         //for sub items use this array 
@@ -70,16 +70,32 @@ export const MENU: MenuItem[] = [
             // },
         ]
     },
+
     {
-        id: "openpolist",//3,
-        label: 'MENUITEMS.DASHBOARDS.LIST.OPENPOLIST',
-        link: 'openpolist',
-        icon: 'bx-archive',
+        id: "inbounddelivery",
+        label: 'MENUITEMS.DASHBOARDS.LIST.INBOUNDDELIVERY',
+        link: 'inbounddelivery',
+        icon: 'bx-archive-in',
         parentId: "menu"
     },
     {
+        id: "grnagainstid",
+        label: 'MENUITEMS.DASHBOARDS.LIST.GRNAGAINSTID',
+        link: 'grnagainstid',
+        icon: 'bx-aperture',
+        parentId: "menu"
+    },
+    {
+        id: "QRcodegenration",
+        label: 'MENUITEMS.DASHBOARDS.LIST.QRCODEGENERATION',
+        link: 'QRcodegenration',
+        icon: 'bx-bar-chart',
+        parentId: "menu"
+    },
+  
+    {
         id: "zgribdstatus",
-        label: 'ZGR & IBD Status',
+        label: 'Reports',
         icon: 'bx-cloud-download',
         parentId: "menu",
         subItems: [
@@ -96,38 +112,48 @@ export const MENU: MenuItem[] = [
                 link: 'grdone',
                 icon: 'bx-badge-check',
                 parentId: "zgribdstatus"
-            }
+            },
+            {
+                id: "closeDownload",
+                label: 'Open PR List',
+                link: 'closeDownload',
+                icon: 'bx-cloud-download',
+                parentId: "menu"
+            },
+            {
+                id: "openpolist",//3,
+                label: 'MENUITEMS.DASHBOARDS.LIST.OPENPOLIST',
+                link: 'openpolist',
+                icon: 'bx-archive',
+                parentId: "menu"
+            },
+            {
+                id: "grnprint",//3,
+                label: 'GRN Print',
+                link: 'openpolist',
+                icon: 'bx-archive',
+                parentId: "menu"
+            },
+            {
+                id: "mb51",//3,
+                label: 'MB51',
+                link: 'openpolist',
+                icon: 'bx-archive',
+                parentId: "menu"
+            },
+            {
+                id: "mb52",//3,
+                label: 'MB52',
+                link: 'openpolist',
+                icon: 'bx-archive',
+                parentId: "menu"
+            },
+        
         ]
     },
-    {
-        id: "QRcodegenration",
-        label: 'MENUITEMS.DASHBOARDS.LIST.QRCODEGENERATION',
-        link: 'QRcodegenration',
-        icon: 'bx-bar-chart',
-        parentId: "menu"
-    },
-    {
-        id: "inbounddelivery",
-        label: 'MENUITEMS.DASHBOARDS.LIST.INBOUNDDELIVERY',
-        link: 'inbounddelivery',
-        icon: 'bx-archive-in',
-        parentId: "menu"
-    },
-    {
-        id: "grnagainstid",
-        label: 'MENUITEMS.DASHBOARDS.LIST.GRNAGAINSTID',
-        link: 'grnagainstid',
-        icon: 'bx-aperture',
-        parentId: "menu"
-    },
+
     
-    {
-        id: "closeDownload",
-        label: 'ZPRClose-Download',
-        link: 'closeDownload',
-        icon: 'bx-cloud-download',
-        parentId: "menu"
-    },
+   
    
     
 ];

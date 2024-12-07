@@ -56,7 +56,7 @@ export class GrdoneComponent implements OnInit {
       storageLocation: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
       ibdCreadtedOn: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
       ibdCreadtedFrom: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
-      ibdCreadtedTo: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
+      ibdCreadtedTo: [new Date(), [ Validators.pattern('[a-zA-Z0-9]+')]],
     });
 
     this.breadCrumbItems = [{ label: 'GRN' }, { label: 'GRN Done Table', active: true }];

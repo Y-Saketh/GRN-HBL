@@ -88,15 +88,18 @@ export class GrpendingComponent implements OnInit {
   };
   ngOnInit(): void {
     this.submit = false;
+    const currentDate = new Date();
+    const fifteenDaysAgo = new Date();
+    fifteenDaysAgo.setDate(currentDate.getDate() - 15);
     this.validationform = this.formBuilder.group({
       plant: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]+')]],
       delivery: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
       // deliveryto: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
       storageLocation: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
       // storageLocationto: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
-      ibdCreadtedOn: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
-      ibdCreadtedFrom: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
-      ibdCreadtedTo: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
+      // ibdCreadtedOn: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
+      ibdCreadtedFrom: [fifteenDaysAgo, [ Validators.pattern('[a-zA-Z0-9]+')]],
+      ibdCreadtedTo: [new Date(), [ Validators.pattern('[a-zA-Z0-9]+')]],
     });
 
     this.breadCrumbItems = [{ label: 'Tables' }, { label: 'Advanced Table', active: true }];
@@ -340,15 +343,15 @@ export class GrpendingComponent implements OnInit {
         this.GrPending = res;
         // this.service.setTableData(res || []);
         this._fetchData();
-        this.validationform.reset()
+        // this.validationform.reset()
       },
       error: (error: any) => {
         console.error('Error fetching lot reports:', error);
-        this.validationform.reset()
+        // this.validationform.reset()
       },
       complete: () => {
         console.log('API call completed.');
-        this.validationform.reset()
+        // this.validationform.reset()
       }
     });
 

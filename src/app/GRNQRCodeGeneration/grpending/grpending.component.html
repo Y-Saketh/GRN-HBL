@@ -11,7 +11,7 @@
         <div class="row">
           <!-- Row 1 -->
           <!-- Plant -->
-          <div class="col-md-3">
+          <div class="col-md-1">
             <label class="brandcolor" for="plant">PLANT</label>
             <div class="mb-3">
               <input
@@ -30,7 +30,7 @@
             </div>
           </div>
           <!-- Delivery -->
-          <div class="col-md-3">
+          <div class="col-md-2">
             <label class="brandcolor" for="delivery">DELIVERY</label>
             <div class="mb-3">
               <input
@@ -52,8 +52,8 @@
             </div>
           </div>
 
-          <!-- Storage Location -->
-          <div class="col-md-3">
+       
+          <!-- <div class="col-md-2">
             <label class="brandcolor" for="storageLocation"
               >STORAGE LOCATION</label
             >
@@ -68,7 +68,7 @@
                 [ngClass]="{
                   'is-invalid': submit && form.storageLocation.errors
                 }"
-                bsDatepicker
+          
               />
               <div
                 *ngIf="submit && form.storageLocation.errors"
@@ -79,12 +79,9 @@
                 >
               </div>
             </div>
-          </div>
-
-          <!--row 2-->
-          <!--IBD CREATED ON-->
-          <div class="col-md-3">
-            <label class="brandcolor" for="ibdCreadtedOn">IBD CREATED ON</label>
+          </div> -->
+          <!-- <div class="col-md-2">
+            <label class="brandcolor" for="ibdCreadtedOn">CREATED ON</label>
             <div class="mb-3">
               <input
                 type="text"
@@ -110,10 +107,10 @@
                 >
               </div>
             </div>
-          </div>
-          <div class="col-md-3">
+          </div> -->
+          <div class="col-md-2">
             <label class="brandcolor" for="ibdCreadtedFrom"
-              >IBD CREATED FROM DATE</label
+              >FROM DATE</label
             >
             <div class="mb-3">
               <input
@@ -123,9 +120,8 @@
                 formControlName="ibdCreadtedFrom"
                 [bsConfig]="bsConfig"
                 bsDatepicker
-                #datePicker="bsDatepicker"
-                (focus)="datePicker.show()"
-                (blur)="datePicker.hide()"
+              
+             
                 placeholder="IBD CREATED From DATE"
                 [ngClass]="{
                   'is-invalid': submit && form.ibdCreadtedFrom.errors
@@ -141,8 +137,8 @@
               </div>
             </div>
           </div>
-          <div class="col-md-3">
-            <label class="brandcolor" for="ibdCreadtedTo">IBD CREATED TO</label>
+          <div class="col-md-2">
+            <label class="brandcolor" for="ibdCreadtedTo">TO DATE</label>
             <div class="mb-3">
               <input
                 type="text"
@@ -151,9 +147,7 @@
                 formControlName="ibdCreadtedTo"
                 [bsConfig]="bsConfig"
                 bsDatepicker
-                #datePicker="bsDatepicker"
-                (focus)="datePicker.show()"
-                (blur)="datePicker.hide()"
+              
                 placeholder="IBD CREATED To"
                 [ngClass]="{
                   'is-invalid': submit && form.ibdCreadtedOn.errors
@@ -169,9 +163,25 @@
               </div>
             </div>
           </div>
+          <div class="col-md-1 mt-4">
+            <div class="mb-3">
+            <button style="margin-top: 8px; background-color: brown;
+    width: max-content; color: aliceblue;"
+              class="btn "
+              type="submit"
+              (click)="getGrPending()"
+            >
+              Get Details
+            </button>
+          </div>
+          </div>
+
+          <!--row 2-->
+          <!--IBD CREATED ON-->
+       
         </div>
-        <div class="row mt-4">
-          <!-- Button Row -->
+        <!-- <div class="row mt-4">
+        
           <div class="col-md-4"></div>
           <div class="col-md-4 text-center">
             <button
@@ -183,7 +193,7 @@
             </button>
           </div>
           <div class="col-md-4"></div>
-        </div>
+        </div> -->
       </form>
     </div>
   </div>
@@ -300,7 +310,7 @@
               </td>
               <td>{{ table.WERKS }}</td>
               <!-- Plant -->
-              <td
+              <!-- <td
                 (click)="onSelectInBound(table.VBELN)"
                 style="
                   cursor: pointer;
@@ -309,7 +319,8 @@
                 "
               >
                 {{ table.VBELN }}
-              </td>
+              </td> -->
+              <td> {{ table.VBELN }}</td>
               <!-- Inbound Delivery -->
               <td>{{ table.POSNR }}</td>
               <!-- Inbound Delivery Item -->

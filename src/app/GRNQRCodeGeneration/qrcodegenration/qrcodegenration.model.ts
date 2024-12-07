@@ -1,11 +1,12 @@
 
 export interface Table {
+    selected: any;
     MATNR: string; // Material Number
     WERKS: string; // Plant
     LGORT: string; // Storage Location
     BWART: string; // Movement Type
-    Batch: string; // Batch
-    PostingDate: string; // Posting Date
+    // Batch: string; // Batch
+    // PostingDate: string; // Posting Date
     MENGE: number; // Quantity
     MEINS: string; // Unit of Measure
     EBELN: string; // Purchase Order
@@ -15,6 +16,7 @@ export interface Table {
     splitCount?: number; // Number of shadow rows to split
     shadowRows?: Table[]; // Shadow rows
     BUDAT?:string; //Posting Date
+    CHARG?:string;
   }
   
 
