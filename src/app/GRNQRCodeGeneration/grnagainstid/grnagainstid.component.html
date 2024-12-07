@@ -51,15 +51,17 @@
                                 <tr>
                                     <th></th>
                                     <th sortable="WERKS" (sort)="onSort($event)">Plant</th>
-                                    <th sortable="MBLNR" (sort)="onSort($event)">Number of Material Document</th>
-                                    <!-- <th sortable="MAKTX" (sort)="onSort($event)">Material Description</th> -->
-                                    <th sortable="ZRQTY" (sort)="onSort($event)">Reel Quantity</th>
-                                    <th sortable="LGORT" (sort)="onSort($event)">Storage Location</th>
-                                    <th sortable="MEINS" (sort)="onSort($event)">Base Unit of Measure</th>
-                                    <th sortable="CHARG" (sort)="onSort($event)">Batch Number</th>
-                                    <th sortable="EBELN" (sort)="onSort($event)">Purchasing Document Number</th>
-                                    <th sortable="EBELP" (sort)="onSort($event)">Item Number of Purchasing Document</th>
-                                    <th sortable="LIFNR" (sort)="onSort($event)">Account Number of Supplier</th>
+                                    <th sortable="MBLNR" (sort)="onSort($event)">Material Document</th>
+                                    <th sortable="MATNR" (sort)="onSort($event)">Mat.Code</th>
+                                    <th sortable="MAKTX"  (sort)="onSort($event)">Mat.Desc</th>
+                                    <th sortable="MENGE" (sort)="onSort($event)">Quantity</th>
+                                    <th sortable="LGORT" (sort)="onSort($event)">S.Loc</th>
+                                    <th sortable="MEINS" (sort)="onSort($event)">BUoM</th>
+                                    <th sortable="CHARG" (sort)="onSort($event)">Batch</th>
+                                    <th sortable="EBELN" (sort)="onSort($event)">PO.Number</th>
+                                    <th sortable="EBELP" (sort)="onSort($event)">PO.Item</th>
+                                    <th sortable="LIFNR" (sort)="onSort($event)">Vendor Code</th>
+                                    <th sortable="NAME1" (sort)="onSort($event)">Vendor Name</th>
                                     <th sortable="ZQRSTAT" (sort)="onSort($event)">QR Status</th>
                                     <th>Action</th>
                                 </tr>
@@ -75,14 +77,16 @@
 
                                     <td>{{ table.WERKS }}</td>
                                     <td>{{ table.MBLNR }}</td>
-                                    <!-- <td>{{ table.MAKTX }}</td> -->
-                                    <td>{{ table.ZRQTY }}</td>
+                                    <td>{{table.MATNR}}</td>
+                                    <td>{{ table.MAKTX }}</td>
+                                    <td>{{ table.MENGE }}</td>
                                     <td>{{ table.LGORT }}</td>
                                     <td>{{ table.MEINS }}</td>
                                     <td>{{ table.CHARG }}</td>
                                     <td>{{ table.EBELN }}</td>
                                     <td>{{ table.EBELP }}</td>
                                     <td>{{ table.LIFNR }}</td>
+                                    <td>{{ table.NAME1 }}</td>
                                     <td>{{ table.ZQRSTAT }}</td>
                                     <td (click)="onSelectMaterial(table)"><button class=" btn btn-warning btn-sm ">Gen
                                             QR</button></td>
@@ -151,7 +155,7 @@
                                 <td>{{ material.MBLNR }}</td>
                                 <td>{{ material.MAKTX }}</td>
                                 <td>{{material.ZQRGEN_DT}}</td>
-                                <td>{{ material.ZRQTY }}</td>
+                                <td>{{ material.MENGE }}</td>
                                 <td>{{material.MENGE}}
                                     <!-- <ul>
                                 <li *ngFor="let packet of material.packets">
@@ -194,7 +198,7 @@
                                                 <td>Pack {{ packet.PACKET_NO }}</td>
                                                 <td>
                                                     <input type="number" class="form-control"
-                                                        [(ngModel)]="packet.ZRQTY" />
+                                                        [(ngModel)]="packet.MENGE" />
                                                 </td>
                                             </tr>
                                         </tbody>

@@ -16,6 +16,7 @@ export interface Table {
   MEINS: string; // Base Unit of Measure
   CHARG: string; // Batch Number
   LIFNR: string; // Account Number of Supplier
+  NAME1:string;
 }
 
 

@@ -5,29 +5,150 @@
   <meta charset="utf-8">
   <title>HBL GRN</title>
   <base href="/" />
-
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
 
   <!-- Pace.js Loader -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-flash.min.css" rel="stylesheet" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-  <script>
-    window.paceOptions = {
-      ajax: true,
-      restartOnRequestAfter: 500,
-      elements: false,
-      document: true,
-      eventLag: false
-    };
-  </script>
+  <style type="text/css">
+     .hiddenElem {
+      display: none;
+    }
+    .pace .pace-activity {
+            top: 19px;
+            right: 19px;
+            display: none;
+        }
+
+        .page-loading {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            overflow: hidden;
+            background: rgba(51, 51, 51, 1.00);
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            z-index: -1;
+        }
+
+        .loading-icon {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 100px;
+            height: 100px;
+            margin-left: -50px;
+            margin-top: -50px;
+            border-radius: 60px;
+            z-index: 11;
+        }
+
+        .appBackdrop {
+            height: 100%;
+            width: 100%;
+            opacity: 0.4;
+            background-color: black;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 10;
+        }
+
+        app-root:empty~.page-loading {
+            opacity: 1;
+            z-index: 1;
+        }
+
+  </style>
 </head>
 
 <body>
   <app-root>
   </app-root>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAbvyBxmMbFhrzP9Z8moyYr6dCr-pzjhBE"></script>
+  <div class="loader hiddenElem" id="loader">
+    <div class="appBackdrop"></div>
+    <img class="loading-icon" src="assets/images/Double Ring white.gif" />
+  </div>
+  <script>
+    (function (window) {
+      // Pace.js configuration
+      window.paceOptions = {
+        ajax: {
+          trackMethods: ['GET', 'POST', 'PUT', 'DELETE'], // Track all common HTTP methods
+          ignoreURLs: [] // Optionally specify URLs to ignore
+        },
+        document: true, // Track document loading
+        eventLag: false, // Disable event lag tracking
+        restartOnRequestAfter: true, // Restart loader on every request
+      };
+  
+      // Show loader when Pace starts
+      Pace.on("start", function () {
+        console.log("Pace started");
+        $(".loader").removeClass("hiddenElem");  // Show the loader when it starts
+      });
+  
+      // Hide loader when Pace finishes
+      Pace.on("done", function () {
+        console.log("Pace done");
+        $(".loader").addClass("hiddenElem");  // Hide the loader when it's done
+      });
+  
+      // Failsafe timeout to stop the loader if it runs too long (if pace isn't stopping for some reason)
+      setTimeout(function () {
+        if (Pace.running) {
+          console.warn("Failsafe: Pace timeout reached. Stopping loader...");
+          Pace.stop(); // Stop Pace
+          $(".loader").addClass("hiddenElem"); // Hide the loader
+        }
+      }, 10000); // Adjust timeout as needed (e.g., 10 seconds)
+    })(window);
+  </script>
+  
+  
+  <!-- <script>
+    (function (window) {
+      // Pace.js configuration
+      window.paceOptions = {
+        ajax: {
+          trackMethods: ['GET', 'POST'], // Only track AJAX calls
+        },
+        document: true, // Track document loading
+        eventLag: {
+          lagThreshold: 30, // Threshold for detecting lag
+        },
+        restartOnPushState: true, // Restart on navigation
+        restartOnRequestAfter: true, // Restart on new requests
+      };
+  
+      // Show loader when Pace starts
+      Pace.on("start", function () {
+        console.log("Pace started");
+        $(".loader").removeClass("hiddenElem");
+      });
+  
+      // Hide loader when Pace finishes
+      Pace.on("done", function () {
+        console.log("Pace done");
+        $(".loader").addClass("hiddenElem");
+      });
+  
+      // Stop Pace manually if it runs too long (failsafe)
+      setTimeout(function () {
+        if (Pace.running) {
+          console.warn("Pace timeout reached. Stopping loader...");
+          Pace.stop(); // Stop Pace
+          $(".loader").addClass("hiddenElem"); // Hide the loader
+        }
+      }, 1000); // Adjust timeout as needed (e.g., 10 seconds)
+    })(window);
+  </script> -->
+  
 </body>
 
 </html>
