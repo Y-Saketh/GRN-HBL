@@ -13,6 +13,8 @@ import QRCode from 'qrcode';
 import { ModalDirective, ModalModule } from 'ngx-bootstrap/modal';
 import { UserProfileService } from 'src/app/core/services/user.service';
 import Swal from 'sweetalert2';
+
+declare var Pace: any;
 @Component({
   selector: 'app-grnagainstid',
   templateUrl: './grnagainstid.component.html',
@@ -87,10 +89,12 @@ export class GrnagainstidComponent implements OnInit {
   }
   getQRData() {
     let payload = {
-      "MBLNR": "5000778295",
-      "MJAHR": "2024"
+      // "MBLNR": "5000778295",
+      // "MJAHR": "2024"
+       "EBELN": "4500216733"//"4500218779"
     }
     console.log("Final Payload:", payload);
+    Pace.restart();
     this.apiService.QRRequest(payload).subscribe({
 
       next: (res: any) => {
@@ -122,7 +126,7 @@ export class GrnagainstidComponent implements OnInit {
     const packets = [];
     for (let i = 0; i < menge; i++) {
       packets.push({
-        ZRQTY: 0, // Default ZRQTY to 0 until the user updates it
+        ZRQTY: menge, // Default ZRQTY to 0 until the user updates it
         PACKET_NO: i + 1, // Packet number
       });
     }
@@ -156,7 +160,8 @@ export class GrnagainstidComponent implements OnInit {
           CHARG: updatedMaterial.CHARG, // Bind CHARG dynamically from updatedMaterial
           EBELN: updatedMaterial.EBELN, // Bind EBELN dynamically from updatedMaterial
           EBELP: updatedMaterial.EBELP, // Bind EBELP dynamically from updatedMaterial
-          LIFNR: updatedMaterial.LIFNR // Bind LIFNR dynamically from updatedMaterial
+          LIFNR: updatedMaterial.LIFNR, // Bind LIFNR dynamically from updatedMaterial
+          NAME1:updatedMaterial.NAME1
 
         });
       });

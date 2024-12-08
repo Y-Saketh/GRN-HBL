@@ -59,6 +59,7 @@ function matches(table: Table, term: string, pipe: PipeTransform) {
       table.MENGE.toString().toLowerCase().includes(term.toLowerCase()) || // Quantity
       table.MEINS.toLowerCase().includes(term.toLowerCase()) || // Base Unit of Measure
       table.CHARG.toLowerCase().includes(term.toLowerCase()) || // Batch Number
+      table.NAME1.toLowerCase().includes(term.toLowerCase()) ||
       table.LIFNR.toLowerCase().includes(term.toLowerCase()) // Account Number of Supplier
     );
   }

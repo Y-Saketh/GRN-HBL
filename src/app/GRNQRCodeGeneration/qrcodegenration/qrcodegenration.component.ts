@@ -15,6 +15,8 @@ import { PagetitleComponent } from 'src/app/shared/ui/pagetitle/pagetitle.compon
 import { UserProfileService } from 'src/app/core/services/user.service';
 import Swal from 'sweetalert2';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+declare var Pace: any;
+
 
 @Component({
   selector: 'app-qrcodegenration',
@@ -52,6 +54,7 @@ export class QRcodegenrationComponent {
   invoiceDate :any;
   invoiceNumber:any;
   vendorCode :any;
+  
 
   constructor(public service: qrcodegenrationService,public formBuilder: UntypedFormBuilder,private apiService:UserProfileService) {
     this.tables$ = service.tables$;
@@ -606,7 +609,9 @@ export class QRcodegenrationComponent {
       };
       console.log("objobj", obj);
       // this.GrnResponse = []
+      Pace.restart();
       this.apiService.grnlist(obj).subscribe({
+        
         next: (res: any) => {
           console.log('Data:', res);
            
