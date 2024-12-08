@@ -2,7 +2,9 @@
   color: brown;
 }
 
-
+.custom-posting-date {
+  width: 100px;
+}
 
 .card-body {
   background-color: #f7f3f1;

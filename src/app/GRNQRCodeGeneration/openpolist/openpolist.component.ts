@@ -76,8 +76,9 @@ export class OpenpolistComponent implements OnInit {
       purchaseGroup: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
       poNumber: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
       vendor: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
-      documentTypeFrom:['', [ Validators.pattern('[a-zA-Z0-9]+')]],
-      documentTypeTo:['', [ Validators.pattern('[a-zA-Z0-9]+')]],
+      // documentTypeFrom:['', [ Validators.pattern('[a-zA-Z0-9]+')]],
+      // documentTypeTo:['', [ Validators.pattern('[a-zA-Z0-9]+')]],
+      documentType: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
       material: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
       materialgroup: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
 
@@ -205,8 +206,9 @@ export class OpenpolistComponent implements OnInit {
       EBELN: this.form.poNumber.value, // Purchasing Document Number
       LIFNR: this.form.vendor.value, // Vendor
       MATNR: this.form.material.value, // Material
-      BSART_F: this.form.documentTypeFrom.value,//"ZPDM", //Document Type
-      BSART_T: this.form.documentTypeTo.value,//"ZPDM", //Document Type
+      BSART: this.form.documentType.value,//"ZPDM", //Document Type
+      // BSART_F: this.form.documentTypeFrom.value,//"ZPDM", //Document Type
+      // BSART_T: this.form.documentTypeTo.value,//"ZPDM", //Document Type
       BEDAT_F: this.form.documentFrom.value?moment(this.form.documentFrom.value).format('DD/MM/YYYY') :'',// Purchasing Document  From
       BEDAT_T: this.form.documentTo.value?moment(this.form.documentTo.value).format('DD/MM/YYYY') :'',// Purchasing Document  To
       EINDT_F:this.form.deliveryDateFrom.value?moment(this.form.deliveryDateFrom.value).format('DD/MM/YYYY') :'', // Item Delivery Date From
@@ -278,7 +280,7 @@ export class OpenpolistComponent implements OnInit {
         VEHICLE_NO: this.tableForm.value.vehicleNumber,
         LR_NUMBER: this.tableForm.value.deleveryChallanNumber || 'DefaultMaterial',
         LR_DATE: this.tableForm.value.gateEntryDate,//this.tableForm.value.gateEntryDate?moment(this.tableForm.value.gateEntryDate).format('DD/MM/YYYY')  :"", //,
-        TRANSPORTER: this.tableForm.value.supplier || 'DefaultTransporter',
+        transporterName: this.tableForm.value.supplier || 'transporterName',
         INVOICE: this.tableForm.value.invoiceNo,//"ABD",
         ITEM: [],
       },

@@ -7,60 +7,59 @@
       </h4>
       <!-- <p class="card-title-desc">Provide valuable, actionable feedback to your users with HTML5 form
               validation–available in all our supported browsers.</p> -->
-              <form
-              class="needs-validation"
-              (ngSubmit)="validSubmit()"
-              [formGroup]="validationform"
-            >
-              
-              <div class="row">
-                <!-- Row 1 -->
-                <!-- Plant -->
-                <div class="col-md-1">
-                  <label class="brandcolor" for="plant">PLANT</label>
-                  <div class="mb-3">
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="plant"
-                      formControlName="plant"
-                      placeholder="Plant"
-                      [ngClass]="{ 'is-invalid': submit && form.plant.errors }"
-                    />
-                    <div *ngIf="submit && form.plant.errors" class="invalid-feedback">
-                      <span *ngIf="form.plant.errors.required"
-                        >Please provide a valid plant.</span
-                      >
-                    </div>
-                  </div>
-                </div>
-                <!-- Delivery -->
-                <div class="col-md-2">
-                  <label class="brandcolor" for="deliveryfrom">DELIVERY</label>
-                  <div class="mb-3">
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="delivery"
-                      formControlName="delivery"
-                      placeholder="Delivery"
-                      [bsConfig]="bsConfig"
-                      [ngClass]="{ 'is-invalid': submit && form.delivery.errors }"
-                      bsDatepicker
-                    />
-                    <div
-                      *ngIf="!submit && form.delivery.errors"
-                      class="invalid-feedback"
-                    >
-                      <span *ngIf="form.delivery.errors.required"
-                        >Please provide a valid delivery.</span
-                      >
-                    </div>
-                  </div>
-                </div>
-              
-                <!-- Storage Location -->
-                <div class="col-md-2">
+      <form
+        class="needs-validation"
+        (ngSubmit)="validSubmit()"
+        [formGroup]="validationform"
+      >
+        <div class="row">
+          <!-- Row 1 -->
+          <!-- Plant -->
+          <div class="col-md-1">
+            <label class="brandcolor" for="plant">PLANT</label>
+            <div class="mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="plant"
+                formControlName="plant"
+                placeholder="Plant"
+                [ngClass]="{ 'is-invalid': submit && form.plant.errors }"
+              />
+              <div *ngIf="submit && form.plant.errors" class="invalid-feedback">
+                <span *ngIf="form.plant.errors.required"
+                  >Please provide a valid plant.</span
+                >
+              </div>
+            </div>
+          </div>
+          <!-- Delivery -->
+          <div class="col-md-2">
+            <label class="brandcolor" for="deliveryfrom">DELIVERY</label>
+            <div class="mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="delivery"
+                formControlName="delivery"
+                placeholder="Delivery"
+                [bsConfig]="bsConfig"
+                [ngClass]="{ 'is-invalid': submit && form.delivery.errors }"
+                bsDatepicker
+              />
+              <div
+                *ngIf="!submit && form.delivery.errors"
+                class="invalid-feedback"
+              >
+                <span *ngIf="form.delivery.errors.required"
+                  >Please provide a valid delivery.</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- Storage Location -->
+          <!--  <div class="col-md-2">
                   <label class="brandcolor" for="storageLocation"
                       >STORAGE LOCATION</label
                     >
@@ -86,10 +85,9 @@
                       >
                     </div>
                   </div>
-                </div>
-                
-              
-                <!-- <div class="col-md-2">
+                </div> -->
+
+          <!-- <div class="col-md-2">
                   <label class="brandcolor" for="ibdCreadtedOn"
                       >IBD CREATED ON</label
                     >
@@ -119,78 +117,75 @@
                     </div>
                   </div>
                 </div> -->
-                <div class="col-md-2">
-                  <label class="brandcolor" for="ibdCreadtedFrom"
-                      >FROM DATE</label
-                    >
-                  <div class="mb-3">
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="ibdCreadtedFrom"
-                      [bsConfig]="bsConfig"
-                      bsDatepicker
-                   
-                      formControlName="ibdCreadtedFrom"
-                      placeholder="IBD CREATED From DATE"
-                      [ngClass]="{
-                        'is-invalid': submit && form.ibdCreadtedFrom.errors
-                      }"
-                    />
-                    <div
-                      *ngIf="submit && form.ibdCreadtedFrom.errors"
-                      class="invalid-feedback"
-                    >
-                      <span *ngIf="form.ibdCreadtedFrom.errors.required"
-                        >Please provide a valid IBD CREATED FROM DATE.</span
-                      >
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-2">
-                  <label class="brandcolor" for="ibdCreadtedTo"
-                      >TO DATE</label
-                    >
-                  <div class="mb-3">
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="ibdCreadtedTo"
-                      [bsConfig]="bsConfig"
-                      bsDatepicker
-                      #datePicker="bsDatepicker"
-                      (focus)="datePicker.show()" 
-                      (blur)="datePicker.hide()" 
-                      formControlName="ibdCreadtedTo"
-                      placeholder="IBD CREATED To"
-                      [ngClass]="{
-                        'is-invalid': submit && form.ibdCreadtedOn.errors
-                      }"
-                    />
-                    <div
-                      *ngIf="submit && form.ibdCreadtedTo.errors"
-                      class="invalid-feedback"
-                    >
-                      <span *ngIf="form.ibdCreadtedTo.errors.required"
-                        >Please provide a valid IBD CREATED ON.</span
-                      >
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-1 mt-4">
-                  <div class="mb-3">
-                  <button style="margin-top: 8px; background-color: brown;
-          width: max-content; color: aliceblue;"
-                    class="btn "
-                    (click)="getGrDone()"
-                  >
-                    Get Details
-                  </button>
-                  </div>
-                </div>
+          <div class="col-md-2">
+            <label class="brandcolor" for="fromDate">FROM DATE</label>
+            <div class="mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="fromDate"
+                [bsConfig]="bsConfig"
+                bsDatepicker
+                formControlName="fromDate"
+                placeholder="IBD CREATED From DATE"
+                [ngClass]="{
+                  'is-invalid': submit && form.fromDate.errors
+                }"
+              />
+              <div
+                *ngIf="submit && form.fromDate.errors"
+                class="invalid-feedback"
+              >
+                <span *ngIf="form.fromDate.errors.required"
+                  >Please provide a valid IBD CREATED FROM DATE.</span
+                >
               </div>
-          
-            </form>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <label class="brandcolor" for="toDate">TO DATE</label>
+            <div class="mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="toDate"
+                [bsConfig]="bsConfig"
+                bsDatepicker
+                #datePicker="bsDatepicker"
+                formControlName="toDate"
+                placeholder="IBD CREATED To"
+                [ngClass]="{
+                  'is-invalid': submit && form.ibdCreadtedOn.errors
+                }"
+              />
+              <div
+                *ngIf="submit && form.toDate.errors"
+                class="invalid-feedback"
+              >
+                <span *ngIf="form.toDate.errors.required"
+                  >Please provide a valid IBD CREATED ON.</span
+                >
+              </div>
+            </div>
+          </div>
+          <div class="col-md-1 mt-4">
+            <div class="mb-3">
+              <button
+                style="
+                  margin-top: 8px;
+                  background-color: brown;
+                  width: max-content;
+                  color: aliceblue;
+                "
+                class="btn"
+                (click)="getGrDone()"
+              >
+                Get Details
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
     </div>
   </div>
   <!-- end card -->
@@ -246,88 +241,44 @@
               <th class="brandcolor" sortable="WERKS" (sort)="onSort($event)">
                 Plant
               </th>
-              <th
-                class="brandcolor"
-                sortable="VBELN"
-                (sort)="onSort($event)"
-              >
+              <th class="brandcolor" sortable="VBELN" (sort)="onSort($event)">
                 Inbound Delivery
               </th>
-              <th
-                class="brandcolor"
-                sortable="POSNR"
-                (sort)="onSort($event)"
-              >
+              <th class="brandcolor" sortable="POSNR" (sort)="onSort($event)">
                 Inbound Delivery Item
               </th>
-             <!-- <th
+              <!-- <th
                 class="brandcolor"
                 sortable="EKGRP"
                 (sort)="onSort($event)"
               >
                 Purchasing Group
               </th> -->
-              <th
-                class="brandcolor"
-                sortable="ERDAT"
-                (sort)="onSort($event)"
-              >
+              <th class="brandcolor" sortable="ERDAT" (sort)="onSort($event)">
                 Inbound Created on
               </th>
-              <th
-                class="brandcolor"
-                sortable="VGBEL"
-                (sort)="onSort($event)"
-              >
+              <th class="brandcolor" sortable="VGBEL" (sort)="onSort($event)">
                 PO
               </th>
-              <th
-                class="brandcolor"
-                sortable="VGPOS"
-                (sort)="onSort($event)"
-              >
+              <th class="brandcolor" sortable="VGPOS" (sort)="onSort($event)">
                 PO Item
               </th>
-              <th
-                class="brandcolor"
-                sortable="LGORT"
-                (sort)="onSort($event)"
-              >
+              <th class="brandcolor" sortable="LGORT" (sort)="onSort($event)">
                 Storage Location
               </th>
-              <th
-                class="brandcolor"
-                sortable="MATNR"
-                (sort)="onSort($event)"
-              >
+              <th class="brandcolor" sortable="MATNR" (sort)="onSort($event)">
                 Material
               </th>
-              <th
-                class="brandcolor"
-                sortable="MAKTX"
-                (sort)="onSort($event)"
-              >
+              <th class="brandcolor" sortable="MAKTX" (sort)="onSort($event)">
                 Material Description
               </th>
-              <th
-                class="brandcolor"
-                sortable="MEINS"
-                (sort)="onSort($event)"
-              >
+              <th class="brandcolor" sortable="MEINS" (sort)="onSort($event)">
                 UOM
               </th>
-              <th
-                class="brandcolor"
-                sortable="qty"
-                (sort)="onSort($event)"
-              >
+              <th class="brandcolor" sortable="qty" (sort)="onSort($event)">
                 Qty
               </th>
-              <th
-                class="brandcolor"
-                sortable="LFIMG"
-                (sort)="onSort($event)"
-              >
+              <th class="brandcolor" sortable="LFIMG" (sort)="onSort($event)">
                 Gate Entry No
               </th>
               <th
@@ -431,7 +382,8 @@
       <div class="row justify-content-md-between align-items-md-center mt-2">
         <div class="col-sm-12 col-md-5">
           <div class="dataTables_info mb-2" role="status" aria-live="polite">
-            Showing {{ service.startIndex }} to {{ service.endIndex }} of {{ service.totalRecords }} entries
+            Showing {{ service.startIndex }} to {{ service.endIndex }} of
+            {{ service.totalRecords }} entries
           </div>
         </div>
         <div class="col-sm-12 col-md-5">
@@ -445,12 +397,14 @@
               >
                 <a class="page-link" href="javascript:void(0)">Previous</a>
               </li>
-      
+
               <!-- Current Page Display -->
               <li class="page-item active">
-                <a class="page-link" href="javascript:void(0)">{{ service.page }}</a>
+                <a class="page-link" href="javascript:void(0)">{{
+                  service.page
+                }}</a>
               </li>
-      
+
               <!-- Next Button -->
               <li
                 class="page-item"
@@ -465,7 +419,6 @@
       </div>
       <!-- End Pagination-->
     </div>
-    
 
     <!-- </div> -->
     <!-- </div> -->

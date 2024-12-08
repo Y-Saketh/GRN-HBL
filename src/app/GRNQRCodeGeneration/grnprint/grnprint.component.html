@@ -1,0 +1,347 @@
+<div class="col-xl-12">
+  <div class="card" style="background-color: beige">
+    <div class="card-body">
+      <h4 class="card-title">
+        <span style="color: black"></span>
+        GRN Print
+      </h4>
+      <form class="needs-validation" [formGroup]="validationform">
+        <div class="row">
+          <!-- Plant -->
+          <div class="col-md-1">
+            <label class="brandcolor" for="plant">PLANT</label>
+            <div class="mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="plant"
+                formControlName="plant"
+                placeholder="Plant"
+                [ngClass]="{ 'is-invalid': submit && form.plant.errors }"
+              />
+              <div *ngIf="submit && form.plant.errors" class="invalid-feedback">
+                <span *ngIf="form.plant.errors.required"
+                  >Please provide a valid plant.</span
+                >
+              </div>
+            </div>
+          </div>
+          <div class="col-md-1 mt-4">
+            <div class="ms-4 mb-3">
+              <button
+                style="
+                  margin-top: 8px;
+                  background-color: brown;
+                  width: max-content;
+                  color: aliceblue;
+                "
+                class="btn"
+                type="submit"
+              >
+                Get Details
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <!-- end card -->
+  <div class="card">
+    <div class="card-body">
+      <div class="row mb-md-2">
+        <div class="col-sm-12 col-md-6">
+          <div class="dataTables_length">
+            <label class="d-inline-flex align-items-center">
+              Show
+              <select
+                name="tickets-table_length"
+                aria-controls="tickets-table"
+                class="form-control form-control-sm mx-2"
+                [(ngModel)]="service.pageSize"
+              >
+                <option [ngValue]="10">10</option>
+                <option [ngValue]="25">25</option>
+                <option [ngValue]="50">50</option>
+                <option [ngValue]="100">100</option>
+              </select>
+              entries
+            </label>
+          </div>
+        </div>
+        <div class="col-sm-12 col-md-6">
+          <div id="tickets-table_filter" class="dataTables_filter text-md-end">
+            <label class="d-inline-flex align-items-center">
+              Search:
+              <input
+                type="text"
+                name="searchTerm"
+                class="form-control form-control-sm ms-2"
+                aria-controls="tickets-table"
+                [(ngModel)]="service.searchTerm"
+              />
+            </label>
+          </div>
+        </div>
+      </div>
+      <!-- Table -->
+      <div class="table-responsive">
+        <table
+          id="basic-datatable"
+          class="table table-bordered dt-responsive nowrap"
+        >
+          <thead class="brandcolor tableHeader">
+            <tr>
+              <th></th>
+              <th class="brandcolor" sortable="MAT_DOC" (sort)="onSort($event)">
+                Material Document
+              </th>
+              <th
+                class="brandcolor"
+                sortable="MAT_DOC_YEAR"
+                (sort)="onSort($event)"
+              >
+                Material Doc. Year
+              </th>
+              <th
+                class="brandcolor"
+                sortable="TRANS_EVENT_TYPE"
+                (sort)="onSort($event)"
+              >
+                Trans./Event Type
+              </th>
+              <th
+                class="brandcolor"
+                sortable="DOC_TYPE"
+                (sort)="onSort($event)"
+              >
+                Document Type
+              </th>
+              <th
+                class="brandcolor"
+                sortable="DOC_TYPE_REVAL"
+                (sort)="onSort($event)"
+              >
+                Doc. type reval.
+              </th>
+              <th
+                class="brandcolor"
+                sortable="DOC_DATE"
+                (sort)="onSort($event)"
+              >
+                Document Date
+              </th>
+              <th
+                class="brandcolor"
+                sortable="POSTING_DATE"
+                (sort)="onSort($event)"
+              >
+                Posting Date
+              </th>
+              <th
+                class="brandcolor"
+                sortable="ENTRY_DATE"
+                (sort)="onSort($event)"
+              >
+                Entry Date
+              </th>
+              <th
+                class="brandcolor"
+                sortable="ENTRY_TIME"
+                (sort)="onSort($event)"
+              >
+                Time of Entry
+              </th>
+              <th
+                class="brandcolor"
+                sortable="CHANGED_ON"
+                (sort)="onSort($event)"
+              >
+                Changed On
+              </th>
+              <th
+                class="brandcolor"
+                sortable="USER_NAME"
+                (sort)="onSort($event)"
+              >
+                User Name
+              </th>
+              <th class="brandcolor" sortable="AREA" (sort)="onSort($event)">
+                Not More Closely Defined Area, Possibly
+              </th>
+              <th
+                class="brandcolor"
+                sortable="REFERENCE"
+                (sort)="onSort($event)"
+              >
+                Reference
+              </th>
+              <th
+                class="brandcolor"
+                sortable="HEADER_TEXT"
+                (sort)="onSort($event)"
+              >
+                Document Header Text
+              </th>
+              <th
+                class="brandcolor"
+                sortable="DEL_COSTS"
+                (sort)="onSort($event)"
+              >
+                Unpl. del.costs
+              </th>
+            </tr>
+          </thead>
+          <tbody *ngFor="let table of tables$ | async; let i = index">
+            <tr>
+              <td align="center">
+                <a class="expand-row" (click)="changeValue(i)">+</a>
+              </td>
+              <td>{{ table.MAT_DOC }}</td>
+              <!-- Material document number -->
+              <td>{{ table.MAT_DOC_YEAR }}</td>
+              <!-- Year of the material document -->
+              <td>{{ table.TRANS_EVENT_TYPE }}</td>
+              <!-- Type of transaction or event -->
+              <td>{{ table.DOC_TYPE }}</td>
+              <!-- Type of document -->
+              <td>{{ table.DOC_TYPE_REVAL }}</td>
+              <!-- Revaluation document type -->
+              <td>{{ table.DOC_DATE }}</td>
+              <!-- Date of the document -->
+              <td>{{ table.POSTING_DATE }}</td>
+              <!-- Posting date of the document -->
+              <td>{{ table.ENTRY_DATE }}</td>
+              <!-- Date of entry into the system -->
+              <td>{{ table.ENTRY_TIME }}</td>
+              <!-- Time of entry -->
+              <td>{{ table.CHANGED_ON }}</td>
+              <!-- Date when the record was last changed -->
+              <td>{{ table.USER_NAME }}</td>
+              <!-- Name of the user who performed the action -->
+              <td>{{ table.AREA }}</td>
+              <!-- Specific area description -->
+              <td>{{ table.REFERENCE }}</td>
+              <!-- Reference number associated with the document -->
+              <td>{{ table.HEADER_TEXT }}</td>
+              <!-- Header text of the document -->
+              <td>{{ table.DEL_COSTS }}</td>
+              <!-- Unplanned delivery costs -->
+            </tr>
+            <ng-container *ngIf="hideme[i]">
+              <tr class="sub-table no-bg">
+                <td align="center"></td>
+                <td colspan="15" class="p-0">
+                  <table class="table mb-0 table-striped">
+                    <thead class="bg-dark text-white">
+                      <tr>
+                        <th>Bill of Lading</th>
+                        <th>Print Version</th>
+                        <th>Goods Receipt/Issue Slip</th>
+                        <th>Logical System</th>
+                        <th>Doc. type add. doc.</th>
+                        <th>Transaction Code</th>
+                        <th>Ext. WMS control</th>
+                        <th>Number of foreign trade data</th>
+                        <th>Goods Issue Time</th>
+                        <th>Time Zone</th>
+                        <th>Delivery</th>
+                        <th>Logical System EWM</th>
+                        <th>Material Document in EWM</th>
+                        <th>Customs Reference Number</th>
+                        <th>Enh. Store Return</th>
+                        <th>Adv. Returns Active</th>
+                        <th>Doc. condition no.</th>
+                        <th>Cancel in full</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>{{ table.LOGICAL_SYSTEM }}</td>
+                        <!-- Logical system associated with the entry -->
+                        <td>{{ table.DOC_TYPE_ADD }}</td>
+                        <!-- Additional document type information -->
+                        <td>{{ table.TRANSACTION_CODE }}</td>
+                        <!-- Transaction code for the operation -->
+                        <td>{{ table.EXT_WMS_CONTROL }}</td>
+                        <!-- External WMS control identifier -->
+                        <td>{{ table.FOREIGN_DATA_NUM }}</td>
+                        <!-- Number of foreign trade data associated -->
+                        <td>{{ table.GI_TIME }}</td>
+                        <!-- Time of goods issue -->
+                        <td>{{ table.TIME_ZONE }}</td>
+                        <!-- Time zone for the operation -->
+                        <td>{{ table.DELIVERY }}</td>
+                        <!-- Delivery information -->
+                        <td>{{ table.LOGICAL_SYSTEM_EWM }}</td>
+                        <!-- Logical system for EWM -->
+                        <td>{{ table.MAT_DOC_EWM }}</td>
+                        <!-- Material document reference in EWM -->
+                        <td>{{ table.CUSTOMS_REF_NUM }}</td>
+                        <!-- Customs reference number -->
+                        <td>{{ table.ENH_STORE_RETURN }}</td>
+                        <!-- Enhanced store return information -->
+                        <td>{{ table.ADV_RETURNS_ACTIVE }}</td>
+                        <!-- Indicator if advanced returns are active -->
+                        <td>{{ table.DOC_CONDITION_NO }}</td>
+                        <!-- Document condition number -->
+                        <td>{{ table.CANCEL_IN_FULL }}</td>
+                        <!-- Indicator if the document is canceled in full -->
+                        <td>{{ table.PRINT_VERSION }}</td>
+                        <!-- Version of the printout -->
+                        <td>{{ table.GR_ISSUE_SLIP }}</td>
+                        <!-- Goods receipt/issue slip -->
+                        <td>{{ table.BILL_OF_LADING }}</td>
+                        <!-- Bill of lading number -->
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+      <!-- Pagination -->
+      <div class="row justify-content-md-between align-items-md-center mt-2">
+        <div class="col-sm-12 col-md-5">
+          <div class="dataTables_info mb-2" role="status" aria-live="polite">
+            Showing {{ service.startIndex }} to {{ service.endIndex }} of
+            {{ service.totalRecords }} entries
+          </div>
+        </div>
+        <div class="col-sm-12 col-md-5">
+          <div class="text-md-right float-md-end pagination-rounded">
+            <ul class="pagination justify-content-end mb-0">
+              <!-- Previous Button -->
+              <li
+                class="page-item"
+                [class.disabled]="service.page === 1"
+                (click)="service.changePage(service.page - 1)"
+              >
+                <a class="page-link" href="javascript:void(0)">Previous</a>
+              </li>
+
+              <!-- Current Page Display -->
+              <li class="page-item active">
+                <a class="page-link" href="javascript:void(0)">{{
+                  service.page
+                }}</a>
+              </li>
+
+              <!-- Next Button -->
+              <li
+                class="page-item"
+                [class.disabled]="service.page === service.totalPages"
+                (click)="service.changePage(service.page + 1)"
+              >
+                <a class="page-link" href="javascript:void(0)">Next</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- End of Pagination -->
+    </div>
+  </div>
+</div>

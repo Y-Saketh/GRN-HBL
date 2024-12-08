@@ -5,23 +5,42 @@
       <div class="card">
         <div class="card-body">
           <h4 class="card-title">
-            <span style="color: black">></span> In Bound Delivery
+            <span style="color: black"></span> In Bound Delivery
           </h4>
           <!-- <p class="card-title-desc">Provide valuable, actionable feedback to your users with HTML5 form
             validation–available in all our supported browsers.</p> -->
-          <form class="needs-validation" (ngSubmit)="validSubmit()" [formGroup]="validationform">
+          <form
+            class="needs-validation"
+            (ngSubmit)="validSubmit()"
+            [formGroup]="validationform"
+          >
             <div class="row mt-4">
               <!-- Row 1 -->
               <div class="col-md-2">
                 <div class="mb-3">
-                  <label class="brandcolor" class="brandcolor" for="inbounddeliverynumber">PO No</label>
-                  <input type="text" class="form-control" id="inbounddeliverynumber"
-                    formControlName="inbounddeliverynumber" placeholder="Purchase Order Number" [ngClass]="{
+                  <label
+                    class="brandcolor"
+                    class="brandcolor"
+                    for="inbounddeliverynumber"
+                    >PO No</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="inbounddeliverynumber"
+                    formControlName="inbounddeliverynumber"
+                    placeholder="Purchase Order Number"
+                    [ngClass]="{
                       'is-invalid': submit && form.inbounddeliverynumber.errors
-                    }" />
-                  <div *ngIf="submit && form.inbounddeliverynumber.errors" class="invalid-feedback">
-                    <span *ngIf="form.inbounddeliverynumber.errors.required">Please provide a valid Purchase Order
-                      Number.</span>
+                    }"
+                  />
+                  <div
+                    *ngIf="submit && form.inbounddeliverynumber.errors"
+                    class="invalid-feedback"
+                  >
+                    <span *ngIf="form.inbounddeliverynumber.errors.required"
+                      >Please provide a valid Purchase Order Number.</span
+                    >
                   </div>
                 </div>
               </div>
@@ -30,24 +49,39 @@
               <!-- Button Row -->
               <!-- <div class="col-md-4 mt-4"></div> -->
               <div class="col-md-2 text-center">
-                <button style="background-color: brown; margin-top: 28px;
-    width: max-content; color: aliceblue;" class="btn " type="submit">
+                <button
+                  style="
+                    background-color: brown;
+                    margin-top: 28px;
+                    width: max-content;
+                    color: aliceblue;
+                  "
+                  class="btn"
+                  type="submit"
+                >
                   Get Details
                 </button>
               </div>
               <div class="col-md-4 mt-4">
                 <div class="mb-3">
-                                   <!-- <label class="brandcolor" class="brandcolor" for="vendorCode">Vendor Code</label> -->
+                  <!-- <label class="brandcolor" class="brandcolor" for="vendorCode">Vendor Code</label> -->
                   <!-- <input type="text" class="form-control" id="vendorCode" [(ngModel)]="vendorCode"> -->
-
                 </div>
               </div>
               <div class="col-md-4">
-                <h5 *ngIf="vendorCodeDis"><span class="brandcolor">Vendor Code</span> : {{vendorCodeDis}}</h5>
-                <h5 *ngIf="vendorName"><span class="brandcolor">Vendor Name</span> : {{vendorName}}</h5>
-                <h5 *ngIf="vendorName"><span class="brandcolor">City</span> : {{City}}</h5>
-                <h5 *ngIf="vendorName"><span class="brandcolor">GSTIN</span> : {{GSTIN}}</h5>
-       
+                <h5 *ngIf="vendorCodeDis">
+                  <span class="brandcolor">Vendor Code</span> :
+                  {{ vendorCodeDis }}
+                </h5>
+                <h5 *ngIf="vendorName">
+                  <span class="brandcolor">Vendor Name</span> : {{ vendorName }}
+                </h5>
+                <h5 *ngIf="vendorName">
+                  <span class="brandcolor">City</span> : {{ City }}
+                </h5>
+                <h5 *ngIf="vendorName">
+                  <span class="brandcolor">GSTIN</span> : {{ GSTIN }}
+                </h5>
               </div>
             </div>
           </form>
@@ -96,25 +130,39 @@
       </div> -->
           <form [formGroup]="tableForm">
             <div class="table-responsive">
-              <table id="basic-datatable" class="table table-bordered dt-responsive nowrap">
+              <table
+                id="basic-datatable"
+                class="table table-bordered dt-responsive nowrap"
+              >
                 <thead>
                   <tr>
                     <th></th>
-                    <th sortable="plant">DC.No <span style="color: red;">*</span></th>
-                    <th sortable="invoiceDate">DC.Dt <span style="color: red;">*</span></th>
-                    <th sortable="invoiceDate">Inv.No<span style="color: red;">*</span></th>
-                    <th sortable="invoiceDate">Inv.Dt<span style="color: red;">*</span></th>
-                    <th sortable="vehicleNumber">Vehicle No<span style="color: red;">*</span></th>
-                    <th>Transporter Name <span style="color: red;">*</span></th>
-                    <th sortable="gateEntryNumber">
-                     Gate Entry No<span style="color: red;">*</span>
+                    <th sortable="deleveryChallanNumber">
+                      DC.No <span style="color: red">*</span>
                     </th>
-                    <th sortable="invoiceDate">Gate Entry Dt<span style="color: red;">*</span></th>
-                    <th>LR No</th>
+                    <th sortable="DocumentDate">
+                      DC.Dt <span style="color: red">*</span>
+                    </th>
+                    <th sortable="invoiceNo">
+                      Inv.No<span style="color: red">*</span>
+                    </th>
+                    <th sortable="invoiceDate">
+                      Inv.Dt<span style="color: red">*</span>
+                    </th>
+                    <th sortable="vehicleNumber">
+                      Vehicle No<span style="color: red">*</span>
+                    </th>
+                    <th>Transporter Name <span style="color: red">*</span></th>
+                    <th sortable="gateEntryNumber">
+                      Gate Entry No<span style="color: red">*</span>
+                    </th>
+                    <th sortable="gateEntryDate">
+                      Gate Entry Dt<span style="color: red">*</span>
+                    </th>
                     <th>LR Date</th>
-                    
-                    </tr>
-                    </thead>
+                    <th>LR No</th>
+                  </tr>
+                </thead>
                 <!-- @for(table of tables$ | async;track $index){ -->
                 <!-- <form [formGroup]="tableForm" (ngSubmit)="submitForm()"> -->
                 <tbody>
@@ -123,71 +171,153 @@
                       <a class="expand-row">+</a>
                     </td>
                     <td>
-                      <input type="text" formControlName="deleveryChallanNumber"
-                        placeholder="Enter Delevery Challan Number" class="form-control form-control-sm" />
-                      <small class="text-danger" *ngIf="isFieldInvalid('deleveryChallanNumber')">Delivery Challan Number
-                        is required.</small>
+                      <input
+                        type="text"
+                        formControlName="deleveryChallanNumber"
+                        maxLength="10"
+                        pattern="^[a-zA-Z0-9/_]+$"
+                        placeholder="Enter Delevery Challan Number"
+                        class="form-control form-control-sm"
+                      />
+                      <small
+                        class="text-danger"
+                        *ngIf="isFieldInvalid('deleveryChallanNumber')"
+                        >Delivery Challan Number is required and should not contain special characters.</small
+                      >
                     </td>
                     <td>
-                      <input type="text" formControlName="DocumentDate" placeholder="Enter Document Date"
-                        class="form-control form-control-sm" [bsConfig]="bsConfig" bsDatepicker />
-                      <small class="text-danger" *ngIf="isFieldInvalid('DocumentDate')">Document Date is
-                        required.</small>
+                      <input
+                        type="text"
+                        formControlName="DocumentDate"
+                        placeholder="Enter Document Date"
+                        class="form-control form-control-sm"
+                        [bsConfig]="bsConfig"
+                        bsDatepicker
+                      />
+                      <small
+                        class="text-danger"
+                        *ngIf="isFieldInvalid('DocumentDate')"
+                        >Document Date is required.</small
+                      >
                     </td>
                     <td>
-                      <input type="text" formControlName="invoiceNo" placeholder="Enter Invoice No"
-                        class="form-control form-control-sm" />
-                      <small class="text-danger" *ngIf="isFieldInvalid('invoiceNo')">Invoice Number is required.</small>
+                      <input
+                        type="text"
+                        formControlName="invoiceNo"
+                         maxLength="16"
+                         pattern="^[a-zA-Z0-9/_]+$"
+                        placeholder="Enter Invoice No"
+                        class="form-control form-control-sm"
+                      />
+                      <small
+                        class="text-danger"
+                        *ngIf="isFieldInvalid('invoiceNo')"
+                        >Invoice Number is required and should not contain special characters.</small
+                      >
                     </td>
                     <td>
-                      <input type="text" formControlName="invoiceDate" placeholder="Enter Invoice Date"
-                        class="form-control form-control-sm" [bsConfig]="bsConfig" bsDatepicker />
-                      <small class="text-danger" *ngIf="isFieldInvalid('invoiceDate')">Invoice Date is
-                        required.</small>
+                      <input
+                        type="text"
+                        formControlName="invoiceDate"
+                        placeholder="Enter Invoice Date"
+                        class="form-control form-control-sm"
+                        [bsConfig]="bsConfig"
+                        bsDatepicker
+                      />
+                      <small
+                        class="text-danger"
+                        *ngIf="isFieldInvalid('invoiceDate')"
+                        >Invoice Date is required.</small
+                      >
                     </td>
-                    
-                   
                     <td>
-                      <input type="text" formControlName="vehicleNumber" placeholder="Enter Vehicle Number"
-                        class="form-control form-control-sm" />
-                      <small class="text-danger" *ngIf="isFieldInvalid('vehicleNumber')">Vehicle Number is required and
-                        should contain only
-                        valid characters.</small>
+                      <input
+                        type="text"
+                        formControlName="vehicleNumber"
+                        maxLength="16"
+                         pattern="^[a-zA-Z0-9/_]+$"
+                        placeholder="Enter Vehicle Number"
+                        class="form-control form-control-sm"
+                      />
+                      <small
+                        class="text-danger"
+                        *ngIf="isFieldInvalid('vehicleNumber')"
+                        >Vehicle Number is required and should not contain special characters.</small
+                      >
                     </td>
                     <td>
-                      <input type="text" formControlName="transporterName" placeholder="Enter Transporter Name"
-                        class="form-control form-control-sm" />
-                      <small class="text-danger" *ngIf="isFieldInvalid('transporterName')">Transporter Name is
-                        required.</small>
+                      <input
+                        type="text"
+                        formControlName="transporterName"
+                        placeholder="Enter Transporter Name"
+                        class="form-control form-control-sm"
+                      />
+                      <small
+                        class="text-danger"
+                        *ngIf="isFieldInvalid('transporterName')"
+                        >Transporter Name is required.</small
+                      >
                     </td>
-                
+
                     <td>
-                      <input type="text" formControlName="gateEntryNumber" placeholder="Entry Gate Pass Number"
-                        class="form-control form-control-sm" />
-                      <small class="text-danger" *ngIf="isFieldInvalid('gateEntryNumber')">Gate Entry Number is required
+                      <input
+                        type="text"
+                        formControlName="gateEntryNumber"
+                        maxLength="10"
+                        pattern="^[a-zA-Z0-9/_]+$"
+                        placeholder="Entry Gate Pass Number"
+                        class="form-control form-control-sm"
+                      />
+                      <small
+                        class="text-danger"
+                        *ngIf="isFieldInvalid('gateEntryNumber')"
+                        >Gate Entry Number is required and should not contain special characters.
                       </small>
                     </td>
-                  
-                 
+
                     <td>
-                      <input type="text" formControlName="gateEntryDate" placeholder="Enter Gate Entry Date"
-                        class="form-control form-control-sm" [bsConfig]="bsConfig" bsDatepicker />
-                      <small class="text-danger" *ngIf="isFieldInvalid('gateEntryDate')">Gate Entry Date is
-                        required.</small>
+                      <input
+                        type="text"
+                        formControlName="gateEntryDate"
+                        placeholder="Enter Gate Entry Date"
+                        class="form-control form-control-sm"
+                        [bsConfig]="bsConfig"
+                        bsDatepicker
+                      />
+                      <small
+                        class="text-danger"
+                        *ngIf="isFieldInvalid('gateEntryDate')"
+                        >Gate Entry Date is required.</small
+                      >
                     </td>
                     <td>
-                      <input type="text" formControlName="LrNo" placeholder="LR Number"
-                        class="form-control form-control-sm" />
-                      <small class="text-danger" *ngIf="isFieldInvalid('LrNo')">LR Number is required
-                        </small>
+                      <input
+                        type="text"
+                        formControlName="LrDate"
+                        placeholder="LR Date is required"
+                        bsDatepicker
+                        class="form-control form-control-sm"
+                      />
+                      <small
+                        class="text-danger"
+                        *ngIf="isFieldInvalid('LrDate')"
+                        >LR Date is required
+                      </small>
                     </td>
                     <td>
-                      <input type="text" formControlName="LrDate" placeholder="LR Date is required"
-                        class="form-control form-control-sm" />
-                      <small class="text-danger" *ngIf="isFieldInvalid('LrDate')">LR Date is required
-                     </small>
+                      <input
+                        type="text"
+                        formControlName="LrNo"
+                        maxLength="16"
+                        placeholder="LR Number"
+                        class="form-control form-control-sm"
+                      />
+                      <small class="text-danger" *ngIf="isFieldInvalid('LrNo')"
+                        >LR Number is required
+                      </small>
                     </td>
-                  
+                    
+
                     <!-- <td>
                       <input type="text" formControlName="supplier" placeholder="Enter Supplier/Vendor Code"
                         class="form-control form-control-sm" />
@@ -195,7 +325,6 @@
                         required.</small>
                     </td> -->
 
-               
                     <!-- <td>
                 <input
                   type="text"
@@ -231,7 +360,10 @@
                         <tbody>
                           <tr>
                             <td>
-                              <button class="btn btn-danger btn-sm" (click)="removeRow($index)">
+                              <button
+                                class="btn btn-danger btn-sm"
+                                (click)="removeRow($index)"
+                              >
                                 -
                               </button>
                             </td>
@@ -245,16 +377,17 @@
                             <td>{{ table.MEINS }}</td>
                             <td>{{ table.ORGQTY }}</td>
                             <td>
-                              <input type="text" [ngModelOptions]="{ standalone: true }" [(ngModel)]="table.DMENGE"
-                                class="form-control form-control-sm" />
+                              <input
+                                type="text"
+                                [ngModelOptions]="{ standalone: true }"
+                                [(ngModel)]="table.DMENGE"
+                                class="form-control form-control-sm"
+                              />
                             </td>
                             <!-- <td>{{table.DMENGE}}</td> -->
-                           
-                        
-                            
+
                             <!-- <td>{{table.tolerance}}</td> -->
-                           
-                            
+
                             <!-- <td>{{table.supplier}}</td> -->
 
                             <!-- <td><input type="text" [(ngModel)]="table.storageLocation" class="form-control form-control-sm" /></td>
@@ -275,7 +408,20 @@
               </table>
             </div>
             <div class="col-md-4 text-left">
-              <button class="btn btn-success mt-4" type="button" (click)="saveBound(tables$)">
+              <button
+                style="
+                  background-color: brown;
+                  margin-top: 28px;
+                  width: max-content;
+                  color: aliceblue;
+                "
+                class="btn"
+                type="submit"
+                [disabled]="
+                  !validationform.valid || !tableForm.valid || isSubmitting
+                "
+                (click)="saveBound(tables$)"
+              >
                 Save
               </button>
             </div>

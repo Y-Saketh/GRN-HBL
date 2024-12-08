@@ -1,0 +1,281 @@
+<div class="col-xl-12">
+    <div class="card" style="background-color: beige">
+      <div class="card-body">
+        <h4 class="card-title">
+          <span style="color: black"></span>
+          MB52
+        </h4>
+        <form class="needs-validation" [formGroup]="validationform">
+            <!-- Row 1 -->
+          <div class="row">
+            <!-- Plant -->
+            <div class="col-md-1">
+              <label class="brandcolor" for="plant">PLANT</label>
+              <div class="mb-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="plant"
+                  formControlName="plant"
+                  placeholder="Plant"
+                  [ngClass]="{ 'is-invalid': submit && form.plant.errors }"
+                />
+                <div *ngIf="submit && form.plant.errors" class="invalid-feedback">
+                  <span *ngIf="form.plant.errors.required"
+                    >Please provide a valid plant.</span
+                  >
+                </div>
+              </div>
+            </div>
+             <!-- Material -->
+             <div class="col-md-2">
+                <div class="mb-3">
+                  <label class="brandcolor" for="material">MATERIAL</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="material"
+                    formControlName="material"
+                    placeholder="Material"
+                    [ngClass]="{ 'is-invalid': submit && form.material.errors }"
+                  />
+                  <div
+                    *ngIf="submit && form.material.errors"
+                    class="invalid-feedback"
+                  >
+                    <span *ngIf="form.material.errors.required"
+                      >Please provide a valid material.</span
+                    >
+                  </div>
+                </div>
+              </div>
+            <!-- Material Description -->
+            <div class="col-md-2">
+              <label class="brandcolor" for="materialDescription">MATERIAL DESCRIPTION</label>
+              <div class="mb-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="materialDescription"
+                  formControlName="materialDescription"
+                  placeholder="Material Description"
+                  [ngClass]="{
+                    'is-invalid': submit && form.materialDescription.errors
+                  }"
+                />
+                <div
+                  *ngIf="submit && form.materialDescription.errors"
+                  class="invalid-feedback"
+                >
+                  <span *ngIf="form.materialDescription.errors.required"
+                    >Please provide a valid POSTING DATE TO.</span
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-1 mt-4">
+              <div class="ms-4 mb-3">
+                <button
+                  style="
+                    margin-top: 8px;
+                    background-color: brown;
+                    width: max-content;
+                    color: aliceblue;
+                  "
+                  class="btn"
+                  type="submit"
+                  (click)="getmb52()"
+                >
+                  Get Details
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!-- end card -->
+    <div class="card">
+      <div class="card-body">
+        <div class="row mb-md-2">
+          <div class="col-sm-12 col-md-6">
+            <div class="dataTables_length">
+              <label class="d-inline-flex align-items-center">
+                Show
+                <select
+                  name="tickets-table_length"
+                  aria-controls="tickets-table"
+                  class="form-control form-control-sm mx-2"
+                  [(ngModel)]="service.pageSize"
+                >
+                  <option [ngValue]="10">10</option>
+                  <option [ngValue]="25">25</option>
+                  <option [ngValue]="50">50</option>
+                  <option [ngValue]="100">100</option>
+                </select>
+                entries
+              </label>
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-6">
+            <div id="tickets-table_filter" class="dataTables_filter text-md-end">
+              <label class="d-inline-flex align-items-center">
+                Search:
+                <input
+                  type="text"
+                  name="searchTerm"
+                  class="form-control form-control-sm ms-2"
+                  aria-controls="tickets-table"
+                  [(ngModel)]="service.searchTerm"
+                />
+              </label>
+            </div>
+          </div>
+        </div>
+        <!-- Table -->
+        <div class="table-responsive">
+          <table
+            id="basic-datatable"
+            class="table table-bordered dt-responsive nowrap"
+          >
+            <thead class="brandcolor tableHeader">
+              <tr>
+                <th></th>
+                <th class="brandcolor" sortable="MATNR" (sort)="onSort($event)">
+                    Mat.No
+                  </th>
+                  <th class="brandcolor" sortable="MAKTX" (sort)="onSort($event)">
+                    Mat Desc
+                  </th>
+                <th class="brandcolor" sortable="plantname1" (sort)="onSort($event)">
+                  Plant Name 1
+                </th>
+                <th class="brandcolor" sortable="LGORT" (sort)="onSort($event)">
+                  S.Loc
+                </th>
+                <th class="brandcolor" sortable="sl" (sort)="onSort($event)">
+                  SL
+                </th>
+                <th
+                  class="brandcolor"
+                  sortable="UnrestrictedUnit"
+                  (sort)="onSort($event)"
+                >
+                  Unrestricted Unit
+                </th>
+                <th class="brandcolor" sortable="transit" (sort)="onSort($event)">
+                  Transit/Transf.
+                </th>
+                
+                <th
+                  class="brandcolor"
+                  sortable="inQtyInsp"
+                  (sort)="onSort($event)"
+                >
+                  In Qty Insp.
+                </th>
+                <th
+                  class="brandcolor"
+                  sortable="restrictedUse"
+                  (sort)="onSort($event)"
+                >
+                  Restricted Use
+                </th>
+              </tr>
+            </thead>
+            <tbody *ngFor="let table of tables$ | async; let i = index">
+              <tr>
+                <td align="center">
+                  <a class="expand-row" (click)="changeValue(i)">+</a>
+                </td>
+                <td>{{ table.MATNR }}</td>
+                <!-- Material -->
+                <td>{{ table.MAKTX }}</td>
+                <!-- Material Desc -->
+                <td>{{ table.plantname1 }}</td>
+                <!-- Plant Name 1 -->
+                <td>{{ table.LGORT }}</td>
+                <!-- Storage Location -->
+                <td>{{ table.sl }}</td>
+                <!-- SL -->
+                <td>{{ table.UnrestrictedUnit }}</td>
+                <!-- Unrestricted Unit -->
+                <td>{{ table.transit }}</td>
+                <!-- Transit/Transf. -->
+                <td>{{ table.inQtyInsp }}</td>
+                <!-- In Qty Insp. -->
+                <td>{{ table.restrictedUse }}</td>
+                <!-- Restricted Use -->
+                
+              </tr>
+              <ng-container *ngIf="hideme[i]">
+                <tr class="sub-table no-bg">
+                  <td align="center"></td>
+                  <td colspan="15" class="p-0">
+                    <table class="table mb-0 table-striped">
+                      <thead class="bg-dark text-white">
+                        <tr>
+                          <th>Returns</th>
+                          <th>Blocked</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>{{ table.returns }}</td>
+                          <!-- Returns -->
+                          <td>{{ table.blocked }}</td>
+                          <!-- Blocked -->
+                          
+                        </tr>
+                      </tbody>
+                    </table>
+                  </td>
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
+        </div>
+        <!-- Pagination -->
+        <div class="row justify-content-md-between align-items-md-center mt-2">
+          <div class="col-sm-12 col-md-5">
+            <div class="dataTables_info mb-2" role="status" aria-live="polite">
+              Showing {{ service.startIndex }} to {{ service.endIndex }} of
+              {{ service.totalRecords }} entries
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-5">
+            <div class="text-md-right float-md-end pagination-rounded">
+              <ul class="pagination justify-content-end mb-0">
+                <!-- Previous Button -->
+                <li
+                  class="page-item"
+                  [class.disabled]="service.page === 1"
+                  (click)="service.changePage(service.page - 1)"
+                >
+                  <a class="page-link" href="javascript:void(0)">Previous</a>
+                </li>
+  
+                <!-- Current Page Display -->
+                <li class="page-item active">
+                  <a class="page-link" href="javascript:void(0)">{{
+                    service.page
+                  }}</a>
+                </li>
+  
+                <!-- Next Button -->
+                <li
+                  class="page-item"
+                  [class.disabled]="service.page === service.totalPages"
+                  (click)="service.changePage(service.page + 1)"
+                >
+                  <a class="page-link" href="javascript:void(0)">Next</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <!-- End of Pagination -->
+      </div>
+    </div>
+  </div>
+  

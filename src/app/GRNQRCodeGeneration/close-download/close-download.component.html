@@ -15,7 +15,7 @@
         <div class="row">
           <!-- Row 1 -->
           <!-- Plant -->
-          <div class="col-md-3">
+          <div class="col-md-1">
             <label class="brandcolor" for="plant">PLANT</label>
             <div class="mb-3">
               <input
@@ -34,7 +34,7 @@
             </div>
           </div>
           <!-- purchasegroupfrom -->
-          <div class="col-md-3">
+          <div class="col-md-2">
             <label class="brandcolor" for="purchasegroup">PURCHASE GROUP</label>
             <div class="mb-3">
               <input
@@ -59,7 +59,7 @@
           </div>
 
           <!-- Current Date From-->
-          <div class="col-md-3">
+          <div class="col-md-2">
             <label class="brandcolor" for="curentdatefrom">CURRENT DATE FROM</label>
             <div class="mb-3">
               <input
@@ -88,7 +88,7 @@
             </div>
           </div>
           <!-- Current Date To-->
-          <div class="col-md-3">
+          <div class="col-md-2">
             <label class="brandcolor" for="curentdateto">CURRENT DATE TO</label>
             <div class="mb-3">
               <input
@@ -116,22 +116,25 @@
               </div>
             </div>
           </div>
-        </div>
-
-        <!-- Button Row -->
-        <div class="row mt-4">
-          <div class="col-md-4"></div>
-          <div class="col-md-4 text-center">
+          <!-- Button Row -->
+        <div class="col-md-1 mt-4">
+          <div class="mb-3">
             <button
-              class="btn btn-success"
+              style="
+                margin-top: 8px;
+                background-color: brown;
+                width: max-content;
+                color: aliceblue;
+              "
+              class="btn"
               type="submit"
               (click)="getCloseDownload()"
             >
               Get Details
             </button>
           </div>
-          <div class="col-md-4"></div>
         </div>
+        </div> 
       </form>
     </div>
   </div>

@@ -130,21 +130,21 @@ export const MENU: MenuItem[] = [
             {
                 id: "grnprint",//3,
                 label: 'GRN Print',
-                link: 'openpolist',
+                link: 'grnprint',
                 icon: 'bx-archive',
                 parentId: "menu"
             },
             {
                 id: "mb51",//3,
                 label: 'MB51',
-                link: 'openpolist',
+                link: 'mb51',
                 icon: 'bx-archive',
                 parentId: "menu"
             },
             {
                 id: "mb52",//3,
                 label: 'MB52',
-                link: 'openpolist',
+                link: 'mb52',
                 icon: 'bx-archive',
                 parentId: "menu"
             },

@@ -13,26 +13,26 @@ import Swal from 'sweetalert2';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import * as moment from 'moment';
 
-
 @Component({
   selector: 'app-inbounddelivery',
   templateUrl: './inbounddelivery.component.html',
   standalone: true,
-  styleUrl: './inbounddelivery.component.css',
+  styleUrls: ['./inbounddelivery.component.css'],
   providers: [AdvancedService, DecimalPipe, UserProfileService],
   imports: [ReactiveFormsModule, 
             CommonModule, 
             FormsModule, 
             PaginationModule, 
-            AdvancedSortableDirective,BsDatepickerModule,PagetitleComponent]
+            AdvancedSortableDirective, 
+            BsDatepickerModule, 
+            PagetitleComponent]
 })
 
 export class InbounddeliveryComponent implements OnInit {
   breadCrumbItems: Array<{}>;
-  // Table data
   tableData: Table[];
   public selected: any;
-  hideme:boolean=false;
+  hideme: boolean = false;
   tables$: Observable<Table[]>;
   total$: Observable<number>;
 
@@ -40,8 +40,7 @@ export class InbounddeliveryComponent implements OnInit {
   public isCollapsed = true;
   expandedRows: { [key: string]: boolean } = {};
   lotReportsData: any;
-  // POLIST: any;
-  INBOUND: Table[];
+  INBOUND: Table[] = [];
   plant: string;
   supplier: string;
   Originalquantity: any;
@@ -55,162 +54,130 @@ export class InbounddeliveryComponent implements OnInit {
   transporterName: string;
   deleveryChallanNumber: any;
   PackingList: any;
-  isSubmitting: boolean= false;
-  vendorCodeDis:any;
+  isSubmitting: boolean = false;
+  vendorCodeDis: any;
   vendorName: any;
   City: any = "Hyderabad";
-  GSTIN:any = "33333777AHQPA3613C"
+  GSTIN: any = "33333777AHQPA3613C";
 
-  
-  constructor(public formBuilder: UntypedFormBuilder, public service: AdvancedService,private apiService:UserProfileService) {
+  constructor(public formBuilder: UntypedFormBuilder, public service: AdvancedService, private apiService: UserProfileService) {
     this.tables$ = service.tables$;
-    console.log("this.tables$", this.tables$)
     this.total$ = service.total$;
   }
+
   validationform: UntypedFormGroup;
   tableForm: UntypedFormGroup;
-  submit: boolean;
+  submit: boolean = false;
+
   ngOnInit(): void {
     this.submit = false;
     this.validationform = this.formBuilder.group({
       inbounddeliverynumber: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]+')]],
-
     });
 
     this.tableForm = this.formBuilder.group({
-      gateEntryNumber: ['', Validators.required],
-      vehicleNumber: ['', Validators.required],
+      gateEntryNumber: ['', [Validators.required]],
+      vehicleNumber: ['', [Validators.required]],
       invoiceDate: ['', Validators.required],
-      invoiceNo: ['', Validators.required],
+      invoiceNo: ['', [Validators.required]],
       gateEntryDate: ['', Validators.required],
-      DocumentDate: ['', Validators.required],
-      // supplier: ['', Validators.required],
+      DocumentDate: ['', [Validators.required]],
       deleveryChallanNumber: ['', Validators.required],
-      transporterName:['', Validators.required],
-      LrNo:['', Validators.required],
-      LrDate:['', Validators.required],
+      transporterName: ['', Validators.required],
+      LrNo: [''],
+      LrDate: [''],
       PackingList: [''], // Optional field
     });
 
     this.breadCrumbItems = [{ label: 'GRN' }, { label: 'InBound Delivery', active: true }];
-    /**
-     * fetch data
-     */
     this._fetchData();
-
   }
+
   isFieldInvalid(fieldName: string): boolean {
     const control = this.tableForm.get(fieldName);
     return control?.invalid && (control.dirty || control.touched);
   }
+
   bsConfig = {
-    dateInputFormat: 'DD/MM/YYYY', // Set the date format
-    // showWeekNumbers: false, // Optional: Hide week numbers
-    containerClass: 'theme-blue', // Optional: Use a predefined theme
+    dateInputFormat: 'DD/MM/YYYY',
+    containerClass: 'theme-blue',
   };
 
   removeRow(index: number): void {
     this.INBOUND.splice(index, 1);
   }
+
   changeValue() {
     this.hideme = !this.hideme;
   }
+
   saveBound(tables$: Observable<any[]>) {
-    // Disable the submit button to prevent multiple clicks
     this.isSubmitting = true;
-  
-    tables$
-      .pipe(take(1)) // Ensure subscription happens only once
-      .subscribe({
-        next: (tables) => {
-          // Start with the common header data
-          const payload = {
-            DETAIL: {
-              PO_NUMBER: this.form.inbounddeliverynumber.value,
-              DCNUMBER: this.tableForm.value.deleveryChallanNumber,
-              IN_DATE: this.tableForm.value.invoiceDate,// this.tableForm.value.invoiceDate?moment(this.tableForm.value.invoiceDate).format('DD/MM/YYYY') :"",//'DefaultInvoice',
-              DC_DATE: this.tableForm.value.DocumentDate,//this.tableForm.value.DocumentDate?moment(this.tableForm.value.DocumentDate).format('DD/MM/YYYY')  :"", //'2024-11-29',
-              PACKLIST: this.tableForm.value.PackingList,
-              VEHICLE_NO: this.tableForm.value.vehicleNumber,
-              LR_NUMBER: this.tableForm.value.LrNo ,//|| 'DefaultMaterial',
-              LR_DATE: this.tableForm.value.LrDate,//this.tableForm.value.gateEntryDate?moment(this.tableForm.value.gateEntryDate).format('DD/MM/YYYY')  :"", //,
-              TRANSPORTER: this.tableForm.value.transporterName ,//|| 'DefaultTransporter',
-              INVOICE: this.tableForm.value.invoiceNo,//"ABD",
-              GATEENTRY:this.tableForm.value.gateEntryNumber,
-              GATEDATE: this.tableForm.value.gateEntryDate,
-              // TRANSPORTER_NAME:this.tableForm.value.transporterName,
-              ITEM: [], // Initialize the ITEM array
-            },
+
+    tables$.pipe(take(1)).subscribe({
+      next: (tables) => {
+        const payload = {
+          DETAIL: {
+            PO_NUMBER: this.validationform.get('inbounddeliverynumber')?.value,
+            DCNUMBER: this.tableForm.get('deleveryChallanNumber')?.value,
+            IN_DATE: this.tableForm.get('invoiceDate')?.value,
+            DC_DATE: this.tableForm.get('DocumentDate')?.value,
+            PACKLIST: this.tableForm.get('PackingList')?.value,
+            VEHICLE_NO: this.tableForm.get('vehicleNumber')?.value,
+            LR_NUMBER: this.tableForm.get('LrNo')?.value,
+            LR_DATE: this.tableForm.get('LrDate')?.value,
+            TRANSPORTER: this.tableForm.get('transporterName')?.value,
+            INVOICE: this.tableForm.get('invoiceNo')?.value,
+            GATEENTRY: this.tableForm.get('gateEntryNumber')?.value,
+            GATEDATE: this.tableForm.get('gateEntryDate')?.value,
+            ITEM: [],
+          },
+        };
+
+        tables.forEach((table) => {
+          const item = {
+            MATNR: table.MATNR,
+            DMENGE: parseFloat(table.DMENGE) || 0,
+            MEINS: table.MEINS,
+            SHORT_TEXT: table.SHORT_TEXT,
+            ORGQTY: parseFloat(table.ORGQTY) || 0,
+            PO_NUMBER: table.PO_NUMBER,
+            PO_ITEM: table.PO_ITEM || 1,
+            WERKS: table.WERKS,
+            LGORT: table.LGORT,
           };
-  
-          // Loop through the table data and add rows to ITEM array
-          tables.forEach((table) => {
-            const item = {
-              MATNR: table.MATNR, // Material Number
-              DMENGE: parseFloat(table.DMENGE) || 0, // Delivered Quantity
-              MEINS: table.MEINS, // Unit of Measurement
-              SHORT_TEXT: table.SHORT_TEXT, // Material Description
-              ORGQTY: parseFloat(table.ORGQTY) || 0, // Original Quantity
-              PO_NUMBER: table.PO_NUMBER, // PO Number
-              PO_ITEM: table.PO_ITEM || 1, // Item Number
-              WERKS: table.WERKS, // Plant
-              LGORT: table.LGORT, // Storage Location
-            };
-            payload.DETAIL.ITEM.push(item); // Add to ITEM array
-          });
-  
-          console.log("Final Payload:", payload);
-  
-          // Call API to save data
-          this.apiService.saveInbound(payload).subscribe({
-            next: (res) => {
-              console.log("Inbound Delivery Saved:", res);
-              if(res[0].VBELN){
-                Swal.fire("", res[0].MSGTXT, "success");
-              }
-              else{
-                Swal.fire("", res[0].MSGTXT, "error");
-              } 
-              this.isSubmitting = false; 
-              this.validationform.reset();
-              this.tableForm.reset();
-            },
-            error: (err) => {
-              console.error("Error while saving:", err);
-              Swal.fire("", "Error occurred while saving", "error");
-              this.isSubmitting = false; 
-            //   this.validationform.reset();
-            //   this.tableForm.reset();
-            },
-          });
-        },
-        error: (err) => {
-          console.error("Error in subscription:", err);
-          this.isSubmitting = false; // Re-enable the button
-          this.validationform.reset();
-              this.tableForm.reset();
-        },
-      });
-  }
-  /**
-   * fetches the table value
-   */
-  _fetchData() {
-    this.tableData = this.INBOUND || [];
-    console.log("this.tableData ", this.tableData)
-    for (let i = 0; i <= this.tableData.length; i++) {
-      // this.hideme.push(true);
-    }
+          payload.DETAIL.ITEM.push(item);
+        });
+
+        console.log("Final Payload:", payload);
+
+        this.apiService.saveInbound(payload).subscribe({
+          next: (res) => {
+            Swal.fire("", res[0].MSGTXT, res[0].VBELN ? 'success' : 'error');
+            this.isSubmitting = false;
+            this.validationform.reset();
+            this.tableForm.reset();
+          },
+          error: (err) => {
+            Swal.fire("", "Error occurred while saving", "error");
+            this.isSubmitting = false;
+          },
+        });
+      },
+      error: (err) => {
+        console.error("Error in subscription:", err);
+        this.isSubmitting = false;
+      },
+    });
   }
 
-  /**
-   * Sort table data
-   * @param param0 sort the column
-   *
-   */
+  _fetchData() {
+    this.tableData = this.INBOUND || [];
+    console.log("this.tableData", this.tableData);
+  }
+
   onSort({ column, direction }: SortEvent) {
-    // resetting other headers
-    this.headers.forEach(header => {
+    this.headers.forEach((header) => {
       if (header.sortable !== column) {
         header.direction = '';
       }
@@ -218,43 +185,34 @@ export class InbounddeliveryComponent implements OnInit {
     this.service.sortColumn = column;
     this.service.sortDirection = direction;
   }
+
   get form() {
     return this.validationform.controls;
   }
 
- 
-  validSubmit(){
+  validSubmit() {
     this.submit = true;
-    console.log("validationform",this.form) 
-    if(this.form.inbounddeliverynumber.value){
+    if (this.form.inbounddeliverynumber.value) {
       let obj = {
-        "EBELN": this.form.inbounddeliverynumber.value//"4500181937"
-      }
-      console.log("objobj",obj)
+        EBELN: this.form.inbounddeliverynumber.value,
+      };
+
       this.apiService.OpenINBOUND(obj).subscribe({
         next: (res: any) => {
-          console.log('Data:', res);
-      
-          if(res[0]?.NUMBER){
+          if (res[0]?.NUMBER) {
             Swal.fire("", res[0].MSGTXT, "error");
-          }
-          else{
+          } else {
             this.INBOUND = res.ITEM;
-            this.vendorCodeDis = res.LIFNR
-            this.vendorName = res.NAME1
+            this.vendorCodeDis = res.LIFNR;
+            this.vendorName = res.NAME1;
             this.service.setTableData(res.ITEM || []);
             this._fetchData();
-          } 
+          }
         },
         error: (error: any) => {
           console.error('Error fetching lot reports:', error);
         },
-        complete: () => {
-          console.log('API call completed.');
-        }
       });
     }
-   
   }
-
 }

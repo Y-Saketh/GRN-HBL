@@ -1,0 +1,299 @@
+<div class="col-xl-12">
+  <div class="card" style="background-color: beige">
+    <div class="card-body">
+      <h4 class="card-title">
+        <span style="color: black"></span>
+        MB51
+      </h4>
+      <form class="needs-validation" [formGroup]="validationform">
+        <div class="row">
+          <!-- Row 1 -->
+          <!-- Plant -->
+          <div class="col-md-1">
+            <label class="brandcolor" for="plant">PLANT</label>
+            <div class="mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="plant"
+                formControlName="plant"
+                placeholder="Plant"
+                [ngClass]="{ 'is-invalid': submit && form.plant.errors }"
+              />
+              <div *ngIf="submit && form.plant.errors" class="invalid-feedback">
+                <span *ngIf="form.plant.errors.required"
+                  >Please provide a valid plant.</span
+                >
+              </div>
+            </div>
+          </div>
+          <!-- Posting Date From -->
+          <div class="col-md-2">
+            <label class="brandcolor" for="postingDateFrom"
+              >Posting Date From</label
+            >
+            <div class="mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="postingDateFrom"
+                formControlName="postingDateFrom"
+                [bsConfig]="bsConfig"
+                bsDatepicker
+                placeholder="POSTING DATE FROM"
+                [ngClass]="{
+                  'is-invalid': submit && form.postingDateFrom.errors
+                }"
+              />
+              <div
+                *ngIf="submit && form.postingDateFrom.errors"
+                class="invalid-feedback"
+              >
+                <span *ngIf="form.postingDateFrom.errors.required"
+                  >Please provide a valid POSTING DATE FROM.</span
+                >
+              </div>
+            </div>
+          </div>
+          <!-- Posting Date To -->
+          <div class="col-md-2">
+            <label class="brandcolor" for="postingDateTo">TO DATE</label>
+            <div class="mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="postingDateTo"
+                formControlName="postingDateTo"
+                [bsConfig]="bsConfig"
+                bsDatepicker
+                placeholder="IBD CREATED To"
+                [ngClass]="{
+                  'is-invalid': submit && form.postingDateTo.errors
+                }"
+              />
+              <div
+                *ngIf="submit && form.postingDateTo.errors"
+                class="invalid-feedback"
+              >
+                <span *ngIf="form.postingDateTo.errors.required"
+                  >Please provide a valid POSTING DATE TO.</span
+                >
+              </div>
+            </div>
+          </div>
+          <div class="col-md-1 mt-4">
+            <div class="ms-4 mb-3">
+              <button
+                style="
+                  margin-top: 8px;
+                  background-color: brown;
+                  width: max-content;
+                  color: aliceblue;
+                "
+                class="btn"
+                type="submit"
+                (click)="getmb51()"
+              >
+                Get Details
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <!-- end card -->
+  <div class="card">
+    <div class="card-body">
+      <div class="row mb-md-2">
+        <div class="col-sm-12 col-md-6">
+          <div class="dataTables_length">
+            <label class="d-inline-flex align-items-center">
+              Show
+              <select
+                name="tickets-table_length"
+                aria-controls="tickets-table"
+                class="form-control form-control-sm mx-2"
+                [(ngModel)]="service.pageSize"
+              >
+                <option [ngValue]="10">10</option>
+                <option [ngValue]="25">25</option>
+                <option [ngValue]="50">50</option>
+                <option [ngValue]="100">100</option>
+              </select>
+              entries
+            </label>
+          </div>
+        </div>
+        <div class="col-sm-12 col-md-6">
+          <div id="tickets-table_filter" class="dataTables_filter text-md-end">
+            <label class="d-inline-flex align-items-center">
+              Search:
+              <input
+                type="text"
+                name="searchTerm"
+                class="form-control form-control-sm ms-2"
+                aria-controls="tickets-table"
+                [(ngModel)]="service.searchTerm"
+              />
+            </label>
+          </div>
+        </div>
+      </div>
+      <!-- Table -->
+      <div class="table-responsive">
+        <table
+          id="basic-datatable"
+          class="table table-bordered dt-responsive nowrap"
+        >
+          <thead class="brandcolor tableHeader">
+            <tr>
+              <th></th>
+              <th class="brandcolor" sortable="WERKS" (sort)="onSort($event)">
+                Plant
+              </th>
+              <th class="brandcolor" sortable="LGORT" (sort)="onSort($event)">
+                S.Loc
+              </th>
+              <th class="brandcolor" sortable="MATNR" (sort)="onSort($event)">
+                Mat
+              </th>
+              <th class="brandcolor" sortable="BWART" (sort)="onSort($event)">
+                Mvt Type
+              </th>
+              <th
+                class="brandcolor"
+                sortable="mvtTypeText"
+                (sort)="onSort($event)"
+              >
+                Mvt Type Txt
+              </th>
+              <th class="brandcolor" sortable="BUDAT" (sort)="onSort($event)">
+                Posting Date
+              </th>
+              <th class="brandcolor" sortable="MAKTX" (sort)="onSort($event)">
+                Mat Desc
+              </th>
+              <th
+                class="brandcolor"
+                sortable="qtyInUnitofEntry"
+                (sort)="onSort($event)"
+              >
+                Qty(UOE)
+              </th>
+              <th
+                class="brandcolor"
+                sortable="amtInLocCur"
+                (sort)="onSort($event)"
+              >
+                Amt in loc.cur
+              </th>
+              <th class="brandcolor" sortable="MBLNR" (sort)="onSort($event)">
+                Mat Doc
+              </th>
+            </tr>
+          </thead>
+          <tbody *ngFor="let table of tables$ | async; let i = index">
+            <tr>
+              <td align="center">
+                <a class="expand-row" (click)="changeValue(i)">+</a>
+              </td>
+              <td>{{ table.WERKS }}</td>
+              <!-- Plant -->
+              <td>{{ table.LGORT }}</td>
+              <!-- Storage Location -->
+              <td>{{ table.MATNR }}</td>
+              <!-- Material -->
+              <td>{{ table.BWART }}</td>
+              <!-- Movement Type -->
+              <td>{{ table.mvtTypeText }}</td>
+              <!-- Movement Type Text -->
+              <td>{{ table.BUDAT }}</td>
+              <!-- Posting Date -->
+              <td>{{ table.MAKTX }}</td>
+              <!-- Material Desc -->
+              <td>{{ table.qtyInUnitofEntry }}</td>
+              <!-- Qty in unit of entry -->
+              <td>{{ table.amtInLocCur }}</td>
+              <!-- Amt in loc.cur -->
+              <td>{{ table.MBLNR }}</td>
+              <!-- Material Doc -->
+            </tr>
+            <ng-container *ngIf="hideme[i]">
+              <tr class="sub-table no-bg">
+                <td align="center"></td>
+                <td colspan="15" class="p-0">
+                  <table class="table mb-0 table-striped">
+                    <thead class="bg-dark text-white">
+                      <tr>
+                        <th>Vendor Name</th>
+                        <th>Text</th>
+                        <th>Qty</th>
+                        <th>Supplier</th>
+                        <th>Order</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>{{ table.NAME1 }}</td>
+                        <!-- Vendor Name -->
+                        <td>{{ table.TEXT }}</td>
+                        <!-- Text -->
+                        <td>{{ table.qty }}</td>
+                        <!-- Qty -->
+                        <td>{{ table.supplier }}</td>
+                        <!-- Supplier -->
+                        <td>{{ table.order }}</td>
+                        <!-- Order -->
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+      <!-- Pagination -->
+      <div class="row justify-content-md-between align-items-md-center mt-2">
+        <div class="col-sm-12 col-md-5">
+          <div class="dataTables_info mb-2" role="status" aria-live="polite">
+            Showing {{ service.startIndex }} to {{ service.endIndex }} of
+            {{ service.totalRecords }} entries
+          </div>
+        </div>
+        <div class="col-sm-12 col-md-5">
+          <div class="text-md-right float-md-end pagination-rounded">
+            <ul class="pagination justify-content-end mb-0">
+              <!-- Previous Button -->
+              <li
+                class="page-item"
+                [class.disabled]="service.page === 1"
+                (click)="service.changePage(service.page - 1)"
+              >
+                <a class="page-link" href="javascript:void(0)">Previous</a>
+              </li>
+
+              <!-- Current Page Display -->
+              <li class="page-item active">
+                <a class="page-link" href="javascript:void(0)">{{
+                  service.page
+                }}</a>
+              </li>
+
+              <!-- Next Button -->
+              <li
+                class="page-item"
+                [class.disabled]="service.page === service.totalPages"
+                (click)="service.changePage(service.page + 1)"
+              >
+                <a class="page-link" href="javascript:void(0)">Next</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- End of Pagination -->
+    </div>
+  </div>
+</div>

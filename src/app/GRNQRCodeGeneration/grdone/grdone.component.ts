@@ -50,13 +50,16 @@ export class GrdoneComponent implements OnInit {
   };
   ngOnInit(): void {
     this.submit = false;
+    const currentDate = new Date();
+    const fifteenDaysAgo = new Date();
+    fifteenDaysAgo.setDate(currentDate.getDate() - 15);
     this.validationform = this.formBuilder.group({
       plant: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]+')]],
       delivery: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
-      storageLocation: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
+      // storageLocation: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
       ibdCreadtedOn: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
-      ibdCreadtedFrom: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
-      ibdCreadtedTo: [new Date(), [ Validators.pattern('[a-zA-Z0-9]+')]],
+      fromDate: [fifteenDaysAgo, [ Validators.pattern('[a-zA-Z0-9]+')]],
+      toDate: [new Date(), [ Validators.pattern('[a-zA-Z0-9]+')]],
     });
 
     this.breadCrumbItems = [{ label: 'GRN' }, { label: 'GRN Done Table', active: true }];
@@ -113,8 +116,8 @@ export class GrdoneComponent implements OnInit {
       "WERKS": this.form.plant.value,//"1300",
       "VBELN":this.form.delivery.value ,//"180390138",
       "LGORT": this.form.storageLocation.value,// "S048",
-      "BUDAT_F":this.form.ibdCreadtedFrom?moment(this.form.ibdCreadtedFrom.value):'',//"2024-04-01",
-      "BUDAT_T": this.form.ibdCreadtedFrom?moment(this.form.ibdCreadtedTo.value):'',//""2024-11-25",
+      "BUDAT_F":this.form.fromDate?moment(this.form.fromDate.value):'',//"2024-04-01",
+      "BUDAT_T": this.form.fromDate?moment(this.form.toDate.value):'',//""2024-11-25",
       "R1": "",
       "R2": "X"
     }

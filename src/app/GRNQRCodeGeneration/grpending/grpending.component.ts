@@ -98,8 +98,8 @@ export class GrpendingComponent implements OnInit {
       storageLocation: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
       // storageLocationto: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
       // ibdCreadtedOn: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
-      ibdCreadtedFrom: [fifteenDaysAgo, [ Validators.pattern('[a-zA-Z0-9]+')]],
-      ibdCreadtedTo: [new Date(), [ Validators.pattern('[a-zA-Z0-9]+')]],
+      fromDate: [fifteenDaysAgo, [ Validators.pattern('[a-zA-Z0-9]+')]],
+      toDate: [new Date(), [ Validators.pattern('[a-zA-Z0-9]+')]],
     });
 
     this.breadCrumbItems = [{ label: 'Tables' }, { label: 'Advanced Table', active: true }];

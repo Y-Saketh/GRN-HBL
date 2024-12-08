@@ -11,6 +11,10 @@ import { QRcodegenrationComponent } from 'src/app/GRNQRCodeGeneration/qrcodegenr
 import { GrpendingComponent } from 'src/app/GRNQRCodeGeneration/grpending/grpending.component';
 import { GrdoneComponent } from 'src/app/GRNQRCodeGeneration/grdone/grdone.component';
 import { CloseDownloadComponent } from 'src/app/GRNQRCodeGeneration/close-download/close-download.component';
+import { Mb51Component } from 'src/app/GRNQRCodeGeneration/mb51/mb51.component';
+import { Mb52Component } from 'src/app/GRNQRCodeGeneration/mb52/mb52.component';
+import { GrnprintComponent } from 'src/app/GRNQRCodeGeneration/grnprint/grnprint.component';
+
 
 const routes: Routes = [
     {
@@ -50,7 +54,18 @@ const routes: Routes = [
         path: 'closeDownload',
         component: CloseDownloadComponent
     },
-   
+    {
+        path: 'mb51',
+        component: Mb51Component
+    },
+    {
+        path: 'mb52',
+        component: Mb52Component
+    },
+    {
+        path: 'grnprint',
+        component: GrnprintComponent
+    }
 ];
 
 @NgModule({

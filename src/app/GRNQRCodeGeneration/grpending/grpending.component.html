@@ -52,7 +52,6 @@
             </div>
           </div>
 
-       
           <!-- <div class="col-md-2">
             <label class="brandcolor" for="storageLocation"
               >STORAGE LOCATION</label
@@ -109,76 +108,75 @@
             </div>
           </div> -->
           <div class="col-md-2">
-            <label class="brandcolor" for="ibdCreadtedFrom"
-              >FROM DATE</label
-            >
+            <label class="brandcolor" for="fromDate">FROM DATE</label>
             <div class="mb-3">
               <input
                 type="text"
                 class="form-control"
-                id="ibdCreadtedFrom"
-                formControlName="ibdCreadtedFrom"
+                id="fromDate"
+                formControlName="fromDate"
                 [bsConfig]="bsConfig"
                 bsDatepicker
-              
-             
                 placeholder="IBD CREATED From DATE"
                 [ngClass]="{
-                  'is-invalid': submit && form.ibdCreadtedFrom.errors
+                  'is-invalid': submit && form.fromDate.errors
                 }"
               />
               <div
-                *ngIf="submit && form.ibdCreadtedFrom.errors"
+                *ngIf="submit && form.fromDate.errors"
                 class="invalid-feedback"
               >
-                <span *ngIf="form.ibdCreadtedFrom.errors.required"
-                  >Please provide a valid IBD CREATED FROM DATE.</span
+                <span *ngIf="form.fromDate.errors.required"
+                  >Please provide a valid FROM DATE.</span
                 >
               </div>
             </div>
           </div>
           <div class="col-md-2">
-            <label class="brandcolor" for="ibdCreadtedTo">TO DATE</label>
+            <label class="brandcolor" for="toDate">TO DATE</label>
             <div class="mb-3">
               <input
                 type="text"
                 class="form-control"
-                id="ibdCreadtedTo"
-                formControlName="ibdCreadtedTo"
+                id="toDate"
+                formControlName="toDate"
                 [bsConfig]="bsConfig"
                 bsDatepicker
-              
                 placeholder="IBD CREATED To"
                 [ngClass]="{
-                  'is-invalid': submit && form.ibdCreadtedOn.errors
+                  'is-invalid': submit && form.toDate.errors
                 }"
               />
               <div
-                *ngIf="submit && form.ibdCreadtedTo.errors"
+                *ngIf="submit && form.toDate.errors"
                 class="invalid-feedback"
               >
-                <span *ngIf="form.ibdCreadtedTo.errors.required"
-                  >Please provide a valid IBD CREATED ON.</span
+                <span *ngIf="form.toDate.errors.required"
+                  >Please provide a valid TO DATE.</span
                 >
               </div>
             </div>
           </div>
           <div class="col-md-1 mt-4">
             <div class="mb-3">
-            <button style="margin-top: 8px; background-color: brown;
-    width: max-content; color: aliceblue;"
-              class="btn "
-              type="submit"
-              (click)="getGrPending()"
-            >
-              Get Details
-            </button>
-          </div>
+              <button
+                style="
+                  margin-top: 8px;
+                  background-color: brown;
+                  width: max-content;
+                  color: aliceblue;
+                "
+                class="btn"
+                type="submit"
+                (click)="getGrPending()"
+              >
+                Get Details
+              </button>
+            </div>
           </div>
 
           <!--row 2-->
           <!--IBD CREATED ON-->
-       
         </div>
         <!-- <div class="row mt-4">
         
@@ -320,7 +318,7 @@
               >
                 {{ table.VBELN }}
               </td> -->
-              <td> {{ table.VBELN }}</td>
+              <td>{{ table.VBELN }}</td>
               <!-- Inbound Delivery -->
               <td>{{ table.POSNR }}</td>
               <!-- Inbound Delivery Item -->
@@ -354,34 +352,34 @@
                   <table class="table mb-0 table-striped">
                     <thead class="bg-dark text-white">
                       <tr>
-                        <th>Material Doc</th>
+                        <!--  <th>Material Doc</th> -->
                         <th>Posting Date</th>
-                        <th>Days Taken for GR</th>
-                        <th>MIRO No</th>
+                        <!--  <th>Days Taken for GR</th> -->
+                        <!-- <th>MIRO No</th>
                         <th>MIRO Date</th>
                         <th>Invoice No</th>
-                        <th>Invoice Date</th>
+                        <th>Invoice Date</th> -->
                         <th>PO Date</th>
                         <th>Created by</th>
                         <th>Storage Location Name</th>
-                        <th>Days taken for IBD</th>
+                        <!-- <th>Days taken for IBD</th> -->
                       </tr>
                     </thead>
                     <tbody>
                       <tr>
-                        <td>{{ table.MBLNR }}</td>
+                        <!--  <td>{{ table.MBLNR }}</td> -->
                         <!-- Material Doc -->
                         <td>{{ table.BUDAT }}</td>
                         <!-- Posting Date -->
-                        <td>{{ table.AGE }}</td>
+                        <!--  <td>{{ table.AGE }}</td> -->
                         <!-- Days Taken for GR -->
-                        <td>{{ table.BELNR_MIRO }}</td>
+                        <!-- <td>{{ table.BELNR_MIRO }}</td> -->
                         <!-- MIRO No -->
-                        <td>{{ table.BUDAT_MIRO }}</td>
+                        <!-- <td>{{ table.BUDAT_MIRO }}</td> -->
                         <!-- MIRO Date -->
-                        <td>{{ table.XBLNR }}</td>
+                        <!-- <td>{{ table.XBLNR }}</td> -->
                         <!-- Invoice No -->
-                        <td>{{ table.BLDAT }}</td>
+                        <!-- <td>{{ table.BLDAT }}</td> -->
                         <!-- Invoice Date -->
                         <td>{{ table.AEDAT }}</td>
                         <!-- PO Date -->
@@ -389,7 +387,7 @@
                         <!-- Created by -->
                         <td>{{ table.LGOBE }}</td>
                         <!-- Storage Location Name -->
-                        <td>{{ table.AGE1 }}</td>
+                        <!--  <td>{{ table.AGE1 }}</td> -->
                         <!-- Days taken for IBD -->
                       </tr>
                     </tbody>
