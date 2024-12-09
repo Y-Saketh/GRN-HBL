@@ -365,11 +365,13 @@ export class QRcodegenrationComponent {
   
   // Helper method to submit the payload to the API
   submitPayload(payload: any) {
-    console.log("payload",payload)
+    console.log("payload", payload);
     this.apiService.grnlist(payload).subscribe({
       next: (res) => {
         console.log('Saved:', res);
-        Swal.fire('', res[0].MESSAGE, 'success');
+        Swal.fire('', res[0].MESSAGE, 'success').then(() => {
+          this.resetFormAndData();
+        });
         this.isSubmitting = false;
       },
       error: (err) => {
@@ -378,6 +380,21 @@ export class QRcodegenrationComponent {
       },
     });
   }
+  
+  resetFormAndData() {
+    // Reset the forms
+    this.validationform.reset();
+    this.inboundDetailsForm.reset();
+  
+    // Clear any selection or data
+    this.GrnResponse = [];
+    // this.service.setTableData([]); // Clear table data in the service
+    // this.tables$ = this.service.tables$; // Reinitialize observable if needed
+  
+    // Optionally re-fetch data or reload the page
+    this._fetchData();
+  }
+  
   
   onShadowRowMengeChange(mainRow: any): void {
     // Calculate the total MENGE of shadow rows

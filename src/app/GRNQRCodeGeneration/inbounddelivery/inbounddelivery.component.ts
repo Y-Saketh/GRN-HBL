@@ -113,7 +113,7 @@ export class InbounddeliveryComponent implements OnInit {
 
   saveBound(tables$: Observable<any[]>) {
     this.isSubmitting = true;
-
+  
     tables$.pipe(take(1)).subscribe({
       next: (tables) => {
         const payload = {
@@ -133,7 +133,7 @@ export class InbounddeliveryComponent implements OnInit {
             ITEM: [],
           },
         };
-
+  
         tables.forEach((table) => {
           const item = {
             MATNR: table.MATNR,
@@ -148,15 +148,17 @@ export class InbounddeliveryComponent implements OnInit {
           };
           payload.DETAIL.ITEM.push(item);
         });
-
-        console.log("Final Payload:", payload);
-
+  
         this.apiService.saveInbound(payload).subscribe({
           next: (res) => {
             Swal.fire("", res[0].MSGTXT, res[0].VBELN ? 'success' : 'error');
             this.isSubmitting = false;
-            this.validationform.reset();
-            this.tableForm.reset();
+  
+            // Reset form data and refresh page
+            this.resetFormState();
+  
+            // Optional: Trigger component refresh (replace this logic if not using routing)
+            // location.reload();
           },
           error: (err) => {
             Swal.fire("", "Error occurred while saving", "error");
@@ -170,6 +172,21 @@ export class InbounddeliveryComponent implements OnInit {
       },
     });
   }
+
+ resetFormState() {
+  // Clear form data
+  this.validationform.reset();
+  this.tableForm.reset();
+
+  // Clear component state
+  this.INBOUND = [];
+  this.vendorCodeDis = null;
+  this.vendorName = null;
+
+  // Reset table data
+  // this.service.setTableData([]);
+  this._fetchData();
+}
 
   _fetchData() {
     this.tableData = this.INBOUND || [];
