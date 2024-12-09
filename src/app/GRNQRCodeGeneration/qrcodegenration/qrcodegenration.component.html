@@ -57,7 +57,7 @@
             </div>
           </form>
 
-          <div *ngIf="GrnResponse" class="card-body">
+          <div *ngIf="GrnResponse" class="card-body ">
             <div class="row">
               <div class="col-sm-8 col-md-8">
                 <form [formGroup]="inboundDetailsForm">
@@ -98,17 +98,18 @@
               </div>
 
               <div class="col-sm-4 col-md-4">
-                <h5 *ngIf="documentDeliveryDate">
-                  <span class="brandcolor">Vendor Code</span> : 123456789
+                <h5 *ngIf="vendorCode">
+                  <span class="brandcolor">Vendor Code</span> :
+                  {{ vendorCode }}
                 </h5>
-                <h5 *ngIf="documentDeliveryDate">
-                  <span class="brandcolor">Vendor Name</span> : HBL Group
+                <h5 *ngIf="vendorName">
+                  <span class="brandcolor">Vendor Name</span> : {{ vendorName }}
                 </h5>
-                <h5 *ngIf="documentDeliveryDate">
-                  <span class="brandcolor">City</span> : Hyderabad
+                <h5 *ngIf="City">
+                  <span class="brandcolor">City</span> : {{ City }}
                 </h5>
-                <h5 *ngIf="documentDeliveryDate">
-                  <span class="brandcolor">GSTIN</span> : 1246ADSPO0293Q1234
+                <h5 *ngIf="GSTIN">
+                  <span class="brandcolor">GSTIN</span> : {{ GSTIN }}
                 </h5>
               </div>
             </div>

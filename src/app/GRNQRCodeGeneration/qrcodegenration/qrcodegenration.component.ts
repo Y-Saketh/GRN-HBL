@@ -54,6 +54,9 @@ export class QRcodegenrationComponent {
   invoiceDate :any;
   invoiceNumber:any;
   vendorCode :any;
+  vendorName: any;
+  City: any;
+  GSTIN: any;
   
 
   constructor(public service: qrcodegenrationService,public formBuilder: UntypedFormBuilder,private apiService:UserProfileService) {
@@ -388,6 +391,10 @@ export class QRcodegenrationComponent {
   
     // Clear any selection or data
     this.GrnResponse = [];
+    this.vendorCode = null;
+    this.vendorName = null;
+    this.City  = null;
+    this.GSTIN  = null;
     // this.service.setTableData([]); // Clear table data in the service
     // this.tables$ = this.service.tables$; // Reinitialize observable if needed
   
@@ -617,6 +624,10 @@ export class QRcodegenrationComponent {
     this.invoiceDate = '';
     this.invoiceNumber = '';
     this.vendorCode = '';
+    // this.vendorCodeDis = null;
+    this.vendorName = null;
+    this.City  = null;
+    this.GSTIN  = null;
     this.submit = true;
     console.log("validationform", this.form);
   
@@ -645,6 +656,10 @@ export class QRcodegenrationComponent {
           this.invoiceDate = res[0].IN_DATE;
           this.invoiceNumber = res[0].INVOICE;
           this.vendorCode = res[0].LIFNR;
+          // this.vendorCodeDis = res.LIFNR;
+          this.vendorName = res[0].NAME1;
+          this.City = res[0].ORT01
+          this.GSTIN = res[0].STCD3
   
           // Update the table with the combined data
           this.service.setTableData(this.GrnResponse || []);

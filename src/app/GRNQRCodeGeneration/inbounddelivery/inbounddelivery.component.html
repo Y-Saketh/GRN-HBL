@@ -76,10 +76,10 @@
                 <h5 *ngIf="vendorName">
                   <span class="brandcolor">Vendor Name</span> : {{ vendorName }}
                 </h5>
-                <h5 *ngIf="vendorName">
+                <h5 *ngIf="City">
                   <span class="brandcolor">City</span> : {{ City }}
                 </h5>
-                <h5 *ngIf="vendorName">
+                <h5 *ngIf="GSTIN">
                   <span class="brandcolor">GSTIN</span> : {{ GSTIN }}
                 </h5>
               </div>
@@ -174,7 +174,7 @@
                       <input
                         type="text"
                         formControlName="deleveryChallanNumber"
-                        maxLength="10"
+                        maxLength="16"
                         pattern="^[a-zA-Z0-9/_]+$"
                         placeholder="Enter Delevery Challan Number"
                         class="form-control form-control-sm"
@@ -234,7 +234,7 @@
                       <input
                         type="text"
                         formControlName="vehicleNumber"
-                        maxLength="16"
+                        maxLength="12"
                          pattern="^[a-zA-Z0-9/_]+$"
                         placeholder="Enter Vehicle Number"
                         class="form-control form-control-sm"
@@ -308,7 +308,7 @@
                       <input
                         type="text"
                         formControlName="LrNo"
-                        maxLength="16"
+                        maxLength="15"
                         placeholder="LR Number"
                         class="form-control form-control-sm"
                       />

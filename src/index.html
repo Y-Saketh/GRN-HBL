@@ -115,11 +115,11 @@
 
             // after update 
             window.paceOptions = {
-                // ajax: {
-                //     ignoreURLs: [/.*heartBeat.*/i, /.*vsoft-ai.*/i, /.*sockjs-node.*/i, /.*__webpack_dev_server__.*/i],
-                //     trackMethods: ['GET', 'POST']
-                // },
-                ajax : true,
+                ajax: {
+                    ignoreURLs: [/.*heartBeat.*/i, /.*sockjs-node.*/i, /.*__webpack_dev_server__.*/i],
+                    trackMethods: ['GET', 'POST']
+                },
+                // ajax : true,
                 document: true,
                 eventLag: {
                     lagThreshold: 30

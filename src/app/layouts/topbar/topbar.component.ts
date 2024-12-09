@@ -63,7 +63,7 @@ export class TopbarComponent implements OnInit {
 
   ngOnInit() {
     // this.initialAppState = initialState;
-    this.userName = this.apiservice.getLoginResponse().MSGTXT || localStorage.getItem('currentUser')
+    this.userName = localStorage.getItem('currentUser') || this.apiservice.getLoginResponse().MSGTXT
     this.store.select('layout').subscribe((data) => {
       this.theme = data.DATA_LAYOUT;
     })

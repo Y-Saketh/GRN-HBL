@@ -57,8 +57,8 @@ export class InbounddeliveryComponent implements OnInit {
   isSubmitting: boolean = false;
   vendorCodeDis: any;
   vendorName: any;
-  City: any = "Hyderabad";
-  GSTIN: any = "33333777AHQPA3613C";
+  City: any ;
+  GSTIN: any;
 
   constructor(public formBuilder: UntypedFormBuilder, public service: AdvancedService, private apiService: UserProfileService) {
     this.tables$ = service.tables$;
@@ -182,6 +182,8 @@ export class InbounddeliveryComponent implements OnInit {
   this.INBOUND = [];
   this.vendorCodeDis = null;
   this.vendorName = null;
+  this.City  = null;
+  this.GSTIN  = null;
 
   // Reset table data
   // this.service.setTableData([]);
@@ -222,6 +224,8 @@ export class InbounddeliveryComponent implements OnInit {
             this.INBOUND = res.ITEM;
             this.vendorCodeDis = res.LIFNR;
             this.vendorName = res.NAME1;
+            this.City = res.ORT01
+            this.GSTIN = res.STCD3
             this.service.setTableData(res.ITEM || []);
             this._fetchData();
           }
