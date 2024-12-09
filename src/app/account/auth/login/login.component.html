@@ -33,14 +33,14 @@
                 }
 
                 <div class="mb-3">
-                  <label for="email">Email</label>
-                  <input type="email" formControlName="email" class="form-control" id="email" placeholder="Email" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
-                  @if(submitted && f.email.errors){
+                  <label for="userID">Email</label>
+                  <input type="string" formControlName="userID" class="form-control" id="userID" placeholder="userID" [ngClass]="{ 'is-invalid': submitted && f.userID.errors }" />
+                  @if(submitted && f.userID.errors){
                   <div class="invalid-feedback">
-                    @if(f.email.errors.required){
-                    <div>Email is required</div>
-                    }@if(f.email.errors.email){
-                    <div>Email must be a valid email address</div>
+                    @if(f.userID.errors.required){
+                    <div>userID is required</div>
+                    }@if(f.userID.errors.email){
+                    <div>userID must be a valid userID address</div>
                     }
                   </div>
                   }

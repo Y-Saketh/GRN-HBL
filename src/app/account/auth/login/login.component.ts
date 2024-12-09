@@ -7,13 +7,15 @@ import { Store } from '@ngrx/store';
 import { ActivatedRoute, Router } from '@angular/router';
 import { login } from 'src/app/store/Authentication/authentication.actions';
 import { CommonModule } from '@angular/common';
+import { UserProfileService } from 'src/app/core/services/user.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
-  standalone:true,
-  imports:[CommonModule,FormsModule,ReactiveFormsModule]
+  standalone: true,
+  imports: [CommonModule, FormsModule, ReactiveFormsModule]
 })
 
 /**
@@ -29,10 +31,11 @@ export class LoginComponent implements OnInit {
 
   // set the currenr year
   year: number = new Date().getFullYear();
+  response: any;
 
   // tslint:disable-next-line: max-line-length
   constructor(private formBuilder: UntypedFormBuilder, private route: ActivatedRoute, private router: Router, private authenticationService: AuthenticationService, private store: Store,
-    private authFackservice: AuthfakeauthenticationService) { }
+    private authFackservice: AuthfakeauthenticationService, private apiService: UserProfileService) { }
 
   ngOnInit() {
     if (localStorage.getItem('currentUser')) {
@@ -40,8 +43,8 @@ export class LoginComponent implements OnInit {
     }
     // form validation
     this.loginForm = this.formBuilder.group({
-      email: ['admin@themesbrand.com', [Validators.required, Validators.email]],
-      password: ['123456', [Validators.required]],
+      userID: ['1224', [Validators.required]],
+      password: ['Admin@1234', [Validators.required]],
     });
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
@@ -55,12 +58,42 @@ export class LoginComponent implements OnInit {
   onSubmit() {
     this.submitted = true;
 
-    const email = this.f['email'].value; // Get the username from the form
-    const password = this.f['password'].value; // Get the password from the form
+    if (this.loginForm.invalid) {
+        return;
+    }
 
-    // Login Api
-    this.store.dispatch(login({ email: email, password: password }));
-  }
+    const payload = {
+      "LOGIN": [
+          {
+              "ZUSER": this.f['userID'].value,
+              "ZPASSWORD": this.f['password'].value
+          }
+      ]
+  };
+
+    const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+    // this.store.dispatch(login({ email: userID, password: password }));
+
+    this.apiService.Login(payload).subscribe({
+        next: (res) => {
+          this.response = res
+          console.log("this.response",this.response)
+            if (this.response.MSGTXT) {
+                localStorage.setItem('currentUser', JSON.stringify(this.response.MSGTXT || { token: this.response.token }));
+                this.router.navigate([returnUrl], { skipLocationChange: true });
+                this.apiService.setLoginResponse(this.response);
+                Swal.fire("",this.response.MSGTXT, "success")
+            } else {
+              Swal.fire("","Invalid login credentials!", "error")
+                // this.error = 'Invalid login credentials!';
+            }
+        },
+        error: (err) => {
+            console.error(err);
+            this.error = 'An error occurred!';
+        }
+    });
+}
 
   /**
  * Password Hide/Show

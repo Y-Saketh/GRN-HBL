@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 
 // const TOKEN_HEADER_KEY = 'Authorization';       // for Spring Boot back-end
 const TOKEN_HEADER_KEY = 'x-access-token';   // for Node.js Express back-end
+declare var Pace: any;
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -22,6 +23,7 @@ export class AuthInterceptor implements HttpInterceptor {
       // for Node.js Express back-end
       authReq = req.clone({ headers: req.headers.set(TOKEN_HEADER_KEY, token) });
     }
+    Pace.restart();
     return next.handle(authReq);
   }
 }
