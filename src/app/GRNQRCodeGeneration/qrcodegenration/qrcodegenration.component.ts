@@ -75,7 +75,7 @@ export class QRcodegenrationComponent {
     /**
      * fetch data
      */
-    this._fetchData();
+    // this._fetchData();
   }
   get form() {
     return this.validationform.controls;

@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment'
 
 @Injectable({ providedIn: 'root' })
 export class UserProfileService {
+    loginResponse: any;
     constructor(private http: HttpClient) { }
     /***
      * Get All User
@@ -13,11 +14,23 @@ export class UserProfileService {
         return this.http.get<User[]>(`api/users`);
     }
 
+    setLoginResponse(data){
+        this.loginResponse = data;
+    }
+    getLoginResponse(){
+        return  this.loginResponse;
+    }
+
     /***
      * Facked User Register
      */
     register(user: User) {
         return this.http.post(`/users/register`, user);
+    }
+    Login(data){
+        console.log("environment.API_URL_DEV",environment.API_URL_DEV)
+        return this.http.post(`${environment.API_URL_DEV}api/external/Login`,data)
+
     }
     OpenPoList(data){
         console.log("environment.API_URL_DEV",environment.API_URL_DEV)
