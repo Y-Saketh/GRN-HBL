@@ -14,6 +14,7 @@ import { getLayoutMode } from 'src/app/store/layouts/layout.selector';
 import { RootReducerState } from 'src/app/store';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { SimplebarAngularModule } from 'simplebar-angular';
+import { UserProfileService } from 'src/app/core/services/user.service';
 
 @Component({
   selector: 'app-topbar',
@@ -36,13 +37,14 @@ export class TopbarComponent implements OnInit {
   theme: any;
   layout: string;
   dataLayout$: Observable<string>;
+  userName: any;
   // Define layoutMode as a property
 
   constructor(@Inject(DOCUMENT) private document: any, private router: Router, private authService: AuthenticationService,
     private authFackservice: AuthfakeauthenticationService,
     public languageService: LanguageService,
     public translate: TranslateService,
-    public _cookiesService: CookieService, public store: Store<RootReducerState>) {
+    public _cookiesService: CookieService, public store: Store<RootReducerState>, public apiservice: UserProfileService) {
 
   }
 
@@ -61,6 +63,7 @@ export class TopbarComponent implements OnInit {
 
   ngOnInit() {
     // this.initialAppState = initialState;
+    this.userName = this.apiservice.getLoginResponse().MSGTXT || localStorage.getItem('currentUser')
     this.store.select('layout').subscribe((data) => {
       this.theme = data.DATA_LAYOUT;
     })
