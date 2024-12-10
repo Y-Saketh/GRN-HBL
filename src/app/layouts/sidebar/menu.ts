@@ -97,7 +97,7 @@ export const MENU: MenuItem[] = [
         id: "QRcodegenration",
         label: 'MENUITEMS.DASHBOARDS.LIST.QRCODEGENERATION',
         link: 'QRcodegenration',
-        icon: 'bx-bar-chart',
+        icon: 'bx-label',
         parentId: "menu"
     },
   
