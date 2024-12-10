@@ -1,1 +1,5 @@
+<div *ngIf="(loaderService.isLoading$ | async)" class="loading-overlay">
+    <img class="loading-icon" src="assets/images/Double Ring white.gif" />
+  </div>
+  
 <router-outlet></router-outlet>

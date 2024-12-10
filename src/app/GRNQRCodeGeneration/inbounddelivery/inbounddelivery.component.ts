@@ -12,6 +12,7 @@ import { UserProfileService } from 'src/app/core/services/user.service';
 import Swal from 'sweetalert2';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import * as moment from 'moment';
+import { LoaderService } from 'src/app/core/services/loader.service';
 
 @Component({
   selector: 'app-inbounddelivery',
@@ -59,8 +60,9 @@ export class InbounddeliveryComponent implements OnInit {
   vendorName: any;
   City: any ;
   GSTIN: any;
+  HSNCODE: any;
 
-  constructor(public formBuilder: UntypedFormBuilder, public service: AdvancedService, private apiService: UserProfileService) {
+  constructor(public formBuilder: UntypedFormBuilder, public service: AdvancedService, private apiService: UserProfileService,public loaderservice:LoaderService) {
     this.tables$ = service.tables$;
     this.total$ = service.total$;
   }
@@ -186,7 +188,7 @@ export class InbounddeliveryComponent implements OnInit {
   this.GSTIN  = null;
 
   // Reset table data
-  // this.service.setTableData([]);
+  this.service.setTableData([]);
   this._fetchData();
 }
 
@@ -211,6 +213,7 @@ export class InbounddeliveryComponent implements OnInit {
 
   validSubmit() {
     this.submit = true;
+    this.loaderservice.showLoader();
     if (this.form.inbounddeliverynumber.value) {
       let obj = {
         EBELN: this.form.inbounddeliverynumber.value,
@@ -220,17 +223,23 @@ export class InbounddeliveryComponent implements OnInit {
         next: (res: any) => {
           if (res[0]?.NUMBER) {
             Swal.fire("", res[0].MSGTXT, "error");
-          } else {
+          }else if(!res?.ITEM[0]){
+            Swal.fire("","No Materials Found","error")
+          } 
+          else {
             this.INBOUND = res.ITEM;
             this.vendorCodeDis = res.LIFNR;
             this.vendorName = res.NAME1;
             this.City = res.ORT01
             this.GSTIN = res.STCD3
+            this.HSNCODE = res.STEUC
             this.service.setTableData(res.ITEM || []);
             this._fetchData();
+            this.loaderservice.hideLoader(); 
           }
         },
         error: (error: any) => {
+          this.loaderservice.hideLoader(); 
           console.error('Error fetching lot reports:', error);
         },
       });

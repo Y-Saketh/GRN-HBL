@@ -78,11 +78,19 @@ export const MENU: MenuItem[] = [
         icon: 'bx-archive-in',
         parentId: "menu"
     },
+    
     {
         id: "grnagainstid",
         label: 'MENUITEMS.DASHBOARDS.LIST.GRNAGAINSTID',
         link: 'grnagainstid',
         icon: 'bx-aperture',
+        parentId: "menu"
+    },
+    {
+        id: "grnagainstid2",
+        label: 'Goods Returns',
+        link: 'grnagainstid2',
+        icon: 'bx-analyse',
         parentId: "menu"
     },
     {
@@ -131,21 +139,21 @@ export const MENU: MenuItem[] = [
                 id: "grnprint",//3,
                 label: 'GRN Print',
                 link: 'grnprint',
-                icon: 'bx-archive',
+                icon: 'bx-paperclip',
                 parentId: "menu"
             },
             {
                 id: "mb51",//3,
                 label: 'MB51',
                 link: 'mb51',
-                icon: 'bx-archive',
+                icon: 'bx-layer',
                 parentId: "menu"
             },
             {
                 id: "mb52",//3,
                 label: 'MB52',
                 link: 'mb52',
-                icon: 'bx-archive',
+                icon: 'bx-layer',
                 parentId: "menu"
             },
         

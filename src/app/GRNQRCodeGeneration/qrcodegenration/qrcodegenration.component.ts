@@ -15,6 +15,7 @@ import { PagetitleComponent } from 'src/app/shared/ui/pagetitle/pagetitle.compon
 import { UserProfileService } from 'src/app/core/services/user.service';
 import Swal from 'sweetalert2';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { LoaderService } from 'src/app/core/services/loader.service';
 declare var Pace: any;
 
 
@@ -57,15 +58,17 @@ export class QRcodegenrationComponent {
   vendorName: any;
   City: any;
   GSTIN: any;
+  userName: any;
   
 
-  constructor(public service: qrcodegenrationService,public formBuilder: UntypedFormBuilder,private apiService:UserProfileService) {
+  constructor(public service: qrcodegenrationService,public formBuilder: UntypedFormBuilder,private apiService:UserProfileService, public loaderservice: LoaderService) {
     this.tables$ = service.tables$;
     this.total$ = service.total$;
   }
 
   ngOnInit() {
     this.breadCrumbItems = [{ label: 'GRN' }, { label: 'GRN Against InBound Delivery', active: true }];
+    this.userName = localStorage.getItem('currentUser') || this.apiService.getLoginResponse().MSGTXT
     this.validationform = this.formBuilder.group({
       inbounddeliverynumber: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]+')]],
 
@@ -91,7 +94,7 @@ export class QRcodegenrationComponent {
     this.hideme[i] = !this.hideme[i];
   }
   bsConfig = {
-    dateInputFormat: 'DD/MM/YYYY', // Set the date format
+    dateInputFormat: 'DD-MM-YYYY', // Set the date format
     // showWeekNumbers: false, // Optional: Hide week numbers
     containerClass: 'theme-blue', // Optional: Use a predefined theme
   };
@@ -169,72 +172,7 @@ export class QRcodegenrationComponent {
       console.log("Updated Main Row with Shadow Rows:", mainRow);
     });
   }
-  // saveBound(tables$: Observable<any[]>) {
-  //   this.isSubmitting = true;
-  
-  //   tables$.pipe(take(1)).subscribe({
-  //     next: (tables) => {
-  //       const payload = { BUDAT: this.PostingDate, SAVE: [] };
-  
-  //       tables.forEach((table) => {
-  //         // Check if this row is a split row
-  //         if (table.shadowRows && table.shadowRows.length > 0) {
-  //           // Add shadow rows only if they are selected
-  //           table.shadowRows.forEach((shadowRow: any) => {
-  //             if (shadowRow.selected) {
-  //               payload.SAVE.push({
-  //                 MATNR: shadowRow.MATNR,
-  //                 MENGE: parseFloat(shadowRow.MENGE) || 0,
-  //                 MEINS: shadowRow.MEINS,
-  //                 SHORT_TEXT: shadowRow.SHORT_TEXT,
-  //                 ORGQTY: parseFloat(shadowRow.ORGQTY) || 0,
-  //                 EBELN: shadowRow.EBELN,
-  //                 EBELP: shadowRow.EBELP || 1,
-  //                 WERKS: shadowRow.WERKS,
-  //                 LGORT: shadowRow.LGORT,
-  //                 BWART: shadowRow.BWART,
-  //                 Batch: shadowRow.Batch,
-  //               });
-  //             }
-  //           });
-  //         } else if (table.selected) {
-  //           // Add main row to payload only if it is not a split row and is selected
-  //           payload.SAVE.push({
-  //             MATNR: table.MATNR,
-  //             MENGE: parseFloat(table.MENGE) || 0,
-  //             MEINS: table.MEINS,
-  //             SHORT_TEXT: table.SHORT_TEXT,
-  //             ORGQTY: parseFloat(table.ORGQTY) || 0,
-  //             EBELN: table.EBELN,
-  //             EBELP: table.EBELP || 1,
-  //             WERKS: table.WERKS,
-  //             LGORT: table.LGORT,
-  //             BWART: table.BWART,
-  //             BUDAT: table.PostingDate,
-  //           });
-  //         }
-  //       });
-  
-  //       console.log('Final Payload:', payload);
-  
-  //       this.apiService.grnlist(payload).subscribe({
-  //         next: (res) => {
-  //           console.log('Saved:', res);
-  //           Swal.fire('', res[0].MESSAGE, 'success');
-  //           this.isSubmitting = false;
-  //         },
-  //         error: (err) => {
-  //           console.error('Error:', err);
-  //           this.isSubmitting = false;
-  //         },
-  //       });
-  //     },
-  //     error: (err) => {
-  //       console.error('Error:', err);
-  //       this.isSubmitting = false;
-  //     },
-  //   });
-  // }
+
   saveBound(tables$: Observable<any[]>) {
     this.isSubmitting = true;
   
@@ -295,7 +233,7 @@ export class QRcodegenrationComponent {
                   LGORT: shadowRow.LGORT,
                   BWART: shadowRow.BWART,
                   CHARG: shadowRow.CHARG,
-                  WEMPF:shadowRow.WEMPF,
+                  WEMPF: this.userName , //userName
                   ABLAD:shadowRow.ABLAD,
                 });
               });
@@ -395,11 +333,12 @@ export class QRcodegenrationComponent {
     this.vendorName = null;
     this.City  = null;
     this.GSTIN  = null;
-    // this.service.setTableData([]); // Clear table data in the service
+    this.service.setTableData([]); // Clear table data in the service
     // this.tables$ = this.service.tables$; // Reinitialize observable if needed
   
     // Optionally re-fetch data or reload the page
     this._fetchData();
+    this.GrnResponse = false;
   }
   
   
@@ -422,202 +361,9 @@ export class QRcodegenrationComponent {
     }
   }
   
-  
-  // saveBound(tables$: Observable<any[]>) {
-  //   this.isSubmitting = true;
-  
-  //   tables$.pipe(take(1)).subscribe({
-  //     next: (tables) => {
-  //       const payload = { BUDAT: this.PostingDate, SAVE: [] };
-  
-  //       tables.forEach((table) => {
-  //         // Check if this row is a split row
-  //         if (table.shadowRows && table.shadowRows.length > 0) {
-  //           // Add shadow rows only if they are selected
-  //           table.shadowRows.forEach((shadowRow: any) => {
-  //             if (shadowRow.selected) {
-  //               payload.SAVE.push({
-  //                 MATNR: shadowRow.MATNR,
-  //                 MENGE: parseFloat(shadowRow.MENGE) || 0,
-  //                 MEINS: shadowRow.MEINS,
-  //                 SHORT_TEXT: shadowRow.SHORT_TEXT,
-  //                 ORGQTY: parseFloat(shadowRow.ORGQTY) || 0,
-  //                 EBELN: shadowRow.EBELN,
-  //                 EBELP: shadowRow.EBELP || 1,
-  //                 WERKS: shadowRow.WERKS,
-  //                 LGORT: shadowRow.LGORT,
-  //                 BWART: shadowRow.BWART,
-  //                 Batch: shadowRow.Batch,
-  //               });
-  //             }
-  //           });
-  //         } else if (table.selected) {
-  //           // Add main row to payload only if it is not a split row and is selected
-  //           payload.SAVE.push({
-  //             MATNR: table.MATNR,
-  //             MENGE: parseFloat(table.MENGE) || 0,
-  //             MEINS: table.MEINS,
-  //             SHORT_TEXT: table.SHORT_TEXT,
-  //             ORGQTY: parseFloat(table.ORGQTY) || 0,
-  //             EBELN: table.EBELN,
-  //             EBELP: table.EBELP || 1,
-  //             WERKS: table.WERKS,
-  //             LGORT: table.LGORT,
-  //             BWART: table.BWART,
-  //             BUDAT: table.PostingDate,
-  //           });
-  //         }
-  //       });
-  
-  //       console.log('Final Payload:', payload);
-  
-  //       this.apiService.grnlist(payload).subscribe({
-  //         next: (res) => {
-  //           console.log('Saved:', res);
-  //           Swal.fire('', res[0].MESSAGE, 'success');
-  //           this.isSubmitting = false;
-  //         },
-  //         error: (err) => {
-  //           console.error('Error:', err);
-  //           this.isSubmitting = false;
-  //         },
-  //       });
-  //     },
-  //     error: (err) => {
-  //       console.error('Error:', err);
-  //       this.isSubmitting = false;
-  //     },
-  //   });
-  // }
-  
-  // first 
 
-  // splitRows(index: number, splitCount: number) {
-  //   // Get the table row at the specified index
-  //   this.tables$.pipe(take(1)).subscribe((tables) => {
-  //     const mainRow = tables[index];
-  //     console.log("mainrow", mainRow)
-
-  //     // Initialize shadowRows array if not already present
-  //     // if (!mainRow.shadowRows) {
-  //     //   mainRow.shadowRows = [];
-  //     // }
-  //     mainRow.shadowRows =  [];
-
-  //     // if(splitCount){
-  //     //   var splitCounts = parseInt(`${mainRow.MENGE}`)/splitCount
-  //     // }
-  //     // Add the specified number of shadow rows
-  //     for (let i = 0; i < splitCount; i++) {
-  //       mainRow.shadowRows.push({
-  //         MATNR: mainRow.MATNR,
-  //         WERKS: mainRow.WERKS,
-  //         LGORT: mainRow.LGORT,
-  //         BWART: mainRow.BWART,
-  //         Batch: '',
-  //         PostingDate: '',
-  //         // MENGE: splitCounts,//'',
-  //         MENGE:null,
-  //         MEINS: mainRow.MEINS,
-  //         EBELN: mainRow.EBELN,
-  //         EBELP: mainRow.EBELP,
-  //         shadowRows: [],
-  //       });
-  //     }
-  //     console.log("mainrow",mainRow.shadowRows);
-  //   });
-  // }
-
-  // saveBound(tables$: Observable<any[]>) {
-  //   this.isSubmitting = true;
-
-  //   tables$.pipe(take(1)).subscribe({
-  //     next: (tables) => {
-  //       const payload = { BUDAT:'',SAVE: [] };
-
-  //       tables.forEach((table) => {
-  //         const mainRow = {
-  //           MATNR: table.MATNR,
-  //           MENGE: parseFloat(table.MENGE) || 0,
-  //           MEINS: table.MEINS,
-  //           SHORT_TEXT: table.SHORT_TEXT,
-  //           ORGQTY: parseFloat(table.ORGQTY) || 0,
-  //           EBELN: table.EBELN,
-  //           EBELP: table.EBELP || 1,
-  //           WERKS: table.WERKS,
-  //           LGORT: table.LGORT,
-  //           BWART: table.BWART,
-  //           BUDAT:table.PostingDate
-  //         };
-  //         // payload.SAVE.push(mainRow);
-  //         payload.BUDAT= this.PostingDate
-  //         // Add shadow rows
-  //         if (table.shadowRows) {
-  //           table.shadowRows.forEach((shadowRow: any) => {
-  //             payload.SAVE.push({
-  //               MATNR: shadowRow.MATNR,
-  //               MENGE: parseFloat(shadowRow.MENGE) || 0,
-  //               MEINS: shadowRow.MEINS,
-  //               SHORT_TEXT: shadowRow.SHORT_TEXT,
-  //               ORGQTY: parseFloat(shadowRow.ORGQTY) || 0,
-  //               EBELN: shadowRow.EBELN,
-  //               EBELP: shadowRow.EBELP || 1,
-  //               WERKS: shadowRow.WERKS,
-  //               LGORT: shadowRow.LGORT,
-  //               BWART: shadowRow.BWART,
-  //               Batch:shadowRow.Batch,
-  //             });
-  //           });
-  //         }
-  //       });
-       
-  //       console.log('Final Payload:', payload, );
-  //       this.apiService.grnlist(payload).subscribe({
-  //         next: (res) => {
-  //           console.log('Saved:', res);
-  //          if(res[0].NUMBER){}
-  //           Swal.fire("", res[0].MESSAGE, "success");
-  //           this.isSubmitting = false;
-  //         },
-  //         error: (err) => {
-  //           console.error('Error:', err);
-  //           this.isSubmitting = false;
-  //         },
-  //       });
-  //     },
-  //     error: (err) => {
-  //       console.error('Error:', err);
-  //       this.isSubmitting = false;
-  //     },
-  //   });
-  // }
-  
-
-  // validSubmit(){
-  //   this.submit = true;
-  //   console.log("validationform",this.form) 
-  //   if(this.form.inbounddeliverynumber.value){
-  //     let obj = {
-  //       "VBELN": this.form.inbounddeliverynumber.value//"4500181937"
-  //     }
-  //     console.log("objobj",obj)
-  //     this.apiService.grnlist(obj).subscribe({
-  //       next: (res: any) => {
-  //         console.log('Data:', res);
-  //         this.GrnResponse = res;
-  //         this.service.setTableData(res || []);
-  //         this._fetchData();
-  //       },
-  //       error: (error: any) => {
-  //         console.error('Error fetching lot reports:', error);
-  //       },
-  //       complete: () => {
-  //         console.log('API call completed.');
-  //       }
-  //     });
-  //   }
-  // }
   validSubmit() {
+    this.loaderservice.showLoader();
     this.plant = '';
     // sloc = 'SLOC 456';
     this.documentDeliveryDate = '';
@@ -637,7 +383,7 @@ export class QRcodegenrationComponent {
       };
       console.log("objobj", obj);
       // this.GrnResponse = []
-      Pace.restart();
+
       this.apiService.grnlist(obj).subscribe({
         
         next: (res: any) => {
@@ -670,6 +416,7 @@ export class QRcodegenrationComponent {
           console.error('Error fetching lot reports:', error);
         },
         complete: () => {
+          this.loaderservice.hideLoader(); 
           console.log('API call completed.');
         }
       });
