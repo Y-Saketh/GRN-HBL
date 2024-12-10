@@ -70,9 +70,8 @@
                 placeholder="FROM DATE"
                 [bsConfig]="bsConfig"
                 bsDatepicker
-                #datePicker="bsDatepicker"
-                (focus)="datePicker.show()"
-                (blur)="datePicker.hide()"
+               
+               
                 [ngClass]="{
                   'is-invalid': submit && form.curentdatefrom.errors
                 }"
@@ -99,9 +98,7 @@
                 placeholder="TO DATE"
                 [bsConfig]="bsConfig"
                 bsDatepicker
-                #datePicker="bsDatepicker"
-                (focus)="datePicker.show()"
-                (blur)="datePicker.hide()"
+             
                 [ngClass]="{
                   'is-invalid': submit && form.curentdateto.errors
                 }"
