@@ -13,6 +13,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import * as moment from 'moment';
 import Swal from 'sweetalert2';
 import { ModalDirective, ModalModule } from 'ngx-bootstrap/modal';
+import * as XLSX from 'xlsx'; 
 
 @Component({
   selector: 'app-grpending',
@@ -95,7 +96,7 @@ export class GrpendingComponent implements OnInit {
       plant: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]+')]],
       delivery: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
       // deliveryto: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
-      storageLocation: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
+      // storageLocation: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
       // storageLocationto: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
       // ibdCreadtedOn: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
       fromDate: [fifteenDaysAgo, [ Validators.pattern('[a-zA-Z0-9]+')]],
@@ -298,6 +299,53 @@ export class GrpendingComponent implements OnInit {
     this.grnscreen = true;
   }
 
+  exportToExcel(): void {
+    // Retrieve the current table data
+    const dataToExport = this.GrPending;
+  
+    if (dataToExport.length > 0) {
+      // Define mapping of keys to header names
+      const headerMapping: { [key: string]: string } = {
+        WERKS: 'Plant',
+        VBELN: 'Inbound Delivery',
+        POSNR: 'Inbound Delivery Item',
+        ERDAT: 'Inbound Created On',
+        VGBEL: 'PO',
+        VGPOS: 'PO Item',
+        MATNR: 'Material',
+        MAKTX: 'Material Description',
+        MEINS: 'UOM',
+        LFIMG: 'Qty',
+        GATEENTRY: 'Gate Entry No',
+        GATEDATE: 'Gate Entry Date',
+        BUDAT: 'Posting Date',
+        AEDAT: 'PO Date',
+        ERNAM: 'Created By',
+        LGOBE: 'Storage Location'
+      };
+  
+      // Format data to map keys to user-friendly headers
+      const formattedData = dataToExport.map(row => {
+        const formattedRow = {};
+        for (const key in headerMapping) {
+          if (row.hasOwnProperty(key)) {
+            formattedRow[headerMapping[key]] = row[key];
+          }
+        }
+        return formattedRow;
+      });
+  
+      // Create a new workbook and worksheet with the formatted data
+      const worksheet = XLSX.utils.json_to_sheet(formattedData);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'GrPending Data');
+  
+      // Generate an Excel file and trigger the download
+      XLSX.writeFile(workbook, 'GrPending_Data.xlsx');
+    }
+  }
+  
+
   
   onSelectInBound(ibdnum) {
     this.grnscreen = false
@@ -328,9 +376,9 @@ export class GrpendingComponent implements OnInit {
     let obj = {
     "WERKS": this.form.plant.value,//"1300",
     "VBELN":this.form.delivery.value ,//"180390138",
-    "LGORT": this.form.storageLocation.value,// "S048",
-    "BUDAT_F":this.form.ibdCreadtedFrom?this.form.ibdCreadtedFrom.value:'',//"2024-04-01",
-    "BUDAT_T": this.form.ibdCreadtedTo?this.form.ibdCreadtedTo.value:'',//""2024-11-25",
+    "LGORT": "", //this.form.storageLocation.value,// "S048",
+    "BUDAT_F":this.form.fromDate?this.form.fromDate.value:'',//"2024-04-01",
+    "BUDAT_T": this.form.toDate?this.form.toDate.value:'',//""2024-11-25",
     "R1": "X",
     "R2": ""
     }

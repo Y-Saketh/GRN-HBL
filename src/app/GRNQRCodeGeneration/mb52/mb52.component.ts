@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators, FormsModule,  ReactiveFormsModule  
 import { BehaviorSubject } from 'rxjs';
 import { tableData } from './data';
 import { CommonModule } from '@angular/common';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-mb52',
@@ -28,6 +29,33 @@ export class Mb52Component implements OnInit {
   };
 
   constructor(private fb: FormBuilder) {}
+
+  exportToExcel(): void {
+    // Retrieve the current table data
+    const dataToExport = this.tables$.value;
+  
+    if (dataToExport.length > 0) {
+      // Automatically retrieve all unique keys from the data
+      const headers = Object.keys(dataToExport[0]);
+  
+      // Map the data to a format that preserves all keys dynamically
+      const formattedData = dataToExport.map(row => {
+        const formattedRow = {};
+        headers.forEach(header => {
+          formattedRow[header] = row[header];
+        });
+        return formattedRow;
+      });
+  
+      // Create a new workbook and worksheet with the formatted data
+      const worksheet = XLSX.utils.json_to_sheet(formattedData);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'MB52 Data');
+  
+      // Generate an Excel file and trigger the download
+      XLSX.writeFile(workbook, 'MB52_Data.xlsx');
+    }
+  }
 
   ngOnInit(): void {
     this.initializeForm();

@@ -11,6 +11,7 @@ import { tableData } from './data';
 import { UserProfileService } from 'src/app/core/services/user.service';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import * as moment from 'moment';
+import * as XLSX from 'xlsx'; 
 
 @Component({
   selector: 'app-close-download',
@@ -80,6 +81,53 @@ export class CloseDownloadComponent implements OnInit {
       this.hideme.push(true);
     }
     */
+  }
+
+  exportToExcel(): void {
+    // Retrieve the current table data
+    const dataToExport = this.CloseDownload;
+  
+    if (dataToExport.length > 0) {
+      // Define mapping of keys to header names
+      const headerMapping: { [key: string]: string } = {
+        CLOSE: 'Close',
+        BANFN: 'Purchase Requisition',
+        BNFPO: 'Item',
+        BADAT: 'Requisition Date',
+        BSART: 'Document Type',
+        EKGRP: 'Purchase Group',
+        MATNR: 'Material Number',
+        WERKS: 'Plant',
+        MENGE: 'Quantity Requested',
+        MEINS: 'UOM',
+        LOEKZ: 'Deletion Indicator',
+        AFNAM: 'Requisitioner',
+        TXZ01: 'Short Text',
+        LFDAT: 'Delivery Date',
+        FRGDT: 'Release Date',
+        TOT_VAL: 'Total Value',
+        AGE: 'Pending Days'
+      };
+  
+      // Format data to map keys to user-friendly headers
+      const formattedData = dataToExport.map(row => {
+        const formattedRow = {};
+        for (const key in headerMapping) {
+          if (row.hasOwnProperty(key)) {
+            formattedRow[headerMapping[key]] = row[key];
+          }
+        }
+        return formattedRow;
+      });
+  
+      // Create a new workbook and worksheet with the formatted data
+      const worksheet = XLSX.utils.json_to_sheet(formattedData);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'ZPRCLose Data');
+  
+      // Generate an Excel file and trigger the download
+      XLSX.writeFile(workbook, 'ZPRCLose_Data.xlsx');
+    }
   }
 
   /**

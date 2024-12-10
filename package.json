@@ -67,6 +67,8 @@
     "datatables.net-select": "^1.7.1",
     "datatables.net-select-dt": "^1.7.1",
     "echarts": "^5.5.1",
+    "exceljs": "^4.4.0",
+    "file-saver": "^2.0.5",
     "firebase": "^10.14.0",
     "flatpickr": "^4.6.13",
     "jquery": "^3.7.1",
@@ -102,6 +104,8 @@
     "slick-carousel": "^1.8.1",
     "sweetalert2": "^11.6.13",
     "tslib": "^2.7.0",
+    "typescript": "^5.5.2",
+    "xlsx": "^0.18.5",
     "zone.js": "^0.14.10"
   },
   "devDependencies": {
@@ -117,7 +121,7 @@
     "@types/jasminewd2": "^2.0.13",
     "@types/jquery": "^3.5.32",
     "@types/leaflet": "^1.9.12",
-    "@types/node": "^22.7.4",
+    "@types/node": "^22.10.1",
     "@types/youtube": "^0.0.50",
     "jasmine-core": "^5.3.0",
     "jasmine-spec-reporter": "^7.0.0",
@@ -126,7 +130,6 @@
     "karma-coverage-istanbul-reporter": "^3.0.3",
     "karma-jasmine": "^5.1.0",
     "karma-jasmine-html-reporter": "^2.1.0",
-    "ts-node": "^10.9.2",
-    "typescript": "~5.4.5"
+    "ts-node": "^10.9.2"
   }
 }

@@ -15,6 +15,7 @@ import { ModalDirective, ModalModule } from 'ngx-bootstrap/modal';
 import * as moment from 'moment';
 import Swal from 'sweetalert2';
 import { Inject } from '@angular/core';
+import * as XLSX from 'xlsx'; 
 
 
 @Component({
@@ -157,6 +158,56 @@ export class OpenpolistComponent implements OnInit {
     this.hideme[i] = !this.hideme[i];
   }
 
+  exportToExcel(): void {
+    // Retrieve the current table data
+    const dataToExport = this.POLIST;
+  
+    if (dataToExport.length > 0) {
+      // Define mapping of keys to header names
+      const headerMapping: { [key: string]: string } = {
+        EBELN: 'PO',
+        EBELP: 'PO Item',
+        MATNR: 'Material',
+        TXZ01: 'Material Description',
+        LIFNR: 'Vendor Code',
+        NAME1: 'Vendor Name',
+        EKGRP: 'Purchase Group',
+        WERKS: 'Plant',
+        MEINS: 'UOM',
+        MENGE: 'PO Qty',
+        ERNAM: 'Created By',
+        BUYER: 'Buyer',
+        EKNAM: 'Purchase Group Description',
+        NETWR: 'PO Value',
+        LOEKZ: 'Deletion Indicator',
+        // ELIKZ: 'Delivery Completed',
+        EINDT: 'Delivery Date',
+        MEINS1: 'Base UOM',
+        BEDAT: 'Purchase Document Date',
+
+      };
+  
+      // Format data to map keys to user-friendly headers
+      const formattedData = dataToExport.map(row => {
+        const formattedRow = {};
+        for (const key in headerMapping) {
+          if (row.hasOwnProperty(key)) {
+            formattedRow[headerMapping[key]] = row[key];
+          }
+        }
+        return formattedRow;
+      });
+  
+      // Create a new workbook and worksheet with the formatted data
+      const worksheet = XLSX.utils.json_to_sheet(formattedData);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'ZPRCLose Data');
+  
+      // Generate an Excel file and trigger the download
+      XLSX.writeFile(workbook, 'ZPRCLose_Data.xlsx');
+    }
+  }
+
 
   /**
    * fetches the table value
@@ -288,6 +339,7 @@ export class OpenpolistComponent implements OnInit {
   
     filteredTables.forEach((table) => {
       const item = {
+        lrNo: table.lrNo,
         MATNR: table.MATNR,
         DMENGE: parseFloat(table.DMENGE) || 0,
         MEINS: table.MEINS,

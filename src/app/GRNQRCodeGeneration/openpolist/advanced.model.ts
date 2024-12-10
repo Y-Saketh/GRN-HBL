@@ -23,31 +23,43 @@
     
 //   }
 export interface Table {
-  EBELN: string; // Purchase Document Number
-  EBELP: string; // Item Number
-  EKGRP: string; // Purchase Group
-  BEDAT: string; // Purchase Document Date
-  LIFNR: string; // Supplier Code
-  NAME1: string; // Vendor Address
-  LOEKZ: string; // Deletion/Blocked
+  EBELN: string; // PO
+  EBELP: string; // PO Item
   MATNR: string; // Material
-  TXZ01: string; // Updating Text Field
+  TXZ01: string; // Material Description
+  LIFNR: string; // Vendor Code
+  NAME1: string; // Vendor Name
+  EKGRP: string; // Purchase Group
   WERKS: string; // Plant
-  MENGE: number; // Alternative Unit of Measure
-  MEINS: string; // Unit of Measure
-  MENGE1: number; // Bill of Quantity (BOM)
-  MEINS1: string; // Base Unit of Measure
-  NETWR: number; // Net Price
-  DMBTR1: number; // Sum of Amount
+  MEINS: string; // Unit of Measure (UOM)
+  MENGE: number; // PO Qty
+  ERNAM: string; // Created By
+  BUYER: string; // Buyer
+  EKNAM: string; // Purchase Group Description
+  NETWR: number; // PO Value
+  LOEKZ: string; // Deletion/Blocked Indicator
   EINDT: string; // Delivery Date
+  MEINS1: string; // Base Unit of Measure
+  BEDAT: string; // Purchase Document Date
+  
+  deleveryChallanNumber: number; // Delevery Challan Number
+  DocumentDate: string; // Document Date
+  XBLNR: string; // Invoice Number
+  BLDAT: string; // Invoice Date
+  vehicleNumber: string; // Vehicle Number
+  transporterName: string; // Transporter Name
+  GATEENTRY: string; // Gate Entry Number
+  GATEDATE: string; // Gate Entry Date
+  lrDate: string; // LR Date
+  lrNo: string; // LR Number
+  
+  MENGE1: number; // Bill of Quantity (BOM)
+  DMBTR1: number; // Sum of Amount
   DATUM: string; // Current Date
   LV_MENGE_SUM: number; // -
   DAYS: number; // -
-  EKNAM: string; // Description of Purchase Group
   WRBTR: number; // Local Current Amount
-  BUYER: string; // Supplier Email ID
-  CREAT: string; // Created By
-  ELIKZ: string; // Open PO
+  ELIKZ: string; // Delivery Indicator
 }
 
 

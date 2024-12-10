@@ -373,21 +373,16 @@
                 </label>
               </div>
             </div>
+            <!-- Export Button-->
             <div class="col-sm-12 col-md-6">
-              <div
-                id="tickets-table_filter"
-                class="dataTables_filter text-md-end"
-              >
-                <label class="d-inline-flex align-items-center">
-                  Search:
-                  <input
-                    type="text"
-                    name="searchTerm"
-                    class="form-control form-control-sm ms-2"
-                    aria-controls="tickets-table"
-                    [(ngModel)]="service.searchTerm"
-                  />
-                </label>
+              <div class="text-md-end">
+                <button
+                  class="btn btn-warning ms-2"
+                  [disabled]="(tables$ | async)?.length === 0"
+                  (click)="exportToExcel()"
+                >
+                  Export
+                </button>
               </div>
             </div>
           </div>
@@ -636,7 +631,7 @@
                   ></button>
                 </div>
                 <div class="modal-body">
-                  <form [formGroup]="tableForm">
+                 
                     <div class="table-responsive">
                       <table
                         id="basic-datatable"
@@ -645,21 +640,19 @@
                         <thead>
                           <tr>
                             <th></th>
-                            <th sortable="gateEntryNumber">
-                              Entry Gate Pass Number
-                            </th>
-                            <th sortable="vehicleNumber">Vehicle Number</th>
-                            <th sortable="invoiceDate">Invoice Date</th>
-                            <th sortable="invoiceDate">Invoice NO</th>
-                            <th sortable="invoiceDate">Gate Entry Date</th>
-                            <th sortable="invoiceDate">Document Date</th>
-
+                            <th sortable="deleveryChallanNumber">DC.No</th>
+                            <th sortable="DocumentDate">DC.Dt</th>
+                            <th sortable="XBLNR">Inv.No</th>
+                            <th sortable="BLDAT">Inv.Dt</th>
+                            <th sortable="vehicleNumber">Vehicle No</th>
+                            <th sortable="transporterName">Transporter Name</th>
+                            <th sortable="GATEENTRY">Gate Entry No</th>
+                            <th sortable="GATEDATE">Gate Entry Dt</th>
+                            <th sortable="lrDate">LR Date</th>
+                            <th sortable="lrNo">LR No</th>
                             <!-- <th sortable="deliveryQuantity" >
                                       Delivered Quantity
                                     </th> -->
-                            <th sortable="supplier">Supplier/Vendor Code</th>
-                            <th sortable="plant">Delevery Challan Number</th>
-                            <th>Transporter Name</th>
                             <!--  <th sortable="packinglist" (sort)="onSort($event)">
                               Packing List
                             </th> -->
@@ -667,155 +660,21 @@
                         </thead>
                         <!-- @for(table of tables$ | async;track $index){ -->
                         <!-- <form [formGroup]="tableForm" (ngSubmit)="submitForm()"> -->
-                        <tbody>
+                        <tbody *ngFor="let table of tables$ | async; let i = index">
                           <tr>
                             <td align="center">
                               <a class="expand-row">+</a>
                             </td>
-
-                            <td>
-                              <input
-                                type="text"
-                                formControlName="gateEntryNumber"
-                                placeholder="Entry Gate Pass Number"
-                                class="form-control form-control-sm"
-                              />
-                              <small
-                                class="text-danger"
-                                *ngIf="isFieldInvalid('gateEntryNumber')"
-                                >Gate Entry Number is required and should
-                                contain only alphanumeric characters.</small
-                              >
-                            </td>
-                            <td>
-                              <input
-                                type="text"
-                                formControlName="vehicleNumber"
-                                placeholder="Enter Vehicle Number"
-                                class="form-control form-control-sm"
-                              />
-                              <small
-                                class="text-danger"
-                                *ngIf="isFieldInvalid('vehicleNumber')"
-                                >Vehicle Number is required and should contain
-                                only valid characters.</small
-                              >
-                            </td>
-
-                            <td>
-                              <input
-                                type="text"
-                                formControlName="invoiceDate"
-                                placeholder="Enter Invoice Date"
-                                class="form-control form-control-sm"
-                                [bsConfig]="bsConfig"
-                                bsDatepicker
-                                #datePicker="bsDatepicker"
-                                (focus)="datePicker.show()"
-                                (blur)="datePicker.hide()"
-                              />
-                              <small
-                                class="text-danger"
-                                *ngIf="isFieldInvalid('invoiceDate')"
-                                >Gate Entry Date is required.</small
-                              >
-                            </td>
-                            <td>
-                              <input
-                                type="text"
-                                formControlName="invoiceNo"
-                                placeholder="Enter Invoice No"
-                                class="form-control form-control-sm"
-                              />
-                              <small
-                                class="text-danger"
-                                *ngIf="isFieldInvalid('invoiceNo')"
-                                >Invoice Number is required.</small
-                              >
-                            </td>
-                            <td>
-                              <input
-                                type="text"
-                                formControlName="gateEntryDate"
-                                placeholder="Enter Gate Entry Date"
-                                class="form-control form-control-sm"
-                                [bsConfig]="bsConfig"
-                                bsDatepicker
-                                #datePicker="bsDatepicker"
-                                (focus)="datePicker.show()"
-                                (blur)="datePicker.hide()"
-                              />
-                              <small
-                                class="text-danger"
-                                *ngIf="isFieldInvalid('gateEntryDate')"
-                                >Gate Entry Date is required.</small
-                              >
-                            </td>
-                            <td>
-                              <input
-                                type="text"
-                                formControlName="DocumentDate"
-                                placeholder="Enter Document Date"
-                                class="form-control form-control-sm"
-                                [bsConfig]="bsConfig"
-                                bsDatepicker
-                                #datePicker="bsDatepicker"
-                                (focus)="datePicker.show()"
-                                (blur)="datePicker.hide()"
-                              />
-                              <small
-                                class="text-danger"
-                                *ngIf="isFieldInvalid('DocumentDate')"
-                                >Document Date is required.</small
-                              >
-                            </td>
-                            <td>
-                              <input
-                                type="text"
-                                formControlName="supplier"
-                                placeholder="Enter Supplier/Vendor Code"
-                                class="form-control form-control-sm"
-                              />
-                              <small
-                                class="text-danger"
-                                *ngIf="isFieldInvalid('supplier')"
-                                >Supplier/Vendor Code is required.</small
-                              >
-                            </td>
-
-                            <td>
-                              <input
-                                type="text"
-                                formControlName="deleveryChallanNumber"
-                                placeholder="Enter Delevery Challan Number"
-                                class="form-control form-control-sm"
-                              />
-                              <small
-                                class="text-danger"
-                                *ngIf="isFieldInvalid('deleveryChallanNumber')"
-                                >Delevery Challan Number is required.</small
-                              >
-                            </td>
-                            <td>
-                              <input
-                                type="text"
-                                formControlName="transporterName"
-                                placeholder="Enter Transporter Name"
-                                class="form-control form-control-sm"
-                              />
-                              <small
-                                class="text-danger"
-                                *ngIf="isFieldInvalid('transporterName')"
-                                >Transporter Name is required.</small
-                              >
-                            </td>
-                            <!-- <td>
-                              <input
-                                type="text"
-                                formControlName="PackingList"
-                                class="form-control form-control-sm"
-                              />
-                            </td>  -->
+                            <td><td>{{ table.deleveryChallanNumber }}</td>
+                            <td><td>{{ table.DocumentDate }}</td>
+                            <td><td>{{ table.XBLNR }}</td>
+                            <td><td>{{ table.BLDAT }}</td>
+                            <td><td>{{ table.vehicleNumber }}</td>
+                            <td><td>{{ table.transporterName }}</td>
+                            <td><td>{{ table.GATEENTRY }}</td>
+                            <td><td>{{ table.GATEDATE }}</td>
+                            <td><td>{{ table.lrDate }}</td>
+                            <td><td>{{ table.lrNo }}</td>
                           </tr>
                           <tr class="sub-table no-bg">
                             <td align="center"></td>
@@ -825,14 +684,15 @@
                                   <tr>
                                     <th></th>
                                     <th>Plant</th>
-                                    <th>Storage Location</th>
-                                    <th>Original DEL.Quantity</th>
-                                    <th>Delivery Quantity</th>
-                                    <th>Base Unit of Measure</th>
-                                    <th>Purchasing Document Number</th>
-                                    <th>Item Number of Purchasing Document</th>
-                                    <th>Material Number</th>
+                                    <th>S Loc</th>
+                                    <th>PO Number</th>
+                                    <th>PO Item</th>
+                                    <th>Material Code</th>
                                     <th>Material Description</th>
+                                    <th>HSN Code</th>
+                                    <th>UoM</th>
+                                    <th>DC Qty</th>
+                                    <th>Recd Qty</th>
                                   </tr>
                                 </thead>
                                 <tbody>
@@ -851,23 +711,16 @@
                                         -
                                       </button>
                                     </td>
-                                    <td>{{ tablee.WERKS }}</td>
-                                    <td>{{ tablee.LGORT }}</td>
-                                    <td>{{ tablee.ORGQTY }}</td>
-                                    <td>
-                                      <input
-                                        type="text"
-                                        [ngModelOptions]="{ standalone: true }"
-                                        [(ngModel)]="tablee.DMENGE"
-                                        class="form-control form-control-sm"
-                                      />
-                                    </td>
-
-                                    <td>{{ tablee.MEINS }}</td>
-                                    <td>{{ tablee.PO_NUMBER }}</td>
-                                    <td>{{ tablee.PO_ITEM }}</td>
-                                    <td>{{ tablee.MATNR }}</td>
-                                    <td>{{ tablee.SHORT_TEXT }}</td>
+                                    <td>{{ table.WERKS }}</td>
+                                    <td>{{ table.LGORT }}</td>
+                                    <td>{{ table.PO_NUMBER }}</td>
+                                    <td>{{ table.PO_ITEM }}</td>
+                                    <td>{{ table.MATNR }}</td>
+                                    <td>{{ table.TXZ01 }}</td>
+                                    <td>1234567891</td>
+                                    <td>{{ table.MEINS }}</td>
+                                    <td>{{ table.ORGQTY }}</td>
+                                    <td>{{ table.RECD_QTY }}</td>
                                   </tr>
                                 </tbody>
                               </table>
@@ -934,7 +787,7 @@
                         Save
                       </button>
                     </div>
-                  </form>
+                  
                 </div>
               </div>
             </div>

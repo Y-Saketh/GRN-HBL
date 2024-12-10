@@ -33,7 +33,7 @@
               </div>
             </div>
           </div>
-          <!-- Delivery -->
+          <!-- Delivery 
           <div class="col-md-2">
             <label class="brandcolor" for="deliveryfrom">DELIVERY</label>
             <div class="mb-3">
@@ -56,7 +56,7 @@
                 >
               </div>
             </div>
-          </div>
+          </div> -->
 
           <!-- Storage Location -->
           <!--  <div class="col-md-2">
@@ -151,7 +151,6 @@
                 id="toDate"
                 [bsConfig]="bsConfig"
                 bsDatepicker
-                #datePicker="bsDatepicker"
                 formControlName="toDate"
                 placeholder="IBD CREATED To"
                 [ngClass]="{
@@ -214,18 +213,16 @@
             </label>
           </div>
         </div>
+        <!-- Export Button-->
         <div class="col-sm-12 col-md-6">
-          <div id="tickets-table_filter" class="dataTables_filter text-md-end">
-            <label class="d-inline-flex align-items-center">
-              Search:
-              <input
-                type="text"
-                name="searchTerm"
-                class="form-control form-control-sm ms-2"
-                aria-controls="tickets-table"
-                [(ngModel)]="service.searchTerm"
-              />
-            </label>
+          <div class="text-md-end">
+            <button
+              class="btn btn-warning ms-2"
+              [disabled]="(tables$ | async)?.length === 0"
+              (click)="exportToExcel()"
+            >
+              Export
+            </button>
           </div>
         </div>
       </div>
@@ -263,9 +260,9 @@
               <th class="brandcolor" sortable="VGPOS" (sort)="onSort($event)">
                 PO Item
               </th>
-              <th class="brandcolor" sortable="LGORT" (sort)="onSort($event)">
+            <!--  <th class="brandcolor" sortable="LGORT" (sort)="onSort($event)">
                 Storage Location
-              </th>
+              </th> -->
               <th class="brandcolor" sortable="MATNR" (sort)="onSort($event)">
                 Material
               </th>
@@ -309,7 +306,7 @@
               <!-- PO -->
               <td>{{ table.VGPOS }}</td>
               <!-- PO Item -->
-              <td>{{ table.LGORT }}</td>
+            <!--  <td>{{ table.LGORT }}</td> -->
               <!-- Storage Location -->
               <td>{{ table.MATNR }}</td>
               <!-- Material -->

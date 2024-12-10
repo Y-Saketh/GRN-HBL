@@ -37,8 +37,8 @@ function sort(tables: Table[], column: string, direction: string): Table[] {
  */
 function matches(tables: Table, term: string, pipe: PipeTransform) {
     return (
-      tables.EBELN.toLowerCase().includes(term.toLowerCase()) || // Purchase Document Number
-      tables.EBELP.toLowerCase().includes(term.toLowerCase()) || // Item Number
+      tables.EBELN.toLowerCase().includes(term.toLowerCase()) || // PO
+      tables.EBELP.toLowerCase().includes(term.toLowerCase()) || // PO Item 
       tables.EKGRP.toLowerCase().includes(term.toLowerCase()) || // Purchase Group
       tables.BEDAT.toLowerCase().includes(term.toLowerCase()) || // Purchase Document Date
       tables.LIFNR.toLowerCase().includes(term.toLowerCase()) || // Supplier Code
@@ -60,8 +60,18 @@ function matches(tables: Table, term: string, pipe: PipeTransform) {
       tables.EKNAM.toLowerCase().includes(term.toLowerCase()) || // Description of Purchase Group
       pipe.transform(tables.WRBTR).includes(term) || // Local Current Amount
       tables.BUYER.toLowerCase().includes(term.toLowerCase()) || // Supplier Email ID
-      tables.CREAT.toLowerCase().includes(term.toLowerCase()) || // Created By
-      tables.ELIKZ.toLowerCase().includes(term.toLowerCase()) // Open PO
+      tables.ERNAM.toLowerCase().includes(term.toLowerCase()) || // Created By
+      tables.ELIKZ.toLowerCase().includes(term.toLowerCase()) ||// Open PO
+      // inbound delivery
+      tables.DocumentDate.toLowerCase().includes(term.toLowerCase()) || // Document Date
+      tables.XBLNR.toLowerCase().includes(term.toLowerCase()) || // Invoice Number
+      tables.BLDAT.toLowerCase().includes(term.toLowerCase()) || // Invoice Date
+      tables.vehicleNumber.toLowerCase().includes(term.toLowerCase()) || // Vehicle Number
+      tables.transporterName.toLowerCase().includes(term.toLowerCase()) || // Transporter Name
+      tables.GATEENTRY.toLowerCase().includes(term.toLowerCase()) || // Gate Entry Number
+      tables.GATEDATE.toLowerCase().includes(term.toLowerCase()) || // Gate Entry Date
+      tables.lrDate.toLowerCase().includes(term.toLowerCase()) || // LR Date
+      tables.lrNo.toLowerCase().includes(term.toLowerCase()) // LR Number
     );
   }
 

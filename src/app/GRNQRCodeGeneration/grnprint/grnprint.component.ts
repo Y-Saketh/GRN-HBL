@@ -4,6 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 import { tableData } from './data';
 import { CommonModule } from '@angular/common';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-grnprint',
@@ -32,6 +33,33 @@ export class GrnprintComponent implements OnInit{
   };
 
   constructor(private fb: FormBuilder) {}
+
+  exportToExcel(): void {
+    // Retrieve the current table data
+    const dataToExport = this.tables$.value;
+  
+    if (dataToExport.length > 0) {
+      // Automatically retrieve all unique keys from the data
+      const headers = Object.keys(dataToExport[0]);
+  
+      // Map the data to a format that preserves all keys dynamically
+      const formattedData = dataToExport.map(row => {
+        const formattedRow = {};
+        headers.forEach(header => {
+          formattedRow[header] = row[header];
+        });
+        return formattedRow;
+      });
+  
+      // Create a new workbook and worksheet with the formatted data
+      const worksheet = XLSX.utils.json_to_sheet(formattedData);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'GrnPrint Data');
+  
+      // Generate an Excel file and trigger the download
+      XLSX.writeFile(workbook, 'GrnPrint_Data.xlsx');
+    }
+  }
 
   ngOnInit(): void {
     this.initializeForm();
@@ -77,8 +105,6 @@ export class GrnprintComponent implements OnInit{
       this.updateTableData();
     }
   }
-
-  
 
   changeValue(i) {
     this.hideme[i] = !this.hideme[i];
