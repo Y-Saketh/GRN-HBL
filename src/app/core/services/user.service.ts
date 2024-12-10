@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { User } from 'src/app/store/Authentication/auth.models';
 import { environment } from 'src/environments/environment'
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class UserProfileService {
@@ -21,6 +22,7 @@ export class UserProfileService {
         return  this.loginResponse;
     }
 
+   
     /***
      * Facked User Register
      */
