@@ -16,7 +16,7 @@ import * as moment from 'moment';
 import Swal from 'sweetalert2';
 import { Inject } from '@angular/core';
 import * as XLSX from 'xlsx'; 
-
+import { LoaderService } from 'src/app/core/services/loader.service';
 
 @Component({
   selector: 'app-openpolist',
@@ -53,7 +53,17 @@ export class OpenpolistComponent implements OnInit {
   INBOUND: any[] = []; // Stores the API response for the second table
   hidemee: any[];
   PONUMBER: any;
-  constructor(public formBuilder: UntypedFormBuilder, @Inject(AdvancedService) public service: AdvancedService, private apiService:UserProfileService) {
+  deleveryChallanNumber: string;
+  DocumentDate: string;
+  invoiceNo: string;
+  invoiceDate: string;
+  vehicleNumber: string;
+  transporterName: string;
+  gateEntryNumber: string;
+  gateEntryDate: string;
+  lrDate: string;
+  LrNo: string;
+  constructor(public formBuilder: UntypedFormBuilder, @Inject(AdvancedService) public service: AdvancedService, private apiService:UserProfileService,public loaderservice:LoaderService) {
     this.tables$ = service.tables$;
     console.log("this.tables$", this.tables$)
     this.total$ = service.total$;
@@ -122,11 +132,33 @@ export class OpenpolistComponent implements OnInit {
         next: (res: any) => {
           console.log('Data:', res);
           this.INBOUND = res;
+          console.log('InboundData', this.INBOUND);
           this.inboundData = this.INBOUND; 
           // this.INBOUND.subscribe((data: any[]) => {
             // this.inboundData = data || [];
           // });
           // this.service.setTableData(res || []);
+          this.deleveryChallanNumber = '1100101108';
+          this.DocumentDate ='20-01-2023';
+          this.invoiceNo = '1';
+          this.invoiceDate = '20-01-20';
+          this.vehicleNumber = 'ap20hf124';
+          this.transporterName = 'ABC Transport';
+          this.gateEntryNumber = '4500181937';
+          this.gateEntryDate = '20';
+          this.lrDate = '20-09-2024';
+          this.LrNo = '788';
+
+          // this.table.WERKS;
+          // this.table.LGORT;
+          // this.table.PO_NUMBER;
+          // this.table.PO_ITEM;
+          // this.table.MATNR;
+          // this.table.SHORT_TEXT;
+          // this.table.STEUC;
+          // this.table.MEINS;
+          // this.table.ORGQTY;
+          // this.table.DMENGE;
           this._fetchData2();
         },
         error: (error: any) => {
@@ -201,10 +233,10 @@ export class OpenpolistComponent implements OnInit {
       // Create a new workbook and worksheet with the formatted data
       const worksheet = XLSX.utils.json_to_sheet(formattedData);
       const workbook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(workbook, worksheet, 'ZPRCLose Data');
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'OpenPO Data');
   
       // Generate an Excel file and trigger the download
-      XLSX.writeFile(workbook, 'ZPRCLose_Data.xlsx');
+      XLSX.writeFile(workbook, 'OpenPO_Data.xlsx');
     }
   }
 
@@ -249,6 +281,7 @@ export class OpenpolistComponent implements OnInit {
 
 
   getPOLIST(){
+    this.loaderservice.showLoader();
     console.log("validationform",this.form) 
   
     // if (this.validationform.valid) {
@@ -265,8 +298,6 @@ export class OpenpolistComponent implements OnInit {
       EINDT_F:this.form.deliveryDateFrom.value?moment(this.form.deliveryDateFrom.value).format('DD/MM/YYYY') :'', // Item Delivery Date From
       EINDT_T: this.form.deliveryDateTo.value? moment(this.form.deliveryDateTo.value.value).format('DD/MM/YYYY'):'', // Item Delivery Date To
       MATKL: this.form.materialgroup.value, // Material Group
-
-   
     }
     console.log("objobj",obj)
     setTimeout(()=>{
@@ -283,11 +314,12 @@ export class OpenpolistComponent implements OnInit {
         },
         error: (error: any) => {
           console.error('Error fetching lot reports:', error);
-          this.validationform.reset()
+          // this.validationform.reset()
         },
         complete: () => {
           console.log('API call completed.');
-          this.validationform.reset()
+          // this.validationform.reset()
+          this.loaderservice.hideLoader(); 
           
         }
       });

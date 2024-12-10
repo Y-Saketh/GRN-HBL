@@ -640,14 +640,14 @@
                             <th></th>
                             <th sortable="deleveryChallanNumber">DC.No</th>
                             <th sortable="DocumentDate">DC.Dt</th>
-                            <th sortable="XBLNR">Inv.No</th>
-                            <th sortable="BLDAT">Inv.Dt</th>
+                            <th sortable="invoiceNo">Inv.No</th>
+                            <th sortable="invoiceDate">Inv.Dt</th>
                             <th sortable="vehicleNumber">Vehicle No</th>
                             <th sortable="transporterName">Transporter Name</th>
-                            <th sortable="GATEENTRY">Gate Entry No</th>
-                            <th sortable="GATEDATE">Gate Entry Dt</th>
+                            <th sortable="gateEntryNumber">Gate Entry No</th>
+                            <th sortable="gateEntryDate">Gate Entry Dt</th>
                             <th sortable="lrDate">LR Date</th>
-                            <th sortable="lrNo">LR No</th>
+                            <th sortable="LrNo">LR No</th>
                             <!-- <th sortable="deliveryQuantity" >
                                       Delivered Quantity
                                     </th> -->
@@ -658,25 +658,25 @@
                         </thead>
                         <!-- @for(table of tables$ | async;track $index){ -->
                         <!-- <form [formGroup]="tableForm" (ngSubmit)="submitForm()"> -->
-                        <tbody *ngFor="let table of tables$ | async; let i = index">
+                        <tbody>
                           <tr>
                             <td align="center">
                               <a class="expand-row">+</a>
                             </td>
-                            <td><td>{{ table.deleveryChallanNumber }}</td>
-                            <td><td>{{ table.DocumentDate }}</td>
-                            <td><td>{{ table.XBLNR }}</td>
-                            <td><td>{{ table.BLDAT }}</td>
-                            <td><td>{{ table.vehicleNumber }}</td>
-                            <td><td>{{ table.transporterName }}</td>
-                            <td><td>{{ table.GATEENTRY }}</td>
-                            <td><td>{{ table.GATEDATE }}</td>
-                            <td><td>{{ table.lrDate }}</td>
-                            <td><td>{{ table.lrNo }}</td>
+                            <td>{{ deleveryChallanNumber }}</td>
+                            <td>{{ DocumentDate }}</td>
+                            <td>{{ invoiceNo }}</td>
+                            <td>{{ invoiceDate }}</td>
+                            <td>{{ vehicleNumber }}</td>
+                            <td>{{ transporterName }}</td>
+                            <td>{{ gateEntryNumber }}</td>
+                            <td>{{ gateEntryDate }}</td>
+                            <td>{{ lrDate }}</td>
+                            <td>{{ LrNo }}</td>
                           </tr>
                           <tr class="sub-table no-bg">
                             <td align="center"></td>
-                            <td colspan="9" class="p-0">
+                            <td colspan="10" class="p-0">
                               <table class="table mb-0 table-striped">
                                 <thead class="bg-dark text-white">
                                   <tr>
@@ -696,7 +696,7 @@
                                 <tbody>
                                   <tr
                                     *ngFor="
-                                      let tablee of INBOUND;
+                                      let tablee of inboundData;
                                       let i = index;
                                       trackBy: trackByFn
                                     "
@@ -709,16 +709,16 @@
                                         -
                                       </button>
                                     </td>
-                                    <td>{{ table.WERKS }}</td>
-                                    <td>{{ table.LGORT }}</td>
-                                    <td>{{ table.PO_NUMBER }}</td>
-                                    <td>{{ table.PO_ITEM }}</td>
-                                    <td>{{ table.MATNR }}</td>
-                                    <td>{{ table.TXZ01 }}</td>
-                                    <td>1234567891</td>
-                                    <td>{{ table.MEINS }}</td>
-                                    <td>{{ table.ORGQTY }}</td>
-                                    <td>{{ table.RECD_QTY }}</td>
+                                    <td>{{ tablee.WERKS }}</td>
+                                    <td>{{ tablee.LGORT }}</td>
+                                    <td>{{ tablee.PO_NUMBER }}</td>
+                                    <td>{{ tablee.PO_ITEM }}</td>
+                                    <td>{{ tablee.MATNR }}</td>
+                                    <td>{{ tablee.SHORT_TEXT }}</td>
+                                    <td>{{tablee.STEUC}}</td>
+                                    <td>{{ tablee.MEINS }}</td>
+                                    <td>{{ tablee.ORGQTY }}</td>
+                                    <td>{{ tablee.DMENGE }}</td>
                                   </tr>
                                 </tbody>
                               </table>

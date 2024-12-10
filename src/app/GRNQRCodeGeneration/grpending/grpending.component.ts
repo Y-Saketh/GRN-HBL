@@ -14,6 +14,7 @@ import * as moment from 'moment';
 import Swal from 'sweetalert2';
 import { ModalDirective, ModalModule } from 'ngx-bootstrap/modal';
 import * as XLSX from 'xlsx'; 
+import { LoaderService } from 'src/app/core/services/loader.service';
 
 @Component({
   selector: 'app-grpending',
@@ -74,7 +75,7 @@ export class GrpendingComponent implements OnInit {
   inBound: TableRow[] = [];
   inBoundshadow: TableRow[] = [];
   PostingDate: string;
-  constructor(public formBuilder: UntypedFormBuilder, public service: AdvancedService, private apiService:UserProfileService) {
+  constructor(public formBuilder: UntypedFormBuilder, public service: AdvancedService, private apiService:UserProfileService,public loaderservice:LoaderService) {
     this.tables$ = service.tables$;
     console.log("this.tables$", this.tables$)
     this.total$ = service.total$;
