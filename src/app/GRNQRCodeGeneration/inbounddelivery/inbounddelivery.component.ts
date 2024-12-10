@@ -232,7 +232,7 @@ export class InbounddeliveryComponent implements OnInit {
             this.vendorName = res.NAME1;
             this.City = res.ORT01
             this.GSTIN = res.STCD3
-            this.HSNCODE = res.STEUC
+            // this.HSNCODE = res.STEUC
             this.service.setTableData(res.ITEM || []);
             this._fetchData();
             this.loaderservice.hideLoader(); 

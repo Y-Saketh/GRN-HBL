@@ -80,7 +80,8 @@
                           <span>{{ invoiceNumber }}</span>
                         </td>
                         <td>
-                          <span>{{ invoiceDate }}</span>
+                          <!-- <span>{{ invoiceDate }}</span> -->
+                          <span>{{ invoiceDate | date: 'dd-MM-yyyy' }}</span>
                         </td>
                         <td>
                           <input
