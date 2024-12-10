@@ -131,6 +131,62 @@
                   </div>
                 </div>
               </div>
+              <!-- Delivery Date From -->
+              <div class="col-md-2">
+                <div class="mb-3">
+                  <label class="brandcolor" for="deliveryDateFrom"
+                    >DELIVERY DATE FROM</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="deliveryDateFrom"
+                    [bsConfig]="bsConfig"
+                    bsDatepicker
+                    formControlName="deliveryDateFrom"
+                    placeholder="Delivery Date From"
+                    [ngClass]="{
+                      'is-invalid': submit && form.deliveryDateFrom.errors
+                    }"
+                  />
+                  <div
+                    *ngIf="submit && form.deliveryDateFrom.errors"
+                    class="invalid-feedback"
+                  >
+                    <span *ngIf="form.deliveryDateFrom.errors.required"
+                      >Please provide a valid deliveryDateFrom.</span
+                    >
+                  </div>
+                </div>
+              </div>
+              <!-- Delivery Date To -->
+              <div class="col-md-2">
+                <div class="mb-3">
+                  <label class="brandcolor" for="deliveryDateTo"
+                    >DELIVERY DATE TO</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="deliveryDateTo"
+                    [bsConfig]="bsConfig"
+                    bsDatepicker
+                    formControlName="deliveryDateTo"
+                    placeholder="Delivery Date To"
+                    [ngClass]="{
+                      'is-invalid': submit && form.deliveryDateTo.errors
+                    }"
+                  />
+                  <div
+                    *ngIf="submit && form.deliveryDateTo.errors"
+                    class="invalid-feedback"
+                  >
+                    <span *ngIf="form.deliveryDateTo.errors.required"
+                      >Please provide a valid delivery Date To.</span
+                    >
+                  </div>
+                </div>
+              </div>
 
               <!-- <div class="col-md-3">
                 <div class="mb-3">
@@ -215,68 +271,10 @@
             <!-- </div> -->
 
             <!-- Row 3 -->
-            <div class="row">
-              <!-- Delivery Date From -->
-              <div class="col-md-2">
-                <div class="mb-3">
-                  <label class="brandcolor" for="deliveryDateFrom"
-                    >DELIVERY DATE FROM</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="deliveryDateFrom"
-                    [bsConfig]="bsConfig"
-                    bsDatepicker
-                    formControlName="deliveryDateFrom"
-                    placeholder="Delivery Date From"
-                    [ngClass]="{
-                      'is-invalid': submit && form.deliveryDateFrom.errors
-                    }"
-                  />
-                  <div
-                    *ngIf="submit && form.deliveryDateFrom.errors"
-                    class="invalid-feedback"
-                  >
-                    <span *ngIf="form.deliveryDateFrom.errors.required"
-                      >Please provide a valid deliveryDateFrom.</span
-                    >
-                  </div>
-                </div>
-              </div>
-              <!-- Delivery Date To -->
-              <div class="col-md-2">
-                <div class="mb-3">
-                  <label class="brandcolor" for="deliveryDateTo"
-                    >DELIVERY DATE TO</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="deliveryDateTo"
-                    [bsConfig]="bsConfig"
-                    bsDatepicker
-                    #datePicker="bsDatepicker"
-                    (focus)="datePicker.show()"
-                    (blur)="datePicker.hide()"
-                    formControlName="deliveryDateTo"
-                    placeholder="Delivery Date To"
-                    [ngClass]="{
-                      'is-invalid': submit && form.purchaseGroup.errors
-                    }"
-                  />
-                  <div
-                    *ngIf="submit && form.deliveryDateTo.errors"
-                    class="invalid-feedback"
-                  >
-                    <span *ngIf="form.deliveryDateTo.errors.required"
-                      >Please provide a valid delivery Date To.</span
-                    >
-                  </div>
-                </div>
-              </div>
+            <div class="row justify-content-center">
+              
               <!-- Purchase Group -->
-              <div class="col-md-2">
+              <!-- <div class="col-md-2">
                 <div class="mb-3">
                   <label class="brandcolor" for="purchaseGroup"
                     >PURCHASE GROUP</label
@@ -300,9 +298,9 @@
                     >
                   </div>
                 </div>
-              </div>
+              </div> -->
               <!-- Material Group -->
-              <div class="col-md-2">
+              <!-- <div class="col-md-2">
                 <div class="mb-3">
                   <label class="brandcolor" for="materialgroup"
                     >MATERIAL GROUP</label
@@ -324,9 +322,9 @@
                     >
                   </div>
                 </div>
-              </div>
+              </div> -->
               <!-- Button Row -->
-              <div class="col-md-1 mt-4">
+              <div class="col-md-1 justmt-4">
                 <div class="mb-3">
                   <button
                     style="
@@ -562,7 +560,7 @@
               }
             </table>
           </div>
-
+          <!-- Pagination -->
           <div
             class="row justify-content-md-between align-items-md-center mt-2"
           >
@@ -607,6 +605,7 @@
               </div>
             </div>
           </div>
+          <!-- End Pagination -->
         </div>
         <div>
           <div
@@ -631,7 +630,6 @@
                   ></button>
                 </div>
                 <div class="modal-body">
-                 
                     <div class="table-responsive">
                       <table
                         id="basic-datatable"
@@ -778,6 +776,7 @@
                         <!-- } -->
                       </table>
                     </div>
+                    <!-- Save Button -->
                     <div class="col-md-4 text-left">
                       <button
                         class="btn btn-success mt-4"
@@ -786,8 +785,7 @@
                       >
                         Save
                       </button>
-                    </div>
-                  
+                    </div>              
                 </div>
               </div>
             </div>

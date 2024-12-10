@@ -45,7 +45,7 @@ export class CloseDownloadComponent implements OnInit {
   submit: boolean;
 
   bsConfig = {
-    dateInputFormat: 'DD/MM/YYYY', // Set the date format
+    dateInputFormat: 'DD-MM-YYYY', // Set the date format
     // showWeekNumbers: false, // Optional: Hide week numbers
     containerClass: 'theme-blue', // Optional: Use a predefined theme
   };
