@@ -10,61 +10,62 @@
   <link rel="icon" type="image/x-icon" href="favicon.ico">
 
   <!-- Pace.js Loader -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-flash.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-flash.min.css"
+    rel="stylesheet" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
   <style type="text/css">
-     .hiddenElem {
+    .hiddenElem {
       display: none;
     }
+
     .pace .pace-activity {
-            top: 19px;
-            right: 19px;
-            display: none;
-        }
+      top: 19px;
+      right: 19px;
+      display: none;
+    }
 
-        .page-loading {
-            position: fixed;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            right: 0;
-            overflow: hidden;
-            background: rgba(51, 51, 51, 1.00);
-            opacity: 0;
-            transition: opacity 1s ease-in-out;
-            z-index: -1;
-        }
+    .page-loading {
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      overflow: hidden;
+      background: rgba(51, 51, 51, 1.00);
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+      z-index: -1;
+    }
 
-        .loading-icon {
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            width: 100px;
-            height: 100px;
-            margin-left: -50px;
-            margin-top: -50px;
-            border-radius: 60px;
-            z-index: 11;
-        }
+    .loading-icon {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 100px;
+      height: 100px;
+      margin-left: -50px;
+      margin-top: -50px;
+      border-radius: 60px;
+      z-index: 11;
+    }
 
-        .appBackdrop {
-            height: 100%;
-            width: 100%;
-            opacity: 0.4;
-            background-color: black;
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 10;
-        }
+    .appBackdrop {
+      height: 100%;
+      width: 100%;
+      opacity: 0.4;
+      background-color: black;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 10;
+    }
 
-        app-root:empty~.page-loading {
-            opacity: 1;
-            z-index: 1;
-        }
-
+    app-root:empty~.page-loading {
+      opacity: 1;
+      z-index: 1;
+    }
   </style>
 </head>
 
@@ -77,71 +78,79 @@
   </div>
   <script src="assets/vendor/pace/pace.min.js"></script>
   <script>
-  (function (window) {
-            const urlParams = new URLSearchParams(window.location.search);
-            const cookie = urlParams.get('cookie');
-            var pairs = document.cookie.split(";");
-            console.log('Cookie: ', cookie, window.location.search, pairs);
+    (function (window) {
+      const urlParams = new URLSearchParams(window.location.search);
+      const cookie = urlParams.get('cookie');
+      var pairs = document.cookie.split(";");
+      console.log('Cookie: ', cookie, window.location.search, pairs);
+      // const urlParams = new URLSearchParams(window.location.search);
+      let userID = ''
+      userID = urlParams.get('userID');
+      let password = ''
+      password= urlParams.get('password');
 
-            // Polyfills DOM4 MouseEvent only on IE11
-            // Fixes ngx-charts line-chart hover
-            // https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/MouseEvent#Polyfill
-            if (!!window.MSInputMethodContext && !!document.documentMode || document.documentMode === 10) {
-                function MouseEvent(eventType, params) {
-                    params = params || { bubbles: false, cancelable: false };
-                    var mouseEvent = document.createEvent('MouseEvent');
-                    mouseEvent.initMouseEvent(eventType, params.bubbles, params.cancelable, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+      // Store them in a global variable or localStorage for use in Angular
+      window.localStorage.setItem('userID', userID);
+      window.localStorage.setItem('password', password);
+      // Polyfills DOM4 MouseEvent only on IE11
+      // Fixes ngx-charts line-chart hover
+      // https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/MouseEvent#Polyfill
+      if (!!window.MSInputMethodContext && !!document.documentMode || document.documentMode === 10) {
+        function MouseEvent(eventType, params) {
+          params = params || { bubbles: false, cancelable: false };
+          var mouseEvent = document.createEvent('MouseEvent');
+          mouseEvent.initMouseEvent(eventType, params.bubbles, params.cancelable, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
 
-                    return mouseEvent;
-                }
+          return mouseEvent;
+        }
 
-                MouseEvent.prototype = Event.prototype;
+        MouseEvent.prototype = Event.prototype;
 
-                window.MouseEvent = MouseEvent;
-            }
+        window.MouseEvent = MouseEvent;
+      }
 
-            // Initialize PACE
+      // Initialize PACE
 
-            // before changes
-            // window.paceOptions = {
-            //     document: true,
-            //     eventLag: true,
-            //     restartOnPushState: true,
-            //     restartOnRequestAfter: true,
-            //     ajax: {
-            //         trackMethods: ['POST', 'GET']
-            //     }
-            // };
+      // before changes
+      // window.paceOptions = {
+      //     document: true,
+      //     eventLag: true,
+      //     restartOnPushState: true,
+      //     restartOnRequestAfter: true,
+      //     ajax: {
+      //         trackMethods: ['POST', 'GET']
+      //     }
+      // };
 
-            // after update 
-            window.paceOptions = {
-                ajax: {
-                    ignoreURLs: [/.*heartBeat.*/i, /.*sockjs-node.*/i, /.*__webpack_dev_server__.*/i],
-                    trackMethods: ['GET', 'POST']
-                },
-                // ajax : true,
-                document: true,
-                eventLag: {
-                    lagThreshold: 30
-                },
-                restartOnPushState: true,
-                restartOnRequestAfter: true,
-            };
+      // after update 
+      window.paceOptions = {
+        ajax: {
+          ignoreURLs: [/.*heartBeat.*/i, /.*sockjs-node.*/i, /.*__webpack_dev_server__.*/i],
+          trackMethods: ['GET', 'POST']
+        },
+        // ajax : true,
+        document: true,
+        eventLag: {
+          lagThreshold: 30
+        },
+        restartOnPushState: true,
+        restartOnRequestAfter: true,
+      };
 
-            Pace.on("start", function () {
-                $(".loader").show();
-            });
-            Pace.on("done", function () {
-                $(".loader").hide();
-            });
-        })(window);
-</script>
-<script>
-  window.history.replaceState('', '', '/grn');
-  // window.history.replaceState('','','/~fiadmin');
-</script>
-  
-  
+      Pace.on("start", function () {
+        $(".loader").show();
+      });
+      Pace.on("done", function () {
+        $(".loader").hide();
+      });
+    })(window);
+  </script>
+  <script>
+    window.history.replaceState('', '', '/grn');
+    // window.history.replaceState('','','/~fiadmin');
+  </script>
+
+
   <!-- <script>
     (function (window) {
       // Pace.js configuration
@@ -179,7 +188,7 @@
       }, 1000); // Adjust timeout as needed (e.g., 10 seconds)
     })(window);
   </script> -->
-  
+
 </body>
 
 </html>

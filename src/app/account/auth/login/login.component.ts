@@ -38,10 +38,65 @@ export class LoginComponent implements OnInit {
     private authFackservice: AuthfakeauthenticationService, private apiService: UserProfileService) { }
 
   ngOnInit() {
-   
-    if (localStorage.getItem('currentUser')) {
-      this.router.navigate(['/']);
-    }
+    console.log('login initialized!',localStorage.getItem('userID'), localStorage.getItem('password'));
+    localStorage.getItem('userID')
+    localStorage.getItem('password')
+    // this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/grn';
+    // Use Angular's ActivatedRoute to get query parameters
+    // this.route.queryParams.subscribe(params => {
+    //   console.log("Received query params:", params);
+      const userID = localStorage.getItem('userID') ;
+      const password = localStorage.getItem('password');
+  
+      console.log('Extracted userID:', userID, 'Extracted password:', password);
+  
+      if (userID && password) {
+        const payload = {
+          LOGIN: [
+            {
+              ZUSER: userID,
+              ZPASSWORD: password,
+            },
+          ],
+        };
+  
+        this.apiService.Login(payload).subscribe({
+          next: (res) => {
+            this.response = res;
+            console.log('this.response', this.response);
+  
+            if (this.response ) {
+              const dummy = 'Welcome to GRN';
+
+              localStorage.setItem('currentUser', JSON.stringify( dummy|| { token: this.response.token }));
+
+              this.router.navigate([this.returnUrl], { skipLocationChange: true });
+              this.apiService.setLoginResponse(this.response);
+              localStorage.setItem('currentUser', JSON.stringify({ token: this.response.token }));
+  
+              // this.apiService.setLoginResponse(res);
+  
+              // this.router.navigate(['/grn'], { skipLocationChange: true });
+  
+              Swal.fire('', dummy, 'success');
+            } else {
+              Swal.fire('', 'Invalid login credentials!', 'error');
+              this.router.navigate(['/login']);
+            }
+          },
+          error: (err) => {
+            console.error(err);
+            Swal.fire('', 'An error occurred during auto-login!', 'error');
+          },
+        });
+      } else {
+        console.log("not login")
+        this.router.navigate(['/login']);  // Redirect to login if query params are missing
+      }
+    // });
+    // if (localStorage.getItem('currentUser')) {
+    //   this.router.navigate(['/']);
+    // }
     // form validation
     this.loginForm = this.formBuilder.group({
       userID: ['', [Validators.required]],
@@ -72,7 +127,6 @@ export class LoginComponent implements OnInit {
           }
       ]
   };
-
     const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
     // this.store.dispatch(login({ email: userID, password: password }));
 
