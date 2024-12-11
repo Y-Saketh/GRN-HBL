@@ -17,6 +17,8 @@ export interface Table {
   CHARG: string; // Batch Number
   LIFNR: string; // Account Number of Supplier
   NAME1:string;
+  selected: boolean;
+  generated: boolean; 
 }
 
 

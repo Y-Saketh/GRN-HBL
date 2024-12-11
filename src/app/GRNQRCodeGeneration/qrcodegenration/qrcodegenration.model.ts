@@ -1,6 +1,6 @@
 
 export interface Table {
-    selected: any;
+ 
     MATNR: string; // Material Number
     WERKS: string; // Plant
     LGORT: string; // Storage Location
@@ -17,7 +17,8 @@ export interface Table {
     shadowRows?: Table[]; // Shadow rows
     BUDAT?:string; //Posting Date
     CHARG?:string;
-    labelQuantity?:number;
+    ZLABEL?:number;
+    selected:boolean;
   }
   
 

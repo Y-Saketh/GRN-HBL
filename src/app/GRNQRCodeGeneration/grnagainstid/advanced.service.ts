@@ -61,6 +61,7 @@ function matches(table: Table, term: string, pipe: PipeTransform) {
       table.CHARG.toLowerCase().includes(term.toLowerCase()) || // Batch Number
       table.NAME1.toLowerCase().includes(term.toLowerCase()) ||
       table.LIFNR.toLowerCase().includes(term.toLowerCase()) // Account Number of Supplier
+
     );
   }
   

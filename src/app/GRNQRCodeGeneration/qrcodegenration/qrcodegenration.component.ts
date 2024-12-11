@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChildren, QueryList } from '@angular/core';
 import { CommonModule, DecimalPipe } from '@angular/common';
 
-import { Observable, take } from 'rxjs';
+import { every, Observable, take } from 'rxjs';
 
 import { Table } from './qrcodegenration.model';
 
@@ -17,7 +17,7 @@ import Swal from 'sweetalert2';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { LoaderService } from 'src/app/core/services/loader.service';
 declare var Pace: any;
-
+import QRCode from 'qrcode';
 
 @Component({
   selector: 'app-qrcodegenration',
@@ -40,7 +40,7 @@ export class QRcodegenrationComponent {
   total$: Observable<number>;
   validationform: UntypedFormGroup;
   inboundDetailsForm:UntypedFormGroup;
-
+  qrCodes: { qrCodeUrl: string, data: any }[] = [];
   @ViewChildren(qrSortableDirective) headers: QueryList<qrSortableDirective>;
   public isCollapsed = true;
   GrnResponse: any;
@@ -59,9 +59,12 @@ export class QRcodegenrationComponent {
   City: any;
   GSTIN: any;
   userName: any;
-  labelQuantity:any;
-  
-
+  ZLABEL:any;
+  QRData: any[];
+  QRDAta:any[]=[];
+  qrscreen: boolean;
+  isGenerating = false;
+  materials: any[] = [];
   constructor(public service: qrcodegenrationService,public formBuilder: UntypedFormBuilder,private apiService:UserProfileService, public loaderservice: LoaderService) {
     this.tables$ = service.tables$;
     this.total$ = service.total$;
@@ -175,6 +178,7 @@ export class QRcodegenrationComponent {
   }
 
   saveBound(tables$: Observable<any[]>) {
+    console.log("labelQuantity",)
     this.isSubmitting = true;
   
     tables$.pipe(take(1)).subscribe({
@@ -187,8 +191,12 @@ export class QRcodegenrationComponent {
            IN_DATE: this.invoiceDate,
            INVOICE: this.invoiceNumber,
            LIFNR: this.vendorCode,
+         
+          NAME1: this.vendorName ,
+          ORT01: this.City,
+          STCD3:  this.GSTIN,
           SAVE: []
-
+       
          };
         let hasEmptyShadows = false;
         let hasMismatchedQuantities = false;
@@ -215,7 +223,9 @@ export class QRcodegenrationComponent {
                 WERKS: table.WERKS,
                 LGORT: table.LGORT,
                 BWART: table.BWART,
-                CHARG:table.CHARG
+                CHARG:table.CHARG,
+                ZLABEL:table.ZLABEL,
+                MAKTX:table.MAKTX
                 // BUDAT: table.PostingDate,
               });
             } else {
@@ -236,6 +246,7 @@ export class QRcodegenrationComponent {
                   CHARG: shadowRow.CHARG,
                   WEMPF: this.userName , //userName
                   ABLAD:shadowRow.ABLAD,
+                  MAKTX:table.MAKTX
                 });
               });
   
@@ -258,6 +269,8 @@ export class QRcodegenrationComponent {
               LGORT: table.LGORT,
               BWART: table.BWART,
               CHARG:table.CHARG,
+              ZLABEL:table.ZLABEL,
+              MAKTX:table.MAKTX
               // BUDAT: table.PostingDate,
             });
           }
@@ -304,17 +317,47 @@ export class QRcodegenrationComponent {
       },
     });
   }
-  GenQR(){
+  // GenQR(){
     
-  }
+  // }
   // Helper method to submit the payload to the API
+  // submitPayload(payload: any) {
+  //   console.log("payload", payload);
+  //   this.apiService.grnlist(payload).subscribe({
+  //     next: (res) => {
+  //       console.log('Saved:', res);
+  //       Swal.fire('', res[0].MESSAGE, 'success').then(() => {
+
+
+  //         // this.resetFormAndData();
+  //       });
+  //       this.isSubmitting = false;
+  //     },
+  //     error: (err) => {
+  //       console.error('Error:', err);
+  //       this.isSubmitting = false;
+  //     },
+  //   });
+  // }
   submitPayload(payload: any) {
     console.log("payload", payload);
     this.apiService.grnlist(payload).subscribe({
       next: (res) => {
         console.log('Saved:', res);
-        Swal.fire('', res[0].MESSAGE, 'success').then(() => {
-          this.resetFormAndData();
+        Swal.fire({
+          title: '',
+          text: res[0].MESSAGE,
+          icon: 'success',
+          showCancelButton: true, // Adds the Cancel button
+          confirmButtonText: 'OK', // Text for OK button
+          cancelButtonText: 'Cancel', // Text for Cancel button
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // Call generateQR() function when OK is clicked
+            this.generateQR();
+          } else if (result.isDismissed) {
+            console.log('Action canceled');
+          }
         });
         this.isSubmitting = false;
       },
@@ -322,6 +365,77 @@ export class QRcodegenrationComponent {
         console.error('Error:', err);
         this.isSubmitting = false;
       },
+    });
+  }
+  async generateQR() {
+   this.qrscreen = true;
+    this.isGenerating = true;
+    this.qrCodes = [];  // Clear any previously generated QR codes
+
+    // Loop through the items (which now contains updated data with ZRQTY)
+    let i=1
+    for (const item of this.materials) {
+      for (const packet of item.packets) {
+        i++
+        var reelno = `Reel ${i}`
+        // Use packet and other material data to generate QR code
+        const qrData = `
+                GRN Number: ${item.MBLNR}
+                Vendor Code: ${item.LIFNR}
+                SAP Code: ${item.MATNR}
+                Material Description: ${item.MAKTX}
+                Date Of GRN: ${item.ZQRGEN_DT}
+                Reel No:  ${reelno}
+                Quantity: ${packet.ZRQTY}
+            `;
+
+        try {
+          console.log("qrData", qrData, "item", item)
+          const qrCodeUrl = await this.generateQRCode(qrData);  // Generate QR code as a data URL
+          this.qrCodes.push({ qrCodeUrl, data: item });  // Store the QR code and its associated data
+         
+        } catch (error) {
+          console.error('Error generating QR code', error);
+        }
+      }
+    }
+    this.saveQRData();
+    this.isGenerating = false;
+  }
+
+  generateQRCode(data: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+      QRCode.toDataURL(data, { errorCorrectionLevel: 'M' }, (err, url) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(url);
+        }
+      });
+    });
+  }
+  saveQRData(){
+    let payload = this.QRData
+    console.log("Final Payload:", payload);
+    this.apiService.QRRequest(payload).subscribe({
+      next: (res: any) => {
+        console.log('Data:', res);
+        this.QRDAta = res;
+        if(res[0].MESSAGE){
+          Swal.fire("", res[0].MSGTXT, "success");
+        }else{
+          Swal.fire("", "Not Submitted.", "error");
+        }
+        this.service.setTableData(res || []);
+        this._fetchData();
+      },
+      error: (error: any) => {
+        console.error('Error fetching lot reports:', error);
+        Swal.fire("", "Error while saving the QR Data", "error");
+      },
+      complete: () => {
+        console.log('API call completed.');
+      }
     });
   }
   
@@ -409,10 +523,10 @@ export class QRcodegenrationComponent {
           this.vendorName = res[0].NAME1;
           this.City = res[0].ORT01
           this.GSTIN = res[0].STCD3
-  
+         this.GrnResponse.forEach((item)=>{item.selected = true});
+          console.log("this.GrnResponse2",this.GrnResponse)
           // Update the table with the combined data
           this.service.setTableData(this.GrnResponse || []);
-  
           this._fetchData();
         },
         error: (error: any) => {

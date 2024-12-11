@@ -6,7 +6,7 @@ import { AdvancedService } from './advanced.service';
 import { PagetitleComponent } from 'src/app/shared/ui/pagetitle/pagetitle.component';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { AdvancedSortableDirective, SortEvent } from './advanced-sortable.directive';
-import { Observable } from 'rxjs';
+import { Observable, take } from 'rxjs';
 import { tableData } from './data';
 
 import QRCode from 'qrcode';
@@ -65,6 +65,7 @@ export class GrnagainstidComponent implements OnInit {
   materials: any[] = [];
   genQR: boolean;
   QRData: any[];
+  SaveData:  any[];
   constructor(public formBuilder: UntypedFormBuilder, public service: AdvancedService, private apiService: UserProfileService) {
     this.tables$ = service.tables$;
     console.log("this.tables$", this.tables$)
@@ -75,7 +76,7 @@ export class GrnagainstidComponent implements OnInit {
   ngOnInit(): void {
     this.submit = false;
     this.validationform = this.formBuilder.group({
-      inbounddeliverynumber: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]+')]],
+      grnNumber: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]+')]],
 
     });
 
@@ -84,14 +85,17 @@ export class GrnagainstidComponent implements OnInit {
      * fetch data
      */
     this._fetchData();
-    this.getQRData()
+    // this.getQRData()
 
   }
-  getQRData() {
-    let payload = {
-      // "MBLNR": "5000778295",
-      // "MJAHR": "2024"
-       "EBELN": "4500216733",//"5000778325"//"4500216733"//"4500218779"
+
+  validSubmit() {
+    this.submit = true;
+    let payload = { 
+
+      "MBLNR": this.form.grnNumber.value, //"5000778295",
+      "MJAHR": "2024"
+      //  "EBELN": "4500216733",//"5000778325"//"4500216733"//"4500218779"
     }
     console.log("Final Payload:", payload);
     Pace.restart();
@@ -234,9 +238,7 @@ export class GrnagainstidComponent implements OnInit {
     return this.validationform.controls;
   }
 
-  validSubmit() {
-    this.submit = true;
-  }
+
 
   back() {
     this.selectedMaterial = null;
@@ -245,7 +247,7 @@ export class GrnagainstidComponent implements OnInit {
   }
   backtoQunatity(){
     this.grnscreen = true;
-    this.selectedMaterial = false;
+    // this.selectedMaterial = false;
     this.qrscreen = false;
   }
   onSelectMaterial(table: any) {
@@ -273,43 +275,101 @@ export class GrnagainstidComponent implements OnInit {
 
   }
 
-  async generateQR() {
-    this.grnscreen = false;
-    this.qrscreen = true;
-    this.selectedMaterial = false;
-    this.isGenerating = true;
-    this.qrCodes = [];  // Clear any previously generated QR codes
+  // async generateQR() {
+  //   // this.grnscreen = false;
+  //   // this.qrscreen = true;
+  //   // this.selectedMaterial = false;
+  //   this.isGenerating = true;
+  //   this.qrCodes = [];  // Clear any previously generated QR codes
 
-    // Loop through the items (which now contains updated data with ZRQTY)
-    let i=1
-    for (const item of this.materials) {
-      for (const packet of item.packets) {
-        i++
-        var reelno = `Reel ${i}`
-        // Use packet and other material data to generate QR code
-        const qrData = `
-                GRN Number: ${item.MBLNR}
-                Vendor Code: ${item.LIFNR}
-                SAP Code: ${item.MATNR}
-                Material Description: ${item.MAKTX}
-                Date Of GRN: ${item.ZQRGEN_DT}
-                Reel No:  ${reelno}
-                Quantity: ${packet.ZRQTY}
-            `;
+  //   // Loop through the items (which now contains updated data with ZRQTY)
+  //   let i=1
+  //   for (const item of this.materials) {
+  //     for (const packet of item.packets) {
+  //       i++
+  //       var reelno = `Reel ${i}`
+  //       // Use packet and other material data to generate QR code
+  //       const qrData = `
+  //               GRN Number: ${item.MBLNR}
+  //               Vendor Code: ${item.LIFNR}
+  //               SAP Code: ${item.MATNR}
+  //               Material Description: ${item.MAKTX}
+  //               Date Of GRN: ${item.ZQRGEN_DT}
+  //               Reel No:  ${reelno}
+  //               Quantity: ${packet.ZRQTY}
+  //           `;
 
-        try {
-          console.log("qrData", qrData, "item", item)
-          const qrCodeUrl = await this.generateQRCode(qrData);  // Generate QR code as a data URL
-          this.qrCodes.push({ qrCodeUrl, data: item });  // Store the QR code and its associated data
+  //       try {
+  //         console.log("qrData", qrData, "item", item)
+  //         const qrCodeUrl = await this.generateQRCode(qrData);  // Generate QR code as a data URL
+  //         this.qrCodes.push({ qrCodeUrl, data: item });  // Store the QR code and its associated data
          
-        } catch (error) {
-          console.error('Error generating QR code', error);
-        }
-      }
-    }
-    this.saveQRData();
-    this.isGenerating = false;
-  }
+  //       } catch (error) {
+  //         console.error('Error generating QR code', error);
+  //       }
+  //     }
+  //   }
+  //   this.saveQRData();
+  //   this.isGenerating = false;
+  // }
+  async generateQR(tables$: Observable<any[]>) {
+    tables$
+        .pipe(take(1)) // Ensure only one emission is processed
+        .subscribe(async (tables) => {
+            if (!Array.isArray(tables)) {
+                console.error("Tables is not an array");
+                return;
+            }
+
+            // Filter selected tables with labelQty
+            const selectedTables = tables.filter(
+                (table) => table.selected && table.ZLABEL
+            );
+
+            // Show Swal if no valid rows are selected
+            if (selectedTables.length === 0) {
+                await Swal.fire("", "Please select rows and enter label quantities", "error");
+                return; // Exit the function here
+            }
+
+            // Start QR generation
+            this.grnscreen = false;
+            this.qrscreen = true;
+            this.isGenerating = true; // Start loading state
+            this.qrCodes = []; // Reset QR codes
+
+            for (const item of selectedTables) {
+                let reelNumber = 1; // Start reel number from 1 for each row
+                const ZLABEL = item.ZLABEL || 1;
+
+                for (let j = 0; j < ZLABEL; j++) {
+                    const qrData = `
+                        GRN Number: ${item.MBLNR}
+                        Vendor Code: ${item.LIFNR}
+                        SAP Code: ${item.MATNR}
+                        Material Description: ${item.MAKTX}
+                        Date Of GRN: ${item.ZQRGEN_DT}
+                        Reel No: Reel ${reelNumber++}
+                        Quantity: ${item.ZRQTY}
+                    `;
+
+                    try {
+                        const qrCodeUrl = await this.generateQRCode(qrData); // Generate QR code
+                        this.SaveData.push(qrData);
+                        this.qrCodes.push({
+                            qrCodeUrl,
+                            data: { ...item, reelNumber: reelNumber - 1 }, // Add reel number to the data
+                        });
+                    } catch (error) {
+                        console.error("Error generating QR code", error);
+                    }
+                }
+            }
+            this.saveQRData()
+            this.isGenerating = false; // End loading state
+        });
+}
+
 
   generateQRCode(data: string): Promise<string> {
     return new Promise((resolve, reject) => {
@@ -321,6 +381,7 @@ export class GrnagainstidComponent implements OnInit {
         }
       });
     });
+   
   }
   saveQRData(){
     let payload = this.QRData

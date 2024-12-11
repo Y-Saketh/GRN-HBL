@@ -163,7 +163,7 @@
                   <th sortable="EBELP" (sort)="onSort($event)">PO Item</th>
                   <th>Goods Recipient</th>
                   <th>Unloading Point</th>
-                  <th>Label Qty</th>
+                  <th>No of Labels</th>
                   <!-- <th>Pkg</th> -->
                 </tr>
               </thead>
@@ -225,7 +225,7 @@
                   <td>
                     <input
                       type="number"
-                      [(ngModel)]="table.labelQuantity"
+                      [(ngModel)]="table.ZLABEL"
                       class="form-control form-control-sm"
                     />
 
@@ -336,7 +336,7 @@
             >
               Save
             </button>
-            &nbsp;  &nbsp;  
+            <!-- &nbsp;  &nbsp;  
             <button
               style="
                 background-color: rgb(10, 199, 41);
@@ -349,7 +349,7 @@
               (click)="GenQR()"
             >
               Generate QR
-            </button>
+            </button> -->
           </div>
 
           <div></div>
@@ -358,6 +358,32 @@
       </div>
     </div>
   </div>
+</div>
+<div *ngIf="qrscreen">
+  <h3>QR Code Generation</h3>
+  <button class="btn btn-primary" style="float: left; margin-left: 10px;" type="button"
+  (click)="backtoQunatity()">Back</button><br><br>
+  <p *ngIf="isGenerating" class="text-primary">Generating QR codes for all items...</p>
+
+  <div class="qr-container">
+      <div *ngFor="let qrData of qrCodes; let i = index" class="qr-item">
+          <div class="qr-code-wrapper">
+              <!-- Display QR code as image -->
+              <img [src]="qrData.qrCodeUrl" alt="QR Code for Item {{ i + 1 }}" width="150"
+                  height="150" />
+          </div>
+
+          <div class="qr-info">
+              <!-- Display fields beside the QR code -->
+              <p>{{ qrData.data.MBLNR }}</p>
+              <p>{{ qrData.data.LIFNR }}</p>
+              <p>{{ qrData.data.MATNR }}</p>
+              <p>Pack {{ i+1}}</p>
+              <p>{{ qrData.data.ZRQTY }}</p>
+          </div>
+      </div>
+  </div>
+
 </div>
 <!-- <ng-template #content role="document" let-modal>
   <div class="modal-header">

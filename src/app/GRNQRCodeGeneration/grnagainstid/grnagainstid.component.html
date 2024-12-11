@@ -8,6 +8,51 @@
                     <h4 class="card-title"><span style="color: black;"></span> QR Code Generation</h4>
                     <!-- <p class="card-title-desc">Provide valuable, actionable feedback to your users with HTML5 form
             validation–available in all our supported browsers.</p> -->
+            <form  class="needs-validation"
+            (ngSubmit)="validSubmit()"  [formGroup]="validationform">
+            <div class="row mt-4">
+               <!-- Row 1 -->
+               <div class="col-md-2">
+                 <div class="mb-3">
+                   <label class="brandcolor" for="grnNumber"
+                     >GRN No</label
+                   >
+                   <input
+                     type="text"
+                     class="form-control"
+                     id="grnNumber"
+                     formControlName="grnNumber"
+                     placeholder="GRN Number"
+                  
+                   />
+                   <div
+                     *ngIf="submit && form.grnNumber.errors"
+                     class="invalid-feedback"
+                   >
+                     <span *ngIf="form.grnNumber.errors.required">
+                       Please provide a valid Inbound Order Number.
+                     </span>
+                   </div>
+                 </div>
+               </div>
+ 
+               <div class="col-md-2 text-center">
+                 <button
+                   style="
+                     background-color: brown;
+                     margin-top: 28px;
+                     width: max-content;
+                     color: aliceblue;
+                   "
+                   class="btn"
+                   type="submit" 
+                 >
+                   Get Details
+                 </button>
+               </div>
+             </div>
+
+            </form>           
 
 
                 </div>
@@ -18,247 +63,204 @@
                 <!-- <div class="col-12"> -->
                 <!-- <div class="card"> -->
                 <div *ngIf="grnscreen" class="card-body">
-                    <div class="row mb-md-2">
-                        <div class="col-sm-12 col-md-6">
-                            <div class="dataTables_length">
-                                <label class="d-inline-flex align-items-center">
-                                    Show
-                                    <select name="tickets-table_length" aria-controls="tickets-table"
-                                        class="form-control form-control-sm mx-2" [(ngModel)]="service.pageSize">
-                                        <option [ngValue]="10">10</option>
-                                        <option [ngValue]="25">25</option>
-                                        <option [ngValue]="50">50</option>
-                                        <option [ngValue]="100">100</option>
-                                    </select>
-                                    entries
-                                </label>
+                    <!-- <div class="card-body"> -->
+                        <div class="row mb-md-2">
+                            <div class="col-sm-12 col-md-6">
+                                <div class="dataTables_length">
+                                    <label class="d-inline-flex align-items-center">
+                                        Show
+                                        <select name="tickets-table_length" aria-controls="tickets-table"
+                                            class="form-control form-control-sm mx-2" [(ngModel)]="service.pageSize">
+                                            <option [ngValue]="10">10</option>
+                                            <option [ngValue]="25">25</option>
+                                            <option [ngValue]="50">50</option>
+                                            <option [ngValue]="100">100</option>
+                                        </select>
+                                        entries
+                                    </label>
+                                </div>
                             </div>
+                            <div class="col-sm-12 col-md-6">
+                                <div id="tickets-table_filter" class="dataTables_filter text-md-end">
+                                    <button (click)="generateQR(tables$)" class="btn btn-success btn-lg highlight-3d-btn">Generate QR</button>
+                                </div>
+                            </div>
+                            
                         </div>
-                        <div class="col-sm-12 col-md-6">
-                            <div id="tickets-table_filter" class="dataTables_filter text-md-end">
-                                <label class="d-inline-flex align-items-center">
-                                    Search:
-                                    <input type="text" name="searchTerm" class="form-control form-control-sm ms-2"
-                                        aria-controls="tickets-table" [(ngModel)]="service.searchTerm" />
-                                </label>
-                            </div>
+
+                        <div class="table-responsive">
+                            <table id="basic-datatable" class="table table-bordered dt-responsive nowrap">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th sortable="WERKS" (sort)="onSort($event)">Plant</th>
+                                        <th sortable="MBLNR" (sort)="onSort($event)">Material Document</th>
+                                        <th sortable="MATNR" (sort)="onSort($event)">Mat.Code</th>
+                                        <th sortable="MAKTX" (sort)="onSort($event)">Mat.Desc</th>
+                                        <th sortable="MENGE" (sort)="onSort($event)">Quantity</th>
+                                        <th sortable="LGORT" (sort)="onSort($event)">S.Loc</th>
+                                        <th sortable="MEINS" (sort)="onSort($event)">BUoM</th>
+                                        <th sortable="CHARG" (sort)="onSort($event)">Batch</th>
+                                        <th sortable="EBELN" (sort)="onSort($event)">PO.Number</th>
+                                        <th sortable="EBELP" (sort)="onSort($event)">PO.Item</th>
+                                        <th sortable="LIFNR" (sort)="onSort($event)">Vendor Code</th>
+                                        <th sortable="NAME1" (sort)="onSort($event)">Vendor Name</th>
+                                        <th sortable="NAME1" (sort)="onSort($event)">No of Labels</th>
+                                        <th sortable="ZQRSTAT" (sort)="onSort($event)">QR Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let table of tables$ | async; let index = index">
+                                        <td><input type="checkbox" [(ngModel)]="table.selected" /></td>
+                                        <td>{{ table.WERKS }}</td>
+                                        <td>{{ table.MBLNR }}</td>
+                                        <td>{{ table.MATNR }}</td>
+                                        <td>{{ table.MAKTX }}</td>
+                                        <td>{{ table.MENGE }}</td>
+                                        <td>{{ table.LGORT }}</td>
+                                        <td>{{ table.MEINS }}</td>
+                                        <td>{{ table.CHARG }}</td>
+                                        <td>{{ table.EBELN }}</td>
+                                        <td>{{ table.EBELP }}</td>
+                                        <td>{{ table.LIFNR }}</td>
+                                        <td>{{ table.NAME1 }}</td>
+                                        <td>
+                                            <input type="number" class="form-control" [(ngModel)]="table.ZLABEL" placeholder="Label Qty" />
+                                        </td>
+                                        <td>{{ table.ZQRSTAT }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            
                         </div>
                     </div>
 
-                    <div class="table-responsive">
-                        <table id="basic-datatable" class="table table-bordered dt-responsive nowrap">
+                    <div *ngIf="false" class="mt-4">
+
+                        <!-- <div *ngIf="selectedMaterial" class="mt-4"> -->
+                        <button class="btn btn-primary" style="float: left; margin-left: 10px;" type="button"
+                            (click)="back()">Back</button><br><br>
+                        <h5>Item Quantity: Detailed Items for Material {{ selectedMaterial.material }}</h5>
+
+                        <!-- Table for Materials -->
+                        <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th></th>
-                                    <th sortable="WERKS" (sort)="onSort($event)">Plant</th>
-                                    <th sortable="MBLNR" (sort)="onSort($event)">Material Document</th>
-                                    <th sortable="MATNR" (sort)="onSort($event)">Mat.Code</th>
-                                    <th sortable="MAKTX"  (sort)="onSort($event)">Mat.Desc</th>
-                                    <th sortable="MENGE" (sort)="onSort($event)">Quantity</th>
-                                    <th sortable="LGORT" (sort)="onSort($event)">S.Loc</th>
-                                    <th sortable="MEINS" (sort)="onSort($event)">BUoM</th>
-                                    <th sortable="CHARG" (sort)="onSort($event)">Batch</th>
-                                    <th sortable="EBELN" (sort)="onSort($event)">PO.Number</th>
-                                    <th sortable="EBELP" (sort)="onSort($event)">PO.Item</th>
-                                    <th sortable="LIFNR" (sort)="onSort($event)">Vendor Code</th>
-                                    <th sortable="NAME1" (sort)="onSort($event)">Vendor Name</th>
-                                    <th sortable="NAME1" (sort)="onSort($event)">Label Qty</th>
-                                    <th sortable="ZQRSTAT" (sort)="onSort($event)">QR Status</th>
-                                    <th>Action</th>
+                                    <th>#</th>
+                                    <th>GRN Number</th>
+                                    <th>Vendor Code</th>
+                                    <th>SAP Code</th>
+                                    <th>Material Description</th>
+                                    <th>Date Of GRN</th>
+                                    <th>Real Quantity</th>
+                                    <th>No of Qty</th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
-                            @for(table of tables$ | async;track $index){
                             <tbody>
-
-                                <tr>
-
-                                    <td align="center">
-                                        <a class="expand-row" (click)="changeValue($index)">+</a>
-                                    </td>
-
-                                    <td>{{ table.WERKS }}</td>
-                                    <td>{{ table.MBLNR }}</td>
-                                    <td>{{table.MATNR}}</td>
-                                    <td>{{ table.MAKTX }}</td>
-                                    <td>{{ table.MENGE }}</td>
-                                    <td>{{ table.LGORT }}</td>
-                                    <td>{{ table.MEINS }}</td>
-                                    <td>{{ table.CHARG }}</td>
-                                    <td>{{ table.EBELN }}</td>
-                                    <td>{{ table.EBELP }}</td>
-                                    <td>{{ table.LIFNR }}</td>
-                                    <td>{{ table.NAME1 }}</td>
-                                    <td>  <input
-                                        type="text"
-                                        class="form-control"
-                                       [(ngModel)]="table.labelQty"
-                                        placeholder="Label Qty"
-                                       
-                                      /></td>
-                                    <td>{{ table.ZQRSTAT }} </td>
-                                    <td (click)="onSelectMaterial(table)"><button class=" btn btn-warning btn-sm ">Gen
-                                            QR</button></td>
-
-
-                                </tr>
-
-                                @if(!hideme[$index]){
-                                <tr class="sub-table no-bg">
-                                    <td align="center"> </td>
-                                    <td colspan="9" class="p-0">
-                                        <table class="table mb-0 table-striped">
-                                            <thead class="bg-dark text-white">
-                                                <tr>
-                                                    <th>Item in Material Document</th>
-                                                    <th>Reel Number</th>
-                                                    <th>QR Generation Date</th>
-                                                    <th>Material Description</th>
-                                                    <th>QR Balance Qty</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>{{ table.ZEILE }}</td>
-                                                    <td>{{ table.ZRNUM }}</td>
-                                                    <td>{{ table.ZQRGEN_DT }}</td>
-                                                    <td>{{table.MAKTX}}</td>
-                                                    <td>{{ table.ZQRBAL_QTY }}</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </td>
-                                </tr>}
-
-                            </tbody>
-                            }
-                        </table>
-                    </div>
-                </div>
-
-                <div *ngIf="selectedMaterial" class="mt-4">
-                    <button class="btn btn-primary" style="float: left; margin-left: 10px;" type="button"
-                        (click)="back()">Back</button><br><br>
-                    <h5>Item Quantity: Detailed Items for Material {{ selectedMaterial.material }}</h5>
-
-                    <!-- Table for Materials -->
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>GRN Number</th>
-                                <th>Vendor Code</th>
-                                <th>SAP Code</th>
-                                <th>Material Description</th>
-                                <th>Date Of GRN</th>
-                                <th>Real Quantity</th>
-                                <th>No of Qty</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let material of materials; let i = index">
-                                <td>{{ i + 1 }}</td>
-                                <td>{{ material.ZEILE }}</td>
-                                <td>{{ material.LIFNR }}</td>
-                                <td>{{ material.MBLNR }}</td>
-                                <td>{{ material.MAKTX }}</td>
-                                <td>{{material.ZQRGEN_DT}}</td>
-                                <td>{{ material.MENGE }}</td>
-                                <td>{{material.MENGE}}
-                                    <!-- <ul>
+                                <tr *ngFor="let material of materials; let i = index">
+                                    <td>{{ i + 1 }}</td>
+                                    <td>{{ material.ZEILE }}</td>
+                                    <td>{{ material.LIFNR }}</td>
+                                    <td>{{ material.MBLNR }}</td>
+                                    <td>{{ material.MAKTX }}</td>
+                                    <td>{{material.ZQRGEN_DT}}</td>
+                                    <td>{{ material.MENGE }}</td>
+                                    <td>{{material.MENGE}}
+                                        <!-- <ul>
                                 <li *ngFor="let packet of material.packets">
                                     Packet {{ packet.packet }}: {{ packet.quantity }}
                                 </li>
                             </ul> -->
-                                </td>
-                                <td>
+                                    </td>
+                                    <td>
 
-                                    <button class="btn btn-warning btn-sm" (click)="openUnmatchPopup(i)">
-                                        Edit Quantity
-                                    </button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                                        <button class="btn btn-warning btn-sm" (click)="openUnmatchPopup(i)">
+                                            Edit Quantity
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
 
-                
 
-                    <div bsModal #unmatchModal="bs-modal" class="modal fade" tabindex="-1"
-                        aria-labelledby="unmatchModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="unmatchModalLabel">Edit Quantities</h5>
-                                    <button type="button" class="btn-close" (click)="closePopup()"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <h6>Material: {{ selectedMaterial?.MAKTX }}</h6>
-                                    <table class="table table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th>Pack Size</th>
-                                                <th>Quantity</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr *ngFor="let packet of selectedMaterial?.packets; let j = index">
-                                                <td>Pack {{ packet.PACKET_NO }}</td>
-                                                <td>
-                                                    <input type="number" class="form-control"
-                                                        [(ngModel)]="packet.MENGE" />
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="modal-footer">
-                                    <button class="btn btn-primary" (click)="saveUnmatched()">Save</button>
-                                    <button class="btn btn-secondary" (click)="closePopup()">Cancel</button>
+
+                        <div bsModal #unmatchModal="bs-modal" class="modal fade" tabindex="-1"
+                            aria-labelledby="unmatchModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="unmatchModalLabel">Edit Quantities</h5>
+                                        <button type="button" class="btn-close" (click)="closePopup()"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <h6>Material: {{ selectedMaterial?.MAKTX }}</h6>
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>Pack Size</th>
+                                                    <th>Quantity</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let packet of selectedMaterial?.packets; let j = index">
+                                                    <td>Pack {{ packet.PACKET_NO }}</td>
+                                                    <td>
+                                                        <input type="number" class="form-control"
+                                                            [(ngModel)]="packet.MENGE" />
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button class="btn btn-primary" (click)="saveUnmatched()">Save</button>
+                                        <button class="btn btn-secondary" (click)="closePopup()">Cancel</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+
+
+
+                        <div class="custom-btn-group mt-4">
+                            <button class="btn btn-success" (click)="saveUnmatched()" type="button">Save</button>
+                            <button class="btn btn-primary" [disabled]="!genQR" (click)="generateQR()"
+                                type="button">Continue to Generate QR</button>
+                        </div>
+
+
                     </div>
+                    <div *ngIf="qrscreen">
+                        <h3>QR Code Generation</h3>
+                        <button class="btn btn-primary" style="float: left; margin-left: 10px;" type="button"
+                            (click)="backtoQunatity()">Back</button><br><br>
+                        <p *ngIf="isGenerating" class="text-primary">Generating QR codes for all items...</p>
 
+                        <div class="qr-container">
+                            <div *ngFor="let qrData of qrCodes; let i = index" class="qr-item">
+                                <div class="qr-code-wrapper">
+                                    <!-- Display QR code as image -->
+                                    <img [src]="qrData.qrCodeUrl" alt="QR Code for Item {{ i + 1 }}" width="150" height="150" />
+                                </div>
+                        
+                                <div class="qr-info">
+                                    <!-- Display fields beside the QR code -->
+                                    <p>{{ qrData.data.MBLNR }}</p>
+                                    <p>{{ qrData.data.LIFNR }}</p>
+                                    <p>{{ qrData.data.MATNR }}</p>
+                                    <p>Pack {{ qrData.data.reelNumber }}</p>
+                                    <p>{{ qrData.data.ZRQTY }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        
 
-
-                    <div class="custom-btn-group mt-4">
-                        <button class="btn btn-success" (click)="saveUnmatched()" type="button">Save</button>
-                        <button class="btn btn-primary" [disabled]="!genQR" (click)="generateQR()"
-                            type="button">Continue to Generate QR</button>
                     </div>
 
 
                 </div>
-                <div *ngIf="qrscreen">
-                    <h3>QR Code Generation</h3>
-                    <button class="btn btn-primary" style="float: left; margin-left: 10px;" type="button"
-                    (click)="backtoQunatity()">Back</button><br><br>
-                    <p *ngIf="isGenerating" class="text-primary">Generating QR codes for all items...</p>
-
-                    <div class="qr-container">
-                        <div *ngFor="let qrData of qrCodes; let i = index" class="qr-item">
-                            <div class="qr-code-wrapper">
-                                <!-- Display QR code as image -->
-                                <img [src]="qrData.qrCodeUrl" alt="QR Code for Item {{ i + 1 }}" width="150"
-                                    height="150" />
-                            </div>
-
-                            <div class="qr-info">
-                                <!-- Display fields beside the QR code -->
-                                <p>{{ qrData.data.MBLNR }}</p>
-                                <p>{{ qrData.data.LIFNR }}</p>
-                                <p>{{ qrData.data.MATNR }}</p>
-                                <p>Pack {{ i+1}}</p>
-                                <p>{{ qrData.data.ZRQTY }}</p>
-                            </div>
-                        </div>
-                    </div>
-     
-                </div>
-
-
             </div>
         </div>
     </div>
-</div>
