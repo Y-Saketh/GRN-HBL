@@ -75,9 +75,9 @@
             <button
               class="btn btn-warning ms-2"
               [disabled]="(tables$ | async)?.length === 0"
-              (click)="exportToExcel()"
+              (click)="exportToPDF()"
             >
-              Export
+              Export to PDF
             </button>
           </div>
         </div>
@@ -205,11 +205,11 @@
               <!-- Type of document -->
               <td>{{ table.DOC_TYPE_REVAL }}</td>
               <!-- Revaluation document type -->
-              <td>{{ table.DOC_DATE }}</td>
+              <td>{{ table.DOC_DATE | date: 'dd-MM-yyyy'}}</td>
               <!-- Date of the document -->
-              <td>{{ table.POSTING_DATE }}</td>
+              <td>{{ table.POSTING_DATE | date: 'dd-MM-yyyy'}}</td>
               <!-- Posting date of the document -->
-              <td>{{ table.ENTRY_DATE }}</td>
+              <td>{{ table.ENTRY_DATE | date: 'dd-MM-yyyy' }}</td>
               <!-- Date of entry into the system -->
               <td>{{ table.ENTRY_TIME }}</td>
               <!-- Time of entry -->

@@ -12,7 +12,7 @@ import { UserProfileService } from 'src/app/core/services/user.service';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import * as moment from 'moment';
 import * as XLSX from 'xlsx'; 
-
+import { LoaderService } from 'src/app/core/services/loader.service';
 @Component({
   selector: 'app-close-download',
   standalone: true,
@@ -36,7 +36,7 @@ export class CloseDownloadComponent implements OnInit {
   lotReportsData: any;
   
   CloseDownload: Table[];
-  constructor(public formBuilder: UntypedFormBuilder, public service: AdvancedService, private apiService:UserProfileService) {
+  constructor(public formBuilder: UntypedFormBuilder, public service: AdvancedService, private apiService:UserProfileService, public loaderservice:LoaderService) {
     this.tables$ = service.tables$;
     console.log("this.tables$", this.tables$)
     this.total$ = service.total$;
@@ -154,6 +154,7 @@ export class CloseDownloadComponent implements OnInit {
   }
 
   getCloseDownload(){
+    this.loaderservice.showLoader();
     console.log("validationform",this.form) 
     let obj = {
       "WERKS": this.form.plant.value,// "1300","1025"
@@ -173,11 +174,12 @@ export class CloseDownloadComponent implements OnInit {
       },
       error: (error: any) => {
         console.error('Error fetching lot reports:', error);
-        this.validationform.reset()
+        // this.validationform.reset()
       },
       complete: () => {
         console.log('API call completed.');
-        this.validationform.reset()
+        this.loaderservice.hideLoader(); 
+        // this.validationform.reset()
       }
     });
  
