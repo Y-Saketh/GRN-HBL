@@ -2,9 +2,9 @@ import { Injectable, PipeTransform } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { debounceTime, delay, switchMap, tap } from 'rxjs/operators';
-import { Table, SearchResult } from './qrcodegenration.model';
-import { tableData } from './data';
-import { SortDirection } from './qr-sortable.directive';
+import { Table, SearchResult } from './advanced.model';
+
+import { SortDirection } from './advanced-sortable.directive';
 
 interface State {
     page: number;
@@ -20,6 +20,7 @@ interface State {
 const compare = (v1: string, v2: string) => v1 < v2 ? -1 : v1 > v2 ? 1 : 0;
 
 /**
+ *
  * Sort the table data
  * @param tabless Table field value
  * @param column Fetch the column
@@ -41,37 +42,34 @@ function sort(tables: Table[], column: string, direction: string): Table[] {
  * @param tables Table field value fetch
  * @param term Search the value
  */
-
-function matches(tables: Table, term: string, pipe: PipeTransform): boolean {
-    // if (!term) return true; // If no search term, return true for all rows
-
-    const lowerTerm = term.toLowerCase();
-
+function matches(table: Table, term: string, pipe: PipeTransform) {
     return (
-        (tables.MATNR?.toLowerCase().includes(lowerTerm) || false) || // Material
-        (tables.WERKS?.toLowerCase().includes(lowerTerm) || false) || // Plant
-        (tables.LGORT?.toLowerCase().includes(lowerTerm) || false) || // Storage Location
-        (tables.BWART?.toLowerCase().includes(lowerTerm) || false) || // Movement Type
-        (pipe.transform(tables.MENGE || '').includes(term) || false) || // Quantity
-        (tables.MEINS?.toLowerCase().includes(lowerTerm) || false) || // Base Unit of Measure
-        (tables.EBELN?.toLowerCase().includes(lowerTerm) || false) || // Supplier
-        (pipe.transform(tables.EBELP || '').includes(term) || false) || // Material Document Item
-        (tables.CHARG?.toLowerCase().includes(lowerTerm) || false) || // Batch
-      
-        (tables.SHORT_TEXT?.toLowerCase().includes(lowerTerm) || false) || // Material Description
-        (pipe.transform(tables.ORGQTY || '').includes(term) || false) || // Original Quantity
-        (pipe.transform(tables.labelQuantity || '').includes(term) || false) 
+      table.MBLNR.toLowerCase().includes(term.toLowerCase()) || // Number of Material Document
+      table.EBELN.toLowerCase().includes(term.toLowerCase()) || // Purchasing Document Number
+      table.ZEILE.toString().toLowerCase().includes(term.toLowerCase()) || // Item in Material Document
+      table.ZRQTY.toString().toLowerCase().includes(term.toLowerCase()) || // Reel Quantity
+      table.ZRNUM.toString().toLowerCase().includes(term.toLowerCase()) || // Reel Number
+      table.ZQRGEN_DT.toLowerCase().includes(term.toLowerCase()) || // QR Generation Date
+      table.ZQRSTAT.toLowerCase().includes(term.toLowerCase()) || // QR Status
+      table.ZQRBAL_QTY.toString().toLowerCase().includes(term.toLowerCase()) || // QR Balance Qty
+      table.WERKS.toLowerCase().includes(term.toLowerCase()) || // Plant
+      table.MATNR.toLowerCase().includes(term.toLowerCase()) || // Material Number
+      table.MAKTX.toLowerCase().includes(term.toLowerCase()) || // Material Description
+      table.LGORT.toLowerCase().includes(term.toLowerCase()) || // Storage Location
+      table.MENGE.toString().toLowerCase().includes(term.toLowerCase()) || // Quantity
+      table.MEINS.toLowerCase().includes(term.toLowerCase()) || // Base Unit of Measure
+      table.CHARG.toLowerCase().includes(term.toLowerCase()) || // Batch Number
+      table.NAME1.toLowerCase().includes(term.toLowerCase()) ||
+      table.LIFNR.toLowerCase().includes(term.toLowerCase()) // Account Number of Supplier
     );
-}
-
-
-
+  }
+  
 
 @Injectable({
     providedIn: 'root'
 })
 
-export class qrcodegenrationService {
+export class AdvancedService {
     // tslint:disable-next-line: variable-name
     private _loading$ = new BehaviorSubject<boolean>(true);
     // tslint:disable-next-line: variable-name
@@ -105,7 +103,10 @@ export class qrcodegenrationService {
         });
         this._search$.next();
     }
-    setTableData(data: Table[]) {
+  
+     
+  
+      setTableData(data: Table[]) {
         this.apiData = data;
         this._search$.next(); // Trigger a refresh
       }
@@ -154,6 +155,7 @@ export class qrcodegenrationService {
         const { sortColumn, sortDirection, pageSize, page, searchTerm } = this._state;
 
         // 1. sort
+        // let tables = sort(tableData, sortColumn, sortDirection);
         let tables = sort(this.apiData, sortColumn, sortDirection);
 
         // 2. filter

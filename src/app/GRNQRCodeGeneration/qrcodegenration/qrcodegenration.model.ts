@@ -17,6 +17,7 @@ export interface Table {
     shadowRows?: Table[]; // Shadow rows
     BUDAT?:string; //Posting Date
     CHARG?:string;
+    labelQuantity?:number;
   }
   
 

@@ -153,11 +153,16 @@ export class InbounddeliveryComponent implements OnInit {
   
         this.apiService.saveInbound(payload).subscribe({
           next: (res) => {
-            Swal.fire("", res[0].MSGTXT, res[0].VBELN ? 'success' : 'error');
-            this.isSubmitting = false;
-  
-            // Reset form data and refresh page
-            this.resetFormState();
+            if(res[0]?.NUMBER){
+              Swal.fire("", res[0].MSGTXT, res[0].VBELN ? 'success' : 'error');
+            }else{
+              Swal.fire("", res[0].MSGTXT, res[0].VBELN ? 'success' : 'error');
+              this.isSubmitting = false;
+    
+              // Reset form data and refresh page
+              this.resetFormState();
+            }
+           
   
             // Optional: Trigger component refresh (replace this logic if not using routing)
             // location.reload();
@@ -210,7 +215,11 @@ export class InbounddeliveryComponent implements OnInit {
   get form() {
     return this.validationform.controls;
   }
-
+  onFormSubmit(event: Event) {
+    event.preventDefault(); // Prevent form submission
+    // Add your custom logic here, if any
+  }
+  
   validSubmit() {
     this.submit = true;
     this.loaderservice.showLoader();
@@ -223,8 +232,10 @@ export class InbounddeliveryComponent implements OnInit {
         next: (res: any) => {
           if (res[0]?.NUMBER) {
             Swal.fire("", res[0].MSGTXT, "error");
+            this.loaderservice.hideLoader(); 
           }else if(!res?.ITEM[0]){
             Swal.fire("","No Materials Found","error")
+            this.loaderservice.hideLoader(); 
           } 
           else {
             this.INBOUND = res.ITEM;

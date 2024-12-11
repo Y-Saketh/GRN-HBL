@@ -163,7 +163,8 @@
                   <th sortable="EBELP" (sort)="onSort($event)">PO Item</th>
                   <th>Goods Recipient</th>
                   <th>Unloading Point</th>
-                  <th>Pkg</th>
+                  <th>Label Qty</th>
+                  <!-- <th>Pkg</th> -->
                 </tr>
               </thead>
               <tbody *ngFor="let table of tables$ | async; let i = index">
@@ -221,10 +222,18 @@
                       class="form-control form-control-sm"
                     />
                   </td>
+                  <td>
+                    <input
+                      type="number"
+                      [(ngModel)]="table.labelQuantity"
+                      class="form-control form-control-sm"
+                    />
+
+                  </td>
 
                   <!-- <td>{{table.WEMPF}}</td> -->
                   <!-- <td>{{table.ABLAD}}</td> -->
-                  <td class="d-flex align-items-center">
+                  <!-- <td class="d-flex align-items-center">
                     <input
                       type="number"
                       min="1"
@@ -239,7 +248,7 @@
                     >
                       Split
                     </button>
-                  </td>
+                  </td> -->
                 </tr>
                 <!-- Shadow rows -->
                 <tr *ngFor="let shadow of table.shadowRows">
@@ -326,6 +335,20 @@
               (click)="saveBound(tables$)"
             >
               Save
+            </button>
+            &nbsp;  &nbsp;  
+            <button
+              style="
+                background-color: rgb(10, 199, 41);
+                margin-top: 28px;
+                width: max-content;
+                color: rgb(12, 18, 24);
+              "
+              class="btn"
+              type="button"
+              (click)="GenQR()"
+            >
+              Generate QR
             </button>
           </div>
 

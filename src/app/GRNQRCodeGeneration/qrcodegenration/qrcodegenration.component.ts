@@ -59,6 +59,7 @@ export class QRcodegenrationComponent {
   City: any;
   GSTIN: any;
   userName: any;
+  labelQuantity:any;
   
 
   constructor(public service: qrcodegenrationService,public formBuilder: UntypedFormBuilder,private apiService:UserProfileService, public loaderservice: LoaderService) {
@@ -303,7 +304,9 @@ export class QRcodegenrationComponent {
       },
     });
   }
-  
+  GenQR(){
+    
+  }
   // Helper method to submit the payload to the API
   submitPayload(payload: any) {
     console.log("payload", payload);

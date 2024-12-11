@@ -361,11 +361,13 @@
                           <tr>
                             <td>
                               <button
-                                class="btn btn-danger btn-sm"
-                                (click)="removeRow($index)"
-                              >
-                                -
-                              </button>
+                              type="button"
+                              class="btn btn-danger btn-sm"
+                              (click)="removeRow($index)"
+                            >
+                              -
+                            </button>
+                            
                             </td>
                             <td>{{ table.WERKS }}</td>
                             <td>{{ table.LGORT }}</td>
@@ -378,11 +380,12 @@
                             <td>{{ table.ORGQTY }}</td>
                             <td>
                               <input
-                                type="text"
-                                [ngModelOptions]="{ standalone: true }"
-                                [(ngModel)]="table.DMENGE"
-                                class="form-control form-control-sm"
-                              />
+                              type="text"
+                              [ngModelOptions]="{ standalone: true }"
+                              [(ngModel)]="table.DMENGE"
+                              class="form-control form-control-sm"
+                              (keydown.enter)="$event.preventDefault()"
+                            />
                             </td>
                             <!-- <td>{{table.DMENGE}}</td> -->
 
@@ -394,7 +397,7 @@
                                             <td><input type="text" [(ngModel)]="table.incoterms" class="form-control form-control-sm" /></td>
                                             <td><input type="text" [(ngModel)]="table.transportationGroup" class="form-control form-control-sm" /></td>
                                             <td><input type="text" [(ngModel)]="table.transporterName" class="form-control form-control-sm" /></td>
-                 -->
+                        -->
                           </tr>
                         </tbody>
                         }
@@ -418,7 +421,7 @@
                 class="btn"
                 type="submit"
                 [disabled]="
-                  !validationform.valid || !tableForm.valid || isSubmitting
+                  !validationform.valid
                 "
                 (click)="saveBound(tables$)"
               >

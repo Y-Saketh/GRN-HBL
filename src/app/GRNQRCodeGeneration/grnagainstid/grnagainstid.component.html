@@ -62,6 +62,7 @@
                                     <th sortable="EBELP" (sort)="onSort($event)">PO.Item</th>
                                     <th sortable="LIFNR" (sort)="onSort($event)">Vendor Code</th>
                                     <th sortable="NAME1" (sort)="onSort($event)">Vendor Name</th>
+                                    <th sortable="NAME1" (sort)="onSort($event)">Label Qty</th>
                                     <th sortable="ZQRSTAT" (sort)="onSort($event)">QR Status</th>
                                     <th>Action</th>
                                 </tr>
@@ -87,7 +88,14 @@
                                     <td>{{ table.EBELP }}</td>
                                     <td>{{ table.LIFNR }}</td>
                                     <td>{{ table.NAME1 }}</td>
-                                    <td>{{ table.ZQRSTAT }}</td>
+                                    <td>  <input
+                                        type="text"
+                                        class="form-control"
+                                       [(ngModel)]="table.labelQty"
+                                        placeholder="Label Qty"
+                                       
+                                      /></td>
+                                    <td>{{ table.ZQRSTAT }} </td>
                                     <td (click)="onSelectMaterial(table)"><button class=" btn btn-warning btn-sm ">Gen
                                             QR</button></td>
 
