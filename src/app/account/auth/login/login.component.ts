@@ -44,8 +44,8 @@ export class LoginComponent implements OnInit {
     }
     // form validation
     this.loginForm = this.formBuilder.group({
-      userID: ['1224', [Validators.required]],
-      password: ['Admin@1234', [Validators.required]],
+      userID: ['', [Validators.required]],
+      password: ['', [Validators.required]],
     });
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/grn';
     window.history.replaceState('','','/grn');
@@ -76,28 +76,30 @@ export class LoginComponent implements OnInit {
     const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
     // this.store.dispatch(login({ email: userID, password: password }));
 
-    // this.apiService.Login(payload).subscribe({
-    //     next: (res) => {
-    //       this.response = res
-    //       console.log("this.response",this.response)
-    //         if (this.response.MSGTXT) {
-    const dummy = "well Come to GRN"
+    this.apiService.Login(payload).subscribe({
+        next: (res) => {
+          this.response = res
+          console.log("this.response",this.response)
+            // if (this.response.MSGTXT) {
+              if (this.response) {
+                const dummy = "Welcome to GRN"
                 // localStorage.setItem('currentUser', JSON.stringify(this.response.MSGTXT || { token: this.response.token }));
                 localStorage.setItem('currentUser', JSON.stringify( dummy|| { token: this.response.token }));
 
                 this.router.navigate([returnUrl], { skipLocationChange: true });
                 this.apiService.setLoginResponse(this.response);
-                Swal.fire("",this.response.MSGTXT, "success")
-    //         } else {
-    //           Swal.fire("","Invalid login credentials!", "error")
-    //             // this.error = 'Invalid login credentials!';
-    //         }
-    //     },
-    //     error: (err) => {
-    //         console.error(err);
-    //         this.error = 'An error occurred!';
-    //     }
-    // });
+                // Swal.fire("",this.response.MSGTXT, "success")
+                Swal.fire("",dummy, "success")
+            } else {
+              Swal.fire("","Invalid login credentials!", "error")
+                // this.error = 'Invalid login credentials!';
+            }
+        },
+        error: (err) => {
+            console.error(err);
+            this.error = 'An error occurred!';
+        }
+    });
 }
 
   /**
