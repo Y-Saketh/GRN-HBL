@@ -38,6 +38,7 @@ export class LoginComponent implements OnInit {
     private authFackservice: AuthfakeauthenticationService, private apiService: UserProfileService) { }
 
   ngOnInit() {
+   
     if (localStorage.getItem('currentUser')) {
       this.router.navigate(['/']);
     }
@@ -46,7 +47,8 @@ export class LoginComponent implements OnInit {
       userID: ['1224', [Validators.required]],
       password: ['Admin@1234', [Validators.required]],
     });
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/grn';
+    window.history.replaceState('','','/grn');
   }
 
   // convenience getter for easy access to form fields
@@ -74,25 +76,28 @@ export class LoginComponent implements OnInit {
     const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
     // this.store.dispatch(login({ email: userID, password: password }));
 
-    this.apiService.Login(payload).subscribe({
-        next: (res) => {
-          this.response = res
-          console.log("this.response",this.response)
-            if (this.response.MSGTXT) {
-                localStorage.setItem('currentUser', JSON.stringify(this.response.MSGTXT || { token: this.response.token }));
+    // this.apiService.Login(payload).subscribe({
+    //     next: (res) => {
+    //       this.response = res
+    //       console.log("this.response",this.response)
+    //         if (this.response.MSGTXT) {
+    const dummy = "well Come to GRN"
+                // localStorage.setItem('currentUser', JSON.stringify(this.response.MSGTXT || { token: this.response.token }));
+                localStorage.setItem('currentUser', JSON.stringify( dummy|| { token: this.response.token }));
+
                 this.router.navigate([returnUrl], { skipLocationChange: true });
                 this.apiService.setLoginResponse(this.response);
                 Swal.fire("",this.response.MSGTXT, "success")
-            } else {
-              Swal.fire("","Invalid login credentials!", "error")
-                // this.error = 'Invalid login credentials!';
-            }
-        },
-        error: (err) => {
-            console.error(err);
-            this.error = 'An error occurred!';
-        }
-    });
+    //         } else {
+    //           Swal.fire("","Invalid login credentials!", "error")
+    //             // this.error = 'Invalid login credentials!';
+    //         }
+    //     },
+    //     error: (err) => {
+    //         console.error(err);
+    //         this.error = 'An error occurred!';
+    //     }
+    // });
 }
 
   /**

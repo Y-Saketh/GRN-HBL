@@ -638,14 +638,14 @@
                         <thead>
                           <tr>
                             <th></th>
-                            <th sortable="deleveryChallanNumber">DC.No</th>
-                            <th sortable="DocumentDate">DC.Dt</th>
-                            <th sortable="invoiceNo">Inv.No</th>
-                            <th sortable="invoiceDate">Inv.Dt</th>
-                            <th sortable="vehicleNumber">Vehicle No</th>
-                            <th sortable="transporterName">Transporter Name</th>
-                            <th sortable="gateEntryNumber">Gate Entry No</th>
-                            <th sortable="gateEntryDate">Gate Entry Dt</th>
+                            <th>DC.No</th>
+                            <th >DC.Dt</th>
+                            <th >Inv.No</th>
+                            <th>Inv.Dt</th>
+                            <th >Vehicle No</th>
+                            <th >Transporter Name</th>
+                            <th >Gate Entry No</th>
+                            <th >Gate Entry Dt</th>
                             <th sortable="lrDate">LR Date</th>
                             <th sortable="LrNo">LR No</th>
                             <!-- <th sortable="deliveryQuantity" >
@@ -696,7 +696,7 @@
                                 <tbody>
                                   <tr
                                     *ngFor="
-                                      let tablee of inboundData;
+                                      let tablee of INBOUND;
                                       let i = index;
                                       trackBy: trackByFn
                                     "
@@ -709,16 +709,16 @@
                                         -
                                       </button>
                                     </td>
-                                    <td>{{ tablee.WERKS }}</td>
-                                    <td>{{ tablee.LGORT }}</td>
-                                    <td>{{ tablee.PO_NUMBER }}</td>
-                                    <td>{{ tablee.PO_ITEM }}</td>
-                                    <td>{{ tablee.MATNR }}</td>
-                                    <td>{{ tablee.SHORT_TEXT }}</td>
-                                    <td>{{tablee.STEUC}}</td>
-                                    <td>{{ tablee.MEINS }}</td>
-                                    <td>{{ tablee.ORGQTY }}</td>
-                                    <td>{{ tablee.DMENGE }}</td>
+                                    <td>{{ table.WERKS }}</td>
+                                    <td>{{ table.LGORT }}</td>
+                                    <td>{{ table.PO_NUMBER }}</td>
+                                    <td>{{ table.PO_ITEM }}</td>
+                                    <td>{{ table.MATNR }}</td>
+                                    <td>{{ table.TXZ01 }}</td>
+                                    <td>1234567891</td>
+                                    <td>{{ table.MEINS }}</td>
+                                    <td>{{ table.ORGQTY }}</td>
+                                    <td>{{ table.RECD_QTY }}</td>
                                   </tr>
                                 </tbody>
                               </table>
@@ -777,7 +777,7 @@
                       </table>
                     </div>
                     <!-- Save Button -->
-                    <div class="col-md-4 text-left">
+                    <!-- <div class="col-md-4 text-left">
                       <button
                         class="btn btn-success mt-4"
                         type="button"
@@ -785,7 +785,7 @@
                       >
                         Save
                       </button>
-                    </div>              
+                    </div>               -->
                 </div>
               </div>
             </div>
