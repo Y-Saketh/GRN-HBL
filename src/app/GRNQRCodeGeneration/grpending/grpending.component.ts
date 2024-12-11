@@ -373,6 +373,7 @@ export class GrpendingComponent implements OnInit {
     this.initializeSecondTableData(); // Initialize the second table data
   }
   getGrPending(){
+    this.loaderservice.showLoader();
     console.log("validationform",this.form) 
     let obj = {
     "WERKS": this.form.plant.value,//"1300",
@@ -400,6 +401,7 @@ export class GrpendingComponent implements OnInit {
       },
       complete: () => {
         console.log('API call completed.');
+        this.loaderservice.hideLoader(); 
         // this.validationform.reset()
       }
     });

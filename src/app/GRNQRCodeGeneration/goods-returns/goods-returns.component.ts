@@ -1,20 +1,27 @@
-import { Component } from '@angular/core';
+import { Component, QueryList, ViewChildren } from '@angular/core';
 import { UserProfileService } from 'src/app/core/services/user.service';
-import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormsModule, FormBuilder, FormGroup, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Table } from './advanced.model';
 import { Observable } from 'rxjs';
+import { AdvancedSortableDirective, SortEvent } from './Advanced-sortable.directive';
 import { AdvancedService } from './advanced.service';
+import { DecimalPipe } from '@angular/common'; 
+import { CommonModule } from '@angular/common';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
 
 
 @Component({
-  selector: 'app-good-ruturns',
-  templateUrl: './good-ruturns.component.html',
-  styleUrl: './good-ruturns.component.css',
-  providers:[AdvancedService]
+  selector: 'app-goods-returns',
+  standalone: true,
+  providers: [AdvancedService, DecimalPipe, UserProfileService],
+  imports: [ReactiveFormsModule, CommonModule, FormsModule, PaginationModule, AdvancedSortableDirective,BsDatepickerModule],
+  templateUrl: './goods-returns.component.html',
+  styleUrl: './goods-returns.component.css'
 })
-export class GoodRuturnsComponent {
+export class GoodsReturnsComponent {
   DAta:  Table[];
-  grnscreen:boolean = false
+  goodsscreen:boolean = false
   validationform: UntypedFormGroup;
   submit: boolean;
   tableData: Table[];
@@ -22,8 +29,13 @@ export class GoodRuturnsComponent {
   hideme: boolean[] = [];
   tables$: Observable<Table[]>;
   total$: Observable<number>;
+
+  @ViewChildren(AdvancedSortableDirective) headers: QueryList<AdvancedSortableDirective>;
+
+
   constructor(private apiService:UserProfileService, public formBuilder: UntypedFormBuilder,public service: AdvancedService,){
     this.tables$ = service.tables$;
+    this.total$ = service.total$;
   }
 
   ngOnInit(){
@@ -32,6 +44,17 @@ export class GoodRuturnsComponent {
     });
 
   }
+
+  onSort({ column, direction }: SortEvent) {
+    this.headers.forEach((header) => {
+      if (header.sortable !== column) {
+        header.direction = '';
+      }
+    });
+    this.service.sortColumn = column;
+    this.service.sortDirection = direction;
+  }
+
   get form() {
     return this.validationform.controls;
   }

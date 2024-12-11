@@ -12,6 +12,7 @@ import { UserProfileService } from 'src/app/core/services/user.service';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import * as moment from 'moment';
 import * as XLSX from 'xlsx'; 
+import { LoaderService } from 'src/app/core/services/loader.service';
 
 @Component({
   selector: 'app-grdone',
@@ -36,7 +37,7 @@ export class GrdoneComponent implements OnInit {
   lotReportsData: any;
   // POLIST: any;
   POLIST: Table[];
-  constructor(public formBuilder: UntypedFormBuilder, public service: AdvancedService, private apiService:UserProfileService) {
+  constructor(public formBuilder: UntypedFormBuilder, public service: AdvancedService, private apiService:UserProfileService, public loaderservice:LoaderService) {
     this.tables$ = service.tables$;
     console.log("this.tables$", this.tables$)
     this.total$ = service.total$;
@@ -106,10 +107,17 @@ export class GrdoneComponent implements OnInit {
         LFIMG: 'Qty',
         GATEENTRY: 'Gate Entry No',
         GATEDATE: 'Gate Entry Date',
+        MBLNR: 'Material Doc',
         BUDAT: 'Posting Date',
+        AGE: 'Days Taken for GR',
+        BELNR_MIRO: 'MIRO No',
+        BUDAT_MIRO: 'MIRO Date',
+        XBLNR: 'Invoice No',
+        BLDAT: 'Invoice Date',
         AEDAT: 'PO Date',
         ERNAM: 'Created By',
-        LGOBE: 'Storage Location'
+        LGOBE: 'Storage Location Name',
+        AGE1: 'Days Taken for IBD'
       };
   
       // Format data to map keys to user-friendly headers
@@ -157,6 +165,7 @@ export class GrdoneComponent implements OnInit {
   }
  
   getGrDone(){
+    this.loaderservice.showLoader();
     console.log("validationform",this.form) 
     let obj = {
  
@@ -183,6 +192,7 @@ export class GrdoneComponent implements OnInit {
       },
       complete: () => {
         console.log('API call completed.');
+        this.loaderservice.hideLoader(); 
         // this.validationform.reset()
       }
     });

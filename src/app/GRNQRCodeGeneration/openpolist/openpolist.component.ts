@@ -207,15 +207,17 @@ export class OpenpolistComponent implements OnInit {
         WERKS: 'Plant',
         MEINS: 'UOM',
         MENGE: 'PO Qty',
+        //hidden
+        BEDAT: 'Document Date',
         ERNAM: 'Created By',
         BUYER: 'Buyer',
         EKNAM: 'Purchase Group Description',
         NETWR: 'PO Value',
         LOEKZ: 'Deletion Indicator',
         // ELIKZ: 'Delivery Completed',
-        EINDT: 'Delivery Date',
-        MEINS1: 'Base UOM',
-        BEDAT: 'Purchase Document Date',
+        EINDT: 'Delivery Completed',
+        MEINS1: 'UOM1',
+        
 
       };
   
