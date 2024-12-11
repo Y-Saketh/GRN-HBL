@@ -1,0 +1,124 @@
+<div class="container-fluid">
+    <!-- <app-page-title [breadcrumbItems]="breadCrumbItems"></app-page-title> -->
+    <div class="row">
+        <div class="col-xl-12">
+
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title"><span style="color: black;"></span> Goods Returns</h4>
+                    <!-- <p class="card-title-desc">Provide valuable, actionable feedback to your users with HTML5 form
+            validation–available in all our supported browsers.</p> -->
+             <form  class="needs-validation"
+             [formGroup]="validationform"
+             (ngSubmit)="validSubmit()">
+             <div class="row mt-4">
+                <!-- Row 1 -->
+                <div class="col-md-2">
+                  <div class="mb-3">
+                    <label class="brandcolor" for="inbounddeliverynumber"
+                      >GRN No</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="inbounddeliverynumber"
+                      formControlName="inbounddeliverynumber"
+                      placeholder="GRN Number"
+                    />
+                    <div
+                      *ngIf="submit && form.inbounddeliverynumber.errors"
+                      class="invalid-feedback"
+                    >
+                      <span *ngIf="form.inbounddeliverynumber.errors.required">
+                        Please provide a valid GRN Number.
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <!-- Button-->
+                <div class="col-md-2 text-center">
+                  <button
+                    style="
+                      background-color: brown;
+                      margin-top: 28px;
+                      width: max-content;
+                      color: aliceblue;
+                    "
+                    class="btn"
+                    type="submit"
+                  >
+                    Get Details
+                  </button>
+                </div>
+              </div>
+
+             </form>           
+
+                </div>
+            </div>
+            <!-- end card -->
+            <div class="card">
+              <div class="card-body">
+                  <div class="row mb-md-2">
+                      <div class="col-sm-12 col-md-6">
+                          <div class="dataTables_length">
+                              <label class="d-inline-flex align-items-center"> 
+                                  Show
+                                  <select name="tickets-table_length" aria-controls="tickets-table"
+                                      class="form-control form-control-sm mx-2" [(ngModel)]="service.pageSize">
+                                      <option [ngValue]="10">10</option>
+                                      <option [ngValue]="25">25</option>
+                                      <option [ngValue]="50">50</option>
+                                      <option [ngValue]="100">100</option>
+                                  </select>
+                                  entries
+                              </label>
+                          </div>
+                      </div>
+                  </div>
+                  <!-- table-->
+                  <div class="table-responsive">
+                      <table id="basic-datatable" class="table table-bordered dt-responsive nowrap">
+                          <thead>
+                              <tr>
+                                  <th></th>
+                                  <th sortable="WERKS" (sort)="onSort($event)">Plant</th>
+                                  <th sortable="MBLNR" (sort)="onSort($event)">Material Document</th>
+                                  <th sortable="MATNR" (sort)="onSort($event)">Mat.Code</th>
+                                  <th sortable="MAKTX"  (sort)="onSort($event)">Mat.Desc</th>
+                                  <th sortable="MENGE" (sort)="onSort($event)">Quantity</th>
+                                  <th sortable="LGORT" (sort)="onSort($event)">S.Loc</th>
+                                  <th sortable="MEINS" (sort)="onSort($event)">BUoM</th>
+                                  <th sortable="CHARG" (sort)="onSort($event)">Batch</th>
+                                  <th sortable="EBELN" (sort)="onSort($event)">PO.Number</th>
+                                  <th sortable="EBELP" (sort)="onSort($event)">PO.Item</th>
+                                  <th sortable="LIFNR" (sort)="onSort($event)">Vendor Code</th>
+                                  <th sortable="NAME1" (sort)="onSort($event)">Vendor Name</th>
+                              </tr>
+                          </thead>
+                          <tbody *ngFor="let table of tables$ | async; let i = index">
+                              <tr>
+                                  <td align="center">
+                                      <a class="expand-row" (click)="changeValue($index)">+</a>
+                                  </td>
+                                  <td>{{ table.WERKS }}</td>
+                                  <td>{{ table.MBLNR }}</td>
+                                  <td>{{table.MATNR}}</td>
+                                  <td>{{ table.MAKTX }}</td>
+                                  <td>{{ table.MENGE }}</td>
+                                  <td>{{ table.LGORT }}</td>
+                                  <td>{{ table.MEINS }}</td>
+                                  <td>{{ table.CHARG }}</td>
+                                  <td>{{ table.EBELN }}</td>
+                                  <td>{{ table.EBELP }}</td>
+                                  <td>{{ table.LIFNR }}</td>
+                                  <td>{{ table.NAME1 }}</td>
+                              </tr>
+                          </tbody>
+                      </table>
+                  </div>
+              </div>
+          </div>
+        </div>
+    </div>
+  </div>
