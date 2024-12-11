@@ -87,9 +87,9 @@ export const MENU: MenuItem[] = [
         parentId: "menu"
     },
     {
-        id: "grnagainstid2",
+        id: "goodsreturn",
         label: 'Goods Returns',
-        link: 'grnagainstid2',
+        link: 'goodsreturn',
         icon: 'bx-analyse',
         parentId: "menu"
     },
