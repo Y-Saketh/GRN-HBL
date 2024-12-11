@@ -37,75 +37,72 @@ export class LoginComponent implements OnInit {
   constructor(private formBuilder: UntypedFormBuilder, private route: ActivatedRoute, private router: Router, private authenticationService: AuthenticationService, private store: Store,
     private authFackservice: AuthfakeauthenticationService, private apiService: UserProfileService) { }
 
-  ngOnInit() {
-    console.log('login initialized!',localStorage.getItem('userID'), localStorage.getItem('password'));
-    localStorage.getItem('userID')
-    localStorage.getItem('password')
-    // this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/grn';
-    // Use Angular's ActivatedRoute to get query parameters
-    // this.route.queryParams.subscribe(params => {
-    //   console.log("Received query params:", params);
-      const userID = localStorage.getItem('userID') ;
+    ngOnInit() {
+      console.log('Login initialized!');
+    
+      // Read credentials from localStorage
+      const userID = localStorage.getItem('userID');
       const password = localStorage.getItem('password');
-  
-      console.log('Extracted userID:', userID, 'Extracted password:', password);
-  
+      console.log('Stored Credentials:', { userID, password });
+    
       if (userID && password) {
-        const payload = {
-          LOGIN: [
-            {
-              ZUSER: userID,
-              ZPASSWORD: password,
-            },
-          ],
-        };
-  
-        this.apiService.Login(payload).subscribe({
-          next: (res) => {
-            this.response = res;
-            console.log('this.response', this.response);
-  
-            if (this.response ) {
-              const dummy = 'Welcome to GRN';
-
-              localStorage.setItem('currentUser', JSON.stringify( dummy|| { token: this.response.token }));
-
-              this.router.navigate([this.returnUrl], { skipLocationChange: true });
-              this.apiService.setLoginResponse(this.response);
-              localStorage.setItem('currentUser', JSON.stringify({ token: this.response.token }));
-  
-              // this.apiService.setLoginResponse(res);
-  
-              // this.router.navigate(['/grn'], { skipLocationChange: true });
-  
-              Swal.fire('', dummy, 'success');
-            } else {
-              Swal.fire('', 'Invalid login credentials!', 'error');
-              this.router.navigate(['/login']);
-            }
-          },
-          error: (err) => {
-            console.error(err);
-            Swal.fire('', 'An error occurred during auto-login!', 'error');
-          },
-        });
+        // If credentials exist in localStorage, attempt auto-login
+        this.autoLogin(userID, password);
       } else {
-        console.log("not login")
-        this.router.navigate(['/login']);  // Redirect to login if query params are missing
+        // If no credentials, navigate to login page
+        console.log('No credentials found. Redirecting to login.');
+        this.router.navigate(['/login']);
       }
-    // });
-    // if (localStorage.getItem('currentUser')) {
-    //   this.router.navigate(['/']);
-    // }
-    // form validation
-    this.loginForm = this.formBuilder.group({
-      userID: ['', [Validators.required]],
-      password: ['', [Validators.required]],
-    });
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/grn';
-    window.history.replaceState('','','/grn');
-  }
-
+    
+      // Initialize the login form
+      this.loginForm = this.formBuilder.group({
+        userID: ['', [Validators.required]],
+        password: ['', [Validators.required]],
+      });
+    
+      // Set returnUrl
+      this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/grn';
+    }
+    
+    /**
+     * Handles auto-login when credentials are available
+     */
+    autoLogin(userID: string, password: string) {
+      const payload = {
+        LOGIN: [
+          {
+            ZUSER: userID,
+            ZPASSWORD: password,
+          },
+        ],
+      };
+    
+      this.apiService.Login(payload).subscribe({
+        next: (res) => {
+          this.response = res;
+          console.log('Login Response:', this.response);
+    
+          if (this.response) {
+            const dummy = 'Welcome to GRN';
+            localStorage.setItem(
+              'currentUser',
+              JSON.stringify(this.response || { token: this.response.token })
+            );
+            this.router.navigate([this.returnUrl], { skipLocationChange: true });
+            this.apiService.setLoginResponse(this.response);
+            Swal.fire('', dummy, 'success');
+          } else {
+            Swal.fire('', 'Invalid login credentials!', 'error');
+            this.router.navigate(['/login']);
+          }
+        },
+        error: (err) => {
+          console.error('Login Error:', err);
+          Swal.fire('', 'An error occurred during auto-login!', 'error');
+        },
+      });
+    }
+    
   // convenience getter for easy access to form fields
   get f() { return this.loginForm.controls; }
 

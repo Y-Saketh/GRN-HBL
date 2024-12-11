@@ -20,8 +20,8 @@ import { UserProfileService } from 'src/app/core/services/user.service';
   selector: 'app-topbar',
   templateUrl: './topbar.component.html',
   styleUrls: ['./topbar.component.scss'],
-  standalone:true,
-  imports:[CommonModule,TranslateModule,BsDropdownModule,SimplebarAngularModule],
+  standalone: true,
+  imports: [CommonModule, TranslateModule, BsDropdownModule, SimplebarAngularModule],
 })
 
 /**
@@ -63,7 +63,15 @@ export class TopbarComponent implements OnInit {
 
   ngOnInit() {
     // this.initialAppState = initialState;
-    this.userName = localStorage.getItem('currentUser') || this.apiservice.getLoginResponse().MSGTXT
+    // Parse the localStorage item to an object
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+
+    // Safely access properties
+    const firstName = currentUser[0]?.ZFNAME ||''; // Check if it's an array
+    const lastName = currentUser[0]?.ZLNAME || 'to GRN' ;  // Check if it's an array
+
+    // Fallback to getLoginResponse if needed
+    this.userName = `${firstName} ${lastName}` || this.apiservice.getLoginResponse()?.MSGTXT || 'to GRN';
     this.store.select('layout').subscribe((data) => {
       this.theme = data.DATA_LAYOUT;
     })
@@ -112,6 +120,8 @@ export class TopbarComponent implements OnInit {
       this.authFackservice.logout();
     }
     this.router.navigate(['/auth/login']);
+    localStorage.clear();
+
   }
 
   /**
