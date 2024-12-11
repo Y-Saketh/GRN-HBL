@@ -9,7 +9,8 @@ import { AdvancedService } from './advanced.service';
 @Component({
   selector: 'app-good-ruturns',
   templateUrl: './good-ruturns.component.html',
-  styleUrl: './good-ruturns.component.css'
+  styleUrl: './good-ruturns.component.css',
+  providers:[AdvancedService]
 })
 export class GoodRuturnsComponent {
   DAta:  Table[];
@@ -22,10 +23,10 @@ export class GoodRuturnsComponent {
   tables$: Observable<Table[]>;
   total$: Observable<number>;
   constructor(private apiService:UserProfileService, public formBuilder: UntypedFormBuilder,public service: AdvancedService,){
-
+    this.tables$ = service.tables$;
   }
 
-  ngOninit(){
+  ngOnInit(){
     this.validationform = this.formBuilder.group({
       inbounddeliverynumber: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]+')]],
     });

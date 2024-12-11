@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DecimalPipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { TabsModule } from 'ngx-bootstrap/tabs';
@@ -60,6 +60,6 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
                         SimplebarAngularModule,
                         LightboxModule,
                         PickerModule],
-                providers: [provideHttpClient(withInterceptorsFromDi())]
+                providers: [DecimalPipe,provideHttpClient(withInterceptorsFromDi())]
         })
 export class PagesModule { }
