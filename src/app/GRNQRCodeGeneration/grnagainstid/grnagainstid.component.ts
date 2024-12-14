@@ -33,7 +33,7 @@ export class GrnagainstidComponent implements OnInit {
   hideme: boolean[] = [];
   tables$: Observable<Table[]>;
   total$: Observable<number>;
-  // selectedMaterial: any = null; // Selected material object
+  selectedMaterial: any = null; // Selected material object
   secondTableData: any[] = []; // Data for the second table
   // totalExpectedQuantity = 0;
   // qrCodes: string[] = [];
@@ -49,7 +49,7 @@ export class GrnagainstidComponent implements OnInit {
   editableDetails: any = {};
 
   isPopupOpen = false;
-  selectedMaterial: any = null;
+  // selectedMaterial: any = null;
   selectedIndex: number | null = null;
 
   selectedMaterialIndex: number | null = null;
@@ -66,6 +66,9 @@ export class GrnagainstidComponent implements OnInit {
   genQR: boolean;
   QRData: any[];
   SaveData:  any[];
+  matchedAndUnmatchedData: any[] = [];
+  table: any;
+  selectedData: any[];
   constructor(public formBuilder: UntypedFormBuilder, public service: AdvancedService, private apiService: UserProfileService) {
     this.tables$ = service.tables$;
     console.log("this.tables$", this.tables$)
@@ -116,94 +119,97 @@ export class GrnagainstidComponent implements OnInit {
       }
     });
   }
-  openUnmatchPopup(index: number): void {
-    this.genQR = false;
-    this.selectedMaterial = JSON.parse(JSON.stringify(this.materials[index])); // Deep copy
-    this.selectedIndex = index;
-    console.log("this.selectedIndex ", this.selectedIndex)
-    // Create packets based on MENGE and ZRQTY
-    this.selectedMaterial.packets = this.createPackets(this.selectedMaterial.MENGE);
-    // this.selectedMaterial.packets = this.createPackets(this.selectedMaterial.MENGE, this.selectedMaterial.ZRQTY);
-    this.unmatchModal?.show();
-  }
-  createPackets(menge: number): any[] {
-    const packets = [];
-    for (let i = 0; i < menge; i++) {
-      packets.push({
-        ZRQTY: menge, // Default ZRQTY to 0 until the user updates it
-        PACKET_NO: i + 1, // Packet number
-      });
-    }
-    return packets;
-  }
 
-  saveUnmatched(): void {
-    if (this.selectedIndex !== null) {
-      const updatedMaterial = JSON.parse(JSON.stringify(this.selectedMaterial)); 
-            const updatedPackets = [];
+//   unmatchMaterial(index: number): void {
+//     const material = this.QRDAta[index];
+//     if (material.ZLABEL > 0) {
+//         this.selectedMaterial = JSON.parse(JSON.stringify(material)); // Deep copy
+//         this.selectedIndex = index;
+//         this.selectedMaterial.packets = this.createPackets(material.ZLABEL);
+//         this.unmatchModal?.show();
+//     } else {
+//         Swal.fire("Error", "Enter a valid Label Quantity", "error");
+//     }
+// }
 
-      console.log("updatedMaterial", updatedMaterial);
+// createPackets(label: number): any[] {
+//   return Array.from({ length: label }, (_, i) => ({
+//       ZRQTY: 0, // Initialize with 0 until user updates
+//       PACKET_NO: i + 1,
+//   }));
+// }
 
-      // Loop through MENGE to create the number of objects based on MENGE
-      // for (let i = 0; i < updatedMaterial.MENGE; i++) {
-  
-      updatedMaterial.packets.forEach((packet: any) => {
-        updatedPackets.push({
-          MENGE: updatedMaterial.MENGE, // Assign MENGE to each object
-          ZRQTY: packet.ZRQTY, // Bind the ZRQTY from the packet
-          ZEILE: updatedMaterial.ZEILE, // Bind ZEILE dynamically from updatedMaterial
-          ZRNUM: updatedMaterial.ZRNUM, // Bind ZRNUM dynamically from updatedMaterial
-          ZQRGEN_DT: updatedMaterial.ZQRGEN_DT, // Bind ZQRGEN_DT dynamically from updatedMaterial
-          ZQRSTAT: updatedMaterial.ZQRSTAT, // Bind ZQRSTAT dynamically from updatedMaterial
-          ZQRBAL_QTY: updatedMaterial.ZQRBAL_QTY, // Bind ZQRBAL_QTY dynamically from updatedMaterial
-          WERKS: updatedMaterial.WERKS, // Bind WERKS dynamically from updatedMaterial
-          MATNR: updatedMaterial.MATNR, // Bind MATNR dynamically from updatedMaterial
-          MAKTX: updatedMaterial.MAKTX, // Bind MAKTX dynamically from updatedMaterial
-          LGORT: updatedMaterial.LGORT, // Bind LGORT dynamically from updatedMaterial
-          MEINS: updatedMaterial.MEINS, // Bind MEINS dynamically from updatedMaterial
-          CHARG: updatedMaterial.CHARG, // Bind CHARG dynamically from updatedMaterial
-          EBELN: updatedMaterial.EBELN, // Bind EBELN dynamically from updatedMaterial
-          EBELP: updatedMaterial.EBELP, // Bind EBELP dynamically from updatedMaterial
-          LIFNR: updatedMaterial.LIFNR, // Bind LIFNR dynamically from updatedMaterial
-          NAME1:updatedMaterial.NAME1
+// saveUnmatched(): void {
+//   if (this.selectedIndex !== null && this.QRDAta?.[this.selectedIndex]) {
+//     const selectedMaterial = this.QRDAta[this.selectedIndex];
 
-        });
-      });
-      // }
+//     // Ensure packets array is initialized
+//     if (!selectedMaterial.packets) {
+//       selectedMaterial.packets = [];
+//     }
 
-   
-      console.log("Updated Packets:", updatedPackets);
-      this.QRData = updatedPackets
+//     const updatedPackets = this.selectedMaterial.packets.map((packet) => ({
+//       ...packet,
+//       MENGE: packet.MENGE, // Preserve updated quantities
+//     }));
 
-      this.materials[this.selectedIndex].packets = updatedPackets;
+//     // Assign updated packets to the material
+//     selectedMaterial.packets = updatedPackets;
+//     selectedMaterial.isMatched = false; // Mark as unmatched
 
-      // Log the updated materials array
-      console.log('Updated Materials:', this.materials);
-    }
+//     // Loop through the ZLABEL count to generate QR data
+//     const qrData = Array.from({ length: selectedMaterial.ZLABEL }, (_, i) => ({
+//       ZLABEL_INDEX: i + 1, // Label index (1-based)
+//       PACKET_NO: updatedPackets[i]?.PACKET_NO || i + 1,
+//       MENGE: updatedPackets[i]?.MENGE || 0, // Default to 0 if no quantity entered
+//       ...selectedMaterial, // Spread all other material properties
+//     }));
 
-    // Close the modal after saving
-    this.closePopup();
-    this.genQR = true
-  }
+//     console.log("Generated QR Data:", qrData);
 
-  // Close the popup
-  closePopup(): void {
-    this.selectedMaterial = true;
-    this.grnscreen = false;
-    this.selectedIndex = null;
-    this.unmatchModal?.hide();
+//     // Pass processed QR data to the generateQR method
+//     // this.generateQR(qrData);
 
-  }
+//     // Hide modal
+//     this.unmatchModal?.hide();
+//   } else {
+//     console.error("Invalid index or QR data array is not defined");
+//     Swal.fire("Error", "Unable to save unmatched packets. Please try again.", "error");
+//   }
+// }
+
+
+  // // Close the popup
+  // closePopup(): void {
+  //   // this.selectedMaterial = true;
+  //   this.grnscreen = true;
+  //   this.selectedIndex = null;
+  //   this.unmatchModal?.hide();
+
+  // }
 
   // Placeholder for matchMaterial
-  matchMaterial(index: number): void {
-    console.log('Material matched:', this.materials[index]);
-  }
-  saveMaterial(index: number): void {
-    const material = this.materials[index];
-    this.savedData.push({ ...material });
-    console.log('Saved Data:', this.savedData);
-  }
+//   matchMaterial(index: number): void {
+//     const material = this.QRDAta[index];
+//     console.log("material",material)
+//     if (material.ZLABEL > 0 && material.MENGE > 0) {
+//         const qty = material.MENGE / material.ZLABEL;
+//         material.packets = Array.from({ length: material.ZLABEL }, (_, i) => ({
+//             ZRQTY: qty.toFixed(2), // Ensure consistent formatting
+//             PACKET_NO: i + 1,
+//         }));
+//         material.isMatched = true; // Mark as matched
+//         console.log(`Matched Material at index ${index}:`, material.packets);
+//     } else {
+//         Swal.fire("Error", "Invalid Label Quantity or MENGE", "error");
+//     }
+// }
+
+  // saveMaterial(): void {
+  //   const material = this.selectedMaterial.packets
+  //   this.savedData.push({ ...material });
+  //   console.log('Saved Data:', this.savedData);
+  // }
 
 
   changeValue(i) {
@@ -247,127 +253,249 @@ export class GrnagainstidComponent implements OnInit {
   }
   backtoQunatity(){
     this.grnscreen = true;
-    // this.selectedMaterial = false;
+    this.selectedMaterial = false;
     this.qrscreen = false;
-  }
-  onSelectMaterial(table: any) {
-    console.log("table", table)
-    this.grnscreen = false
-    this.selectedMaterial = table;
-    this.materials = table; // Store selected material
-   
-    if (!Array.isArray(this.materials)) {
-      this.materials = [];
-    }
-
-    // Check if the selected table is already in the materials array (optional)
-    const existingMaterial = this.materials.find(material => material.MBLNR === table.MBLNR);
-
-    // If it is not already in the array, add it
-    if (!existingMaterial) {
-      this.materials.push(table);
-    } else {
-      console.log('Material already exists in the array');
-    }
-
-    // Optionally set the selected material to display in your view
-    this.selectedMaterial = table;
-
+    this.matchedAndUnmatchedData= [];
   }
 
-  // async generateQR() {
-  //   // this.grnscreen = false;
-  //   // this.qrscreen = true;
-  //   // this.selectedMaterial = false;
-  //   this.isGenerating = true;
-  //   this.qrCodes = [];  // Clear any previously generated QR codes
 
-  //   // Loop through the items (which now contains updated data with ZRQTY)
-  //   let i=1
-  //   for (const item of this.materials) {
-  //     for (const packet of item.packets) {
-  //       i++
-  //       var reelno = `Reel ${i}`
-  //       // Use packet and other material data to generate QR code
-  //       const qrData = `
-  //               GRN Number: ${item.MBLNR}
-  //               Vendor Code: ${item.LIFNR}
-  //               SAP Code: ${item.MATNR}
-  //               Material Description: ${item.MAKTX}
-  //               Date Of GRN: ${item.ZQRGEN_DT}
-  //               Reel No:  ${reelno}
-  //               Quantity: ${packet.ZRQTY}
-  //           `;
 
-  //       try {
-  //         console.log("qrData", qrData, "item", item)
-  //         const qrCodeUrl = await this.generateQRCode(qrData);  // Generate QR code as a data URL
-  //         this.qrCodes.push({ qrCodeUrl, data: item });  // Store the QR code and its associated data
-         
-  //       } catch (error) {
-  //         console.error('Error generating QR code', error);
-  //       }
-  //     }
-  //   }
-  //   this.saveQRData();
-  //   this.isGenerating = false;
-  // }
-  async generateQR(tables$: Observable<any[]>) {
-    tables$
-        .pipe(take(1)) // Ensure only one emission is processed
-        .subscribe(async (tables) => {
-            if (!Array.isArray(tables)) {
-                console.error("Tables is not an array");
-                return;
+unmatchMaterial(index: number): void {
+  const material = this.tableData[index];
+  
+  if (material.ZLABEL > 0) {
+    // Create deep copy to avoid mutating the original data
+    this.selectedMaterial = JSON.parse(JSON.stringify(material));
+    this.selectedIndex = index;
+
+    // Generate packets with placeholder quantities for user input
+    this.selectedMaterial.packets = Array.from({ length: material.ZLABEL }, (_, i) => ({
+      DCHARG: i + 1, // Packet number (1-based)
+      DCLABS: '', // Empty quantity for user to input
+    }));
+
+    // Open modal for user input
+    this.unmatchModal?.show();
+  } else {
+    Swal.fire("Error", "Enter a valid Label Quantity", "error");
+  }
+}
+
+
+
+createPackets(label: number): any[] {
+  return Array.from({ length: label }, (_, i) => ({
+    DCLABS: 0, // Initialize with 0 until user updates
+      DCHARG: i + 1,
+  }));
+}
+
+
+saveUnmatched(): void {
+  this.selectedMaterial.packets 
+  if (this.selectedIndex !== null && this.tableData?.[this.selectedIndex]) {
+    const selectedMaterial = this.tableData[this.selectedIndex];
+
+    // Validate user input
+    const isValid = this.selectedMaterial.packets.every((packet) => {
+      return packet.DCLABS !== null && !isNaN(packet.DCLABS) && parseFloat(packet.DCLABS) > 0;
+    });
+
+    if (!isValid) {
+      Swal.fire("Error", "Please ensure all quantities are valid and filled.", "error");
+      return;
+    }
+
+    // Generate QR data for the unmatched material
+    const qrData = this.selectedMaterial.packets.map((packet, i) => ({
+      ...selectedMaterial, // Spread original material's properties
+      DCLABS: packet.DCLABS, // Format quantity to 2 decimal places
+      DCHARG: i + 1, // Packet number
+      isMatched: false, // Mark as unmatched
+    }));
+    // Push to shared array
+    this.matchedAndUnmatchedData = this.matchedAndUnmatchedData.filter(
+      (data) => data !== selectedMaterial
+    );
+    this.matchedAndUnmatchedData.push(...qrData);
+
+    console.log("Unmatched Data Saved:", qrData);
+
+    // Hide modal
+    this.unmatchModal?.hide();
+  } else {
+    Swal.fire("Error", "Unable to save unmatched packets. Please try again.", "error");
+  }
+}
+isAnyRowSelected(): boolean {
+  return this.tableData.some(table => table.selected);
+}
+matchMaterial(index: number): void {
+  const material = this.tableData[index];
+  if (material.ZLABEL > 0 && material.MENGE > 0) {
+    const qty = material.MENGE / material.ZLABEL;
+
+if (['NOS', 'PCS', 'EA'].includes(material.MEINS)) {
+  if (!Number.isInteger(qty)) {
+    console.error("Error: Quantity cannot be split into decimal values for NOS, PCS, or EA.");
+  Swal.fire("","Quantity cannot be split into decimal values","error")
+  material.ZLABEL = null;
+  }
+} // Calculate quantity per label
+    const packets = Array.from({ length: material.ZLABEL }, (_, i) => ({
+      ...material, // Spread original material's properties
+      // DCLABS: qty.toFixed(2), // Add formatted quantity
+      DCLABS: qty,
+      DCHARG: i + 1, // Add packet number
+    }));
+
+    // Prepare material for matched data
+    const matchedMaterial = {
+      ...material,
+      packets, // Attach packets
+      isMatched: true, // Mark as matched
+    };
+
+    // Push to shared array
+    this.matchedAndUnmatchedData = this.matchedAndUnmatchedData.filter(
+      (data) => data !== material
+    );
+    this.matchedAndUnmatchedData = matchedMaterial.packets;
+
+    console.log(`Matched Material at index ${index}:`, this.matchedAndUnmatchedData);
+  } else {
+    Swal.fire("Error", "Invalid Label Quantity or MENGE", "error");
+  }
+}
+async generateQR(): Promise<void> {
+  // this.saveQRData()
+
+  this.selectedData = this.matchedAndUnmatchedData.filter(data => data.selected);
+
+  if (this.selectedData.length === 0) {
+    await Swal.fire("", "No selected data available for QR generation.", "error");
+    return;
+  }
+
+  this.grnscreen = false;
+  this.qrscreen = true;
+  this.qrCodes = [];
+console.log("matchedAndUnmatchedData",this.matchedAndUnmatchedData)
+  for (const table of this.matchedAndUnmatchedData) {
+    const packets = table.packets || [];
+    // for (const packet of packets) {
+      const qrData = `
+        GRN: ${table.MBLNR}
+        VC: ${table.LIFNR}
+        Mat: ${table.MATNR}
+        MatD: ${table.MAKTX}
+        Dt: ${table.ZQRGEN_DT}
+        RN: Reel ${table.DCHARG}
+        Qty: ${table.DCLABS}
+      `;
+      try {
+        const qrCodeUrl = await this.generateQRCode(qrData);
+        this.qrCodes.push({ qrCodeUrl, data: table });
+      } catch (error) {
+        console.error("QR Generation Failed", error);
+      }
+    // }
+  }
+  // this.print()
+  // this.saveQRData()
+
+  console.log("Generated QR Codes:", this.qrCodes);
+}
+
+printLabels(): void {
+  const printableContent = document.getElementById('printableArea');
+  if (printableContent) {
+    const printWindow = window.open('', '_blank', 'width=800,height=600');
+    if (printWindow) {
+      printWindow.document.write(`
+        <html>
+        <head>
+          <title>Print QR Labels</title>
+          <style>
+            @media print {
+              body {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                font-family: Arial, sans-serif; /* Ensure legible fonts */
+              }
+
+              #printableArea {
+                display: flex;
+                flex-wrap: wrap; /* Arrange labels in rows */
+                gap: 0; /* Remove extra gap between labels */
+                justify-content: flex-start;
+                margin: 0;
+              }
+
+              .qr-item {
+                width: 45mm; /* Full label width */
+                height: 20mm; /* Full label height */
+                display: flex;
+                flex-direction: row; /* QR code and info side by side */
+                align-items: center; /* Center align QR code and text vertically */
+                justify-content: flex-start; /* Align items to the left */
+                box-sizing: border-box;
+                border: 1px solid #ddd; /* Add a light border for visibility */
+                padding: 2mm; /* Slight padding */
+                margin: 0;
+              }
+
+              .qr-code-wrapper img {
+                width: 16mm; /* QR code width */
+                height: 16mm; /* QR code height */
+                object-fit: contain; /* Maintain aspect ratio */
+                margin-right: 2mm; /* Small gap between QR code and text */
+                margin-left: 10mm; /* Adjust QR alignment */
+                margin-bottom:2mm;
+              }
+
+              .qr-info {
+                font-size: 9px; /* Adjust font size for readability */
+                line-height: 10px; /* Adjust line spacing */
+                text-align: left; /* Align text to the left */
+                margin-bottom:5px;
+              }
+
+              .qr-info p {
+                margin: 2px; /* Remove default margin from paragraphs */
+              }
+
+              body * {
+                visibility: hidden; /* Hide everything else */
+              }
+
+              #printableArea, #printableArea * {
+                visibility: visible; /* Show only printable area */
+              }
             }
+          </style>
+        </head>
+        <body>
+          <div id="printableArea">${printableContent.innerHTML}</div>
+        </body>
+        </html>
+      `);
+      printWindow.document.close();
+      printWindow.focus();
+      printWindow.print();
+      // this.saveQRData()
+      printWindow.close();
+    }
+  }
+}
 
-            // Filter selected tables with labelQty
-            const selectedTables = tables.filter(
-                (table) => table.selected && table.ZLABEL
-            );
 
-            // Show Swal if no valid rows are selected
-            if (selectedTables.length === 0) {
-                await Swal.fire("", "Please select rows and enter label quantities", "error");
-                return; // Exit the function here
-            }
 
-            // Start QR generation
-            this.grnscreen = false;
-            this.qrscreen = true;
-            this.isGenerating = true; // Start loading state
-            this.qrCodes = []; // Reset QR codes
-
-            for (const item of selectedTables) {
-                let reelNumber = 1; // Start reel number from 1 for each row
-                const ZLABEL = item.ZLABEL || 1;
-
-                for (let j = 0; j < ZLABEL; j++) {
-                    const qrData = `
-                        GRN Number: ${item.MBLNR}
-                        Vendor Code: ${item.LIFNR}
-                        SAP Code: ${item.MATNR}
-                        Material Description: ${item.MAKTX}
-                        Date Of GRN: ${item.ZQRGEN_DT}
-                        Reel No: Reel ${reelNumber++}
-                        Quantity: ${item.ZRQTY}
-                    `;
-
-                    try {
-                        const qrCodeUrl = await this.generateQRCode(qrData); // Generate QR code
-                        this.SaveData.push(qrData);
-                        this.qrCodes.push({
-                            qrCodeUrl,
-                            data: { ...item, reelNumber: reelNumber - 1 }, // Add reel number to the data
-                        });
-                    } catch (error) {
-                        console.error("Error generating QR code", error);
-                    }
-                }
-            }
-            this.saveQRData()
-            this.isGenerating = false; // End loading state
-        });
+closePopup(): void {
+  this.grnscreen = true;
+  this.selectedIndex = null;
+  this.unmatchModal?.hide();
 }
 
 
@@ -378,25 +506,50 @@ export class GrnagainstidComponent implements OnInit {
           reject(err);
         } else {
           resolve(url);
+          
         }
       });
     });
    
   }
-  saveQRData(){
-    let payload = this.QRData
+  async saveQRData(){
+    this.selectedData = this.matchedAndUnmatchedData.filter(data => data.selected);
+
+    if (this.selectedData.length === 0) {
+      await Swal.fire("", "No selected data available for QR generation.", "error");
+      return;
+    }
+  
+    const payload = this.matchedAndUnmatchedData.map((item: any) => ({
+        // ...item, // Copy existing keys
+        DLGORT: item.LGORT, // Storage Location
+        CLABS: String(item.MENGE),
+        MATNR: item.MATNR,     // Material Number
+        MEINS: item.MEINS,     // Base Unit of Measure
+        WERKS: item.WERKS,     // Plant
+        LGORT: item.LGORT,     // Storage Location
+        CHARG: item.CHARG?item.CHARG:"Batch",     // Batch Number
+        PDATE: item.BUDAT,     // Date
+        DCHARG: String("Reel"+item.DCHARG),    // Batch Number/Reel/Packet qqty 
+        DCLABS: String(item.DCLABS)  // Add labels reels
+      }))
+    
+    // let payload = this.matchedAndUnmatchedData
     console.log("Final Payload:", payload);
-    this.apiService.QRRequest(payload).subscribe({
+    // return
+    this.apiService.qrCodeSave(payload).subscribe({
       next: (res: any) => {
         console.log('Data:', res);
         this.QRDAta = res;
-        if(res[0].MESSAGE){
-          Swal.fire("", res[0].MSGTXT, "success");
+        // if(res[0].NUMBER){
+          if(res[0].NUMBER == 200){
+          Swal.fire("", res[0].MESSAGE, "success");
+          this.generateQR()
         }else{
           Swal.fire("", "Not Submitted.", "error");
         }
-        this.service.setTableData(res || []);
-        this._fetchData();
+        // this.service.setTableData(res || []);
+        // this._fetchData();
       },
       error: (error: any) => {
         console.error('Error fetching lot reports:', error);
@@ -407,6 +560,30 @@ export class GrnagainstidComponent implements OnInit {
       }
     });
   }
+
+  onmismatch(mainRow: any, currentPacket: any, index: number): void {
+    // Calculate the total DCLABS for all packets
+    const totalDCLABS = mainRow.packets.reduce((sum: number, packet: any) => {
+        return sum + (parseFloat(packet.DCLABS) || 0);
+    }, 0);
+
+    // Check if the total exceeds the main row's MENGE
+    if (totalDCLABS > parseFloat(mainRow.MENGE)) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Limit Exceeded',
+            text: `The total quantity (${totalDCLABS}) exceeds the main row's quantity (${mainRow.MENGE}).`,
+        });
+
+        // Reset the value of the current packet's DCLABS
+        currentPacket.DCLABS = null;
+
+        // Optionally, update the UI by triggering Angular's change detection
+        mainRow.packets[index].DCLABS = null;
+    }
+}
+
+  
   
 
 }

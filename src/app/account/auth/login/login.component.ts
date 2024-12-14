@@ -82,7 +82,7 @@ export class LoginComponent implements OnInit {
           this.response = res;
           console.log('Login Response:', this.response);
     
-          if (this.response) {
+          if (this.response[0].ZUSER) {
             const dummy = 'Welcome to GRN';
             localStorage.setItem(
               'currentUser',
@@ -90,7 +90,7 @@ export class LoginComponent implements OnInit {
             );
             this.router.navigate([this.returnUrl], { skipLocationChange: true });
             this.apiService.setLoginResponse(this.response);
-            Swal.fire('', dummy, 'success');
+            Swal.fire('', `Welcome ${this.response[0].ZFNAME} ${this.response[0].ZLNAME} `, 'success');
           } else {
             Swal.fire('', 'Invalid login credentials!', 'error');
             this.router.navigate(['/login']);
@@ -132,15 +132,16 @@ export class LoginComponent implements OnInit {
           this.response = res
           console.log("this.response",this.response)
             // if (this.response.MSGTXT) {
-              if (this.response) {
+              if (this.response[0].ZUSER) {
                 const dummy = "Welcome to GRN"
                 // localStorage.setItem('currentUser', JSON.stringify(this.response.MSGTXT || { token: this.response.token }));
-                localStorage.setItem('currentUser', JSON.stringify( dummy|| { token: this.response.token }));
+                localStorage.setItem('currentUser', JSON.stringify( this.response|| { token: this.response.token }));
 
                 this.router.navigate([returnUrl], { skipLocationChange: true });
                 this.apiService.setLoginResponse(this.response);
                 // Swal.fire("",this.response.MSGTXT, "success")
-                Swal.fire("",dummy, "success")
+                Swal.fire('', `Welcome ${this.response[0].ZFNAME} ${this.response[0].ZLNAME} `, 'success');
+                // Swal.fire("",dummy, "success")
             } else {
               Swal.fire("","Invalid login credentials!", "error")
                 // this.error = 'Invalid login credentials!';

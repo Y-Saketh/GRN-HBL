@@ -142,9 +142,30 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnChanges {
   /**
    * Initialize
    */
+  // initialize(): void {
+  //   this.menuItems = MENU;
+  // }
   initialize(): void {
-    this.menuItems = MENU;
+    const loginResponse = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    console.log("loginResponse1122",loginResponse)
+    
+    if (loginResponse && loginResponse[0].ZGRNACT) {
+      const authorizedIds: string[] = Object.values(loginResponse[0].ZGRNACT).filter((id): id is string => typeof id === 'string' && id.trim() !== "");
+      this.menuItems = this.filterMenuItems(MENU, authorizedIds);
+    } else {
+      this.menuItems = []; // Fallback if no loginResponse or ZGRNACT
+    }
   }
+  
+  private filterMenuItems(menuItems: MenuItem[], authorizedIds: string[]): MenuItem[] {
+    return menuItems.filter(item => {
+      if (item.subItems) {
+        item.subItems = this.filterMenuItems(item.subItems, authorizedIds);
+      }
+      return authorizedIds.includes(item.id) || (item.subItems && item.subItems.length > 0);
+    });
+  }
+  
 
   /**
    * Returns true or false if given menu item has child or not

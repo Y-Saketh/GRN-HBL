@@ -2,8 +2,12 @@
     color: brown;
 }
 
+.btn-container {
+  display: flex;
+  justify-content: space-between; /* Align items to opposite sides */
+  margin-bottom: 10px; /* Add space below buttons */
+}
 
-  
   .card-body {
      /* background-color: #f7f3f1; */
 background-color: #cadad6;
@@ -119,4 +123,99 @@ background-color: #cadad6;
 .highlight-3d-btn:active {
     box-shadow: 0 0 #218838; /* Remove shadow on click */
     transform: translateY(4px); /* Further shift button down */
+}
+/* @media print {
+  body * {
+      visibility: hidden;
+  }
+
+  #printableArea, #printableArea * {
+      visibility: visible;
+  }
+
+  #printableArea {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 100%;
+  }
+
+  .qr-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Adjust size for printer layout */
+      /* gap: 10px;
+  }
+
+  .qr-item {
+      border: 1px solid #000; /* Optional: Add borders for better visibility */
+      /* padding: 10px;
+  }
+
+  img {
+      width: 100%; /* Scale QR codes to fit */
+      /* height: auto;
+  }
+} */ 
+
+@media print {
+  body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+  }
+
+  #printableArea {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px; /* Ensure consistent spacing between items */
+    justify-content: flex-start;
+    margin: 0;
+  }
+
+  .qr-item {
+    width: 45mm; /* Exact label width */
+    height: 25mm; /* Exact label height */
+    display: flex;
+    flex-direction: row; /* Align QR and info horizontally */
+    align-items: center;
+    justify-content: flex-start;
+    box-sizing: border-box;
+    border: 1px solid #000; /* Add a clear border for labels */
+    padding: 2mm;
+    margin: 0;
+  }
+
+  .qr-code-wrapper img {
+    width: 16mm; /* Fixed size for QR code */
+    height: 16mm; 
+    object-fit: contain; /* Maintain aspect ratio */
+    margin-right: 2mm;
+  }
+
+  .qr-info {
+    font-size: 9px; /* Ensure text fits well */
+    line-height: 10px;
+    text-align: left;
+  }
+
+  .qr-info p {
+    margin: 2px 0; /* Small consistent spacing */
+  }
+
+  body * {
+    visibility: hidden; /* Hide everything else */
+  }
+
+  #printableArea, #printableArea * {
+    visibility: visible; /* Show only printable area */
+  }
+
+  #printableArea {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
 }

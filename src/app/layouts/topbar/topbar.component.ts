@@ -65,7 +65,7 @@ export class TopbarComponent implements OnInit {
     // this.initialAppState = initialState;
     // Parse the localStorage item to an object
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-
+console.log("currentUser",currentUser)
     // Safely access properties
     const firstName = currentUser[0]?.ZFNAME ||''; // Check if it's an array
     const lastName = currentUser[0]?.ZLNAME || 'to GRN' ;  // Check if it's an array
