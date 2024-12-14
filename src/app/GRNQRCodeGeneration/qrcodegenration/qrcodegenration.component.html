@@ -163,7 +163,7 @@
                   <th sortable="EBELP" (sort)="onSort($event)">PO Item</th>
                   <th>Goods Recipient</th>
                   <th>Unloading Point</th>
-                  <th>No of Labels</th>
+                  <!-- <th>No of Labels</th> -->
                   <!-- <th>Pkg</th> -->
                 </tr>
               </thead>
@@ -222,14 +222,14 @@
                       class="form-control form-control-sm"
                     />
                   </td>
-                  <td>
+                  <!-- <td>
                     <input
-                      type="number"
+                      type="number" disabled
                       [(ngModel)]="table.ZLABEL"
                       class="form-control form-control-sm"
                     />
 
-                  </td>
+                  </td> -->
 
                   <!-- <td>{{table.WEMPF}}</td> -->
                   <!-- <td>{{table.ABLAD}}</td> -->
@@ -359,7 +359,7 @@
     </div>
   </div>
 </div>
-<div *ngIf="qrscreen">
+<div *ngIf="false">
   <h3>QR Code Generation</h3>
   <button class="btn btn-primary" style="float: left; margin-left: 10px;" type="button"
   (click)="backtoQunatity()">Back</button><br><br>

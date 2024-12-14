@@ -72,7 +72,14 @@ export class QRcodegenrationComponent {
 
   ngOnInit() {
     this.breadCrumbItems = [{ label: 'GRN' }, { label: 'GRN Against InBound Delivery', active: true }];
-    this.userName = localStorage.getItem('currentUser') || this.apiService.getLoginResponse().MSGTXT
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+
+    // Safely access properties
+    const firstName = currentUser[0]?.ZFNAME ||''; // Check if it's an array
+    const lastName = currentUser[0]?.ZLNAME || 'to GRN' ;  // Check if it's an array
+
+    // Fallback to getLoginResponse if needed
+    this.userName = `${firstName} ${lastName}` || 'to GRN';
     this.validationform = this.formBuilder.group({
       inbounddeliverynumber: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]+')]],
 
@@ -399,7 +406,7 @@ export class QRcodegenrationComponent {
         }
       }
     }
-    this.saveQRData();
+    // this.saveQRData();
     this.isGenerating = false;
   }
 

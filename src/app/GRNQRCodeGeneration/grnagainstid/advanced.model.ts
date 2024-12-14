@@ -19,6 +19,11 @@ export interface Table {
   NAME1:string;
   selected: boolean;
   generated: boolean; 
+  ZLABEL:number;
+  packets:any;
+  isMatched:any;
+  qrData:any;
+  isUnmatched:boolean;
 }
 
 

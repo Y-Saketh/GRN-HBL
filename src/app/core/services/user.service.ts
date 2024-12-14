@@ -67,4 +67,13 @@ export class UserProfileService {
         console.log("environment.API_URL_DEV",environment.API_URL_DEV)
         return this.http.post(`${environment.API_URL_DEV}api/external/qrcode`,data)
     }
+    qrCodeSave(data){
+        console.log("environment.API_URL_DEV",environment.API_URL_DEV)
+        return this.http.put(`${environment.API_URL_DEV}api/external/qrCodeSave`,data)
+    }
+    fetchMb51Data(data){
+        console.log("environment.API_URL_DEV",environment.API_URL_DEV)
+        return this.http.put(`${environment.API_URL_DEV}api/external/mb51`,data)
+    }
+
 }
