@@ -3,7 +3,10 @@ import { MenuItem } from './menu.model';
 export const MENU: MenuItem[] = [
     //main row items 
     {
-        id: "menu",
+        // id: "menu",
+        // label: 'Goods Movement',
+        // icon: 'bx-home-circle',
+        id: "GRN",
         label: 'Goods Movement',
         icon: 'bx-home-circle',
 
@@ -87,7 +90,7 @@ export const MENU: MenuItem[] = [
         parentId: "menu"
     },
     {
-        id: "good",
+        id: "goodreturns",
         label: 'Goods Returns',
         link: 'goodsreturns',
         icon: 'bx-analyse',

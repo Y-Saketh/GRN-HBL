@@ -15,6 +15,7 @@ import { RootReducerState } from 'src/app/store';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { SimplebarAngularModule } from 'simplebar-angular';
 import { UserProfileService } from 'src/app/core/services/user.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-topbar',
@@ -65,10 +66,10 @@ export class TopbarComponent implements OnInit {
     // this.initialAppState = initialState;
     // Parse the localStorage item to an object
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-console.log("currentUser",currentUser)
+    console.log("currentUser", currentUser)
     // Safely access properties
-    const firstName = currentUser[0]?.ZFNAME ||''; // Check if it's an array
-    const lastName = currentUser[0]?.ZLNAME || 'to GRN' ;  // Check if it's an array
+    const firstName = currentUser[0]?.ZFNAME || ''; // Check if it's an array
+    const lastName = currentUser[0]?.ZLNAME || 'to GRN';  // Check if it's an array
 
     // Fallback to getLoginResponse if needed
     this.userName = `${firstName} ${lastName}` || this.apiservice.getLoginResponse()?.MSGTXT || 'to GRN';
@@ -113,16 +114,36 @@ console.log("currentUser",currentUser)
   /**
    * Logout the user
    */
+  // logout() {
+  //   window.close()
+  //   if (environment.defaultauth === 'firebase') {
+  //     this.authService.logout();
+  //   } else {
+  //     this.authFackservice.logout();
+  //   }
+  //   this.router.navigate(['/auth/login']);
+  //   localStorage.clear();
+  //   window.close()  
+
+  // }
   logout() {
     if (environment.defaultauth === 'firebase') {
       this.authService.logout();
     } else {
       this.authFackservice.logout();
     }
-    this.router.navigate(['/auth/login']);
     localStorage.clear();
 
+    Swal.fire({
+      title: 'Logged Out',
+      text: 'Redirecting to the main application. Please close this tab.',
+      icon: 'info',
+      confirmButtonText: 'OK'
+    }).then(() => {
+      window.location.href = 'http://10.10.4.178';
+    });
   }
+
 
   /**
    * Fullscreen method

@@ -199,7 +199,7 @@
                   <td><input type="text" [(ngModel)]="table.PostingDate" class="form-control form-control-sm" /></td>
                   <td><input type="text" [(ngModel)]="table.MENGE" class="form-control form-control-sm" /></td> -->
                   <td>{{ table.MEINS }}</td>
-                  <td>{{ table.EBELN }}</td>
+                  <td style="color: brown;" (click)="openMe23(table.EBELN )">{{ table.EBELN }}</td>
                   <td>{{ table.EBELP }}</td>
                   <!-- <td>
                     <input
@@ -408,3 +408,70 @@
     <button type="button" class="btn btn-primary">Save changes</button>
   </div>
 </ng-template> -->
+<div
+bsModal
+#newContactModal="bs-modal"
+class="modal fade"
+tabindex="-1"
+aria-labelledby="newContactModalLabel"
+aria-hidden="true"
+>
+<div class="modal-dialog modal-dialog-centered modal-xl">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="newContactModalLabel">
+        ME23N
+      </h5>
+      <button
+        type="button"
+        class="btn-close"
+        (click)="closePopup()"
+        aria-label="Close"
+      ></button>
+    </div>
+    <div class="modal-body">
+        <div class="table-responsive">
+          <table
+            id="basic-datatable"
+            class="table table-bordered dt-responsive nowrap"
+          >
+            <thead>
+              <tr>
+                <th>PO Item</th>
+                <th>Meterial</th>
+                <th>Material Description</th>
+                <th>Qty</th>
+                <th>UoM</th>
+                <th>Batch</th>
+                <th>SLoc</th>
+                <th>Plant</th>
+                <th>Pur.Grp</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr  *ngFor="
+              let tablee of Me23NData;
+              let i = index;
+            " >
+                <td>{{ tablee.EBELP }}</td>
+                <td>{{ tablee.MATNR }}</td>
+                <td>{{ tablee.TXZ01 }}</td>
+                <td>{{ tablee.MENGE }}</td>
+                <td>{{ tablee.MEINS }}</td>
+                <td>{{ tablee.CHARG }}</td>
+                <td>{{ tablee.LGORT }}</td>
+                <td>{{ tablee.WERKS }}</td>
+                <td>{{ tablee.EKGRP }}</td>
+
+              </tr>
+
+            </tbody>
+
+          </table>
+        </div>
+
+    </div>
+  </div>
+</div>
+</div>

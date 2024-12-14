@@ -1,7 +1,7 @@
 export interface Table {
-    PLANT: number;       // Plant
+    PLANT: string;       // Plant
     STG_LOC: string;      // Storage Location
-    MATERIAL: number;      // Material
+    MATERIAL: string;      // Material
     MAT_DES: string;      // Material Description
     MVT_TYPE: number;      // Movement Type
     MVT_TYPE_TXT: string;      // Movement Type Text

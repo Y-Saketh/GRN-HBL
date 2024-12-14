@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChildren, QueryList } from '@angular/core';
+import { Component, OnInit, ViewChildren, QueryList, ViewChild } from '@angular/core';
 import { CommonModule, DecimalPipe } from '@angular/common';
 
 import { every, Observable, take } from 'rxjs';
@@ -18,6 +18,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { LoaderService } from 'src/app/core/services/loader.service';
 declare var Pace: any;
 import QRCode from 'qrcode';
+import {  ModalDirective, ModalModule } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-qrcodegenration',
@@ -27,10 +28,11 @@ import QRCode from 'qrcode';
   standalone:true,
   imports:[PagetitleComponent,ReactiveFormsModule, 
     CommonModule, 
-    FormsModule, PaginationModule,qrSortableDirective,BsDatepickerModule ]
+    FormsModule, PaginationModule,qrSortableDirective,BsDatepickerModule ,ModalModule]
 })
 
 export class QRcodegenrationComponent {
+  @ViewChild('newContactModal', { static: false }) newContactModal?: ModalDirective;
   breadCrumbItems: Array<{}>;
   // Table data
   tableData: Table[];
@@ -44,6 +46,7 @@ export class QRcodegenrationComponent {
   @ViewChildren(qrSortableDirective) headers: QueryList<qrSortableDirective>;
   public isCollapsed = true;
   GrnResponse: any;
+  Me23NData: any = [];
   submit: boolean;
   isSubmitting: boolean;
   shadowRows = [];
@@ -484,8 +487,28 @@ export class QRcodegenrationComponent {
       mainRow.shadowRows[mainRow.shadowRows.length - 1].MENGE = null;
     }
   }
-  
+  openMe23(ponumber) {
+    let payload = {
+      "EBELN": ponumber
+    }
+    this.newContactModal?.show();
 
+    this.apiService.me23getData(payload).subscribe({
+      next: (res) => {
+        console.log('Saved:', res);
+        this.Me23NData = res[0].ITEM;
+      },
+      error: (err) => {
+        console.error('Error:', err);
+      },
+    });
+    
+  }
+  closePopup(): void {
+
+    this.newContactModal?.hide();
+
+  }
   validSubmit() {
     this.loaderservice.showLoader();
     this.plant = '';

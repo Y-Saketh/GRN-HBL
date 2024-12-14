@@ -42,7 +42,7 @@ function matches(tables: Table, term: string, pipe: PipeTransform) {
     pipe.transform(tables.MATERIAL).toString().includes(term) ||  // Material
     tables.MAT_DES.toLowerCase().includes(term.toLowerCase()) ||  // Material Description
     pipe.transform(tables.MVT_TYPE).toString().includes(term) ||  // Movement Type
-    tables.MVT_TYPE_TXT.toLowerCase().includes(term.toLowerCase()) ||  // Movement Type Text
+    tables.MVT_TYPE_TXT?.toLowerCase().includes(term.toLowerCase()) ||  // Movement Type Text
     tables.POSTING_DATE.toLowerCase().includes(term.toLowerCase()) ||  // Posting Date
     pipe.transform(tables.PRICE).toString().includes(term)  ||   // Quantity in Unit of Entry
     pipe.transform(tables.L_CUR_AMT).toString().includes(term)  ||   // Amount in Local Currency
