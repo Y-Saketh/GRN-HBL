@@ -37,21 +37,26 @@ function sort(tables: Table[], column: string, direction: string): Table[] {
  */
 function matches(tables: Table, term: string, pipe: PipeTransform) {
   return (
-    tables.WERKS.toLowerCase().includes(term.toLowerCase()) || // Plant
-    tables.LGORT.toLowerCase().includes(term.toLowerCase()) || // Storage Location
-    tables.MATNR.toLowerCase().includes(term.toLowerCase()) || // Material
-    tables.BWART.toLowerCase().includes(term.toLowerCase()) || // Movement Type
-    tables.mvtTypeText.toLowerCase().includes(term.toLowerCase()) || // Movement Type Text
-    tables.BUDAT.toLowerCase().includes(term.toLowerCase()) || // Posting Date
-    tables.MAKTX.toLowerCase().includes(term.toLowerCase()) || // Material Description
-    pipe.transform(tables.qtyInUnitofEntry)?.toString().includes(term) || // Quantity in Unit of Entry
-    pipe.transform(tables.amtInLocCur)?.toString().includes(term) || // Amount in Local Currency
-    tables.MBLNR?.toLowerCase().includes(term.toLowerCase()) || // Material Document
-    tables.NAME1.toLowerCase().includes(term.toLowerCase()) || // Vendor Name
-    tables.TEXT.toLowerCase().includes(term.toLowerCase()) || // Text
-    pipe.transform(tables.LFIMG)?.toString().includes(term) || // Quantity
-    tables.supplier.toLowerCase().includes(term.toLowerCase()) || // Supplier
-    tables.order.toLowerCase().includes(term.toLowerCase())  // Order 
+    pipe.transform(tables.PLANT).toString().includes(term)   ||  // Plant
+    tables.STG_LOC.toLowerCase().includes(term.toLowerCase()) ||  // Storage Location
+    pipe.transform(tables.MATERIAL).toString().includes(term) ||  // Material
+    tables.MAT_DES.toLowerCase().includes(term.toLowerCase()) ||  // Material Description
+    pipe.transform(tables.MVT_TYPE).toString().includes(term) ||  // Movement Type
+    tables.MVT_TYPE_TXT.toLowerCase().includes(term.toLowerCase()) ||  // Movement Type Text
+    tables.POSTING_DATE.toLowerCase().includes(term.toLowerCase()) ||  // Posting Date
+    pipe.transform(tables.PRICE).toString().includes(term)  ||   // Quantity in Unit of Entry
+    pipe.transform(tables.L_CUR_AMT).toString().includes(term)  ||   // Amount in Local Currency
+    tables.MAT_DOC.toLowerCase().includes(term.toLowerCase()) ||  // Material Document
+    // tables.NAME1?.toLowerCase().includes(term.toLowerCase()) ||  // Vendor Name
+    // tables.SGTXT?.toLowerCase().includes(term.toLowerCase()) ||  // Text
+    pipe.transform(tables.QUANITY).toString().includes(term)  ||  // Quantity
+    pipe.transform(tables.SUPPLIER).toString().includes(term) ||  // Supplier
+    tables.ORDER.toLowerCase().includes(term.toLowerCase()) ||  // Order
+    tables.GL_ACCOUNT.toLowerCase().includes(term.toLowerCase()) ||  // GL account 
+    tables.DOC_HEADER_TXT.toLowerCase().includes(term.toLowerCase()) ||  // Doc Header Text
+    tables.ENTRY_DATE.toLowerCase().includes(term.toLowerCase()) ||  // Entry Date
+    pipe.transform(tables.QUANITY).toString().includes(term) ||  // Batch
+    tables.CONSUMPTION.toLowerCase().includes(term.toLowerCase())     // Consumption
   );
 }
 
@@ -154,7 +159,6 @@ export class AdvancedService {
     this._set({ page });
   }
 }
-
 
   setTableData(data: Table[]) {
     this.apiData = data;

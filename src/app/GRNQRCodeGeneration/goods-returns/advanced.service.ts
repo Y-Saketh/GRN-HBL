@@ -36,26 +36,23 @@ function sort(tables: Table[], column: string, direction: string): Table[] {
  * Check if the table row matches the search term
  */
 function matches(tables: Table, term: string, pipe: PipeTransform) {
-    return (
-      tables.MBLNR.toLowerCase().includes(term.toLowerCase()) || // Number of Material Document
-      tables.EBELN.toLowerCase().includes(term.toLowerCase()) || // Purchasing Document Number
-      tables.ZEILE.toString().toLowerCase().includes(term.toLowerCase()) || // Item in Material Document
-      tables.ZRQTY.toString().toLowerCase().includes(term.toLowerCase()) || // Reel Quantity
-      tables.ZRNUM.toString().toLowerCase().includes(term.toLowerCase()) || // Reel Number
-      tables.ZQRGEN_DT.toLowerCase().includes(term.toLowerCase()) || // QR Generation Date
-      tables.ZQRSTAT.toLowerCase().includes(term.toLowerCase()) || // QR Status
-      tables.ZQRBAL_QTY.toString().toLowerCase().includes(term.toLowerCase()) || // QR Balance Qty
-      tables.WERKS.toLowerCase().includes(term.toLowerCase()) || // Plant
-      tables.MATNR.toLowerCase().includes(term.toLowerCase()) || // Material Number
-      tables.MAKTX.toLowerCase().includes(term.toLowerCase()) || // Material Description
-      tables.LGORT.toLowerCase().includes(term.toLowerCase()) || // Storage Location
-      tables.MENGE.toString().toLowerCase().includes(term.toLowerCase()) || // Quantity
-      tables.MEINS.toLowerCase().includes(term.toLowerCase()) || // Base Unit of Measure
-      tables.CHARG.toLowerCase().includes(term.toLowerCase()) || // Batch Number
-      tables.NAME1.toLowerCase().includes(term.toLowerCase()) ||
-      tables.LIFNR.toLowerCase().includes(term.toLowerCase()) // Account Number of Supplier
-    );
-  }
+  return (
+    tables.MATNR.toLowerCase().includes(term.toLowerCase()) || // Material Code
+    tables.MAKTX.toLowerCase().includes(term.toLowerCase()) || // Material Description
+    tables.MEINS.toLowerCase().includes(term.toLowerCase()) || // UOM
+    tables.WERKS.toLowerCase().includes(term.toLowerCase()) || // Plant
+    tables.LGORT.toLowerCase().includes(term.toLowerCase()) || // Storage Location
+    tables.LIFNR.toLowerCase().includes(term.toLowerCase()) || // Vendor Code
+    tables.GRUND.toLowerCase().includes(term.toLowerCase()) || // Reason for Movement
+    tables.BLDAT.toLowerCase().includes(term.toLowerCase()) || // Doc Date
+    tables.BUDAT.toLowerCase().includes(term.toLowerCase()) || // Posting Date
+    tables.MATKL.toLowerCase().includes(term.toLowerCase()) || // Material Group
+    tables.EBELNL.toLowerCase().includes(term.toLowerCase()) || // PO Number
+    tables.LFBNR.toString().toLowerCase().includes(term.toLowerCase()) || // Reference Doc Number
+    tables.VENDORNAME.toLowerCase().includes(term.toLowerCase()) || // Vendor Name
+    tables.WEMPF.toLowerCase().includes(term.toLowerCase()) // Goods Receipt Name
+  );
+}
 
 @Injectable({
   providedIn: 'root',

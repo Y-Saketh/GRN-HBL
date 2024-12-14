@@ -76,49 +76,162 @@
                           </div>
                       </div>
                   </div>
-                  <!-- table-->
-                  <div class="table-responsive">
-                      <table id="basic-datatable" class="table table-bordered dt-responsive nowrap">
-                          <thead>
-                              <tr>
-                                  <th></th>
-                                  <th sortable="WERKS" (sort)="onSort($event)">Plant</th>
-                                  <th sortable="MBLNR" (sort)="onSort($event)">Material Document</th>
-                                  <th sortable="MATNR" (sort)="onSort($event)">Mat.Code</th>
-                                  <th sortable="MAKTX"  (sort)="onSort($event)">Mat.Desc</th>
-                                  <th sortable="MENGE" (sort)="onSort($event)">Quantity</th>
-                                  <th sortable="LGORT" (sort)="onSort($event)">S.Loc</th>
-                                  <th sortable="MEINS" (sort)="onSort($event)">BUoM</th>
-                                  <th sortable="CHARG" (sort)="onSort($event)">Batch</th>
-                                  <th sortable="EBELN" (sort)="onSort($event)">PO.Number</th>
-                                  <th sortable="EBELP" (sort)="onSort($event)">PO.Item</th>
-                                  <th sortable="LIFNR" (sort)="onSort($event)">Vendor Code</th>
-                                  <th sortable="NAME1" (sort)="onSort($event)">Vendor Name</th>
-                              </tr>
-                          </thead>
-                          <tbody *ngFor="let table of tables$ | async; let i = index">
-                              <tr>
-                                  <td align="center">
-                                      <a class="expand-row" (click)="changeValue($index)">+</a>
-                                  </td>
-                                  <td>{{ table.WERKS }}</td>
-                                  <td>{{ table.MBLNR }}</td>
-                                  <td>{{table.MATNR}}</td>
-                                  <td>{{ table.MAKTX }}</td>
-                                  <td>{{ table.MENGE }}</td>
-                                  <td>{{ table.LGORT }}</td>
-                                  <td>{{ table.MEINS }}</td>
-                                  <td>{{ table.CHARG }}</td>
-                                  <td>{{ table.EBELN }}</td>
-                                  <td>{{ table.EBELP }}</td>
-                                  <td>{{ table.LIFNR }}</td>
-                                  <td>{{ table.NAME1 }}</td>
-                              </tr>
-                          </tbody>
-                      </table>
-                  </div>
+                  <!-- Table -->
+      <div class="table-responsive">
+        <table
+          id="basic-datatable"
+          class="table table-bordered dt-responsive nowrap"
+        >
+          <thead class="brandcolor tableHeader">
+            <tr>
+              <!-- <th>
+                <input
+                  type="checkbox"
+                  [checked]="selectAll"
+                  (change)="toggleSelectAll($event)"
+                />
+              </th> -->
+              <th sortable="MATNR" (sort)="onSort($event)">Material code</th>
+              <th sortable="MAKTX" (sort)="onSort($event)">
+                Material description
+              </th>
+              <th sortable="MEINS" (sort)="onSort($event)">
+                UOM
+              </th>
+              <th sortable="WERKS" (sort)="onSort($event)">
+                Plant
+              </th>
+              <th sortable="LGORT" (sort)="onSort($event)">
+                Storage Location
+              </th>
+              <th sortable="LIFNR" (sort)="onSort($event)">
+                vendor code
+              </th>
+              <th sortable="GRUND" (sort)="onSort($event)">
+                Reason For Movement
+              </th>
+              <th>
+                Stock Type
+              </th>             
+            </tr>
+          </thead>
+          <tbody *ngFor="let table of tables$ | async; let i = index">
+            <tr>
+              <td align="center">
+                <a class="expand-row" (click)="changeValue(i)">+</a>
+              </td>
+              <td>
+                <input
+                  type="checkbox"
+                  [(ngModel)]="table.selected"
+                  (change)="onRowCheckboxChange(table)"
+                />
+              </td>
+              <td>{{ table.MATNR }}</td>
+              <!-- Material Code-->
+                <td>{{ table.MAKTX }}</td>
+              <!-- Material Description-->
+                <td>{{ table.MEINS }}</td>
+              <!-- UOM-->
+                <td>{{ table.WERKS }}</td>
+              <!-- Plant-->
+                <td>{{ table.LGORT }}</td>
+              <!-- Storage Location-->
+                <td>{{ table.LIFNR }}</td>
+              <!-- Vendor Code-->
+                <td>{{ table.GRUND }}</td>
+              <!-- Reason For Movement-->
+              <td>
+                <select [(ngModel)]="item.stockType" (change)="onStockTypeChange(item, i)">
+                  <option value="qualityInspection">Quality Inspection</option>
+                  <option value="blockedStock">Blocked Stock</option>
+                </select>
+              </td>
+              <!-- Stock Type-->
+            </tr>
+            <ng-container *ngIf="hideme[i]">
+              <tr class="sub-table no-bg">
+                <td align="center"></td>
+                <td colspan="15" class="p-0">
+                  <table class="table mb-0 table-striped">
+                    <thead class="bg-dark text-white">
+                      <tr>
+                        <th>Doc Date</th>
+                        <th>Posting date</th>
+                        <th>Material Group</th>
+                        <th>PO Number</th>
+                        <th>Reference Doc Num</th>
+                        <th>Vendor Name</th>
+                        <th>Goods Receipt Name</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                       <td>{{ table.BLDAT }}</td>
+                        <!-- Doc Date-->
+                        <td>{{ table.BUDAT }}</td>
+                        <!-- Posting Date-->
+                        <td>{{ table.MATKL }}</td>
+                        <!-- Material Group-->
+                        <td>{{ table.EBELN }}</td>
+                        <!-- PO Number-->
+                        <td>{{ table.LFBNR }}</td>
+                        <!-- Reference Doc Num-->
+                        <td>{{ table.VENDORNAME }}</td>
+                        <!-- Vendor Name-->
+                         <td>{{ table.WEMPF }}</td>
+                        <!-- Goods Receipt Name-->
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
               </div>
           </div>
+          <!--Pagination-->
+      <div class="row justify-content-md-between align-items-md-center mt-2">
+        <div class="col-sm-12 col-md-5">
+          <div class="dataTables_info mb-2" role="status" aria-live="polite">
+            Showing {{ service.startIndex }} to {{ service.endIndex }} of
+            {{ service.totalRecords }} entries
+          </div>
         </div>
+        <div class="col-sm-12 col-md-5">
+          <div class="text-md-right float-md-end pagination-rounded">
+            <ul class="pagination justify-content-end mb-0">
+              <!-- Previous Button -->
+              <li
+                class="page-item"
+                [class.disabled]="service.page === 1"
+                (click)="service.changePage(service.page - 1)"
+              >
+                <a class="page-link" href="javascript:void(0)">Previous</a>
+              </li>
+
+              <!-- Current Page Display -->
+              <li class="page-item active">
+                <a class="page-link" href="javascript:void(0)">{{
+                  service.page
+                }}</a>
+              </li>
+
+              <!-- Next Button -->
+              <li
+                class="page-item"
+                [class.disabled]="service.page === service.totalPages"
+                (click)="service.changePage(service.page + 1)"
+              >
+                <a class="page-link" href="javascript:void(0)">Next</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+        <!-- End Pagination-->
+      </div>
     </div>
   </div>

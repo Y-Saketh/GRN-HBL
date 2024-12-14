@@ -2,7 +2,7 @@ import { Component, QueryList, ViewChildren } from '@angular/core';
 import { UserProfileService } from 'src/app/core/services/user.service';
 import { FormsModule, FormBuilder, FormGroup, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Table } from './advanced.model';
-import { Observable } from 'rxjs';
+import { Observable, take } from 'rxjs';
 import { AdvancedSortableDirective, SortEvent } from './Advanced-sortable.directive';
 import { AdvancedService } from './advanced.service';
 import { DecimalPipe } from '@angular/common'; 
@@ -25,17 +25,27 @@ export class GoodsReturnsComponent {
   validationform: UntypedFormGroup;
   submit: boolean;
   tableData: Table[];
+  selectAll = true;
+  shadowRows = [];
   public selected: any;
   hideme: boolean[] = [];
   tables$: Observable<Table[]>;
   total$: Observable<number>;
 
+  
+
   @ViewChildren(AdvancedSortableDirective) headers: QueryList<AdvancedSortableDirective>;
+  public isCollapsed = true;
+  expandedRows: { [key: string]: boolean } = {};
 
 
   constructor(private apiService:UserProfileService, public formBuilder: UntypedFormBuilder,public service: AdvancedService,){
     this.tables$ = service.tables$;
     this.total$ = service.total$;
+  }
+
+  changeValue(i) {
+    this.hideme[i] = !this.hideme[i];
   }
 
   ngOnInit(){
@@ -44,6 +54,30 @@ export class GoodsReturnsComponent {
     });
 
   }
+
+  onStockTypeChange(item: any, index: number) {
+    console.log(`Stock Type for row ${index} changed to:`, item.stockType);
+  }
+
+  toggleSelectAll(event: any): void {
+    const checked = event.target.checked;
+    this.tables$.pipe(take(1)).subscribe((tables) => {
+      tables.forEach((table) => {
+        table.selected = false; 
+        if (checked) {
+          table.selected = true; 
+        }
+      });
+    });
+  }
+
+  onRowCheckboxChange(row: any): void {
+    this.tables$.pipe(take(1)).subscribe((tables) => {
+      // Ensure the selectAll state aligns with user interaction
+      this.selectAll = tables.every((table) => table.selected);
+    });
+  }
+
 
   onSort({ column, direction }: SortEvent) {
     this.headers.forEach((header) => {

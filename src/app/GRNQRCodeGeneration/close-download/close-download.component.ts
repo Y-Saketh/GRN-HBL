@@ -55,8 +55,8 @@ export class CloseDownloadComponent implements OnInit {
       plant: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]+')]],
       // purchasegroupfrom: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
       purchasegroup: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
-      curentdatefrom: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
-      curentdateto: ['', [Validators.pattern('[a-zA-Z0-9]+')]],
+      curentdate: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
+      // curentdateto: ['', [Validators.pattern('[a-zA-Z0-9]+')]],
     });
 
     this.breadCrumbItems = [{ label: 'Tables' }, { label: 'Advanced Table', active: true }];
@@ -159,8 +159,8 @@ export class CloseDownloadComponent implements OnInit {
     let obj = {
       "WERKS": this.form.plant.value,// "1300","1025"
       "EKGRP": this.form.purchasegroup.value,//"013",
-      "BADAT_F": this.form.curentdatefrom.value?moment(this.form.curentdatefrom.value):"",// "2024-02-01",
-      "BADAT_T": this.form.curentdateto.value?moment(this.form.curentdateto.value):""//"2024-02-20"
+      "BADAT_F": this.form.curentdate.value?moment(this.form.curentdate.value):"",// "2024-02-01",
+      // "BADAT_T": this.form.curentdateto.value?moment(this.form.curentdateto.value):""//"2024-02-20"
     }
     console.log("objobj",obj)
     this.apiService.zprClose(obj).subscribe({

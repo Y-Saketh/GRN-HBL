@@ -60,34 +60,32 @@
 
           <!-- Current Date From-->
           <div class="col-md-2">
-            <label class="brandcolor" for="curentdatefrom">CURRENT DATE FROM</label>
+            <label class="brandcolor" for="curentdate">CURRENT DATE</label>
             <div class="mb-3">
               <input
                 type="text"
                 class="form-control"
-                id="curentdatefrom"
-                formControlName="curentdatefrom"
-                placeholder="FROM DATE"
+                id="curentdate"
+                formControlName="curentdate"
+                placeholder="CURRENT DATE"
                 [bsConfig]="bsConfig"
                 bsDatepicker
-               
-               
                 [ngClass]="{
-                  'is-invalid': submit && form.curentdatefrom.errors
+                  'is-invalid': submit && form.curentdate.errors
                 }"
               />
               <div
-                *ngIf="submit && form.curentdatefrom.errors"
+                *ngIf="submit && form.curentdate.errors"
                 class="invalid-feedback"
               >
-                <span *ngIf="form.curentdatefrom.errors.required"
+                <span *ngIf="form.curentdate.errors.required"
                   >Please provide a valid From Date.</span
                 >
               </div>
             </div>
           </div>
           <!-- Current Date To-->
-          <div class="col-md-2">
+          <!-- <div class="col-md-2">
             <label class="brandcolor" for="curentdateto">CURRENT DATE TO</label>
             <div class="mb-3">
               <input
@@ -112,7 +110,7 @@
                 >
               </div>
             </div>
-          </div>
+          </div> -->
           <!-- Button Row -->
         <div class="col-md-1 mt-4">
           <div class="mb-3">
@@ -218,7 +216,6 @@
                 <!-- Qty Requested -->
                 <td>{{ table.MEINS }}</td>
                 <!-- UOM -->
-          
               </tr>
               <ng-container *ngIf="!hideme[$index]">
                 <tr class="sub-table no-bg">
@@ -230,7 +227,6 @@
                           <th>Del Ind</th>
                           <th>Requisitioner</th>
                           <th>Short Text</th>
-  
                           <th>Del Date</th>
                           <th>Rel Date</th>
                           <th>Total Value</th>
@@ -245,8 +241,6 @@
                           <!-- Updating Text Field -->
                           <td>{{ table.TXZ01 }}</td>
                           <!-- Base Unit of Measure -->
-  
-                          
                           <td>{{ table.LFDAT }}</td>
                           <!-- Stockkeeping Unit -->
                           <td>{{ table.FRGDT }}</td>

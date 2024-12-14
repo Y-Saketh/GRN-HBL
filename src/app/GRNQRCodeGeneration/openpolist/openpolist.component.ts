@@ -149,16 +149,6 @@ export class OpenpolistComponent implements OnInit {
           this.lrDate = '20-09-2024';
           this.LrNo = '788';
 
-          // this.table.WERKS;
-          // this.table.LGORT;
-          // this.table.PO_NUMBER;
-          // this.table.PO_ITEM;
-          // this.table.MATNR;
-          // this.table.SHORT_TEXT;
-          // this.table.STEUC;
-          // this.table.MEINS;
-          // this.table.ORGQTY;
-          // this.table.DMENGE;
           this._fetchData2();
         },
         error: (error: any) => {

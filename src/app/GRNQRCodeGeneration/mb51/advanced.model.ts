@@ -1,24 +1,27 @@
 export interface Table {
-    WERKS: string;        // Plant
-    LGORT: string;        // Storage Location
-    MATNR: string;        // Material
-    BWART: string;        // Movement Type
-    mvtTypeText: string;  // Movement Type Text
-    BUDAT: string;        // Posting Date
-    MAKTX: string;        // Material Description
-    qtyInUnitofEntry: number; // Quantity in Unit of Entry
-    amtInLocCur: number; // Amount in Local Currency
-    MBLNR: string;        // Material Document
-    NAME1: string;        // Vendor Name
-    TEXT: string;           // Text
-    LFIMG: number; // Quantity
-    supplier: string; // Supplier
-    order: string; // Order
+    PLANT: number;       // Plant
+    STG_LOC: string;      // Storage Location
+    MATERIAL: number;      // Material
+    MAT_DES: string;      // Material Description
+    MVT_TYPE: number;      // Movement Type
+    MVT_TYPE_TXT: string;      // Movement Type Text
+    POSTING_DATE: string;      // Posting Date
+    PRICE: number;      // Quantity in Unit of Entry  //d
+    L_CUR_AMT: number;      // Amount in Local Currency
+    MAT_DOC: string;      // Material Document
+    // NAME1: string;      // Vendor Name  //d
+    // SGTXT: string;      // Text  //d
+    QUANITY: number;      // Quantity
+    SUPPLIER: number;      // Supplier
+    ORDER: string;      // Order
+    GL_ACCOUNT: string;      // GL account
+    DOC_HEADER_TXT: string;      // Doc Header Text
+    ENTRY_DATE: string;      // Entry Date
+    BATCH: number;      // Batch
+    CONSUMPTION: string;      // Consumption
 }
   
 export interface SearchResult {
     tables: Table[];
     total: number;
   }
-  
-  

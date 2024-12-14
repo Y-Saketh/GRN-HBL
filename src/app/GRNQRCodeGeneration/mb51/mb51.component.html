@@ -147,46 +147,47 @@
           <thead class="brandcolor tableHeader">
             <tr>
               <th></th>
-              <th class="brandcolor" sortable="WERKS" (sort)="onSort($event)">
+              <th class="brandcolor" sortable="PLANT" (sort)="onSort($event)">
                 Plant
               </th>
-              <th class="brandcolor" sortable="LGORT" (sort)="onSort($event)">
+              <th class="brandcolor" sortable="STG_LOC" (sort)="onSort($event)">
                 S.Loc
               </th>
-              <th class="brandcolor" sortable="MATNR" (sort)="onSort($event)">
-                Mat
+              <th class="brandcolor" sortable="MATERIAL" (sort)="onSort($event)">
+                Material
               </th>
-              <th class="brandcolor" sortable="BWART" (sort)="onSort($event)">
+              <th class="brandcolor" sortable="MAT_DES" (sort)="onSort($event)">
+                Material Description
+              </th>
+              <th class="brandcolor" sortable="MVT_TYPE" (sort)="onSort($event)">
                 Mvt Type
               </th>
               <th
                 class="brandcolor"
-                sortable="mvtTypeText"
+                sortable="MVT_TYPE_TXT"
                 (sort)="onSort($event)"
               >
                 Mvt Type Txt
               </th>
-              <th class="brandcolor" sortable="BUDAT" (sort)="onSort($event)">
+              <th class="brandcolor" sortable="POSTING_DATE" (sort)="onSort($event)">
                 Posting Date
               </th>
-              <th class="brandcolor" sortable="MAKTX" (sort)="onSort($event)">
-                Mat Desc
-              </th>
+              
               <th
                 class="brandcolor"
-                sortable="qtyInUnitofEntry"
+                sortable="PRICE"
                 (sort)="onSort($event)"
               >
-                Qty(UOE)
+                Price
               </th>
               <th
                 class="brandcolor"
-                sortable="amtInLocCur"
+                sortable="L_CUR_AMT"
                 (sort)="onSort($event)"
               >
                 Amt in loc.cur
               </th>
-              <th class="brandcolor" sortable="MBLNR" (sort)="onSort($event)">
+              <th class="brandcolor" sortable="MAT_DOC" (sort)="onSort($event)">
                 Mat Doc
               </th>
             </tr>
@@ -196,53 +197,68 @@
               <td align="center">
                 <a class="expand-row" (click)="changeValue(i)">+</a>
               </td>
-              <td>{{ table.WERKS }}</td>
+              <td>{{ table.PLANT }}</td>
               <!-- Plant -->
-              <td>{{ table.LGORT }}</td>
+              <td>{{ table.STG_LOC }}</td>
               <!-- Storage Location -->
-              <td>{{ table.MATNR }}</td>
+              <td>{{ table.MATERIAL }}</td>
               <!-- Material -->
-              <td>{{ table.BWART }}</td>
-              <!-- Movement Type -->
-              <td>{{ table.mvtTypeText }}</td>
-              <!-- Movement Type Text -->
-              <td>{{ table.BUDAT }}</td>
-              <!-- Posting Date -->
-              <td>{{ table.MAKTX }}</td>
+              <td>{{ table.MAT_DES }}</td>
               <!-- Material Desc -->
-              <td>{{ table.qtyInUnitofEntry }}</td>
+              <td>{{ table.MVT_TYPE }}</td>
+              <!-- Movement Type -->
+              <td>{{ table.MVT_TYPE_TXT }}</td>
+              <!-- Movement Type Text -->
+              <td>{{ table.POSTING_DATE }}</td>
+              <!-- Posting Date -->
+              <td>{{ table.PRICE }}</td>
               <!-- Qty in unit of entry -->
-              <td>{{ table.amtInLocCur }}</td>
+              <td>{{ table.L_CUR_AMT }}</td>
               <!-- Amt in loc.cur -->
-              <td>{{ table.MBLNR }}</td>
+              <td>{{ table.MAT_DOC }}</td>
               <!-- Material Doc -->
             </tr>
-            <ng-container *ngIf="hideme[i]">
+            <ng-container *ngIf="!hideme[i]">
               <tr class="sub-table no-bg">
                 <td align="center"></td>
                 <td colspan="15" class="p-0">
                   <table class="table mb-0 table-striped">
                     <thead class="bg-dark text-white">
                       <tr>
-                        <th>Vendor Name</th>
-                        <th>Text</th>
+                        <th>Purchase Order</th>
+                        <th>Doc Date</th>
                         <th>Qty</th>
                         <th>Supplier</th>
                         <th>Order</th>
+                        <th>GL account</th>
+                        <th>Doc Header Text</th>
+                        <th>Entry Date</th>
+                        <th>Batch</th>
+                        <th>Consumption</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr>
-                        <td>{{ table.NAME1 }}</td>
-                        <!-- Vendor Name -->
-                        <td>{{ table.TEXT }}</td>
-                        <!-- Text -->
-                        <td>{{ table.qty }}</td>
+                        <td>{{ table.PUR_ORDER }}</td>
+                        <!-- Purchase Order -->
+                        <td>{{ table.DOC_DATE }}</td>
+                        <!-- Doc Date -->
+                        <td>{{ table.QUANITY }}</td>
                         <!-- Qty -->
-                        <td>{{ table.supplier }}</td>
+                        <td>{{ table.SUPPLIER }}</td>
                         <!-- Supplier -->
-                        <td>{{ table.order }}</td>
+                        <td>{{ table.ORDER }}</td>
                         <!-- Order -->
+                        <td>{{ table.GL_ACCOUNT }}</td>
+                        <!-- gl account-->
+                         <td>{{ table.DOC_HEADER_TXT }}</td>
+                        <!-- Doc Header Text-->
+                         <td>{{ table.ENTRY_DATE }}</td>
+                        <!-- Entry Date-->
+                         <td>{{ table.BATCH }}</td>
+                        <!-- Batch-->
+                         <td>{{ table.CONSUMPTION }}</td>
+                        <!-- Consumption-->
                       </tr>
                     </tbody>
                   </table>

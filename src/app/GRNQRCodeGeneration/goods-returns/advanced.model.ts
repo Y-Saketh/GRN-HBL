@@ -1,22 +1,20 @@
 export interface Table {
-    MBLNR: string; // Number of Material Document
-    EBELN: string; // Purchasing Document Number
-    ZEILE: number; // Item in Material Document
-    ZRQTY: number; // Reel Quantity
-    ZRNUM: number; // Reel Number
-    ZQRGEN_DT: string; // QR Generation Date
-    ZQRSTAT: string; // QR Status
-    ZQRBAL_QTY: number; // QR Balance Qty
-    WERKS: string; // Plant
-    MATNR: string; // Material Number
+    selected: any;
+    MATNR: string; // Material Code
     MAKTX: string; // Material Description
+    MEINS: string; // UOM
+    WERKS: string // Plant
     LGORT: string; // Storage Location
-    MENGE: number; // Quantity
-    MEINS: string; // Base Unit of Measure
-    CHARG: string; // Batch Number
-    LIFNR: string; // Account Number of Supplier
-    NAME1:string;
-  
+    LIFNR: string; // Vendor Code
+    GRUND: string; // Reason for Movement
+    shadowRows?: Table[]; // Shadow rows
+    BLDAT: string; // Doc Date
+    BUDAT: string; // Posting Date
+    MATKL: string; // Material Group
+    EBELNL: string; // PO Number
+    LFBNR: number; // Reference Doc Number
+    VENDORNAME: string; // Vendor Name
+    WEMPF: string; // Goods Receipt Name
   }
   
   
