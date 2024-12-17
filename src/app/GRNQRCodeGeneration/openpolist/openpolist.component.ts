@@ -42,7 +42,7 @@ export class OpenpolistComponent implements OnInit {
   public isCollapsed = true;
   expandedRows: { [key: string]: boolean } = {};
   lotReportsData: any;
-  // POLIST: any;
+  plants: string[] = [];
   POLIST: Table[];
   selectedIndex: number;
   selectedMaterial: any;
@@ -73,26 +73,21 @@ export class OpenpolistComponent implements OnInit {
 
   bsConfig = {
     dateInputFormat: 'DD-MM-YYYY', // Set the date format
-    // showWeekNumbers: false, // Optional: Hide week numbers
     containerClass: 'theme-blue', // Optional: Use a predefined theme
   };
   ngOnInit(): void {
     this.submit = false;
+    const currentDate = new Date();
+    const fifteenDaysAgo = new Date();
+    fifteenDaysAgo.setDate(currentDate.getDate() - 15);
+    const fortyfiveDaysAgo = new Date();
+    fortyfiveDaysAgo.setDate(currentDate.getDate() - 45);
     this.validationform = this.formBuilder.group({
-      plant: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]+')]],
-      documentFrom: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
-      documentTo: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
-      deliveryDateFrom: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
-      deliveryDateTo: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
-      purchaseGroup: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
-      poNumber: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
-      vendor: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
-      // documentTypeFrom:['', [ Validators.pattern('[a-zA-Z0-9]+')]],
-      // documentTypeTo:['', [ Validators.pattern('[a-zA-Z0-9]+')]],
-      documentType: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
-      material: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
-      materialgroup: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
-
+    plant: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]+')]],
+    purchaseGroup: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
+    documentType: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
+    docFromDate: [fortyfiveDaysAgo, [ Validators.pattern('[a-zA-Z0-9]+')]],
+    docToDate: [fifteenDaysAgo, [ Validators.pattern('[a-zA-Z0-9]+')]],     
     });
     this.tableForm = this.formBuilder.group({
       gateEntryNumber: ['', Validators.required],
@@ -105,6 +100,17 @@ export class OpenpolistComponent implements OnInit {
       deleveryChallanNumber: ['', Validators.required],
       PackingList: [''], // Optional field
     });
+
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    console.log("currentUser", currentUser)
+    const werksArray: string[] = [];  
+    Object.keys(currentUser[0].ZWERKS).forEach((key) => {   
+      const value = currentUser[0].ZWERKS[key];   
+      if (value) {  werksArray.push(value);   
+      } 
+    });
+    this.plants = werksArray;
+    console.log("Extracted Werks Array:", werksArray);
 
     this.breadCrumbItems = [{ label: 'GRN' }, { label: 'Open PO List', active: true }];
     /**

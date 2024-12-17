@@ -27,6 +27,7 @@ export class CloseDownloadComponent implements OnInit {
   tableData: Table[];
   public selected: any;
   hideme: boolean[] = [];
+  plants: string[] = [];
   tables$: Observable<Table[]>;
   total$: Observable<number>;
 
@@ -51,13 +52,26 @@ export class CloseDownloadComponent implements OnInit {
   };
   ngOnInit(): void {
     this.submit = false;
+    const currentDate = new Date();
+    const fifteenDaysAgo = new Date();
+    fifteenDaysAgo.setDate(currentDate.getDate() - 15);
     this.validationform = this.formBuilder.group({
       plant: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]+')]],
-      // purchasegroupfrom: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
       purchasegroup: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
-      curentdate: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
-      // curentdateto: ['', [Validators.pattern('[a-zA-Z0-9]+')]],
+      date: [fifteenDaysAgo, [ Validators.pattern('[a-zA-Z0-9]+')]],
     });
+
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    console.log("currentUser", currentUser)
+    const werksArray: string[] = [];  
+    Object.keys(currentUser[0].ZWERKS).forEach((key) => {   
+      const value = currentUser[0].ZWERKS[key];   
+      if (value) {  werksArray.push(value);   
+      } 
+    });
+    this.plants = werksArray;
+    console.log("Extracted Werks Array:", werksArray);
+
 
     this.breadCrumbItems = [{ label: 'Tables' }, { label: 'Advanced Table', active: true }];
     /**

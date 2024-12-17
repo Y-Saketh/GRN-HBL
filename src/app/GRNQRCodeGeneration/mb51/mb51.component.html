@@ -12,17 +12,40 @@
           <div class="col-md-1">
             <label class="brandcolor" for="plant">PLANT</label>
             <div class="mb-3">
-              <input
-                type="text"
-                class="form-control"
-                id="plant"
-                formControlName="plant"
-                placeholder="Plant"
-                [ngClass]="{ 'is-invalid': submit && form.plant.errors }"
-              />
+              <select
+                  class="form-select"
+                  id="plant"
+                  formControlName="plant"
+                >
+                  <option value="" disabled selected>Plant</option>
+                  <option *ngFor="let type of plants" [value]="type">
+                    {{ type }}
+                  </option>
+                </select>
               <div *ngIf="submit && form.plant.errors" class="invalid-feedback">
                 <span *ngIf="form.plant.errors.required"
                   >Please provide a valid plant.</span
+                >
+              </div>
+            </div>
+          </div>
+          <!-- Movement Type -->
+          <div class="col-md-2">
+            <label class="brandcolor" for="movementType">MOVEMENT TYPE</label>
+            <div class="mb-3">
+              <select
+                class="form-select"
+                id="movementType"
+                formControlName="movementType"
+              >
+                <option value="" disabled selected>Select Movement Type</option>
+                <option *ngFor="let type of movementTypes" [value]="type">
+                  {{ type }}
+                </option>
+              </select>
+              <div *ngIf="submit && form.movementType.errors" class="invalid-feedback">
+                <span *ngIf="form.movementType.errors.required"
+                  >Please select a valid Movement Type.</span
                 >
               </div>
             </div>
@@ -66,7 +89,7 @@
                 formControlName="postingDateTo"
                 [bsConfig]="bsConfig"
                 bsDatepicker
-                placeholder="IBD CREATED To"
+                placeholder="POSTING DATE TO"
                 [ngClass]="{
                   'is-invalid': submit && form.postingDateTo.errors
                 }"
@@ -81,6 +104,7 @@
               </div>
             </div>
           </div>
+          <!-- Button -->
           <div class="col-md-1 mt-4">
             <div class="ms-4 mb-3">
               <button

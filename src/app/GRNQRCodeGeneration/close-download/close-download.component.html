@@ -18,14 +18,16 @@
           <div class="col-md-1">
             <label class="brandcolor" for="plant">PLANT</label>
             <div class="mb-3">
-              <input
-                type="text"
-                class="form-control"
-                id="plant"
-                formControlName="plant"
-                placeholder="PLANT"
-                [ngClass]="{ 'is-invalid': submit && form.plant.errors }"
-              />
+              <select
+                  class="form-select"
+                  id="plant"
+                  formControlName="plant"
+                >
+                  <option value="" disabled selected>Plant</option>
+                  <option *ngFor="let type of plants" [value]="type">
+                    {{ type }}
+                  </option>
+                </select>
               <div *ngIf="submit && form.plant.errors" class="invalid-feedback">
                 <span *ngIf="form.plant.errors.required"
                   >Please provide a valid plant.</span
@@ -33,7 +35,7 @@
               </div>
             </div>
           </div>
-          <!-- purchasegroupfrom -->
+          <!-- purchasegroup -->
           <div class="col-md-2">
             <label class="brandcolor" for="purchasegroup">PURCHASE GROUP</label>
             <div class="mb-3">
@@ -57,28 +59,27 @@
               </div>
             </div>
           </div>
-
-          <!-- Current Date From-->
+          <!-- Date -->
           <div class="col-md-2">
-            <label class="brandcolor" for="curentdate">CURRENT DATE</label>
+            <label class="brandcolor" for="date">CURRENT</label>
             <div class="mb-3">
               <input
                 type="text"
                 class="form-control"
-                id="curentdate"
-                formControlName="curentdate"
-                placeholder="CURRENT DATE"
+                id="date"
+                formControlName="date"
+                placeholder="DATE"
                 [bsConfig]="bsConfig"
                 bsDatepicker
                 [ngClass]="{
-                  'is-invalid': submit && form.curentdate.errors
+                  'is-invalid': submit && form.date.errors
                 }"
               />
               <div
-                *ngIf="submit && form.curentdate.errors"
+                *ngIf="submit && form.date.errors"
                 class="invalid-feedback"
               >
-                <span *ngIf="form.curentdate.errors.required"
+                <span *ngIf="form.date.errors.required"
                   >Please provide a valid From Date.</span
                 >
               </div>
@@ -112,23 +113,23 @@
             </div>
           </div> -->
           <!-- Button Row -->
-        <div class="col-md-1 mt-4">
-          <div class="mb-3">
-            <button
-              style="
-                margin-top: 8px;
-                background-color: brown;
-                width: max-content;
-                color: aliceblue;
-              "
-              class="btn"
-              type="submit"
-              (click)="getCloseDownload()"
-            >
-              Get Details
-            </button>
+          <div class="col-md-1 mt-4">
+            <div class="mb-3">
+              <button
+                style="
+                  margin-top: 8px;
+                  background-color: brown;
+                  width: max-content;
+                  color: aliceblue;
+                "
+                class="btn"
+                type="submit"
+                (click)="getCloseDownload()"
+              >
+                Get Details
+              </button>
+            </div>
           </div>
-        </div>
         </div> 
       </form>
     </div>

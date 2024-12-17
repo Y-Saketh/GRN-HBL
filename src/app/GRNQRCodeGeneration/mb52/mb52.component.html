@@ -12,14 +12,16 @@
             <div class="col-md-1">
               <label class="brandcolor" for="plant">PLANT</label>
               <div class="mb-3">
-                <input
-                  type="text"
-                  class="form-control"
-                  id="plant"
-                  formControlName="plant"
-                  placeholder="Plant"
-                  [ngClass]="{ 'is-invalid': submit && form.plant.errors }"
-                />
+                <select
+                    class="form-select"
+                    id="plant"
+                    formControlName="plant"
+                  >
+                    <option value="" disabled selected>Plant</option>
+                    <option *ngFor="let type of plants" [value]="type">
+                      {{ type }}
+                    </option>
+                  </select>
                 <div *ngIf="submit && form.plant.errors" class="invalid-feedback">
                   <span *ngIf="form.plant.errors.required"
                     >Please provide a valid plant.</span
@@ -27,30 +29,8 @@
                 </div>
               </div>
             </div>
-             <!-- Material -->
-             <div class="col-md-2">
-                <div class="mb-3">
-                  <label class="brandcolor" for="material">MATERIAL</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="material"
-                    formControlName="material"
-                    placeholder="Material"
-                    [ngClass]="{ 'is-invalid': submit && form.material.errors }"
-                  />
-                  <div
-                    *ngIf="submit && form.material.errors"
-                    class="invalid-feedback"
-                  >
-                    <span *ngIf="form.material.errors.required"
-                      >Please provide a valid material.</span
-                    >
-                  </div>
-                </div>
-              </div>
             <!-- STORAGE LOCATION -->
-             <div class="col-md-2">
+            <div class="col-md-2">
               <label class="brandcolor" for="storageLocation">STORAGE LOCATION</label>
               <div class="mb-3">
                 <input
@@ -72,9 +52,77 @@
                   >
                 </div>
               </div>
-            </div> 
-            <!-- BATCH -->
+            </div>
+            <!-- Material Type -->
             <div class="col-md-2">
+              <label class="brandcolor" for="materialType">Material Type</label>
+              <div class="mb-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="materialType"
+                  formControlName="materialType"
+                  placeholder="Material Type"
+                  [ngClass]="{
+                    'is-invalid': submit && form.materialType.errors
+                  }"
+                />
+                <div
+                  *ngIf="submit && form.materialType.errors"
+                  class="invalid-feedback"
+                >
+                  <span *ngIf="form.materialType.errors.required"
+                    >Please provide a valid POSTING DATE TO.</span
+                  >
+                </div>
+              </div>
+            </div>
+             <!-- Material From -->
+             <div class="col-md-2">
+                <div class="mb-3">
+                  <label class="brandcolor" for="materialFrom">MATERIAL FROM</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="materialFrom"
+                    formControlName="materialFrom"
+                    placeholder="Material From"
+                    [ngClass]="{ 'is-invalid': submit && form.materialFrom.errors }"
+                  />
+                  <div
+                    *ngIf="submit && form.materialFrom.errors"
+                    class="invalid-feedback"
+                  >
+                    <span *ngIf="form.materialFrom.errors.required"
+                      >Please provide a valid Material From.</span
+                    >
+                  </div>
+                </div>
+              </div>
+              <!-- Material To -->
+             <div class="col-md-2">
+              <div class="mb-3">
+                <label class="brandcolor" for="materialTo">MATERIAL TO</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="materialTo"
+                  formControlName="materialTo"
+                  placeholder="materialTo To"
+                  [ngClass]="{ 'is-invalid': submit && form.materialTo.errors }"
+                />
+                <div
+                  *ngIf="submit && form.materialTo.errors"
+                  class="invalid-feedback"
+                >
+                  <span *ngIf="form.materialTo.errors.required"
+                    >Please provide a valid materialTo.</span
+                  >
+                </div>
+              </div>
+            </div>
+            <!-- BATCH -->
+            <!-- <div class="col-md-2">
               <label class="brandcolor" for="batch">BATCH</label>
               <div class="mb-3">
                 <input
@@ -96,7 +144,7 @@
                   >
                 </div>
               </div>
-            </div>
+            </div> -->
             <!-- Button -->
             <div class="col-md-1 mt-4">
               <div class="ms-4 mb-3">
@@ -170,39 +218,32 @@
                   <th class="brandcolor" sortable="MAKTX" (sort)="onSort($event)">
                     Mat Desc
                   </th>
-                <th class="brandcolor" sortable="plantname1" (sort)="onSort($event)">
-                  Plant Name 1
+                <th class="brandcolor" sortable="WERKS" (sort)="onSort($event)">
+                  Plant
                 </th>
                 <th class="brandcolor" sortable="LGORT" (sort)="onSort($event)">
                   S.Loc
                 </th>
-                <th class="brandcolor" sortable="sl" (sort)="onSort($event)">
+                <th class="brandcolor" sortable="LGOBE" (sort)="onSort($event)">
                   SL Desc
                 </th>
-                <th
-                  class="brandcolor"
-                  sortable="UnrestrictedUnit"
-                  (sort)="onSort($event)"
-                >
-                  Unrestricted Unit
-                </th>
-                <th class="brandcolor" sortable="transit" (sort)="onSort($event)">
-                  Transit/Transf.
+                <th class="brandcolor" sortable="MEINS" (sort)="onSort($event)">
+                  Base Unit of Measure
                 </th>
                 
                 <th
                   class="brandcolor"
-                  sortable="inQtyInsp"
+                  sortable="LABST"
                   (sort)="onSort($event)"
                 >
-                  In Qty Insp.
+                Unrestricted Stock Quantity
                 </th>
                 <th
                   class="brandcolor"
-                  sortable="restrictedUse"
+                  sortable="WLABS"
                   (sort)="onSort($event)"
                 >
-                  Restricted Use
+                Unrestricted Stock Value
                 </th>
               </tr>
             </thead>
@@ -221,14 +262,12 @@
                 <!-- Storage Location -->
                 <td>{{ table.LGOBE }}</td>
                 <!-- SL Desc -->
-                <td>{{ table.LAPST }}</td>
-                <!-- Unrestricted Unit -->
-                <td>{{ table.transit }}</td>
-                <!-- Transit/Transf. -->
-                <td>{{ table.inQtyInsp }}</td>
-                <!-- In Qty Insp. -->
-                <td>{{ table.restrictedUse }}</td>
-                <!-- Restricted Use -->
+                <td>{{ table.MEINS }}</td>
+                <!-- Base Unit of Measure -->
+                <td>{{ table.LABST }}</td>
+                <!-- Unrestricted Stock Quantity -->
+                <td>{{ table.WLABS }}</td>
+                <!-- Unrestricted Stock Value -->
               </tr>
               <ng-container *ngIf="!hideme[i]">
                 <tr class="sub-table no-bg">
@@ -237,16 +276,16 @@
                     <table class="table mb-0 table-striped">
                       <thead class="bg-dark text-white">
                         <tr>
-                          <th>Returns</th>
-                          <th>Blocked</th>
+                          <th>Quality Inspection Stock Quantity</th>
+                          <th>Quality Inspection Stock Value</th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr>
-                          <td>{{ table.returns }}</td>
-                          <!-- Returns -->
-                          <td>{{ table.blocked }}</td>
-                          <!-- Blocked -->
+                          <td>{{ table.INSME }}</td>
+                          <!-- Quality Inspection Stock Quantity -->
+                          <td>{{ table.WINSM }}</td>
+                          <!-- Quality Inspection Stock Value -->
                           
                         </tr>
                       </tbody>

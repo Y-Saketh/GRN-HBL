@@ -31,6 +31,7 @@ export class Mb52Component implements OnInit {
     hideme: boolean[] = [];
     mb52table: Table[] = [];
     tableData: Table[];
+    plants: string[] = [];
     tables$: Observable<Table[]>;
     total$: Observable<number>;
   
@@ -114,10 +115,23 @@ export class Mb52Component implements OnInit {
   ngOnInit() {  
     this.validationform = this.formBuilder.group({
       plant: ['', Validators.required],
-      material: ['', Validators.required],
       storageLocation: ['', Validators.required],
-      batch: ['', Validators.required],
+      materialFrom: ['', Validators.required],
+      materialTo: ['', Validators.required],
+      materialType: ['', Validators.required],
     });
+
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    console.log("currentUser", currentUser)
+    const werksArray: string[] = [];  
+    Object.keys(currentUser[0].ZWERKS).forEach((key) => {   
+      const value = currentUser[0].ZWERKS[key];   
+      if (value) {  werksArray.push(value);   
+      } 
+    });
+    this.plants = werksArray;
+    console.log("Extracted Werks Array:", werksArray);
+
   }
 
   get form() {
@@ -145,9 +159,9 @@ export class Mb52Component implements OnInit {
     console.log("validationform",this.form)
       let obj = {
         "WERKS": this.form.plant.value,//"1300",
-        "MATNR": this.form.material.value,//"1000001248",
-        "LGORT": this.form.storageLocation.value,//"",
-        "CHARG": this.form.batch.value,//""
+        "MATNR_F": this.form.materialFrom.value,//"1000001248",
+        "MATNR_T": this.form.materialTo.value,//"1000001248",
+        "MATART": this.form.materialType.value
     }
     
       console.log("objobj",obj)

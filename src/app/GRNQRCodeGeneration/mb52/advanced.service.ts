@@ -37,19 +37,18 @@ function sort(tables: Table[], column: string, direction: string): Table[] {
  */
 function matches(tables: Table, term: string, pipe: PipeTransform) {
   return (
-    tables.MATNR.toLowerCase().includes(term.toLowerCase()) || // Material
+    tables.MATNR.toString().includes(term.toLowerCase()) || // Material
     tables.MAKTX.toLowerCase().includes(term.toLowerCase()) || // Material Description
-    tables.plantname1.toLowerCase().includes(term.toLowerCase()) || // Plant na 1me
+    tables.WERKS.toString().includes(term.toLowerCase()) || // Plant
     tables.LGORT.toLowerCase().includes(term.toLowerCase()) || // Storage Location
-    tables.LAPST.toLowerCase().includes(term.toLowerCase()) || // sl Description
-    tables.UnrestrictedUnit.toLowerCase().includes(term.toLowerCase()) || // Unrestricted Unit    
-    pipe.transform(tables.transit)?.toString().includes(term) || // Transit
-    pipe.transform(tables.inQtyInsp)?.toString().includes(term) || // In Qty Insp
-    tables.restrictedUse.toLowerCase().includes(term.toLowerCase()) || // Restricted Use
-    tables.returns.toLowerCase().includes(term.toLowerCase()) || // Returns
-    tables.blocked.toLowerCase().includes(term.toLowerCase())  // Blocked
+    tables.LGOBE.toLowerCase().includes(term.toLowerCase()) || // sl Description
+    tables.MEINS.toLowerCase().includes(term.toLowerCase()) || // Base Unit of Measure
+    tables.LABST.toString().includes(term.toLowerCase()) || // Unrestricted Stock Quantity
+    pipe.transform(tables.SALK3)?.toString().includes(term) || // Unrestricted Stock Value
+    tables.INSME.toString().includes(term.toLowerCase())  // Quality Inspection Stock Quantity
   );
 }
+
 
 
 
