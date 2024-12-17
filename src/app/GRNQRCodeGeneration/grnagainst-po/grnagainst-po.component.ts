@@ -21,17 +21,18 @@ import QRCode from 'qrcode';
 import {  ModalDirective, ModalModule } from 'ngx-bootstrap/modal';
 
 @Component({
-  selector: 'app-qrcodegenration',
-  templateUrl: './qrcodegenration.component.html',
-  styleUrl: './qrcodegenration.component.css',
+  selector: 'app-grnagainst-po',
+  templateUrl: './grnagainst-po.component.html',
+  styleUrl: './grnagainst-po.component.css',
   providers: [qrcodegenrationService, DecimalPipe],
   standalone:true,
   imports:[PagetitleComponent,ReactiveFormsModule, 
     CommonModule, 
     FormsModule, PaginationModule,qrSortableDirective,BsDatepickerModule ,ModalModule]
-})
 
-export class QRcodegenrationComponent {
+
+})
+export class GRNagainstPOComponent{
   @ViewChild('newContactModal', { static: false }) newContactModal?: ModalDirective;
   @ViewChild('unmatchModal', { static: false }) unmatchModal?: ModalDirective;
   

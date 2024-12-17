@@ -16,6 +16,7 @@ import { Mb52Component } from 'src/app/GRNQRCodeGeneration/mb52/mb52.component';
 import { GrnprintComponent } from 'src/app/GRNQRCodeGeneration/grnprint/grnprint.component';
 import { Mb51Component } from 'src/app/GRNQRCodeGeneration/mb51/mb51.component';
 import { GoodsReturnsComponent } from 'src/app/GRNQRCodeGeneration/goods-returns/goods-returns.component';
+import { GRNagainstPOComponent } from 'src/app/GRNQRCodeGeneration/grnagainst-po/grnagainst-po.component';
 
 
 const routes: Routes = [
@@ -38,6 +39,10 @@ const routes: Routes = [
     {
         path: 'grnagainstid',
         component: QRcodegenrationComponent
+    },
+    {
+        path: 'grnagainstpo',
+        component: GRNagainstPOComponent
     },
     {
         path: 'QRcodegenration',

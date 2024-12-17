@@ -38,7 +38,6 @@ function sort(tables: Table[], column: string, direction: string): Table[] {
 function matches(tables: Table, term: string, pipe: PipeTransform) {
   return (
     pipe.transform(tables.MAT_DOC)?.toString().includes(term) || // Material Document
-    
     pipe.transform(tables.MATNR)?.toString().includes(term) || // Material code
     tables.MAKTX?.toLowerCase().includes(term.toLowerCase()) || // Material description
     pipe.transform(tables.EBELN)?.toString().includes(term) || // PO number

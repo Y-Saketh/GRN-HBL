@@ -90,6 +90,13 @@ export const MENU: MenuItem[] = [
         parentId: "menu"
     },
     {
+        id: "grnagainstid",
+        label: 'GRN Against PO',
+        link: 'grnagainstpo',
+        icon: 'bx-aperture',
+        parentId: "menu"
+    },
+    {
         id: "goodreturns",
         label: 'Goods Returns',
         link: 'goodsreturns',

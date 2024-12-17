@@ -100,13 +100,11 @@
           <p class="card-sub-title">Example of datatable.</p> -->
 
           <!-- Table -->
-          <div class="col-sm-12 col-md-12 mb-2">
+          <!-- <div class="col-sm-12 col-md-12 mb-2">
             <div id="tickets-table_filter" class="dataTables_filter text-md-end">
-                <!-- <button (click)="saveMaterial()" class="btn btn-success btn-lg highlight-3d-btn">Save</button> -->
-                <!-- <button (click)="generateQR()" [disabled]=" !isAnyRowSelected() ||matchedAndUnmatchedData == 0 " class="btn btn-success btn-lg highlight-3d-btn">Generate QR</button> -->
                 <button (click)="generateQR()" [disabled]=" !isAnyRowSelected() ||matchedAndUnmatchedData == 0 " class="btn btn-success btn-lg highlight-3d-btn">Re-Generate QR</button>
             </div>
-        </div>
+        </div> -->
           <div class="table table-responsive">
             <table id="basic-datatable"
               class="table table-bordered dt-responsive nowrap datatables no-footer dtr-inline">
@@ -357,7 +355,7 @@
   
       <div class="qr-info">
         <!-- Display fields beside the QR code -->
-        <p>{{ GRN?GRN:qrData.data.MBLNR }}</p>
+        <p>{{ GRN }}</p>
         <p>{{ qrData.data.LIFNR }}</p>
         <p>{{ qrData.data.MATNR }}</p>
         <p>Pack {{ i + 1 }}</p>

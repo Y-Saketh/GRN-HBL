@@ -1,0 +1,508 @@
+<div class="container-fluid">
+    <!-- <app-page-title [breadcrumbItems]="breadCrumbItems"></app-page-title> -->
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">
+              <span style="color: black"></span> GRN Against PO
+            </h4>
+            <form class="needs-validation" (ngSubmit)="validSubmit()" [formGroup]="validationform">
+              <div class="row mt-4">
+                <!-- Row 1 -->
+                <div class="col-md-2">
+                  <div class="mb-3">
+                    <label class="brandcolor" for="inbounddeliverynumber">PO No</label>
+                    <input type="text" class="form-control" id="inbounddeliverynumber"
+                      formControlName="inbounddeliverynumber" placeholder="PO Number" [ngClass]="{
+                        'is-invalid': submit && form.inbounddeliverynumber.errors
+                      }" />
+                    <div *ngIf="submit && form.inbounddeliverynumber.errors" class="invalid-feedback">
+                      <span *ngIf="form.inbounddeliverynumber.errors.required">
+                        Please provide a valid PO Number.
+                      </span>
+                    </div>
+                  </div>
+                </div>
+  
+                <div class="col-md-2 text-center">
+                  <button style="
+                      background-color: brown;
+                      margin-top: 28px;
+                      width: max-content;
+                      color: aliceblue;
+                    " class="btn" type="submit">
+                    Get Details
+                  </button>
+                </div>
+              </div>
+            </form>
+  
+            <div *ngIf="GrnResponse" class="card-body ">
+              <div class="row">
+                <div class="col-sm-8 col-md-8">
+                  <form [formGroup]="inboundDetailsForm">
+                    <table class="table table-bordered" id="basic-datatable"
+                      class="table table-bordered dt-responsive nowrap">
+                      <thead class="brandcolor tableHeader">
+                        <tr>
+                          <th class="brandcolor">Plant</th>
+                          <th class="brandcolor">Invoice Number</th>
+                          <th class="brandcolor">Invoice Date</th>
+                          <th class="brandcolor">Posting Date</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>
+                            <span>{{ plant }}</span>
+                          </td>
+                          <td>
+                            <span>{{ invoiceNumber }}</span>
+                          </td>
+                          <td>
+                            <!-- <span>{{ invoiceDate }}</span> -->
+                            <span>{{ invoiceDate | date: 'dd-MM-yyyy' }}</span>
+                          </td>
+                          <td>
+                            <input type="text" class="form-control custom-posting-date" formControlName="postingDate"
+                              [bsConfig]="bsConfig" bsDatepicker />
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </form>
+                </div>
+  
+                <div class="col-sm-4 col-md-4">
+                  <h5 *ngIf="vendorCode">
+                    <span class="brandcolor">Vendor Code</span> :
+                    {{ vendorCode }}
+                  </h5>
+                  <h5 *ngIf="vendorName">
+                    <span class="brandcolor">Vendor Name</span> : {{ vendorName }}
+                  </h5>
+                  <h5 *ngIf="City">
+                    <span class="brandcolor">City</span> : {{ City }}
+                  </h5>
+                  <h5 *ngIf="GSTIN">
+                    <span class="brandcolor">GSTIN</span> : {{ GSTIN }}
+                  </h5>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <div *ngIf="GrnResponse"  class="card">
+          <div class="card-body">
+            <!-- <h4 class="card-title">Advanced Data Table</h4>
+            <p class="card-sub-title">Example of datatable.</p> -->
+  
+            <!-- Table -->
+            <!-- <div class="col-sm-12 col-md-12 mb-2">
+              <div id="tickets-table_filter" class="dataTables_filter text-md-end">
+                  <button (click)="generateQR()" [disabled]=" !isAnyRowSelected() ||matchedAndUnmatchedData == 0 " class="btn btn-success btn-lg highlight-3d-btn">Re-Generate QR</button>
+              </div>
+          </div> -->
+            <div class="table table-responsive">
+              <table id="basic-datatable"
+                class="table table-bordered dt-responsive nowrap datatables no-footer dtr-inline">
+                <thead>
+                  <!-- <tr></tr> -->
+  
+                  <tr>
+                    <th>
+                      <input type="checkbox" [checked]="selectAll" (change)="toggleSelectAll($event)" />
+                    </th>
+                    <th sortable="MATNR" (sort)="onSort($event)">
+                      Mat. No
+                    </th>
+                    <!-- <th sortable="WERKS" (sort)="onSort($event)">Plant</th> -->
+                    <th sortable="MAKTX" (sort)="onSort($event)">
+                      Mat. Desc
+                    </th>
+                    <th sortable="LGORT" (sort)="onSort($event)">S.Loc</th>
+                    <th sortable="BWART" (sort)="onSort($event)">
+                      Mvt Type
+                    </th>
+                    <!-- <th sortable="CHARG" (sort)="onSort($event)">Batch</th> -->
+                    <!-- <th sortable="PostingDate" (sort)="onSort($event)">
+                      Posting Date
+                    </th> -->
+                    <th sortable="MENGE" (sort)="onSort($event)">Quantity</th>
+                    <th sortable="MEINS" (sort)="onSort($event)">UOM</th>
+                    <th sortable="EBELN" (sort)="onSort($event)">
+                      PO  <i 
+                      class="fa fa-info-circle" 
+                      title="Click for ME23N PDF" 
+                      style="margin-left: 5px; color: rgb(58, 30, 235); cursor: pointer;">
+                    </i>
+                    </th>
+                    <th sortable="EBELP" (sort)="onSort($event)">PO Item</th>
+                    <th>Goods Recipient</th>
+                    <th>Unloading Point</th>
+                    <th>No of Labels</th>
+                    <th>Actions</th>
+                    <!-- <th>Pkg</th> -->
+                  </tr>
+                </thead>
+                <tbody *ngFor="let table of tables$ | async; let i = index">
+                  <!-- Main row -->
+                  <tr>
+                    <!-- <td></td> -->
+                    <td>
+                      <input type="checkbox" [(ngModel)]="table.selected" (change)="onRowCheckboxChange(table)" />
+                    </td>
+                    <td>{{ table.MATNR }}</td>
+                    <td>{{ table.MAKTX }}</td>
+                    <!-- <td>{{ table.WERKS }}</td> -->
+                    <td>{{ table.LGORT }}</td>
+                    <!-- <td><input type="text" [(ngModel)]="table.LGORT" class="form-control form-control-sm" /></td> -->
+                    <td>{{ table.BWART }}</td>
+                    <!-- <td>{{ table.CHARG }}</td> -->
+                    <!-- <td>
+                      <input
+                        type="text"
+                        [bsConfig]="bsConfig"
+                        bsDatepicker
+                        [(ngModel)]="PostingDate"
+                        class="form-control form-control-sm"
+                      />
+                    </td> -->
+                    <td>{{ table.MENGE }}</td>
+                    <!-- <td><input type="text" [(ngModel)]="table.Batch" class="form-control form-control-sm" /></td>
+                    <td><input type="text" [(ngModel)]="table.PostingDate" class="form-control form-control-sm" /></td>
+                    <td><input type="text" [(ngModel)]="table.MENGE" class="form-control form-control-sm" /></td> -->
+                    <td>{{ table.MEINS }}</td>
+                    <td style="color: brown;" (click)="openMe23(table.EBELN )">{{ table.EBELN }} </td>
+                    <td>{{ table.EBELP }}</td>
+                    <!-- <td>
+                      <input
+                        type="text"
+                        [(ngModel)]="table.WEMPF"
+                        class="form-control form-control-sm"
+                      />
+                    </td> -->
+                    <td>
+                      <input type="text" [(ngModel)]="userName" class="form-control form-control-sm" />
+                    </td>
+                    <td>
+                      <input type="text" [(ngModel)]="table.ABLAD" class="form-control form-control-sm" />
+                    </td>
+                    <td>
+                      <input type="number"  [(ngModel)]="table.ZLABEL" [disabled]="!table.selected"
+                        placeholder="Label Qty" />
+  
+                    </td>
+                    <td>
+                      <div style="display: flex; gap: 5px; justify-content: center;">
+                        <button 
+                          class="btn btn-success btn-sm" 
+                          (click)="matchMaterial(i)" 
+                          [disabled]="!table.selected">
+                          Match
+                        </button>
+                        <button 
+                          class="btn btn-danger btn-sm" 
+                          (click)="unmatchMaterial(i)" 
+                          [disabled]="!table.selected">
+                          Unmatch
+                        </button>
+                      </div>
+                    </td>
+                    
+                    <!-- <td>
+                      <input
+                        type="number" disabled
+                        [(ngModel)]="table.ZLABEL"
+                        class="form-control form-control-sm"
+                      />
+  
+                    </td> -->
+  
+                    <!-- <td>{{table.WEMPF}}</td> -->
+                    <!-- <td>{{table.ABLAD}}</td> -->
+                    <!-- <td class="d-flex align-items-center">
+                      <input
+                        type="number"
+                        min="1"
+                        [(ngModel)]="table.splitCount"
+                        placeholder="Rows"
+                        class="form-control form-control-sm me-2"
+                        style="width: 80px"
+                      />
+                      <button
+                        (click)="splitRows(i, table.splitCount)"
+                        class="btn btn-sm btn-primary"
+                      >
+                        Split
+                      </button>
+                    </td> -->
+                  </tr>
+                  <!-- Shadow rows -->
+                  <tr *ngFor="let shadow of table.shadowRows">
+                    <!-- <td></td> -->
+                    <td>
+                      <input type="checkbox" [(ngModel)]="table.selected" (change)="onRowCheckboxChange(table)" />
+                    </td>
+  
+                    <td>{{ shadow.MATNR }}</td>
+                    <td>{{ table.MAKTX }}</td>
+                    <!-- <td>{{ shadow.WERKS }}</td> -->
+                    <td>
+                      <input type="text" [(ngModel)]="shadow.LGORT" class="form-control form-control-sm" />
+                    </td>
+                    <td>{{ shadow.BWART }}</td>
+                    <td>
+                      <input type="text" [(ngModel)]="shadow.CHARG" class="form-control form-control-sm" />
+                    </td>
+                    <!-- <td>{{ PostingDate | date: 'dd/MM/yyyy' }}</td> -->
+                    <!-- <td><input type="text" [(ngModel)]="shadow.PostingDate" class="form-control form-control-sm" /></td> -->
+                    <td>
+                      <input type="text" [(ngModel)]="shadow.MENGE" (input)="onShadowRowMengeChange(table)"
+                        class="form-control form-control-sm" />
+                    </td>
+                    <td>{{ shadow.MEINS }}</td>
+                    <td>{{ shadow.EBELN }}</td>
+                    <td>{{ shadow.EBELP }}</td>
+                    <!-- <td>
+                      <input
+                        type="text"
+                        [(ngModel)]="shadow.WEMPF"
+                        class="form-control form-control-sm"
+                      />
+                    </td> -->
+                    <td>
+                      <input type="text" [(ngModel)]="userName" class="form-control form-control-sm" />
+                    </td>
+  
+                    <td>
+                      <input type="text" [(ngModel)]="shadow.ABLAD" class="form-control form-control-sm" />
+                    </td>
+                 
+  
+                      <!-- <td>{{shadow.WEMPF}}</td>
+                    <td>{{shadow.ABLAD}}</td> -->
+                    <!-- <td></td> -->
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="col-md-4 text-left">
+              <button style="
+                  background-color: brown;
+               
+                  color: aliceblue;
+                " class="btn btn-lg highlight-3d-btn" type="button" (click)="saveBound(tables$)">
+                Save
+              </button>
+              <!-- <button (click)="generateQR()" [disabled]="!enableQRbutton" class="btn btn-success btn-lg highlight-3d-btn">Generate QR</button> -->
+  
+              <!-- &nbsp;  &nbsp;  
+              <button
+                style="
+                  background-color: rgb(10, 199, 41);
+                  margin-top: 28px;
+                  width: max-content;
+                  color: rgb(12, 18, 24);
+                "
+                class="btn"
+                type="button"
+                (click)="GenQR()"
+              >
+                Generate QR
+              </button> -->
+            </div>
+  
+            <div></div>
+            <!-- End table -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="false">
+    <h3>QR Code Generation</h3>
+    <button class="btn btn-primary" style="float: left; margin-left: 10px;" type="button"
+      (click)="backtoQunatity()">Back</button><br><br>
+    <p *ngIf="isGenerating" class="text-primary">Generating QR codes for all items...</p>
+  
+    <!-- <div class="qr-container">
+      <div *ngFor="let qrData of qrCodes; let i = index" class="qr-item">
+        <div class="qr-code-wrapper">
+       
+          <img [src]="qrData.qrCodeUrl" alt="QR Code for Item {{ i + 1 }}" width="150" height="150" />
+        </div>
+  
+        <div class="qr-info">
+     
+          <p>{{GRN}}</p>
+      
+          <p>{{ vendorCode }}</p>
+          <p>{{ qrData.data.MATNR }}</p>
+          <p>Pack {{ i+1}}</p>
+          <p>{{ qrData.data.ZRQTY }}</p>
+        </div>
+      </div>
+    </div> -->
+    <div class="qr-container">
+      <div *ngFor="let qrData of qrCodes; let i = index" class="qr-item">
+        <div class="qr-code-wrapper">
+          <!-- Display QR code as image with adjusted size -->
+          <img [src]="qrData.qrCodeUrl" alt="QR Code for Item {{ i + 1 }}" width="14mm" height="14mm" />
+        </div>
+    
+        <div class="qr-info">
+          <!-- Display fields beside the QR code -->
+          <p>{{ GRN }}</p>
+          <p>{{ qrData.data.LIFNR }}</p>
+          <p>{{ qrData.data.MATNR }}</p>
+          <p>Pack {{ i + 1 }}</p>
+          <p>{{ qrData.data.ZRQTY }}</p>
+        </div>
+      </div>
+    </div>
+    
+  
+  </div>
+  
+  <div bsModal #unmatchModal="bs-modal" class="modal fade" tabindex="-1" aria-labelledby="unmatchModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="unmatchModalLabel">Edit Quantities</h5>
+          <button type="button" class="btn-close" (click)="closePopup()" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <h6>Material: {{ selectedMaterial?.MAKTX }}</h6>
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Pack Size</th>
+                <th>Quantity</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let packet of selectedMaterial?.packets; let j = index">
+                <td>Pack {{ packet.DCHARG }}</td>
+                <td>
+                  <input type="number" class="form-control" (input)="onmismatch(selectedMaterial,packet, j )"
+                    [(ngModel)]="packet.DCLABS" />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary" (click)="saveUnmatched()">Save</button>
+          <button class="btn btn-secondary" (click)="closePopup()">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="qrscreen" >
+    <h3>QR Code Generation</h3>
+  
+    <div class="btn-container">
+      <button class="btn btn-primary ml-1" type="button" (click)="backtoQunatity()">Back</button>
+      <button class="text-md-end btn-success btn-lg highlight-3d-btn" (click)="printLabels()">Print Labels</button>
+    </div>
+  
+  
+    <div class="card">
+      <p *ngIf="isGenerating" class="text-primary">Generating QR codes for all items...</p>
+  
+      <div id="printableArea" class="qr-container">
+        <div *ngFor="let qrData of qrCodes; let i = index" class="qr-item">
+          <div class="qr-code-wrapper">
+            <img [src]="qrData.qrCodeUrl" alt="QR Code for Item {{ i + 1 }}" width="150" height="150" />
+          </div>
+          <div class="qr-info">
+            <p>{{ GRN }}</p>
+            <p>{{ vendorCode }}</p>
+            <p>{{ qrData.data.MATNR }}</p>
+            <p>Pack {{ qrData.data.DCHARG }}</p>
+            <p>{{ qrData.data.DCLABS }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- <ng-template #content role="document" let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title mt-0">Modal Heading</h5>
+      <button
+        type="button"
+        class="close"
+        aria-hidden="true"
+        (click)="modal.dismiss('Cross click')"
+      >
+        ×
+      </button>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-light"
+        (click)="modal.close('Close click')"
+      >
+        Close
+      </button>
+      <button type="button" class="btn btn-primary">Save changes</button>
+    </div>
+  </ng-template> -->
+  <div bsModal #newContactModal="bs-modal" class="modal fade" tabindex="-1" aria-labelledby="newContactModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="newContactModalLabel">
+            ME23N
+          </h5>
+          <button type="button" class="btn-close" (click)="closePopup()" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="table-responsive">
+            <table id="basic-datatable" class="table table-bordered dt-responsive nowrap">
+              <thead>
+                <tr>
+                  <th>PO Item</th>
+                  <th>Meterial</th>
+                  <th>Material Description</th>
+                  <th>Qty</th>
+                  <th>UoM</th>
+                  <th>Batch</th>
+                  <th>SLoc</th>
+                  <th>Plant</th>
+                  <th>Pur.Grp</th>
+                </tr>
+              </thead>
+  
+              <tbody>
+                <tr *ngFor="
+                let tablee of Me23NData;
+                let i = index;
+              ">
+                  <td>{{ tablee.EBELP }}</td>
+                  <td>{{ tablee.MATNR }}</td>
+                  <td>{{ tablee.TXZ01 }}</td>
+                  <td>{{ tablee.MENGE }}</td>
+                  <td>{{ tablee.MEINS }}</td>
+                  <td>{{ tablee.CHARG }}</td>
+                  <td>{{ tablee.LGORT }}</td>
+                  <td>{{ tablee.WERKS }}</td>
+                  <td>{{ tablee.EKGRP }}</td>
+  
+                </tr>
+  
+              </tbody>
+  
+            </table>
+          </div>
+  
+        </div>
+      </div>
+    </div>
+  </div>

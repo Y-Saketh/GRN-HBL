@@ -14,6 +14,17 @@ export interface Table {
     GROSS: number; // Gross value
 
     MAT_DOC: number; // Mat Doc
+    MENGE: number; // Quantity
+
+    EBELP: string; // PO Item
+    SHORT_TEXT?: string; // Optional description
+    ORGQTY?: string; // Optional original quantity
+    splitCount?: number; // Number of shadow rows to split
+    shadowRows?: Table[]; // Shadow rows
+    BUDAT?:string; //Posting Date
+    CHARG?:string;
+    ZLABEL?:number;
+    selected:boolean;
 }
   
   

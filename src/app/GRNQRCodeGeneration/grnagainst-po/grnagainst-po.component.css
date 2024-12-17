@@ -1,60 +1,5 @@
 .brandcolor{
     color: brown;
-}
-
-
-  
-  .card-body {
-     /* background-color: #f7f3f1; */
-background-color: #cadad6;
-    color: #2C3E50;
-    border-radius: 10px;
-    padding: 20px;
-  }
-  
-  .card-body input[type="text"] {
-    border: 1px solid #BDC3C7;
-    border-radius: 5px;
-    padding: 10px;
-  }
-  
-  .card-body input[type="text"]:focus {
-    border-color: #3498DB;
-    outline: none;
-    box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
-  }
-
-  .card-title {
-    font-family: 'Poppins', sans-serif;
-    font-size: 20px;
-    font-weight: 500;
-    color: brown;
-    /* text-transform: uppercase; */
-    letter-spacing: 2px;
-    margin-bottom: 20px;
-    background: linear-gradient(90deg, brown, #670a0a);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-align: left;
-    border-bottom: 2px solid brown;
-    padding-bottom: 5px;
-  }
-  #basic-datatable thead tr {
-    background-color: #8B4513; 
-    color: #FFFFFF; 
-    font-family: 'Poppins', sans-serif;
-    font-size: 14px;
-    font-weight: bold;
-    text-transform: capitalize;
-  }
-  
-  #basic-datatable thead th {
-    padding: 10px;
-    text-align: left;
-    border-bottom: 2px solid #6A3B0E; 
-  }
-  .brandcolor{
-    color: brown;
   }
   
   .custom-posting-date {
@@ -184,7 +129,40 @@ background-color: #cadad6;
     box-shadow: 0 0 #218838; /* Remove shadow on click */
     transform: translateY(4px); /* Further shift button down */
   }
-
+  /* @media print {
+  body * {
+      visibility: hidden;
+  }
+  
+  #printableArea, #printableArea * {
+      visibility: visible;
+  }
+  
+  #printableArea {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 100%;
+  }
+  
+  .qr-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Adjust size for printer layout */
+      /* gap: 10px;
+  }
+  
+  .qr-item {
+      border: 1px solid #000; /* Optional: Add borders for better visibility */
+      /* padding: 10px;
+  }
+  
+  img {
+      width: 100%; /* Scale QR codes to fit */
+      /* height: auto;
+  }
+  } */ 
+  
   @media print {
     body {
       margin: 0;
