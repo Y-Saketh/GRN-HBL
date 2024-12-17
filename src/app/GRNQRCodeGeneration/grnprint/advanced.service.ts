@@ -37,41 +37,24 @@ function sort(tables: Table[], column: string, direction: string): Table[] {
  */
 function matches(tables: Table, term: string, pipe: PipeTransform) {
   return (
-    tables.MAT_DOC?.toLowerCase().includes(term.toLowerCase()) || // Material Document
-    tables.MAT_DOC_YEAR?.toLowerCase().includes(term.toLowerCase()) || // Material Doc. Year
-    tables.TRANS_EVENT_TYPE?.toLowerCase().includes(term.toLowerCase()) || // Trans./Event Type
-    tables.DOC_TYPE?.toLowerCase().includes(term.toLowerCase()) || // Document Type
-    tables.DOC_TYPE_REVAL?.toLowerCase().includes(term.toLowerCase()) || // Doc. Type Reval
-    tables.DOC_DATE?.toLowerCase().includes(term.toLowerCase()) || // Document Date
-    tables.POSTING_DATE?.toLowerCase().includes(term.toLowerCase()) || // Posting Date
-    tables.ENTRY_DATE?.toLowerCase().includes(term.toLowerCase()) || // Entry Date
-    tables.ENTRY_TIME?.toLowerCase().includes(term.toLowerCase()) || // Time of Entry
-    tables.CHANGED_ON?.toLowerCase().includes(term.toLowerCase()) || // Changed On
-    tables.USER_NAME?.toLowerCase().includes(term.toLowerCase()) || // User Name
-    tables.AREA?.toLowerCase().includes(term.toLowerCase()) || // Area
-    tables.REFERENCE?.toLowerCase().includes(term.toLowerCase()) || // Reference
-    tables.HEADER_TEXT?.toLowerCase().includes(term.toLowerCase()) || // Document Header Text
-    pipe.transform(tables.DEL_COSTS)?.toString().includes(term) || // Unpl. Del. Costs
-    tables.BILL_OF_LADING?.toLowerCase().includes(term.toLowerCase()) || // Bill of Lading
-    tables.PRINT_VERSION?.toLowerCase().includes(term.toLowerCase()) || // Print Version
-    tables.GR_ISSUE_SLIP?.toLowerCase().includes(term.toLowerCase()) || // Goods Receipt/Issue Slip
-    tables.LOGICAL_SYSTEM?.toLowerCase().includes(term.toLowerCase()) || // Logical System
-    tables.DOC_TYPE_ADD?.toLowerCase().includes(term.toLowerCase()) || // Doc. Type Add.
-    tables.TRANSACTION_CODE?.toLowerCase().includes(term.toLowerCase()) || // Transaction Code
-    tables.EXT_WMS_CONTROL?.toLowerCase().includes(term.toLowerCase()) || // Ext. WMS Control
-    pipe.transform(tables.FOREIGN_DATA_NUM)?.toString().includes(term) || // Foreign Data Num
-    pipe.transform(tables.GI_TIME)?.toString().includes(term) || // Goods Issue Time
-    tables.TIME_ZONE?.toLowerCase().includes(term.toLowerCase()) || // Time Zone
-    tables.DELIVERY?.toLowerCase().includes(term.toLowerCase()) || // Delivery
-    tables.LOGICAL_SYSTEM_EWM?.toLowerCase().includes(term.toLowerCase()) || // Logical System EWM
-    tables.MAT_DOC_EWM?.toLowerCase().includes(term.toLowerCase()) || // Material Document EWM
-    tables.CUSTOMS_REF_NUM?.toLowerCase().includes(term.toLowerCase()) || // Customs Reference Number
-    tables.ENH_STORE_RETURN?.toLowerCase().includes(term.toLowerCase()) || // Enh. Store Return
-    tables.ADV_RETURNS_ACTIVE?.toLowerCase().includes(term.toLowerCase()) || // Adv. Returns Active
-    pipe.transform(tables.DOC_CONDITION_NO)?.toString().includes(term) || // Doc. Condition No.
-    tables.CANCEL_IN_FULL?.toLowerCase().includes(term.toLowerCase()) // Cancel in Full
+    pipe.transform(tables.MAT_DOC)?.toString().includes(term) || // Material Document
+    
+    pipe.transform(tables.MATNR)?.toString().includes(term) || // Material code
+    tables.MAKTX?.toLowerCase().includes(term.toLowerCase()) || // Material description
+    pipe.transform(tables.EBELN)?.toString().includes(term) || // PO number
+    tables.STEUC?.toLowerCase().includes(term.toLowerCase()) || // HSN code
+    tables.MEINS?.toLowerCase().includes(term.toLowerCase()) || // UOM
+    pipe.transform(tables.LSMNG)?.toString().includes(term) || // DC quantity
+    pipe.transform(tables.RATE)?.toString().includes(term) || // Rate
+    pipe.transform(tables.NET)?.toString().includes(term) || // Net value
+    tables.CHANGED_ON?.toLowerCase().includes(term.toLowerCase()) || // Other expenses
+    pipe.transform(tables.CGST)?.toString().includes(term) || // CGST
+    pipe.transform(tables.SGST)?.toString().includes(term) || // SGST
+    pipe.transform(tables.IGST)?.toString().includes(term) || // IGST
+    pipe.transform(tables.GROSS)?.toString().includes(term) // Gross value
   );
 }
+
 
 
 

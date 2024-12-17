@@ -71,13 +71,30 @@ export class UserProfileService {
         console.log("environment.API_URL_DEV",environment.API_URL_DEV)
         return this.http.put(`${environment.API_URL_DEV}api/external/qrCodeSave`,data)
     }
+    Grnprint(data){
+        console.log("environment.API_URL_DEV",environment.API_URL_DEV)
+        return this.http.post(`${environment.API_URL_DEV}api/external/grnprint`,data)
+    }
     fetchMb51Data(data){
         console.log("environment.API_URL_DEV",environment.API_URL_DEV)
+        return this.http.post(`${environment.API_URL_DEV}api/external/mb51`,data)
         return this.http.post(`${environment.API_URL_DEV}api/external/mb51`,data)
     }
     me23getData(data){
         console.log("environment.API_URL_DEV",environment.API_URL_DEV)
         return this.http.post(`${environment.API_URL_DEV}api/external/me23`,data)
     }
+
+    fetchMb52Data(data){
+        console.log("environment.API_URL_DEV",environment.API_URL_DEV)
+        return this.http.post(`${environment.API_URL_DEV}api/external/mb52`,data)
+    }
+
+
+    fetchMb52Data(data){
+        console.log("environment.API_URL_DEV",environment.API_URL_DEV)
+        return this.http.post(`${environment.API_URL_DEV}api/external/mb52`,data)
+    }
+
 
 }
