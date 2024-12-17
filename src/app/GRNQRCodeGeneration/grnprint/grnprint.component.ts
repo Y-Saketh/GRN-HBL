@@ -112,11 +112,11 @@ export class GrnprintComponent implements OnInit {
           Swal.fire("", res.MSGTXT, "error");
         } else {
 
-          this.GrnPrint = res[0]?.ITEM || [];
+          this.GrnPrint = res[0]?.ITEM || res?.ITEM;
           this.service.setTableData(this.GrnPrint);
           this._fetchData();
 
-          let base64String = res[0].ZPRINT;
+          let base64String = res[0]?.ZPRINT || res?.ZPRINT;
           // console.log("base64String",base64String)
           if(this.showTable == false){
             this.downloadPdf(base64String, "GrnPrint");
