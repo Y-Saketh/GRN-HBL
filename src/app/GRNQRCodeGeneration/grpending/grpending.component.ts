@@ -69,7 +69,7 @@ export class GrpendingComponent implements OnInit {
   lotReportsData: any;
   isSubmitting: boolean;
   shadowRows = [];
-  // POLIST: any;
+  plants: string[] = [];
   INBOUND: Table[];
   GrPending: Table[];
   inBound: TableRow[] = [];
@@ -85,7 +85,6 @@ export class GrpendingComponent implements OnInit {
 
   bsConfig = {
     dateInputFormat: 'DD-MM-YYYY', // Set the date format
-    // showWeekNumbers: false, // Optional: Hide week numbers
     containerClass: 'theme-blue', // Optional: Use a predefined theme
   };
   ngOnInit(): void {
@@ -96,14 +95,21 @@ export class GrpendingComponent implements OnInit {
     this.validationform = this.formBuilder.group({
       plant: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]+')]],
       delivery: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
-      // deliveryto: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
-      // storageLocation: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
-      // storageLocationto: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
-      // ibdCreadtedOn: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
       fromDate: [fifteenDaysAgo, [ Validators.pattern('[a-zA-Z0-9]+')]],
       toDate: [new Date(), [ Validators.pattern('[a-zA-Z0-9]+')]],
     });
 
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    console.log("currentUser", currentUser)
+    const werksArray: string[] = [];  
+    Object.keys(currentUser[0].ZWERKS).forEach((key) => {   
+      const value = currentUser[0].ZWERKS[key];   
+      if (value) {  werksArray.push(value);   
+      } 
+    });
+    this.plants = werksArray;
+    console.log("Extracted Werks Array:", werksArray);
+    
     this.breadCrumbItems = [{ label: 'Tables' }, { label: 'Advanced Table', active: true }];
     /**
      * fetch data

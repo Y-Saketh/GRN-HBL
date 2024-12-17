@@ -27,6 +27,12 @@ import { DecimalPipe } from '@angular/common';
   styleUrls: ['./mb51.component.css']
 })
 export class Mb51Component implements OnInit {
+  movementTypes: number[] = [101, 102, 122, 123]; // Movement Type
+  ValuesselectedMovementType: number | null = null;
+
+  plants: number[] = [1100, 1200, 1300]; // Plant
+  Valuesselectedplants: number | null = null;
+
   @ViewChild('newContactModal', { static: false }) newContactModal?: ModalDirective;
   breadCrumbItems: Array<{}>;
   validationform!: FormGroup; // Form group for the input fields
@@ -39,6 +45,7 @@ export class Mb51Component implements OnInit {
   total$: Observable<number>;
 
   @ViewChildren(AdvancedSortableDirective) headers: QueryList<AdvancedSortableDirective>;
+  selectedMovementType: any;
 
   constructor(public formBuilder: UntypedFormBuilder, @Inject(AdvancedService) public service: AdvancedService, private apiService:UserProfileService,public loaderservice:LoaderService) {
     this.tables$ = service.tables$;
@@ -55,11 +62,12 @@ export class Mb51Component implements OnInit {
   ngOnInit() {
     this.validationform = this.formBuilder.group({
       plant: ['', Validators.required],
+      movementType: '',
       postingDateFrom: ['', Validators.required],
       postingDateTo: ['', Validators.required]
     });
   }
-
+  onDropdownChange() {     console.log('Selected Movement Type:', this.selectedMovementType); }
   exportToExcel(): void {
     // Retrieve the current table data
     const dataToExport = this.mb51table;
@@ -67,21 +75,26 @@ export class Mb51Component implements OnInit {
     if (dataToExport.length > 0) {
       // Define mapping of keys to header names
       const headerMapping: { [key: string]: string } = {
-        WERKS: 'Plant',                                // Plant
-        LGORT: 'Storage Location',                     // Storage Location
-        MATNR: 'Material',                             // Material
-        BWART: 'Movement Type',                        // Movement Type
-        mvtTypeText: 'Movement Type Text',             // Movement Type Text
-        BUDAT: 'Posting Date',                         // Posting Date
-        MAKTX: 'Material Description',                 // Material Description
-        qtyInUnitofEntry: 'Quantity in Unit of Entry', // Quantity in Unit of Entry
-        amtInLocCur: 'Amount in Local Currency',       // Amount in Local Currency
-        MBLNR: 'Material Document',                    // Material Document
-        NAME1: 'Vendor Name',                          // Vendor Name
-        TEXT: 'Text',                                  // Text
-        LFIMG: 'Quantity',                             // Quantity
-        supplier: 'Supplier',                          // Supplier
-        order: 'Order'                                 // Order
+        WERKS: 'Plant',                           // Plant
+        LGORT: 'Storage Location',                // Storage Location
+        MATNR: 'Material',                        // Material
+        BWART: 'Movement Type',                   // Movement Type
+        MVT_TYPE_TXT: 'Movement Type Text',       // Movement Type Text
+        BUDAT: 'Posting Date',                    // Posting Date
+        MAKTX: 'Material Description',            // Material Description
+        PRICE: 'Quantity in Unit of Entry',       // Quantity in Unit of Entry
+        L_CUR_AMT: 'Amount in Local Currency',    // Amount in Local Currency
+        MBLNR: 'Material Document',               // Material Document
+        NAME1: 'Vendor Name',                     // Vendor Name
+        TEXT: 'Text',                             // Text
+        LFIMG: 'Quantity',                        // Quantity
+        SUPPLIER: 'Supplier',                     // Supplier
+        ORDER: 'Order',                           // Order
+        GL_ACCOUNT: 'GL account',                 // GL account
+        DOC_HEADER_TXT: 'Document Header Text',   // Document Header Text
+        ENTRY_DATE: 'Entry Date',                 // Entry Date
+        BATCH: 'Batch',                           // Batch
+        CONSUMPTION: 'Consumption'                // Consumption
       };
   
       // Format data to map keys to user-friendly headers
@@ -145,6 +158,8 @@ onSort({ column, direction }: SortEvent) {
     console.log("validationform",this.form)
       let obj = {
         WERKS: "1300",//this.form.plant.value,
+        BWART: this.form.movementType.value,//"",// Movement Type
+        VGART:"WE",// Transaction/Event Type
         BUDAT_F:  this.form.postingDateFrom.value, //,//"2024-11-01",//
         BUDAT_T: this.form.postingDateTo.value  // //"2024-11-30" //
       }

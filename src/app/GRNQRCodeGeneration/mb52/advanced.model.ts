@@ -1,15 +1,14 @@
 export interface Table {
-    MATNR: string;              // Material
+    MATNR: number;              // Material
     MAKTX: string;              // Material Description
-    plantname1: string;         // Plant Name 1
+    WERKS: number;              // Plant
     LGORT: string;              // Storage Location  
-    LAPST: string;                 // sl Description
-    UnrestrictedUnit: string;   // Movement Type Text
-    transit: string;            // Posting Date   
-    inQtyInsp: number;          // In Quantity Insp
-    restrictedUse: string;      // Restricted USe
-    returns: string;            // Returns
-    blocked: string;            // Blocked
+    LGOBE: string;              // sl Description
+    MEINS: string;              // Base Unit of Measure
+    LABST: number;              // Unrestricted Stock Quantity   
+    SALK3: number;              // Unrestricted Stock Value
+    INSME: number;            // Quality Inspection Stock Quantity
+    // SALK3: string;            // Quality Inspection Stock Value
 }
   
 export interface SearchResult {

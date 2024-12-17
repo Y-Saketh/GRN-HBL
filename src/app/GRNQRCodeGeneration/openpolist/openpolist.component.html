@@ -19,44 +19,47 @@
               <!-- Row 1 -->
               <!-- Plant -->
               <div class="col-md-1">
+                <label class="brandcolor" for="plant">PLANT</label>
                 <div class="mb-3">
-                  <label class="brandcolor" for="plant">PLANT</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="plant"
-                    formControlName="plant"
-                    placeholder="Plant"
-                    [ngClass]="{ 'is-invalid': submit && form.plant.errors }"
-                  />
-                  <div
-                    *ngIf="submit && form.plant.errors"
-                    class="invalid-feedback"
-                  >
+                  <select
+                      class="form-select"
+                      id="plant"
+                      formControlName="plant"
+                    >
+                      <option value="" disabled selected>Plant</option>
+                      <option *ngFor="let type of plants" [value]="type">
+                        {{ type }}
+                      </option>
+                    </select>
+                  <div *ngIf="submit && form.plant.errors" class="invalid-feedback">
                     <span *ngIf="form.plant.errors.required"
                       >Please provide a valid plant.</span
                     >
                   </div>
                 </div>
               </div>
-              <!-- Vendor -->
-              <div class="col-md-1">
+              <!-- Purchase Group -->
+              <div class="col-md-2">
                 <div class="mb-3">
-                  <label class="brandcolor" for="vendor">VENDOR</label>
+                  <label class="brandcolor" for="purchaseGroup"
+                    >PURCHASE GROUP</label
+                  >
                   <input
                     type="text"
                     class="form-control"
-                    id="vendor"
-                    formControlName="vendor"
-                    placeholder="Vendor"
-                    [ngClass]="{ 'is-invalid': submit && form.vendor.errors }"
+                    id="purchaseGroup"
+                    formControlName="purchaseGroup"
+                    placeholder="Purchase Group"
+                    [ngClass]="{
+                      'is-invalid': submit && form.purchaseGroup.errors
+                    }"
                   />
                   <div
-                    *ngIf="submit && form.vendor.errors"
+                    *ngIf="submit && form.purchaseGroup.errors"
                     class="invalid-feedback"
                   >
-                    <span *ngIf="form.vendor.errors.required"
-                      >Please provide a valid vendor.</span
+                    <span *ngIf="form.purchaseGroup.errors.required"
+                      >Please provide a valid purchase group.</span
                     >
                   </div>
                 </div>
@@ -87,8 +90,82 @@
                   </div>
                 </div>
               </div>
-              <!-- Material -->
+              <!-- Document From Date -->
               <div class="col-md-2">
+                <div class="mb-3">
+                  <label class="brandcolor" for="docFromDate"
+                    >Doc From Date</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="docFromDate"
+                    [bsConfig]="bsConfig"
+                    bsDatepicker
+                    formControlName="docFromDate"
+                    placeholder="Document From Date"
+                    [ngClass]="{
+                      'is-invalid': submit && form.docFromDate.errors
+                    }"
+                  />
+                  <div
+                    *ngIf="submit && form.docFromDate.errors"
+                    class="invalid-feedback"
+                  >
+                    <span *ngIf="form.docFromDate.errors.required"
+                      >Please provide a valid docFromDate.</span
+                    >
+                  </div>
+                </div>
+              </div>
+              <!-- Document To Date -->
+              <div class="col-md-2">
+                <div class="mb-3">
+                  <label class="brandcolor" for="docToDate"
+                    >Doc To Date</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="docToDate"
+                    [bsConfig]="bsConfig"
+                    bsDatepicker
+                    formControlName="docToDate"
+                    placeholder="Document To Date"
+                    [ngClass]="{
+                      'is-invalid': submit && form.docToDate.errors
+                    }"
+                  />
+                  <div
+                    *ngIf="submit && form.docToDate.errors"
+                    class="invalid-feedback"
+                  >
+                    <span *ngIf="form.docToDate.errors.required"
+                      >Please provide a valid delivery Date To.</span
+                    >
+                  </div>
+                </div>
+              </div>
+              <!-- Buton -->
+              <div class="col-md-1 ms-2 mt-4">
+                <div class="mb-3">
+                  <button
+                    style="
+                      margin-top: 8px;
+                      background-color: brown;
+                      width: max-content;
+                      color: aliceblue;
+                    "
+                    class="btn"
+                    type="submit"
+                    (click)="getPOLIST()"
+                  >
+                    Get Details
+                  </button>
+                </div>
+              </div>
+              <!-- Material -->
+              <!-- <div class="col-md-2">
                 <div class="mb-3">
                   <label class="brandcolor" for="material">MATERIAL</label>
                   <input
@@ -108,9 +185,9 @@
                     >
                   </div>
                 </div>
-              </div>
+              </div> -->
               <!-- PO Number -->
-              <div class="col-md-2">
+              <!-- <div class="col-md-2">
                 <div class="mb-3">
                   <label class="brandcolor" for="poNumber">PO NUMBER</label>
                   <input
@@ -130,64 +207,31 @@
                     >
                   </div>
                 </div>
-              </div>
+              </div> -->
               <!-- Delivery Date From -->
-              <div class="col-md-2">
+              <!-- Vendor -->
+              <!-- <div class="col-md-1">
                 <div class="mb-3">
-                  <label class="brandcolor" for="deliveryDateFrom"
-                    >DELIVERY DATE FROM</label
-                  >
+                  <label class="brandcolor" for="vendor">VENDOR</label>
                   <input
                     type="text"
                     class="form-control"
-                    id="deliveryDateFrom"
-                    [bsConfig]="bsConfig"
-                    bsDatepicker
-                    formControlName="deliveryDateFrom"
-                    placeholder="Delivery Date From"
-                    [ngClass]="{
-                      'is-invalid': submit && form.deliveryDateFrom.errors
-                    }"
+                    id="vendor"
+                    formControlName="vendor"
+                    placeholder="Vendor"
+                    [ngClass]="{ 'is-invalid': submit && form.vendor.errors }"
                   />
                   <div
-                    *ngIf="submit && form.deliveryDateFrom.errors"
+                    *ngIf="submit && form.vendor.errors"
                     class="invalid-feedback"
                   >
-                    <span *ngIf="form.deliveryDateFrom.errors.required"
-                      >Please provide a valid deliveryDateFrom.</span
+                    <span *ngIf="form.vendor.errors.required"
+                      >Please provide a valid vendor.</span
                     >
                   </div>
                 </div>
-              </div>
-              <!-- Delivery Date To -->
-              <div class="col-md-2">
-                <div class="mb-3">
-                  <label class="brandcolor" for="deliveryDateTo"
-                    >DELIVERY DATE TO</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="deliveryDateTo"
-                    [bsConfig]="bsConfig"
-                    bsDatepicker
-                    formControlName="deliveryDateTo"
-                    placeholder="Delivery Date To"
-                    [ngClass]="{
-                      'is-invalid': submit && form.deliveryDateTo.errors
-                    }"
-                  />
-                  <div
-                    *ngIf="submit && form.deliveryDateTo.errors"
-                    class="invalid-feedback"
-                  >
-                    <span *ngIf="form.deliveryDateTo.errors.required"
-                      >Please provide a valid delivery Date To.</span
-                    >
-                  </div>
-                </div>
-              </div>
-
+              </div> -->
+              <!-- Document Type from -->
               <!-- <div class="col-md-3">
                 <div class="mb-3">
                   <label class="brandcolor" for="documentTypeFrom"
@@ -213,6 +257,7 @@
                   </div>
                 </div>
               </div> -->
+              <!-- Document Type To -->
               <!-- <div class="col-md-3">
                 <div class="mb-3">
                   <label class="brandcolor" for="documentTypeTo"
@@ -238,109 +283,6 @@
                   </div>
                 </div>
               </div> -->
-            </div>
-            <!--  <div class="row"> -->
-            <!-- Row 2 -->
-
-            <!-- <div class="col-md-3">
-                <div class="mb-3">
-                  <label class="brandcolor" for="documentType">DOCUMENT TYPE FROM DATE</label>
-                  <input type="text" class="form-control" id="documentFrom" formControlName="documentFrom"
-                    placeholder="Document Type From" [bsConfig]="bsConfig" bsDatepicker #datePicker="bsDatepicker"
-                    (focus)="datePicker.show()" (blur)="datePicker.hide()" [ngClass]="{
-                      'is-invalid': submit && form.documentFrom.errors
-                    }" />
-                  <div *ngIf="!submit && form.documentFrom.errors" class="invalid-feedback">
-                    <span *ngIf="form.documentFrom.errors.required">Please provide a valid document type From.</span>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="mb-3">
-                  <label class="brandcolor" for="documentTo">DOCUMENT TYPE TO DATE</label>
-                  <input type="text" class="form-control" id="documentTo" formControlName="documentTo"
-                    placeholder="Document Type To" [bsConfig]="bsConfig" bsDatepicker #datePicker="bsDatepicker"
-                    (focus)="datePicker.show()" (blur)="datePicker.hide()" [ngClass]="{
-                      'is-invalid': submit && form.documentTo.errors
-                    }" />
-                  <div *ngIf="submit && form.documentTo.errors" class="invalid-feedback">
-                    <span *ngIf="form.documentTo.errors.required">Please provide a valid document type To Date.</span>
-                  </div>
-                </div>
-              </div> -->
-            <!-- </div> -->
-
-            <!-- Row 3 -->
-            <div class="row justify-content-center">
-              
-              <!-- Purchase Group -->
-              <!-- <div class="col-md-2">
-                <div class="mb-3">
-                  <label class="brandcolor" for="purchaseGroup"
-                    >PURCHASE GROUP</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="purchaseGroup"
-                    formControlName="purchaseGroup"
-                    placeholder="Purchase Group"
-                    [ngClass]="{
-                      'is-invalid': submit && form.purchaseGroup.errors
-                    }"
-                  />
-                  <div
-                    *ngIf="submit && form.purchaseGroup.errors"
-                    class="invalid-feedback"
-                  >
-                    <span *ngIf="form.purchaseGroup.errors.required"
-                      >Please provide a valid purchase group.</span
-                    >
-                  </div>
-                </div>
-              </div> -->
-              <!-- Material Group -->
-              <!-- <div class="col-md-2">
-                <div class="mb-3">
-                  <label class="brandcolor" for="materialgroup"
-                    >MATERIAL GROUP</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="materialgroup"
-                    formControlName="materialgroup"
-                    placeholder="Material Group"
-                    [ngClass]="{ 'is-invalid': submit && form.material.errors }"
-                  />
-                  <div
-                    *ngIf="submit && form.materialgroup.errors"
-                    class="invalid-feedback"
-                  >
-                    <span *ngIf="form.materialgroup.errors.required"
-                      >Please provide a valid material group.</span
-                    >
-                  </div>
-                </div>
-              </div> -->
-              <!-- Button Row -->
-              <div class="col-md-1 justmt-4">
-                <div class="mb-3">
-                  <button
-                    style="
-                      margin-top: 8px;
-                      background-color: brown;
-                      width: max-content;
-                      color: aliceblue;
-                    "
-                    class="btn"
-                    type="submit"
-                    (click)="getPOLIST()"
-                  >
-                    Get Details
-                  </button>
-                </div>
-              </div>
             </div>
           </form>
         </div>
