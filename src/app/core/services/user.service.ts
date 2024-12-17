@@ -78,7 +78,7 @@ export class UserProfileService {
     fetchMb51Data(data){
         console.log("environment.API_URL_DEV",environment.API_URL_DEV)
         return this.http.post(`${environment.API_URL_DEV}api/external/mb51`,data)
-        return this.http.post(`${environment.API_URL_DEV}api/external/mb51`,data)
+
     }
     me23getData(data){
         console.log("environment.API_URL_DEV",environment.API_URL_DEV)
