@@ -305,7 +305,11 @@ saveUnmatched(): void {
       Swal.fire("Error", "Please ensure all quantities are valid and filled.", "error");
       return;
     }
-
+    const totalQuantity = this.selectedMaterial.packets.reduce((sum, packet) => sum + parseFloat(packet.DCLABS), 0);
+    if (totalQuantity < selectedMaterial.MENGE) {
+      Swal.fire("Error", "The total quantity of packets cannot be less than the original Quantity.", "error");
+      return;
+    }
     // Generate QR data for the unmatched material
     const qrData = this.selectedMaterial.packets.map((packet, i) => ({
       ...selectedMaterial, // Spread original material's properties
@@ -542,12 +546,12 @@ closePopup(): void {
         console.log('Data:', res);
         this.QRDAta = res;
         // if(res[0].NUMBER){
-          if(res[0].NUMBER == 200){
-          Swal.fire("", res[0].MESSAGE, "success");
+          // if(res[0].NUMBER == 200){
+          // Swal.fire("", res[0].MESSAGE, "success");
           this.generateQR()
-        }else{
-          Swal.fire("", "Not Submitted.", "error");
-        }
+        // }else{
+          // Swal.fire("", "Not Submitted.", "error");
+        // }
         // this.service.setTableData(res || []);
         // this._fetchData();
       },

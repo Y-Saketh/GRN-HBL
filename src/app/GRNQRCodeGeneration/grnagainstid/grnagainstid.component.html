@@ -133,10 +133,10 @@
                                        
                                         </td>
                                         <td>
-                                            
-                                                <button class="btn btn-primary btn-sm" (click)="matchMaterial(index)" [disabled]="!table.selected">Match</button>
-                                                <button class="btn btn-secondary btn-sm" (click)="unmatchMaterial(index)" [disabled]="!table.selected">Unmatch</button>
-                                          
+                                            <div style="display: flex; gap: 5px; justify-content: center;">
+                                                <button class="btn btn-success btn-sm" (click)="matchMaterial(index)" [disabled]="!table.selected">Match</button>
+                                                <button class="btn btn-danger btn-sm" (click)="unmatchMaterial(index)" [disabled]="!table.selected">Unmatch</button>
+                                            </div>
                                             
                                       </td>
                                         <td>{{ table.ZQRSTAT }}</td>

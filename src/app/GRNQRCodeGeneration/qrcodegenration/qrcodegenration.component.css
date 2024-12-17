@@ -6,6 +6,13 @@
   width: 100px;
 }
 
+
+.btn-container {
+display: flex;
+justify-content: space-between; /* Align items to opposite sides */
+margin-bottom: 10px; /* Add space below buttons */
+}
+
 .card-body {
    /* background-color: #f7f3f1; */
 background-color: #cadad6;
@@ -25,8 +32,6 @@ background-color: #cadad6;
   outline: none;
   box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
 }
-
-
 .card-title {
   font-family: 'Poppins', sans-serif;
   font-size: 20px;
@@ -42,6 +47,8 @@ background-color: #cadad6;
   border-bottom: 2px solid brown;
   padding-bottom: 5px;
 }
+
+
 #basic-datatable thead tr {
   background-color: #8B4513; 
   color: #FFFFFF; 
@@ -57,4 +64,161 @@ background-color: #cadad6;
   border-bottom: 2px solid #6A3B0E; 
 }
 
+.custom-btn-group {
+  display: inline-flex;
+  gap: 10px; /* Adjust spacing between buttons */
+  justify-content: flex-end;
+  width: 100%; /* Align buttons to the right of the parent container */
+}
+.qr-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px; /* Space between each item */
+  justify-content: flex-start;
+}
 
+.qr-item {
+  display: flex;
+  flex-direction: row; /* QR and data side by side */
+  align-items: center; /* Align items vertically in the center */
+  width: 280px; /* Set the card width */
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 10px;
+}
+
+.qr-code-wrapper {
+  margin-right: 10px; /* Space between QR and data */
+}
+
+.qr-image {
+  width: 80px; /* QR code width */
+  height: 80px; /* QR code height */
+}
+
+.qr-info {
+  display: flex;
+  flex-direction: column; /* Stack data fields vertically */
+  font-size: 14px; /* Adjust font size for better readability */
+}
+
+.qr-info p {
+  margin: 5px 0;
+}
+
+.highlight-3d-btn {
+  background-color: #28a745; /* Bright green */
+  border: none; /* Remove default border */
+  color: white; /* White text */
+  padding: 10px 20px; /* Add some padding for better size */
+  font-size: 1.2rem; /* Slightly increase the font size */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 4px #218838; /* Create the 3D effect */
+  transition: all 0.3s ease; /* Smooth hover effect */
+  cursor: pointer; /* Add pointer on hover */
+}
+
+.highlight-3d-btn:hover {
+  box-shadow: 0 2px #218838; /* Reduce shadow to simulate pressing */
+  transform: translateY(2px); /* Shift button down slightly */
+}
+
+.highlight-3d-btn:active {
+  box-shadow: 0 0 #218838; /* Remove shadow on click */
+  transform: translateY(4px); /* Further shift button down */
+}
+/* @media print {
+body * {
+    visibility: hidden;
+}
+
+#printableArea, #printableArea * {
+    visibility: visible;
+}
+
+#printableArea {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+}
+
+.qr-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Adjust size for printer layout */
+    /* gap: 10px;
+}
+
+.qr-item {
+    border: 1px solid #000; /* Optional: Add borders for better visibility */
+    /* padding: 10px;
+}
+
+img {
+    width: 100%; /* Scale QR codes to fit */
+    /* height: auto;
+}
+} */ 
+
+@media print {
+  body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+  }
+
+  #printableArea {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    justify-content: flex-start;
+    margin: 0;
+  }
+
+  .qr-item {
+    width: 50mm;  /* Label width (50mm) */
+    height: 25mm; /* Label height (25mm) */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    padding: 0.5mm; /* Small padding to avoid content touching the border */
+    margin: 0;
+  }
+
+  .qr-code-wrapper img {
+    width: 14mm;  /* QR code size (14mm) */
+    height: 14mm; /* QR code size (14mm) */
+    object-fit: contain;
+    margin-right: 2mm; /* Small gap between QR code and text */
+  }
+
+  .qr-info {
+    font-size: 8px;  /* Adjust font size for readability */
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 9px; /* Line height to ensure adequate spacing between text lines */
+    text-align: left;
+    margin-bottom: 1mm; /* Small space between each text field */
+    word-wrap: break-word; /* Prevent overflow if text is too long */
+    max-width: calc(50mm - 14mm - 4mm);  /* Adjust text area width based on QR code size and margins */
+  }
+
+  .qr-info p {
+    margin: 0; /* Remove default margin from paragraphs */
+    padding: 0; /* Remove padding */
+  }
+
+  body * {
+    visibility: hidden; /* Hide everything else */
+  }
+
+  #printableArea, #printableArea * {
+    visibility: visible; /* Show only printable area */
+  }
+}
