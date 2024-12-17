@@ -7,25 +7,45 @@
       </h4>
       <form class="needs-validation" [formGroup]="validationform">
         <div class="row">
-          <!-- Plant -->
-          <div class="col-md-1">
-            <label class="brandcolor" for="plant">PLANT</label>
+          <!-- MATERIAL DOCUMENT NUMBER -->
+          <div class="col-md-2">
+            <label class="brandcolor" for="matDocNum">MATERIAL DOCUMENT NUMBER</label>
             <div class="mb-3">
               <input
                 type="text"
                 class="form-control"
-                id="plant"
-                formControlName="plant"
-                placeholder="Plant"
-                [ngClass]="{ 'is-invalid': submit && form.plant.errors }"
+                id="matDocNum"
+                formControlName="matDocNum"
+                placeholder="Material Document Number"
+                [ngClass]="{ 'is-invalid': submit && form.matDocNum.errors }"
               />
-              <div *ngIf="submit && form.plant.errors" class="invalid-feedback">
-                <span *ngIf="form.plant.errors.required"
-                  >Please provide a valid plant.</span
+              <div *ngIf="submit && form.matDocNum.errors" class="invalid-feedback">
+                <span *ngIf="form.matDocNum.errors.required"
+                  >Please provide a valid Material Document Number.</span
                 >
               </div>
             </div>
           </div>
+          <!-- Material Documnet Year -->
+          <div class="col-md-2">
+            <label class="brandcolor" for="matDocYear">MATERIAL DOCUMNET YEAR</label>
+            <div class="mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="matDocYear"
+                formControlName="matDocYear"
+                placeholder="Material Documnet Year"
+                [ngClass]="{ 'is-invalid': submit && form.matDocYear.errors }"
+              />
+              <div *ngIf="submit && form.matDocYear.errors" class="invalid-feedback">
+                <span *ngIf="form.matDocYear.errors.required"
+                  >Please provide a valid Material Documnet Year.</span
+                >
+              </div>
+            </div>
+          </div>
+          <!-- Button -->
           <div class="col-md-1 mt-4">
             <div class="ms-4 mb-3">
               <button
@@ -37,8 +57,9 @@
                 "
                 class="btn"
                 type="submit"
+                (click)="getGRNPrint()"
               >
-                Get Details
+                Download
               </button>
             </div>
           </div>
@@ -46,8 +67,88 @@
       </form>
     </div>
   </div>
-  <!-- end card -->
-  <div class="card">
+  <!-- card 2 -->
+  <div *ngif="showcard" class="card" style="background-color: beige">
+    <div class="card-body">
+      <div class="row mt-1">
+        <div class="col-xl-4">
+      <h5>
+        <span class="brandcolor">GR NO</span> : {{ grno }}
+      </h5>
+      </div>
+      <div class="col-xl-2">
+      <h5>
+        <span class="brandcolor">GRN Date</span> : {{ grnDate }}
+      </h5>
+    </div>
+    </div>
+    <div class="col-xl-2 mt-3">
+      <h5>
+        <span class="brandcolor">Vendor</span> : {{ vendorCode }}
+      </h5>
+    </div>
+    <div class="row mt-3">
+      <div class="col-xl-2">
+        <h5>
+          <span class="brandcolor">Vendor</span> : {{ vendorDetails }}
+        </h5>
+      </div>
+      <div class="col-xl-6"></div>
+      <div class="col-xl-2">
+      <h5>
+        <span class="brandcolor">DC No.</span> : {{ dcNo }}
+      </h5>
+      </div>
+      <div class="col-xl-2">
+      <h5>
+        <span class="brandcolor">Date</span> : {{ dcDate }}
+      </h5>
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col-xl-4">
+      <h5>
+        <span class="brandcolor">Inbound No.</span> : {{ inboundNo }}
+      </h5>
+    </div>
+    <div class="col-xl-4">
+      <h5>
+        <span class="brandcolor">Date</span> : {{ inboundDate }}
+      </h5>
+    </div>
+    <div class="col-xl-2">
+      <h5>
+        <span class="brandcolor">LR/RR No</span> : {{ lrNo }}
+      </h5>
+    </div>
+    <div class="col-xl-2">
+      <h5>
+        <span class="brandcolor">Date</span> : {{ lrDate }}
+      </h5>
+    </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col-xl-4">
+      <h5>
+        <span class="brandcolor">S.Loc</span> : {{ storageLocation }}
+      </h5>
+      </div>
+      <div class="col-xl-4">
+        <h5>
+          <span class="brandcolor">Vehile No.</span> : {{ vehicleNo }}
+        </h5>
+      </div>
+      <div class="col-xl-2">
+        <h5>
+          <span class="brandcolor">Transporter</span> : {{ transporter }}
+        </h5>
+        </div>
+    </div>
+  </div>
+</div>
+  
+  <!-- Card 3 -->
+  <div *ngif ="showtable" class="card mt-4">
     <div class="card-body">
       <div class="row mb-md-2">
         <div class="col-sm-12 col-md-6">
@@ -90,213 +191,120 @@
         >
           <thead class="brandcolor tableHeader">
             <tr>
-              <th></th>
-              <th class="brandcolor" sortable="MAT_DOC" (sort)="onSort($event)">
-                Material Document
+              <th class="brandcolor" sortable="si" (sort)="onSort($event)">
+                SI
               </th>
               <th
                 class="brandcolor"
-                sortable="MAT_DOC_YEAR"
+                sortable="MATNR"
                 (sort)="onSort($event)"
               >
-                Material Doc. Year
+                Material Code
               </th>
               <th
                 class="brandcolor"
-                sortable="TRANS_EVENT_TYPE"
+                sortable="MAKTX"
                 (sort)="onSort($event)"
               >
-                Trans./Event Type
+                Material Description
               </th>
               <th
                 class="brandcolor"
-                sortable="DOC_TYPE"
+                sortable="EBELN"
                 (sort)="onSort($event)"
               >
-                Document Type
+                PO NO
               </th>
               <th
                 class="brandcolor"
-                sortable="DOC_TYPE_REVAL"
+                sortable="STEUC"
                 (sort)="onSort($event)"
               >
-                Doc. type reval.
+                HSN Code
               </th>
               <th
                 class="brandcolor"
-                sortable="DOC_DATE"
+                sortable="MEINS"
                 (sort)="onSort($event)"
               >
-                Document Date
+                UOM
               </th>
               <th
                 class="brandcolor"
-                sortable="POSTING_DATE"
+                sortable="MENGE"
                 (sort)="onSort($event)"
               >
-                Posting Date
+                DC Qty
               </th>
               <th
                 class="brandcolor"
-                sortable="ENTRY_DATE"
+                sortable="LSMNG"
                 (sort)="onSort($event)"
               >
-                Entry Date
+                Recd Qty
               </th>
               <th
                 class="brandcolor"
-                sortable="ENTRY_TIME"
+                sortable="RATE"
                 (sort)="onSort($event)"
               >
-                Time of Entry
+                Rate
               </th>
               <th
                 class="brandcolor"
-                sortable="CHANGED_ON"
+                sortable="NET"
                 (sort)="onSort($event)"
               >
-                Changed On
+                Net Value
               </th>
               <th
                 class="brandcolor"
-                sortable="USER_NAME"
+                sortable=""
                 (sort)="onSort($event)"
               >
-                User Name
+                Other Expenses
               </th>
-              <th class="brandcolor" sortable="AREA" (sort)="onSort($event)">
-                Not More Closely Defined Area, Possibly
-              </th>
-              <th
-                class="brandcolor"
-                sortable="REFERENCE"
-                (sort)="onSort($event)"
-              >
-                Reference
+              <th class="brandcolor" sortable="CGST/SGST/IGST" (sort)="onSort($event)">
+                CGST/SGST/IGST
               </th>
               <th
                 class="brandcolor"
-                sortable="HEADER_TEXT"
+                sortable="GROSS"
                 (sort)="onSort($event)"
               >
-                Document Header Text
-              </th>
-              <th
-                class="brandcolor"
-                sortable="DEL_COSTS"
-                (sort)="onSort($event)"
-              >
-                Unpl. del.costs
+                Gr.Value
               </th>
             </tr>
           </thead>
           <tbody *ngFor="let table of tables$ | async; let i = index">
             <tr>
-              <td align="center">
-                <a class="expand-row" (click)="changeValue(i)">+</a>
-              </td>
-              <td>{{ table.MAT_DOC }}</td>
-              <!-- Material document number -->
-              <td>{{ table.MAT_DOC_YEAR }}</td>
-              <!-- Year of the material document -->
-              <td>{{ table.TRANS_EVENT_TYPE }}</td>
-              <!-- Type of transaction or event -->
-              <td>{{ table.DOC_TYPE }}</td>
-              <!-- Type of document -->
-              <td>{{ table.DOC_TYPE_REVAL }}</td>
-              <!-- Revaluation document type -->
-              <td>{{ table.DOC_DATE | date: 'dd-MM-yyyy'}}</td>
-              <!-- Date of the document -->
-              <td>{{ table.POSTING_DATE | date: 'dd-MM-yyyy'}}</td>
-              <!-- Posting date of the document -->
-              <td>{{ table.ENTRY_DATE | date: 'dd-MM-yyyy' }}</td>
-              <!-- Date of entry into the system -->
-              <td>{{ table.ENTRY_TIME }}</td>
-              <!-- Time of entry -->
+              <td>{{ i + 1 }}</td>
+              <!-- Serial number -->  
+              <td>{{ table.MATNR }}</td>
+              <!-- Material Code -->
+              <td>{{ table.MAKTX }}</td>
+              <!-- Material Description -->
+              <td>{{ table.EBELN }}</td>
+              <!-- PO NO -->
+              <td>{{ table.STEUC }}</td>
+              <!-- HSN Code -->
+              <td>{{ table.MEINS }}</td>
+              <!-- UOM -->
+              <td>{{ table.MENGE }}</td>
+              <!-- DC Qty -->
+              <td>{{ table.LSMNG }}</td>
+              <!-- Recd Qty -->
+              <td>{{ table.RATE }}</td>
+              <!-- Rate -->
+              <td>{{ table.NET }}</td>
+              <!-- Net Value -->
               <td>{{ table.CHANGED_ON }}</td>
-              <!-- Date when the record was last changed -->
-              <td>{{ table.USER_NAME }}</td>
-              <!-- Name of the user who performed the action -->
-              <td>{{ table.AREA }}</td>
-              <!-- Specific area description -->
-              <td>{{ table.REFERENCE }}</td>
-              <!-- Reference number associated with the document -->
-              <td>{{ table.HEADER_TEXT }}</td>
-              <!-- Header text of the document -->
-              <td>{{ table.DEL_COSTS }}</td>
-              <!-- Unplanned delivery costs -->
+              <!-- Other Expenses -->
+              <td>{{ table.CGST/SGST/IGST }}</td>
+              <!-- CGST/SGST/IGST -->
+              <td>{{ table.GROSS }}</td>
+              <!-- Gr.Value -->
             </tr>
-            <ng-container *ngIf="hideme[i]">
-              <tr class="sub-table no-bg">
-                <td align="center"></td>
-                <td colspan="15" class="p-0">
-                  <table class="table mb-0 table-striped">
-                    <thead class="bg-dark text-white">
-                      <tr>
-                        <th>Bill of Lading</th>
-                        <th>Print Version</th>
-                        <th>Goods Receipt/Issue Slip</th>
-                        <th>Logical System</th>
-                        <th>Doc. type add. doc.</th>
-                        <th>Transaction Code</th>
-                        <th>Ext. WMS control</th>
-                        <th>Number of foreign trade data</th>
-                        <th>Goods Issue Time</th>
-                        <th>Time Zone</th>
-                        <th>Delivery</th>
-                        <th>Logical System EWM</th>
-                        <th>Material Document in EWM</th>
-                        <th>Customs Reference Number</th>
-                        <th>Enh. Store Return</th>
-                        <th>Adv. Returns Active</th>
-                        <th>Doc. condition no.</th>
-                        <th>Cancel in full</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>{{ table.LOGICAL_SYSTEM }}</td>
-                        <!-- Logical system associated with the entry -->
-                        <td>{{ table.DOC_TYPE_ADD }}</td>
-                        <!-- Additional document type information -->
-                        <td>{{ table.TRANSACTION_CODE }}</td>
-                        <!-- Transaction code for the operation -->
-                        <td>{{ table.EXT_WMS_CONTROL }}</td>
-                        <!-- External WMS control identifier -->
-                        <td>{{ table.FOREIGN_DATA_NUM }}</td>
-                        <!-- Number of foreign trade data associated -->
-                        <td>{{ table.GI_TIME }}</td>
-                        <!-- Time of goods issue -->
-                        <td>{{ table.TIME_ZONE }}</td>
-                        <!-- Time zone for the operation -->
-                        <td>{{ table.DELIVERY }}</td>
-                        <!-- Delivery information -->
-                        <td>{{ table.LOGICAL_SYSTEM_EWM }}</td>
-                        <!-- Logical system for EWM -->
-                        <td>{{ table.MAT_DOC_EWM }}</td>
-                        <!-- Material document reference in EWM -->
-                        <td>{{ table.CUSTOMS_REF_NUM }}</td>
-                        <!-- Customs reference number -->
-                        <td>{{ table.ENH_STORE_RETURN }}</td>
-                        <!-- Enhanced store return information -->
-                        <td>{{ table.ADV_RETURNS_ACTIVE }}</td>
-                        <!-- Indicator if advanced returns are active -->
-                        <td>{{ table.DOC_CONDITION_NO }}</td>
-                        <!-- Document condition number -->
-                        <td>{{ table.CANCEL_IN_FULL }}</td>
-                        <!-- Indicator if the document is canceled in full -->
-                        <td>{{ table.PRINT_VERSION }}</td>
-                        <!-- Version of the printout -->
-                        <td>{{ table.GR_ISSUE_SLIP }}</td>
-                        <!-- Goods receipt/issue slip -->
-                        <td>{{ table.BILL_OF_LADING }}</td>
-                        <!-- Bill of lading number -->
-                      </tr>
-                    </tbody>
-                  </table>
-                </td>
-              </tr>
-            </ng-container>
           </tbody>
         </table>
       </div>
@@ -342,4 +350,3 @@
       <!-- End of Pagination -->
     </div>
   </div>
-</div>

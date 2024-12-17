@@ -41,7 +41,7 @@ function matches(tables: Table, term: string, pipe: PipeTransform) {
     tables.MAKTX.toLowerCase().includes(term.toLowerCase()) || // Material Description
     tables.plantname1.toLowerCase().includes(term.toLowerCase()) || // Plant na 1me
     tables.LGORT.toLowerCase().includes(term.toLowerCase()) || // Storage Location
-    tables.sl.toLowerCase().includes(term.toLowerCase()) || // sl
+    tables.LAPST.toLowerCase().includes(term.toLowerCase()) || // sl Description
     tables.UnrestrictedUnit.toLowerCase().includes(term.toLowerCase()) || // Unrestricted Unit    
     pipe.transform(tables.transit)?.toString().includes(term) || // Transit
     pipe.transform(tables.inQtyInsp)?.toString().includes(term) || // In Qty Insp

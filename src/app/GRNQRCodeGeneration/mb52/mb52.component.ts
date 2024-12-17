@@ -29,8 +29,7 @@ export class Mb52Component implements OnInit {
     validationform!: FormGroup; // Form group for the input fields
     submit = false; // Form submission flag
     hideme: boolean[] = [];
-    // mb51table: any;
-    mb51table: Table[];
+    mb52table: Table[] = [];
     tableData: Table[];
     tables$: Observable<Table[]>;
     total$: Observable<number>;
@@ -45,13 +44,12 @@ export class Mb52Component implements OnInit {
 
   bsConfig = {
     dateInputFormat: 'DD-MM-YYYY', // Set the date format
-    // showWeekNumbers: false, // Optional: Hide week numbers
     containerClass: 'theme-blue', // Optional: Use a predefined theme
   };
 
   exportToExcel(): void {
       // Retrieve the current table data
-      const dataToExport = this.mb51table;
+      const dataToExport = this.mb52table;
     
       if (dataToExport.length > 0) {
         // Define mapping of keys to header names
@@ -87,20 +85,25 @@ export class Mb52Component implements OnInit {
         // Create a new workbook and worksheet with the formatted data
         const worksheet = XLSX.utils.json_to_sheet(formattedData);
         const workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook, worksheet, 'mb51 Data');
+        XLSX.utils.book_append_sheet(workbook, worksheet, 'mb52 Data');
     
         // Generate an Excel file and trigger the download
-        XLSX.writeFile(workbook, 'mb51_Data.xlsx');
+        XLSX.writeFile(workbook, 'mb52_Data.xlsx');
       }
     }
 
-  _fetchData() {
-    this.tableData = this.mb51table;
-    console.log("this.tableData ", this.tableData)
-    for (let i = 0; i <= this.tableData.length; i++) {
-      this.hideme.push(true);
+    _fetchData() {
+      if (this.mb52table && this.mb52table.length > 0) {
+        this.tableData = this.mb52table;
+        console.log("this.tableData ", this.tableData);
+        for (let i = 0; i < this.tableData.length; i++) {
+          this.hideme.push(true);
+        }
+      } else {
+        console.warn('No MB52 data available for fetching.');
+      }
     }
-  }
+    
 
 /**
 * Sort table data
@@ -111,7 +114,9 @@ export class Mb52Component implements OnInit {
   ngOnInit() {  
     this.validationform = this.formBuilder.group({
       plant: ['', Validators.required],
-      material: ['', Validators.required]
+      material: ['', Validators.required],
+      storageLocation: ['', Validators.required],
+      batch: ['', Validators.required],
     });
   }
 
@@ -124,7 +129,6 @@ export class Mb52Component implements OnInit {
   }
   
   onSort({ column, direction }: SortEvent) {
-    // resetting other headers
     this.headers.forEach(header => {
       if (header.sortable !== column) {
         header.direction = '';
@@ -133,28 +137,31 @@ export class Mb52Component implements OnInit {
     this.service.sortColumn = column;
     this.service.sortDirection = direction;
   }
+  
 
 
   getmb52() {
     this.loaderservice.showLoader();
     console.log("validationform",this.form)
       let obj = {
-        WERKS: "1300",//this.form.plant.value,
-        BUDAT_F:  this.form.postingDateFrom.value, //,//"2024-11-01",//
-        BUDAT_T: this.form.postingDateTo.value  // //"2024-11-30" //
-      }
+        "WERKS": this.form.plant.value,//"1300",
+        "MATNR": this.form.material.value,//"1000001248",
+        "LGORT": this.form.storageLocation.value,//"",
+        "CHARG": this.form.batch.value,//""
+    }
+    
       console.log("objobj",obj)
-      this.apiService.fetchMb51Data(obj).subscribe({
+      this.apiService.fetchMb52Data(obj).subscribe({
         next: (res: any) => {
-          console.log('MB51 data fetched successfully:', res);
-          this.mb51table = res;
+          console.log('MB52 data fetched successfully:', res);
+          this.mb52table = res;
           this.service.setTableData(res || []);
           this._fetchData();
         },
         error: (error) => {
           this.loaderservice.hideLoader();
-          console.error('Error fetching MB51 data:', error);
-         
+          console.error('Error fetching MB52 data:', error.message || error);
+          alert('Failed to fetch MB52 data. Please try again.');
         },
         complete: () => {
           console.log('API call completed.');

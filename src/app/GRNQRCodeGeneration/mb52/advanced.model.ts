@@ -3,7 +3,7 @@ export interface Table {
     MAKTX: string;              // Material Description
     plantname1: string;         // Plant Name 1
     LGORT: string;              // Storage Location  
-    sl: string;                 // sl
+    LAPST: string;                 // sl Description
     UnrestrictedUnit: string;   // Movement Type Text
     transit: string;            // Posting Date   
     inQtyInsp: number;          // In Quantity Insp

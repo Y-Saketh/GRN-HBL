@@ -51,6 +51,8 @@ export class GrdoneComponent implements OnInit {
     containerClass: 'theme-blue', // Optional: Use a predefined theme
   };
   ngOnInit(): void {
+    // const loginResponse = JSON.parse(localStorage.getItem('currentUser') || '{}');
+
     this.submit = false;
     const currentDate = new Date();
     const fifteenDaysAgo = new Date();

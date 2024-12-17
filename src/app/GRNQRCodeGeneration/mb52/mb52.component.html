@@ -49,30 +49,55 @@
                   </div>
                 </div>
               </div>
-            <!-- Material Description -->
-            <!-- <div class="col-md-2">
-              <label class="brandcolor" for="materialDescription">MATERIAL DESCRIPTION</label>
+            <!-- STORAGE LOCATION -->
+             <div class="col-md-2">
+              <label class="brandcolor" for="storageLocation">STORAGE LOCATION</label>
               <div class="mb-3">
                 <input
                   type="text"
                   class="form-control"
-                  id="materialDescription"
-                  formControlName="materialDescription"
-                  placeholder="Material Description"
+                  id="storageLocation"
+                  formControlName="storageLocation"
+                  placeholder="Storage location"
                   [ngClass]="{
-                    'is-invalid': submit && form.materialDescription.errors
+                    'is-invalid': submit && form.storageLocation.errors
                   }"
                 />
                 <div
-                  *ngIf="submit && form.materialDescription.errors"
+                  *ngIf="submit && form.storageLocation.errors"
                   class="invalid-feedback"
                 >
-                  <span *ngIf="form.materialDescription.errors.required"
+                  <span *ngIf="form.storageLocation.errors.required"
                     >Please provide a valid POSTING DATE TO.</span
                   >
                 </div>
               </div>
-            </div> -->
+            </div> 
+            <!-- BATCH -->
+            <div class="col-md-2">
+              <label class="brandcolor" for="batch">BATCH</label>
+              <div class="mb-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="batch"
+                  formControlName="batch"
+                  placeholder="Batch"
+                  [ngClass]="{
+                    'is-invalid': submit && form.batch.errors
+                  }"
+                />
+                <div
+                  *ngIf="submit && form.batch.errors"
+                  class="invalid-feedback"
+                >
+                  <span *ngIf="form.batch.errors.required"
+                    >Please provide a valid POSTING DATE TO.</span
+                  >
+                </div>
+              </div>
+            </div>
+            <!-- Button -->
             <div class="col-md-1 mt-4">
               <div class="ms-4 mb-3">
                 <button
@@ -152,7 +177,7 @@
                   S.Loc
                 </th>
                 <th class="brandcolor" sortable="sl" (sort)="onSort($event)">
-                  SL
+                  SL Desc
                 </th>
                 <th
                   class="brandcolor"
@@ -190,13 +215,13 @@
                 <!-- Material -->
                 <td>{{ table.MAKTX }}</td>
                 <!-- Material Desc -->
-                <td>{{ table.plantname1 }}</td>
-                <!-- Plant Name 1 -->
+                <td>{{ table.WERKS }}</td>
+                <!-- Plant -->
                 <td>{{ table.LGORT }}</td>
                 <!-- Storage Location -->
-                <td>{{ table.sl }}</td>
-                <!-- SL -->
-                <td>{{ table.UnrestrictedUnit }}</td>
+                <td>{{ table.LGOBE }}</td>
+                <!-- SL Desc -->
+                <td>{{ table.LAPST }}</td>
                 <!-- Unrestricted Unit -->
                 <td>{{ table.transit }}</td>
                 <!-- Transit/Transf. -->
@@ -204,9 +229,8 @@
                 <!-- In Qty Insp. -->
                 <td>{{ table.restrictedUse }}</td>
                 <!-- Restricted Use -->
-                
               </tr>
-              <ng-container *ngIf="hideme[i]">
+              <ng-container *ngIf="!hideme[i]">
                 <tr class="sub-table no-bg">
                   <td align="center"></td>
                   <td colspan="15" class="p-0">
