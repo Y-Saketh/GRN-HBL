@@ -138,10 +138,10 @@
                   <tr>
                     <th></th>
                     <th sortable="deleveryChallanNumber">
-                      DC.No <span style="color: red">*</span>
+                      ORD.No <span style="color: red">*</span>
                     </th>
                     <th sortable="DocumentDate">
-                      DC.Dt <span style="color: red">*</span>
+                      ORD.Dt <span style="color: red">*</span>
                     </th>
                     <th sortable="invoiceNo">
                       Inv.No<span style="color: red">*</span>
@@ -258,7 +258,6 @@
                         >Transporter Name is required.</small
                       >
                     </td>
-
                     <td>
                       <input
                         type="text"
@@ -274,7 +273,6 @@
                         >Gate Entry Number is required and should not contain special characters.
                       </small>
                     </td>
-
                     <td>
                       <input
                         type="text"
@@ -316,15 +314,12 @@
                         >LR Number is required
                       </small>
                     </td>
-                    
-
                     <!-- <td>
                       <input type="text" formControlName="supplier" placeholder="Enter Supplier/Vendor Code"
                         class="form-control form-control-sm" />
                       <small class="text-danger" *ngIf="isFieldInvalid('supplier')">Supplier/Vendor Code is
                         required.</small>
                     </td> -->
-
                     <!-- <td>
                 <input
                   type="text"
@@ -333,7 +328,6 @@
                 />
               </td> -->
                   </tr>
-
                   @if(!hideme){
                   <tr class="sub-table no-bg">
                     <td align="center"></td>
@@ -350,7 +344,7 @@
                             <th>Material Description</th>
                             <th>HSN Code</th>
                             <th>UoM</th>
-                            <th>DC Qty</th>
+                            <th>ORD Qty</th>
                             <th>Recd Qty</th>
                             <!-- <th>Over & Under Tolarance</th> -->
                             <!-- <th>Supplier/Vendor Code</th> -->
@@ -375,7 +369,7 @@
                             <td>{{ table.PO_ITEM }}</td>
                             <td>{{ table.MATNR }}</td>
                             <td>{{ table.SHORT_TEXT }}</td>
-                            <td>{{table.STEUC}}</td>
+                            <td>{{ table.STEUC }}</td>
                             <td>{{ table.MEINS }}</td>
                             <td>{{ table.ORGQTY }}</td>
                             <td>
@@ -420,9 +414,7 @@
                 "
                 class="btn"
                 type="submit"
-                [disabled]="
-                  !validationform.valid
-                "
+                [disabled]="validationform.invalid || tableForm.invalid"
                 (click)="saveBound(tables$)"
               >
                 Save

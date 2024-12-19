@@ -228,7 +228,7 @@ background-color: #cadad6;
       text-align: left;
       margin-bottom: 1mm; /* Small space between each text field */
       word-wrap: break-word; /* Prevent overflow if text is too long */
-      max-width: calc(50mm - 14mm - 4mm);  /* Adjust text area width based on QR code size and margins */
+      /* max-width: calc(50mm - 14mm - 4mm);  Adjust text area width based on QR code size and margins */
     }
   
     .qr-info p {

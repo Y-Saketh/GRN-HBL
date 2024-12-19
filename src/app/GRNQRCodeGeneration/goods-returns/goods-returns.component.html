@@ -35,6 +35,28 @@
                     </div>
                   </div>
                 </div>
+                <div class="col-md-2">
+                  <div class="mb-3">
+                    <label class="brandcolor" for="year"
+                      >Year</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="year"
+                      formControlName="year"
+                      placeholder="Year"
+                    />
+                    <div
+                      *ngIf="submit && form.year.errors"
+                      class="invalid-feedback"
+                    >
+                      <span *ngIf="form.year.errors.required">
+                        Please provide a valid Year.
+                      </span>
+                    </div>
+                  </div>
+                </div>
                 <!-- Button-->
                 <div class="col-md-2 text-center">
                   <button
@@ -50,10 +72,27 @@
                     Get Details
                   </button>
                 </div>
+                <!-- Details -->
+                <div class="col-md-4">
+                  <h5 *ngIf="materialDocument">
+                    <span class="brandcolor">NUMBER OF MATERIAL DOCUMENT</span> :
+                    {{ materialDocument }}
+                  </h5>
+                  <h5 *ngIf="year">
+                    <span class="brandcolor">Material Document Year</span> : {{ year }}
+                  </h5>
+                  <h5 *ngIf="postingDate">
+                    <span class="brandcolor">Posting Date in the Document</span> : {{ postingdate }}
+                  </h5>
+                  <h5 *ngIf="documentDate">
+                    <span class="brandcolor">Document Date in Document</span> : {{ documentDate }}
+                  </h5>
+                  <h5 *ngIf="headerText">
+                    <span class="brandcolor">shorttext</span> : {{ headerText }}
+                  </h5>
+                </div>
               </div>
-
-             </form>           
-
+             </form>         
                 </div>
             </div>
             <!-- end card -->
@@ -76,122 +115,110 @@
                           </div>
                       </div>
                   </div>
-                  <!-- Table -->
-      <div class="table-responsive">
-        <table
-          id="basic-datatable"
-          class="table table-bordered dt-responsive nowrap"
-        >
-          <thead class="brandcolor tableHeader">
-            <tr>
-              <!-- <th>
-                <input
-                  type="checkbox"
-                  [checked]="selectAll"
-                  (change)="toggleSelectAll($event)"
-                />
-              </th> -->
-              <th sortable="MATNR" (sort)="onSort($event)">Material code</th>
-              <th sortable="MAKTX" (sort)="onSort($event)">
-                Material description
-              </th>
-              <th sortable="MEINS" (sort)="onSort($event)">
-                UOM
-              </th>
-              <th sortable="WERKS" (sort)="onSort($event)">
-                Plant
-              </th>
-              <th sortable="LGORT" (sort)="onSort($event)">
-                Storage Location
-              </th>
-              <th sortable="LIFNR" (sort)="onSort($event)">
-                vendor code
-              </th>
-              <th sortable="GRUND" (sort)="onSort($event)">
-                Reason For Movement
-              </th>
-              <th>
-                Stock Type
-              </th>             
-            </tr>
-          </thead>
-          <tbody *ngFor="let table of tables$ | async; let i = index">
-            <tr>
-              <td align="center">
-                <a class="expand-row" (click)="changeValue(i)">+</a>
-              </td>
-              <td>
-                <input
-                  type="checkbox"
-                  [(ngModel)]="table.selected"
-                  (change)="onRowCheckboxChange(table)"
-                />
-              </td>
-              <td>{{ table.MATNR }}</td>
-              <!-- Material Code-->
-                <td>{{ table.MAKTX }}</td>
-              <!-- Material Description-->
-                <td>{{ table.MEINS }}</td>
-              <!-- UOM-->
-                <td>{{ table.WERKS }}</td>
-              <!-- Plant-->
-                <td>{{ table.LGORT }}</td>
-              <!-- Storage Location-->
-                <td>{{ table.LIFNR }}</td>
-              <!-- Vendor Code-->
-                <td>{{ table.GRUND }}</td>
-              <!-- Reason For Movement-->
-              <td>
-                <select [(ngModel)]="item.stockType" (change)="onStockTypeChange(item, i)">
-                  <option value="qualityInspection">Quality Inspection</option>
-                  <option value="blockedStock">Blocked Stock</option>
-                </select>
-              </td>
-              <!-- Stock Type-->
-            </tr>
-            <ng-container *ngIf="hideme[i]">
-              <tr class="sub-table no-bg">
-                <td align="center"></td>
-                <td colspan="15" class="p-0">
-                  <table class="table mb-0 table-striped">
-                    <thead class="bg-dark text-white">
+                <!-- Table -->
+                <div class="table-responsive">
+                  <table
+                    id="basic-datatable"
+                    class="table table-bordered dt-responsive nowrap"
+                  >
+                    <thead class="brandcolor tableHeader">
                       <tr>
-                        <th>Doc Date</th>
-                        <th>Posting date</th>
-                        <th>Material Group</th>
-                        <th>PO Number</th>
-                        <th>Reference Doc Num</th>
-                        <th>Vendor Name</th>
-                        <th>Goods Receipt Name</th>
+                        <th>
+                          <input
+                            type="checkbox"
+                            [checked]="selectAll"
+                            (change)="toggleSelectAll($event)"
+                          />
+                        </th>
+                        <th sortable="MATNR" (sort)="onSort($event)">Material Number</th>
+                        <th sortable="LGORT" (sort)="onSort($event)">
+                          Storage Location
+                        </th>
+                        <th sortable="BWART" (sort)="onSort($event)">
+                          Movement Type
+                        </th>
+                        <th sortable="WERKS" (sort)="onSort($event)">
+                          Plant
+                        </th>
+                        <th sortable="EBELN" (sort)="onSort($event)">
+                          Purchasing Document Number
+                        </th>
+                        <th sortable="EBELP" (sort)="onSort($event)">
+                          Item Number of Purchasing Document
+                        </th>
+                        <th sortable="ZEILE" (sort)="onSort($event)">
+                          Item in Material Document
+                        </th>
+                        <th sortable="MENGE" (sort)="onSort($event)"> Quantity</th>
+                        <th sortable="MEINS" (sort)="onSort($event)">
+                          Base Unit of Measure
+                        </th>
+                        <th sortable="REASON" (sort)="onSort($event)">Reason for Movement</th>
+                        <th sortable="INSMK" (sort)="onSort($event)"> Stock Type </th>
+                        <th sortable="WEMPF" (sort)="onSort($event)"> Goods recipient </th>
+                        <th sortable="CHARG" (sort)="onSort($event)"> Batch Number </th>
+                        <th sortable="LIFNR" (sort)="onSort($event)"> Supplier's Account Number </th>
                       </tr>
                     </thead>
-                    <tbody>
+                    <tbody *ngFor="let table of tables$ | async; let i = index">
                       <tr>
-                       <td>{{ table.BLDAT }}</td>
-                        <!-- Doc Date-->
-                        <td>{{ table.BUDAT }}</td>
-                        <!-- Posting Date-->
-                        <td>{{ table.MATKL }}</td>
-                        <!-- Material Group-->
+                        <td>
+                          <input
+                            type="checkbox"
+                            [(ngModel)]="table.selected"
+                            (change)="onRowCheckboxChange(table)"
+                          />
+                        </td>
+                        <td>{{ table.MATNR }}</td>
+                        <!-- Material Number -->
+                        <td>{{ table.LGORT }}</td>
+                        <!-- Storage Location-->
+                        <td>{{ table.BWART }}</td>
+                        <!-- Movement Type -->
+                        <td>{{ table.WERKS }}</td>
+                        <!-- Plant-->
                         <td>{{ table.EBELN }}</td>
-                        <!-- PO Number-->
-                        <td>{{ table.LFBNR }}</td>
-                        <!-- Reference Doc Num-->
-                        <td>{{ table.VENDORNAME }}</td>
-                        <!-- Vendor Name-->
-                         <td>{{ table.WEMPF }}</td>
-                        <!-- Goods Receipt Name-->
+                        <!-- Purchasing Document Number-->
+                        <td>{{ table.EBELP }}</td>
+                        <!-- Item Number of Purchasing Document-->
+                        <td>{{ table.ZEILE }}</td>
+                        <!-- Item in Material Document-->
+                        <td>{{ table.MENGE }}</td>
+                        <!-- Quantity-->
+                        <td>{{ table.MEINS }}</td>
+                        <!-- Base Unit of Measure-->
+                        <td>{{ table.REASON }}</td>
+                        <!-- Reason for Movement -->
+                        <td>{{ table.INSMK }}</td>
+                        <!-- Stock Type-->
+                          <td>{{ table.WEMPF }}</td>
+                        <!-- Goods recipient-->
+                        <td>{{ table.CHARG }}</td>
+                        <!-- Batch Number-->
+                        <td>{{ table.LIFNR }}</td>
+                        <!-- Supplier's Account Number-->
                       </tr>
                     </tbody>
                   </table>
-                </td>
-              </tr>
-            </ng-container>
-          </tbody>
-        </table>
-      </div>
+                </div>
+                <!-- Save Button -->
+                <div class="col-md-4 text-left">
+                  <button
+                    style="
+                      background-color: brown;
+                      margin-top: 28px;
+                      width: max-content;
+                      color: aliceblue;
+                    "
+                    class="btn"
+                    type="submit"
+                    (click)="saveBound()"
+                  >
+                    Save
+                  </button>
+                </div>
               </div>
-          </div>
+            </div>
           <!--Pagination-->
       <div class="row justify-content-md-between align-items-md-center mt-2">
         <div class="col-sm-12 col-md-5">
@@ -211,14 +238,12 @@
               >
                 <a class="page-link" href="javascript:void(0)">Previous</a>
               </li>
-
               <!-- Current Page Display -->
               <li class="page-item active">
                 <a class="page-link" href="javascript:void(0)">{{
                   service.page
                 }}</a>
               </li>
-
               <!-- Next Button -->
               <li
                 class="page-item"
