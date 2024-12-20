@@ -37,14 +37,26 @@ export class GoodsReturnsComponent {
   year: any;
   postingDate: any;
   documentDate: any;
-  headerText: any;
+
   isSubmitting: boolean = false;
+  stockTypes= [
+   {text: 'Unrestricted Use',id: '1'} ,
+   { text:'Quality Inspection',id:'2'},
+   {text: 'Blocked Stock', id:'3'}
+  ];
+
+  reasons = [
+    { text: 'Poor Quality', id: '0001' },
+    { text: 'Incomplete', id: '0002' },
+    { text: 'Damaged', id: '0003' }
+  ];
+    
   
 
   @ViewChildren(AdvancedSortableDirective) headers: QueryList<AdvancedSortableDirective>;
   public isCollapsed = true;
   expandedRows: { [key: string]: boolean } = {};
-
+  userName: string;
 
   constructor(private apiService:UserProfileService, public formBuilder: UntypedFormBuilder,public service: AdvancedService,public loaderservice:LoaderService){
     this.tables$ = service.tables$;
@@ -57,11 +69,13 @@ export class GoodsReturnsComponent {
   }
 
   ngOnInit(){
+
     this.validationform = this.formBuilder.group({
       inbounddeliverynumber: ['', [Validators.required]],
       year: ['', [Validators.required]],
+      headerText:['']
     });
-
+ 
   }
 
   // onStockTypeChange(item: any, index: number) {
@@ -87,6 +101,8 @@ export class GoodsReturnsComponent {
   }
 
   saveBound() {
+    console.log("this.headerText",this.form.headerText.value,)
+    this.loaderservice.showLoader();
     this.isSubmitting = true;
     this.tables$.pipe(take(1)).subscribe({
       next: (tables) => {
@@ -97,7 +113,7 @@ export class GoodsReturnsComponent {
               "MJAHR": this.year,
               "BUDAT": this.postingDate,
               "BLDAT": this.documentDate,
-              "BKTXT": this.headerText,
+              "BKTXT": this.form.headerText.value,
               ITEM: []
             },
           }
@@ -125,6 +141,7 @@ export class GoodsReturnsComponent {
   
         this.apiService.goodsreturn(payload).subscribe({
           next: (res) => {
+            this.loaderservice.hideLoader();
             if(res[0]?.NUMBER){
               Swal.fire("", res[0].MSGTXT, res[0].VBELN ? 'success' : 'error');
             }else{
@@ -167,7 +184,7 @@ export class GoodsReturnsComponent {
     this.year  = null;
     this.postingDate  = null;
     this.documentDate  = null;
-    this.headerText  = null;
+   
     // Reset table data
     this.service.setTableData([]);
     this._fetchData();
@@ -176,7 +193,7 @@ export class GoodsReturnsComponent {
   validSubmit() {
     this.loaderservice.showLoader();
     this.submit = true;
-  
+  // this.loaderservice.showLoader()
     const payload = {
       MBLNR: this.form.inbounddeliverynumber.value, //5000778375
       MJAHR: this.form.year.value,
@@ -198,8 +215,8 @@ export class GoodsReturnsComponent {
           this.year = header.MJAHR;
           this.postingDate = header.BUDAT;
           this.documentDate = header.BLDAT;
-          this.headerText = header.BKTXT;
           console.log('res', res)
+          items.forEach(data=>data.INSMK = "3")
           this.service.setTableData(items || []);
           this.goodsreturn = items;
           this._fetchData();

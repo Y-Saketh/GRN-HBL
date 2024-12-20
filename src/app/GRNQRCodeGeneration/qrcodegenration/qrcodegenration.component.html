@@ -324,8 +324,9 @@
 </div>
 <div *ngIf="false">
   <h3>QR Code Generation</h3>
-  <button class="btn btn-primary" style="float: left; margin-left: 10px;" type="button"
-    (click)="backtoQunatity()">Back</button><br><br>
+  <!-- <button class="btn btn-primary" style="float: left; margin-left: 10px;" type="button"
+    (click)="backtoQunatity()">Back</button> -->
+    <br><br>
   <p *ngIf="isGenerating" class="text-primary">Generating QR codes for all items...</p>
 
   <!-- <div class="qr-container">
@@ -406,7 +407,7 @@
   <h3>QR Code Generation</h3>
 
   <div class="btn-container">
-    <button class="btn btn-primary ml-1" type="button" (click)="backtoQunatity()">Back</button>
+    <button class="btn btn-danger ml-1" type="button" (click)="backtoQunatity()">Close</button>
     <button class="text-md-end btn-success btn-lg highlight-3d-btn" (click)="printLabels()">Print Labels</button>
   </div>
 
@@ -419,8 +420,8 @@
           <img [src]="qrData.qrCodeUrl" alt="QR Code for Item {{ i + 1 }}"  width="150" height="150"  />
         </div>
         <div class="qr-info">
-          <p>{{ qrData.data.GRN }}</p>
-          <p>{{ qrData.data.vendorCode }}</p>
+          <p>{{ GRN }}</p>
+          <p>{{ qrData.data.LIFNR }}</p>
           <p>{{ qrData.data.MATNR }}</p>
           <p>Pack: {{ qrData.data.DCHARG }}</p>
           <p>{{ qrData.data.DCLABS }}</p>

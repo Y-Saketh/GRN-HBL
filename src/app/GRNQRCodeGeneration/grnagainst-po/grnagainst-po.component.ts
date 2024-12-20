@@ -238,7 +238,7 @@ export class GRNagainstPOComponent{
                 MENGE: parseFloat(table.MENGE) || 0,
                 MEINS: table.MEINS,
                 SHORT_TEXT: table.SHORT_TEXT,
-                ORGQTY: parseFloat(table.ORGQTY) || 0,
+                // ORGQTY: parseFloat(table.ORGQTY) || 0,
                 EBELN: table.EBELN,
                 EBELP: table.EBELP || 1,
                 WERKS: table.WERKS,
@@ -246,7 +246,10 @@ export class GRNagainstPOComponent{
                 BWART: table.BWART,
                 CHARG:table.CHARG,
                 ZLABEL:table.ZLABEL,
-                MAKTX:table.MAKTX
+                MAKTX:table.MAKTX,
+                WEMPF: this.userName ,
+                ABLAD:table.ABLAD, //userName
+                LIFNR: table.LIFNR,
                 // BUDAT: table.PostingDate,
               });
             } else {
@@ -258,7 +261,7 @@ export class GRNagainstPOComponent{
                   MENGE: parseFloat(shadowRow.MENGE) || 0,
                   MEINS: shadowRow.MEINS,
                   SHORT_TEXT: shadowRow.SHORT_TEXT,
-                  ORGQTY: parseFloat(shadowRow.ORGQTY) || 0,
+                  // ORGQTY: parseFloat(shadowRow.ORGQTY) || 0,
                   EBELN: shadowRow.EBELN,
                   EBELP: shadowRow.EBELP || 1,
                   WERKS: shadowRow.WERKS,
@@ -267,7 +270,8 @@ export class GRNagainstPOComponent{
                   CHARG: shadowRow.CHARG,
                   WEMPF: this.userName , //userName
                   ABLAD:shadowRow.ABLAD,
-                  MAKTX:table.MAKTX
+                  MAKTX:table.MAKTX,
+                  LIFNR: table.LIFNR,
                 });
               });
   
@@ -283,7 +287,7 @@ export class GRNagainstPOComponent{
               MENGE: parseFloat(table.MENGE) || 0,
               MEINS: table.MEINS,
               SHORT_TEXT: table.SHORT_TEXT,
-              ORGQTY: parseFloat(table.ORGQTY) || 0,
+              // ORGQTY: parseFloat(table.ORGQTY) || 0,
               EBELN: table.EBELN,
               EBELP: table.EBELP || 1,
               WERKS: table.WERKS,
@@ -291,7 +295,10 @@ export class GRNagainstPOComponent{
               BWART: table.BWART,
               CHARG:table.CHARG,
               ZLABEL:table.ZLABEL,
-              MAKTX:table.MAKTX
+              MAKTX:table.MAKTX,
+              WEMPF: this.userName ,
+              ABLAD:table.ABLAD,  //userName
+              LIFNR: table.LIFNR,
               // BUDAT: table.PostingDate,
             });
           }
@@ -312,9 +319,9 @@ export class GRNagainstPOComponent{
           this.isSubmitting = false;
           return;
         }
-        let payloads = {
-          "POST": payload
-         }
+   let payloads = {
+    "POST": payload
+   }
         if (hasMismatchedQuantities) {
           Swal.fire({
             title: 'Quantity Mismatch',
@@ -364,12 +371,14 @@ export class GRNagainstPOComponent{
   // }
   submitPayload(payload: any) {
     console.log("payload", payload);
+    this.loaderservice.showLoader();
     this.apiService.grnlist(payload).subscribe({
       next: (res) => {
         console.log('Saved:', res);
         this.enableQRbutton = true;
-        this.GRN = res[0].MBLNR
-        if(res[0].MBLNR){       
+        this.GRN = "dummy"// res[0].MBLNR
+        if(res[0].MBLNR){  
+          this.loaderservice.hideLoader()     
         Swal.fire({
           title: res[0].MESSAGE,
           text: "Do you still want to print the QR labels for generated GRN",
@@ -382,13 +391,16 @@ export class GRNagainstPOComponent{
             // Call generateQR() function when OK is clicked
             this.generateQR();
             
-          } else if (result.isDismissed) {
+          } 
+          
+          else if (result.isDismissed) {
             console.log('Action canceled');
           }
         });
         this.isSubmitting = false;
         }
         else{
+          this.loaderservice.hideLoader()     
           Swal.fire({
             title: res[0].MESSAGE,
             // text: "Do you still want to print the QR labels for generated GRN",
@@ -410,12 +422,16 @@ export class GRNagainstPOComponent{
         }
       },
       error: (err) => {
+        this.loaderservice.hideLoader()     
         console.error('Error:', err);
         this.enableQRbutton = false;
         this.isSubmitting = false;
       },
     });
+  
+  
   }
+
 
 
   generateQRCode(data: string): Promise<string> {
@@ -558,8 +574,8 @@ export class GRNagainstPOComponent{
         
         next: (res: any) => {
           console.log('Data:', res);
-           
-          // Append new data to the existing data
+           if(res[0].SAVE){
+              // Append new data to the existing data
           if (this.GrnResponse) {
             this.GrnResponse = [...this.GrnResponse, ...res[0].SAVE];
           } else {
@@ -581,6 +597,11 @@ export class GRNagainstPOComponent{
           // Update the table with the combined data
           this.service.setTableData(this.GrnResponse || []);
           this._fetchData();
+
+           }else{
+            Swal.fire("",res,"error")
+           }
+        
         },
         error: (error: any) => {
           console.error('Error fetching lot reports:', error);
@@ -610,111 +631,151 @@ export class GRNagainstPOComponent{
   }
   matchMaterial(index: number): void {
     const material = this.tableData[index];
-    console.log("material",material)
+    console.log("material", material);
+
     if (material.ZLABEL > 0 && material.MENGE > 0) {
-      const qty = material.MENGE / material.ZLABEL;
-  
-  if (['NOS', 'PCS', 'EA'].includes(material.MEINS)) {
-    if (!Number.isInteger(qty)) {
-      console.error("Error: Quantity cannot be split into decimal values for NOS, PCS, or EA.");
-    Swal.fire("","Quantity cannot be split into decimal values","error")
-    material.ZLABEL = null;
-    }
-  } // Calculate quantity per label
-      const packets = Array.from({ length: material.ZLABEL }, (_, i) => ({
-        ...material, // Spread original material's properties
-        // DCLABS: qty.toFixed(2), // Add formatted quantity
-        DCLABS: qty,
-        DCHARG: i + 1, // Add packet number
-      }));
-  
-      // Prepare material for matched data
-      const matchedMaterial = {
-        ...material,
-        packets, // Attach packets
-        isMatched: true, // Mark as matched
-      };
-  
-      // Push to shared array
-      this.matchedAndUnmatchedData = this.matchedAndUnmatchedData.filter(
-        (data) => data !== material
-      );
-      this.matchedAndUnmatchedData = matchedMaterial.packets;
-  
-      console.log(`Matched Material at index ${index}:`, this.matchedAndUnmatchedData);
+        let qty = material.MENGE / material.ZLABEL;
+
+        if (['NOS', 'PCS', 'EA'].includes(material.MEINS)) {
+            if (!Number.isInteger(qty)) {
+                console.error("Error: Quantity cannot be split into decimal values for NOS, PCS, or EA.");
+                Swal.fire("", "Quantity cannot be split into decimal values", "error");
+                material.ZLABEL = null;
+                return;
+            }
+        }
+
+        if (qty % 1 !== 0) {  // Check if it's a decimal number
+            qty = parseFloat(qty.toFixed(2));  // Round to 2 decimal places
+        }
+        console.log("Processed Quantity:", qty);
+
+        // Generate packets with the new quantity (based on the latest action)
+        const packets = Array.from({ length: material.ZLABEL }, (_, i) => ({
+            ...material,  // Spread original material's properties
+            DCLABS: qty,  // Add formatted quantity
+            DCHARG: i + 1,  // Add packet number
+        }));
+
+        // Prepare material for matched data
+        const matchedMaterial = {
+            ...material,
+            packets,  // Attach packets
+            isMatched: true,  // Mark as matched
+        };
+
+        // Remove the old data for the material before adding the new one
+        this.matchedAndUnmatchedData = this.matchedAndUnmatchedData.filter((data) => data.materialId !== material.MATNR);
+
+        // Add only the latest matched packets (this will update the state for the material)
+        this.matchedAndUnmatchedData.push(...matchedMaterial.packets);
+
+        console.log(`Matched Material at index ${index}:`, this.matchedAndUnmatchedData);
     } else {
-      Swal.fire("Error", "Invalid Label Quantity or MENGE", "error");
+        Swal.fire("Error", "Invalid Label Quantity or MENGE", "error");
     }
-  }
-  unmatchMaterial(index: number): void {
-    const material = this.tableData[index];
-    console.log("material",material)
-    if (material.ZLABEL > 0) {
+}
+
+
+
+unmatchMaterial(index: number): void {
+  const material = this.tableData[index];
+  console.log("material", material);
+
+  if (material.ZLABEL > 0) {
       // Create deep copy to avoid mutating the original data
       this.selectedMaterial = JSON.parse(JSON.stringify(material));
       this.selectedIndex = index;
-  
+
       // Generate packets with placeholder quantities for user input
       this.selectedMaterial.packets = Array.from({ length: material.ZLABEL }, (_, i) => ({
-        DCHARG: i + 1, // Packet number (1-based)
-        DCLABS: '', // Empty quantity for user to input
+          DCHARG: i + 1, // Packet number (1-based)
+          DCLABS: '', // Empty quantity for user to input
       }));
-  
+
       // Open modal for user input
       this.unmatchModal?.show();
-    } else {
+  } else {
       Swal.fire("Error", "Enter a valid Label Quantity", "error");
-    }
   }
-  saveUnmatched(): void {
-    this.selectedMaterial.packets 
-    if (this.selectedIndex !== null && this.tableData?.[this.selectedIndex]) {
+}
+
+saveUnmatched(): void {
+  if (this.selectedIndex !== null && this.tableData?.[this.selectedIndex]) {
       const selectedMaterial = this.tableData[this.selectedIndex];
-  
+
       // Validate user input
       const isValid = this.selectedMaterial.packets.every((packet) => {
-        return packet.DCLABS !== null && !isNaN(packet.DCLABS) && parseFloat(packet.DCLABS) > 0;
+          return packet.DCLABS !== null && !isNaN(packet.DCLABS) && parseFloat(packet.DCLABS) > 0;
       });
-  
+
       if (!isValid) {
-        Swal.fire("Error", "Please ensure all quantities are valid and filled.", "error");
-        return;
+          Swal.fire("Error", "Please ensure all quantities are valid and filled.", "error");
+          return;
       }
+
       const totalQuantity = this.selectedMaterial.packets.reduce((sum, packet) => sum + parseFloat(packet.DCLABS), 0);
       if (totalQuantity < selectedMaterial.MENGE) {
-        Swal.fire("Error", "The total quantity of packets cannot be less than the original Quantity.", "error");
-        return;
+          Swal.fire("Error", "The total quantity of packets cannot be less than the original Quantity.", "error");
+          return;
       }
-  
+
       // Generate QR data for the unmatched material
       const qrData = this.selectedMaterial.packets.map((packet, i) => ({
-        ...selectedMaterial, // Spread original material's properties
-        DCLABS: packet.DCLABS, // Format quantity to 2 decimal places
-        DCHARG: i + 1, // Packet number
-        isMatched: false, // Mark as unmatched
+          ...selectedMaterial,  // Spread original material's properties
+          DCLABS: packet.DCLABS,  // Format quantity to 2 decimal places
+          DCHARG: i + 1,  // Packet number
+          isMatched: false,  // Mark as unmatched
       }));
-      // Push to shared array
+
+      // Remove the old data for the material before adding the new one
       this.matchedAndUnmatchedData = this.matchedAndUnmatchedData.filter(
-        (data) => data !== selectedMaterial
+          (data) => data.materialId !== selectedMaterial.MATNR
       );
+
+      // Add only the latest unmatched data (this will update the state for the material)
       this.matchedAndUnmatchedData.push(...qrData);
-  
+
       console.log("Unmatched Data Saved:", qrData);
-  
+
       // Hide modal
       this.unmatchModal?.hide();
-    } else {
+  } else {
       Swal.fire("Error", "Unable to save unmatched packets. Please try again.", "error");
-    }
   }
+}
+
   isAnyRowSelected(): boolean {
     return this.tableData?.some(table => table.selected);
   }
+  // backtoQunatity(){
+  //   this.GrnResponse = true;
+  //   this.selectedMaterial = false;
+  //   this.qrscreen = false;
+  //   this.matchedAndUnmatchedData= [];
+  // }
   backtoQunatity(){
     this.GrnResponse = true;
     this.selectedMaterial = false;
     this.qrscreen = false;
+    this.selectAll = false
     this.matchedAndUnmatchedData= [];
+    this.selectedData = [];
+    this.plant = '';
+    // sloc = 'SLOC 456';
+    this.documentDeliveryDate = '';
+    this.invoiceDate = '';
+    this.invoiceNumber = '';
+    this.vendorCode = '';
+    // this.vendorCodeDis = null;
+    this.vendorName = null;
+    this.City  = null;
+    this.GSTIN  = null;
+    this.submit = true;
+    this.service.setTableData([]);
+    this._fetchData();
+
+    this.ngOnInit()
   }
   async generateQR(): Promise<void> {
     // this.saveQRData()

@@ -74,23 +74,28 @@
                 </div>
                 <!-- Details -->
                 <div class="col-md-4">
-                  <h5 *ngIf="materialDocument">
-                    <span class="brandcolor">NUMBER OF MATERIAL DOCUMENT</span> :
-                    {{ materialDocument }}
-                  </h5>
-                  <h5 *ngIf="year">
-                    <span class="brandcolor">Material Document Year</span> : {{ year }}
-                  </h5>
-                  <h5 *ngIf="postingDate">
-                    <span class="brandcolor">Posting Date in the Document</span> : {{ postingdate }}
-                  </h5>
-                  <h5 *ngIf="documentDate">
-                    <span class="brandcolor">Document Date in Document</span> : {{ documentDate }}
-                  </h5>
-                  <h5 *ngIf="headerText">
-                    <span class="brandcolor">shorttext</span> : {{ headerText }}
-                  </h5>
+                  <div class="info-row" *ngIf="materialDocument">
+                    <span class="brandcolor">Mat.Doc No</span>
+                    <span>: {{ materialDocument }}</span>
+                  </div>
+                  <div class="info-row" *ngIf="year">
+                    <span class="brandcolor">Mat.Doc Year</span>
+                    <span>: {{ year }}</span>
+                  </div>
+                  <div class="info-row" *ngIf="postingDate">
+                    <span class="brandcolor">Posting Date</span>
+                    <span>: {{ postingDate }}</span>
+                  </div>
+                  <div class="info-row" *ngIf="documentDate">
+                    <span class="brandcolor">Doc Date</span>
+                    <span>: {{ documentDate }}</span>
+                  </div>
+                  <div class="info-row" *ngIf="postingDate">
+                    <span class="brandcolor">Header Text</span>
+                    <span><input  formControlName="headerText" /></span>
+                  </div>
                 </div>
+                
               </div>
              </form>         
                 </div>
@@ -130,34 +135,35 @@
                             (change)="toggleSelectAll($event)"
                           />
                         </th>
-                        <th sortable="MATNR" (sort)="onSort($event)">Material Number</th>
+                        <th sortable="MATNR" (sort)="onSort($event)">Mat.No</th>
                         <th sortable="LGORT" (sort)="onSort($event)">
-                          Storage Location
+                          SLoc
                         </th>
                         <th sortable="BWART" (sort)="onSort($event)">
-                          Movement Type
+                          MVT Type
                         </th>
                         <th sortable="WERKS" (sort)="onSort($event)">
                           Plant
                         </th>
                         <th sortable="EBELN" (sort)="onSort($event)">
-                          Purchasing Document Number
+                          PO No
                         </th>
                         <th sortable="EBELP" (sort)="onSort($event)">
-                          Item Number of Purchasing Document
+                          PO Item
                         </th>
                         <th sortable="ZEILE" (sort)="onSort($event)">
-                          Item in Material Document
+                          Mat.Doc Item
                         </th>
                         <th sortable="MENGE" (sort)="onSort($event)"> Quantity</th>
                         <th sortable="MEINS" (sort)="onSort($event)">
-                          Base Unit of Measure
+                          BUoM
                         </th>
-                        <th sortable="REASON" (sort)="onSort($event)">Reason for Movement</th>
-                        <th sortable="INSMK" (sort)="onSort($event)"> Stock Type </th>
+                        <th sortable="CHARG" (sort)="onSort($event)"> Batch</th>
+                        <th sortable="LIFNR" (sort)="onSort($event)"> Vendor</th>
                         <th sortable="WEMPF" (sort)="onSort($event)"> Goods recipient </th>
-                        <th sortable="CHARG" (sort)="onSort($event)"> Batch Number </th>
-                        <th sortable="LIFNR" (sort)="onSort($event)"> Supplier's Account Number </th>
+                        <th sortable="REASON" (sort)="onSort($event)">Reason for MVT</th>
+                        <th sortable="INSMK" (sort)="onSort($event)"> Stock Type </th>
+
                       </tr>
                     </thead>
                     <tbody *ngFor="let table of tables$ | async; let i = index">
@@ -187,16 +193,33 @@
                         <!-- Quantity-->
                         <td>{{ table.MEINS }}</td>
                         <!-- Base Unit of Measure-->
-                        <td>{{ table.REASON }}</td>
-                        <!-- Reason for Movement -->
-                        <td>{{ table.INSMK }}</td>
-                        <!-- Stock Type-->
-                          <td>{{ table.WEMPF }}</td>
-                        <!-- Goods recipient-->
                         <td>{{ table.CHARG }}</td>
                         <!-- Batch Number-->
                         <td>{{ table.LIFNR }}</td>
                         <!-- Supplier's Account Number-->
+                        <td>{{ table.WEMPF }}</td>
+                        <!-- Goods recipient-->
+                             <!-- Stock Type-->
+                        <td>
+                          <select [(ngModel)]="table.REASON">
+                            <option *ngFor="let reason of reasons" [value]="reason.id">
+                              {{ reason.text }}
+                            </option>
+                          </select>
+                        </td>
+                        <!-- <td>{{ table.INSMK }}</td> -->
+                        <td>
+                          <select [(ngModel)]="table.INSMK">
+                            <option *ngFor="let stock of stockTypes" [value]="stock.id">{{ stock.text }}</option>
+                          </select>
+                        </td>
+                        
+                    
+                        
+                        <!-- <td>{{ table.REASON }}</td> -->
+                        <!-- Reason for Movement -->
+
+
                       </tr>
                     </tbody>
                   </table>
@@ -214,7 +237,7 @@
                     type="submit"
                     (click)="saveBound()"
                   >
-                    Save
+                    Return
                   </button>
                 </div>
               </div>

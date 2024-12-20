@@ -19,6 +19,7 @@ import { LoaderService } from 'src/app/core/services/loader.service';
 declare var Pace: any;
 import QRCode from 'qrcode';
 import {  ModalDirective, ModalModule } from 'ngx-bootstrap/modal';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-qrcodegenration',
@@ -77,7 +78,8 @@ export class QRcodegenrationComponent {
   enableQRbutton: boolean;
   GRN: any;
   currentDate: Date;
-  constructor(public service: qrcodegenrationService,public formBuilder: UntypedFormBuilder,private apiService:UserProfileService, public loaderservice: LoaderService) {
+  pdfPreviewUrl: SafeResourceUrl | null = null;
+  constructor(public service: qrcodegenrationService,public formBuilder: UntypedFormBuilder,private apiService:UserProfileService, public loaderservice: LoaderService,private sanitizer: DomSanitizer) {
     this.tables$ = service.tables$;
     this.total$ = service.total$;
   }
@@ -197,148 +199,155 @@ export class QRcodegenrationComponent {
     });
   }
 
-  saveBound(tables$: Observable<any[]>) {
-    console.log("labelQuantity",)
-    this.isSubmitting = true;
+  // saveBound(tables$: Observable<any[]>) {
+  //   console.log("labelQuantity",)
+  //   this.isSubmitting = true;
   
-    tables$.pipe(take(1)).subscribe({
-      next: (tables) => {
-        const payload = {
-           BUDAT: this.formpostingdate.postingDate.value, 
-           WERKS:  this.plant,
-           BLDAT: this.documentDeliveryDate,
-          //  BUDAT: "",
-           IN_DATE: this.invoiceDate,
-           INVOICE: this.invoiceNumber,
-           LIFNR: this.vendorCode,
+  //   tables$.pipe(take(1)).subscribe({
+  //     next: (tables) => {
+  //       const payload = {
+  //          BUDAT: this.formpostingdate.postingDate.value, 
+  //          WERKS:  this.plant,
+  //          BLDAT: this.documentDeliveryDate,
+  //         //  BUDAT: "",
+  //          IN_DATE: this.invoiceDate,
+  //          INVOICE: this.invoiceNumber,
+  //          LIFNR: this.vendorCode,
          
-          NAME1: this.vendorName ,
-          ORT01: this.City,
-          STCD3:  this.GSTIN,
-          SAVE: []
+  //         NAME1: this.vendorName ,
+  //         ORT01: this.City,
+  //         STCD3:  this.GSTIN,
+  //         SAVE: []
        
-         };
-        let hasEmptyShadows = false;
-        let hasMismatchedQuantities = false;
+  //        };
+  //       let hasEmptyShadows = false;
+  //       let hasMismatchedQuantities = false;
         
   
-        tables.forEach((table) => {
-          let shadowTotal = 0;
+  //       tables.forEach((table) => {
+  //         let shadowTotal = 0;
   
-          if (table.shadowRows && table.shadowRows.length > 0) {
-            const validShadowRows = table.shadowRows.filter((shadowRow: any) => {
-              return shadowRow.MENGE && shadowRow.MENGE > 0; // Check for non-empty MENGE
-            });
+  //         if (table.shadowRows && table.shadowRows.length > 0) {
+  //           const validShadowRows = table.shadowRows.filter((shadowRow: any) => {
+  //             return shadowRow.MENGE && shadowRow.MENGE > 0; // Check for non-empty MENGE
+  //           });
   
-            if (validShadowRows.length === 0) {
-              // No valid shadow rows, consider the main row
-              payload.SAVE.push({
-                MATNR: table.MATNR,
-                MENGE: parseFloat(table.MENGE) || 0,
-                MEINS: table.MEINS,
-                SHORT_TEXT: table.SHORT_TEXT,
-                ORGQTY: parseFloat(table.ORGQTY) || 0,
-                EBELN: table.EBELN,
-                EBELP: table.EBELP || 1,
-                WERKS: table.WERKS,
-                LGORT: table.LGORT,
-                BWART: table.BWART,
-                CHARG:table.CHARG,
-                ZLABEL:table.ZLABEL,
-                MAKTX:table.MAKTX
-                // BUDAT: table.PostingDate,
-              });
-            } else {
-              // Add valid shadow rows to the payload
-              validShadowRows.forEach((shadowRow: any) => {
-                shadowTotal += parseFloat(shadowRow.MENGE) || 0;
-                payload.SAVE.push({
-                  MATNR: shadowRow.MATNR,
-                  MENGE: parseFloat(shadowRow.MENGE) || 0,
-                  MEINS: shadowRow.MEINS,
-                  SHORT_TEXT: shadowRow.SHORT_TEXT,
-                  ORGQTY: parseFloat(shadowRow.ORGQTY) || 0,
-                  EBELN: shadowRow.EBELN,
-                  EBELP: shadowRow.EBELP || 1,
-                  WERKS: shadowRow.WERKS,
-                  LGORT: shadowRow.LGORT,
-                  BWART: shadowRow.BWART,
-                  CHARG: shadowRow.CHARG,
-                  WEMPF: this.userName , //userName
-                  ABLAD:shadowRow.ABLAD,
-                  MAKTX:table.MAKTX
-                });
-              });
+  //           if (validShadowRows.length === 0) {
+  //             // No valid shadow rows, consider the main row
+  //             payload.SAVE.push({
+  //               MATNR: table.MATNR,
+  //               MENGE: parseFloat(table.MENGE) || 0,
+  //               MEINS: table.MEINS,
+  //               SHORT_TEXT: table.SHORT_TEXT,
+  //               // ORGQTY: parseFloat(table.ORGQTY) || 0,
+  //               EBELN: table.EBELN,
+  //               EBELP: table.EBELP || 1,
+  //               WERKS: table.WERKS,
+  //               LGORT: table.LGORT,
+  //               BWART: table.BWART,
+  //               CHARG:table.CHARG,
+  //               ZLABEL:table.ZLABEL,
+  //               MAKTX:table.MAKTX,
+  //               WEMPF: this.userName ,
+  //               ABLAD:table.ABLAD, //userName
+  //               LIFNR: table.LIFNR,
+  //               // BUDAT: table.PostingDate,
+  //             });
+  //           } else {
+  //             // Add valid shadow rows to the payload
+  //             validShadowRows.forEach((shadowRow: any) => {
+  //               shadowTotal += parseFloat(shadowRow.MENGE) || 0;
+  //               payload.SAVE.push({
+  //                 MATNR: shadowRow.MATNR,
+  //                 MENGE: parseFloat(shadowRow.MENGE) || 0,
+  //                 MEINS: shadowRow.MEINS,
+  //                 SHORT_TEXT: shadowRow.SHORT_TEXT,
+  //                 // ORGQTY: parseFloat(shadowRow.ORGQTY) || 0,
+  //                 EBELN: shadowRow.EBELN,
+  //                 EBELP: shadowRow.EBELP || 1,
+  //                 WERKS: shadowRow.WERKS,
+  //                 LGORT: shadowRow.LGORT,
+  //                 BWART: shadowRow.BWART,
+  //                 CHARG: shadowRow.CHARG,
+  //                 WEMPF: this.userName , //userName
+  //                 ABLAD:shadowRow.ABLAD,
+  //                 MAKTX:table.MAKTX,
+  //                 LIFNR: table.LIFNR,
+  //               });
+  //             });
   
-              // Check for mismatched quantities
-              if (shadowTotal !== parseFloat(table.MENGE)) {
-                hasMismatchedQuantities = true;
-              }
-            }
-          } else if (table.selected) {
-            // Add main row if it is not split
-            payload.SAVE.push({
-              MATNR: table.MATNR,
-              MENGE: parseFloat(table.MENGE) || 0,
-              MEINS: table.MEINS,
-              SHORT_TEXT: table.SHORT_TEXT,
-              ORGQTY: parseFloat(table.ORGQTY) || 0,
-              EBELN: table.EBELN,
-              EBELP: table.EBELP || 1,
-              WERKS: table.WERKS,
-              LGORT: table.LGORT,
-              BWART: table.BWART,
-              CHARG:table.CHARG,
-              ZLABEL:table.ZLABEL,
-              MAKTX:table.MAKTX
-              // BUDAT: table.PostingDate,
-            });
-          }
+  //             // Check for mismatched quantities
+  //             if (shadowTotal !== parseFloat(table.MENGE)) {
+  //               hasMismatchedQuantities = true;
+  //             }
+  //           }
+  //         } else if (table.selected) {
+  //           // Add main row if it is not split
+  //           payload.SAVE.push({
+  //             MATNR: table.MATNR,
+  //             MENGE: parseFloat(table.MENGE) || 0,
+  //             MEINS: table.MEINS,
+  //             SHORT_TEXT: table.SHORT_TEXT,
+  //             // ORGQTY: parseFloat(table.ORGQTY) || 0,
+  //             EBELN: table.EBELN,
+  //             EBELP: table.EBELP || 1,
+  //             WERKS: table.WERKS,
+  //             LGORT: table.LGORT,
+  //             BWART: table.BWART,
+  //             CHARG:table.CHARG,
+  //             ZLABEL:table.ZLABEL,
+  //             MAKTX:table.MAKTX,
+  //             WEMPF: this.userName ,
+  //             ABLAD:table.ABLAD,  //userName
+  //             LIFNR: table.LIFNR,
+  //             // BUDAT: table.PostingDate,
+  //           });
+  //         }
   
-          // Check if there are empty shadow rows
-          if (
-            table.shadowRows &&
-            table.shadowRows.length > 0 &&
-            table.shadowRows.every((shadowRow: any) => !shadowRow.MENGE || shadowRow.MENGE <= 0)
-          ) {
-            hasEmptyShadows = true;
-          }
-        });
+  //         // Check if there are empty shadow rows
+  //         if (
+  //           table.shadowRows &&
+  //           table.shadowRows.length > 0 &&
+  //           table.shadowRows.every((shadowRow: any) => !shadowRow.MENGE || shadowRow.MENGE <= 0)
+  //         ) {
+  //           hasEmptyShadows = true;
+  //         }
+  //       });
   
-        // Show alerts based on conditions
-        if (hasEmptyShadows) {
-          Swal.fire('Warning', 'Some shadow rows have empty quantities. Please fill them or remove the split.', 'warning');
-          this.isSubmitting = false;
-          return;
-        }
-   let payloads = {
-    "POST": payload
-   }
-        if (hasMismatchedQuantities) {
-          Swal.fire({
-            title: 'Quantity Mismatch',
-            text: 'Some rows have mismatched quantities between the main and shadow rows. Do you want to continue?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Yes, Save',
-            cancelButtonText: 'No, Cancel',
-          }).then((result) => {
-            if (result.isConfirmed) {
-              this.submitPayload(payloads);
-            } else {
-              this.isSubmitting = false;
-            }
-          });
-        } else {
-          this.submitPayload(payloads);
-        }
-      },
-      error: (err) => {
-        console.error('Error:', err);
-        this.isSubmitting = false;
-      },
-    });
-  }
+  //       // Show alerts based on conditions
+  //       if (hasEmptyShadows) {
+  //         Swal.fire('Warning', 'Some shadow rows have empty quantities. Please fill them or remove the split.', 'warning');
+  //         this.isSubmitting = false;
+  //         return;
+  //       }
+  //  let payloads = {
+  //   "POST": payload
+  //  }
+  //       if (hasMismatchedQuantities) {
+  //         Swal.fire({
+  //           title: 'Quantity Mismatch',
+  //           text: 'Some rows have mismatched quantities between the main and shadow rows. Do you want to continue?',
+  //           icon: 'warning',
+  //           showCancelButton: true,
+  //           confirmButtonText: 'Yes, Save',
+  //           cancelButtonText: 'No, Cancel',
+  //         }).then((result) => {
+  //           if (result.isConfirmed) {
+  //             this.submitPayload(payloads);
+  //           } else {
+  //             this.isSubmitting = false;
+  //           }
+  //         });
+  //       } else {
+  //         this.submitPayload(payloads);
+  //       }
+  //     },
+  //     error: (err) => {
+  //       console.error('Error:', err);
+  //       this.isSubmitting = false;
+  //     },
+  //   });
+  // }
   // GenQR(){
     
   // }
@@ -361,16 +370,157 @@ export class QRcodegenrationComponent {
   //     },
   //   });
   // }
+  saveBound(tables$: Observable<any[]>) {
+    console.log("Label Quantity Saving Process Started");
+    this.isSubmitting = true;
+  
+    tables$.pipe(take(1)).subscribe({
+      next: (tables) => {
+        const payload = {
+          BUDAT: this.formpostingdate.postingDate.value,
+          WERKS: this.plant,
+          BLDAT: this.documentDeliveryDate,
+          IN_DATE: this.invoiceDate,
+          INVOICE: this.invoiceNumber,
+          LIFNR: this.vendorCode,
+          NAME1: this.vendorName,
+          ORT01: this.City,
+          STCD3: this.GSTIN,
+          SAVE: []
+        };
+  
+        let hasEmptyShadows = false;
+        let hasMismatchedQuantities = false;
+  
+        tables.forEach((table) => {
+          if (table.selected) {  // Check if the row is selected
+            console.log(`Adding table ${table.MATNR} to payload`);
+            let shadowTotal = 0;
+  
+            if (table.shadowRows && table.shadowRows.length > 0) {
+              const validShadowRows = table.shadowRows.filter((shadowRow: any) => {
+                return shadowRow.MENGE && shadowRow.MENGE > 0;  // Ensure shadow rows have valid quantity
+              });
+  
+              if (validShadowRows.length === 0) {
+                // No valid shadow rows, consider the main row
+                payload.SAVE.push({
+                  MATNR: table.MATNR,
+                  MENGE: parseFloat(table.MENGE) || 0,
+                  MEINS: table.MEINS,
+                  SHORT_TEXT: table.SHORT_TEXT,
+                  EBELN: table.EBELN,
+                  EBELP: table.EBELP || 1,
+                  WERKS: table.WERKS,
+                  LGORT: table.LGORT,
+                  BWART: table.BWART,
+                  CHARG: table.CHARG,
+                  ZLABEL: table.ZLABEL,
+                  MAKTX: table.MAKTX,
+                  WEMPF: this.userName,
+                  ABLAD: table.ABLAD,
+                  LIFNR: table.LIFNR,
+                });
+              } else {
+                validShadowRows.forEach((shadowRow: any) => {
+                  shadowTotal += parseFloat(shadowRow.MENGE) || 0;
+                  payload.SAVE.push({
+                    MATNR: shadowRow.MATNR,
+                    MENGE: parseFloat(shadowRow.MENGE) || 0,
+                    MEINS: shadowRow.MEINS,
+                    SHORT_TEXT: shadowRow.SHORT_TEXT,
+                    EBELN: shadowRow.EBELN,
+                    EBELP: shadowRow.EBELP || 1,
+                    WERKS: shadowRow.WERKS,
+                    LGORT: shadowRow.LGORT,
+                    BWART: shadowRow.BWART,
+                    CHARG: shadowRow.CHARG,
+                    WEMPF: this.userName,
+                    ABLAD: shadowRow.ABLAD,
+                    MAKTX: table.MAKTX,
+                    LIFNR: table.LIFNR,
+                  });
+                });
+  
+                if (shadowTotal !== parseFloat(table.MENGE)) {
+                  hasMismatchedQuantities = true;
+                }
+              }
+            } else {
+              payload.SAVE.push({
+                MATNR: table.MATNR,
+                MENGE: parseFloat(table.MENGE) || 0,
+                MEINS: table.MEINS,
+                SHORT_TEXT: table.SHORT_TEXT,
+                EBELN: table.EBELN,
+                EBELP: table.EBELP || 1,
+                WERKS: table.WERKS,
+                LGORT: table.LGORT,
+                BWART: table.BWART,
+                CHARG: table.CHARG,
+                ZLABEL: table.ZLABEL,
+                MAKTX: table.MAKTX,
+                WEMPF: this.userName,
+                ABLAD: table.ABLAD,
+                LIFNR: table.LIFNR,
+              });
+            }
+          }
+  
+          if (table.shadowRows && table.shadowRows.length > 0 &&
+              table.shadowRows.every((shadowRow: any) => !shadowRow.MENGE || shadowRow.MENGE <= 0)) {
+            hasEmptyShadows = true;
+          }
+        });
+  
+        if (hasEmptyShadows) {
+          Swal.fire('Warning', 'Some shadow rows have empty quantities. Please fill them or remove the split.', 'warning');
+          this.isSubmitting = false;
+          return;
+        }
+  
+        let payloads = {
+          "POST": payload
+        };
+  
+        if (hasMismatchedQuantities) {
+          Swal.fire({
+            title: 'Quantity Mismatch',
+            text: 'Some rows have mismatched quantities between the main and shadow rows. Do you want to continue?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, Save',
+            cancelButtonText: 'No, Cancel',
+          }).then((result) => {
+            if (result.isConfirmed) {
+              this.submitPayload(payloads);
+            } else {
+              this.isSubmitting = false;
+            }
+          });
+        } else {
+          this.submitPayload(payloads);
+        }
+      },
+      error: (err) => {
+        console.error('Error:', err);
+        this.isSubmitting = false;
+      }
+    });
+  }
+  
   submitPayload(payload: any) {
     console.log("payload", payload);
-    // this.apiService.grnlist(payload).subscribe({
-    //   next: (res) => {
-    //     console.log('Saved:', res);
+    this.loaderservice.showLoader();
+    this.apiService.grnlist(payload).subscribe({
+      next: (res) => {
+        console.log('Saved:', res);
         this.enableQRbutton = true;
-        this.GRN = "dummy"// res[0].MBLNR
-        // if(res[0].MBLNR){       
+        this.GRN =  res[0].MBLNR
+        if(res[0].MBLNR){  
+          this.loaderservice.hideLoader()     
         Swal.fire({
-          title: "vghjk",//res[0].MESSAGE,
+          title: res[0].MESSAGE,
           text: "Do you still want to print the QR labels for generated GRN",
           icon: 'success',
           showCancelButton: true, // Adds the Cancel button
@@ -383,40 +533,43 @@ export class QRcodegenrationComponent {
             
           } 
           
-        //   else if (result.isDismissed) {
-        //     console.log('Action canceled');
-        //   }
-        // });
-        // this.isSubmitting = false;
-        // }
-        // else{
-        //   Swal.fire({
-        //     title: res[0].MESSAGE,
-        //     // text: "Do you still want to print the QR labels for generated GRN",
-        //     icon: 'error',
-        //     showCancelButton: true, // Adds the Cancel button
-        //     confirmButtonText: 'Ok', // Text for OK button
-        //     cancelButtonText: 'Cancel', // Text for Cancel button
-        //   }).then((result) => {
-        //     if (result.isConfirmed) {
-        //       // Call generateQR() function when OK is clicked
-        //       // this.generateQR(res[0]);
+          else if (result.isDismissed) {
+            console.log('Action canceled');
+          }
+        });
+        this.isSubmitting = false;
+        }
+        else{
+          this.loaderservice.hideLoader()     
+          Swal.fire({
+            title: res[0].MESSAGE,
+            // text: "Do you still want to print the QR labels for generated GRN",
+            icon: 'error',
+            showCancelButton: true, // Adds the Cancel button
+            confirmButtonText: 'Ok', // Text for OK button
+            cancelButtonText: 'Cancel', // Text for Cancel button
+          }).then((result) => {
+            if (result.isConfirmed) {
+              // Call generateQR() function when OK is clicked
+              // this.generateQR(res[0]);
               
-        //     } else if (result.isDismissed) {
-        //       console.log('Action canceled');
-        //     }
-        //   });
-        //   this.isSubmitting = false;
+            } else if (result.isDismissed) {
+              console.log('Action canceled');
+            }
+          });
+          this.isSubmitting = false;
 
-        // }
-      // },
-      // error: (err) => {
-      //   console.error('Error:', err);
-      //   this.enableQRbutton = false;
-      //   this.isSubmitting = false;
-      // },
+        }
+      },
+      error: (err) => {
+        this.loaderservice.hideLoader()     
+        console.error('Error:', err);
+        this.enableQRbutton = false;
+        this.isSubmitting = false;
+      },
     });
-  // }
+  
+  
   }
 
 
@@ -525,6 +678,12 @@ export class QRcodegenrationComponent {
     link.click();
   }
 
+  // previewPdf(ebeln: string) {
+  //   const base64String = 'YOUR_BASE64_STRING'; // Get this from your API or service
+  //   const source = `data:application/pdf;base64,${base64String}`;
+  //   this.pdfPreviewUrl = this.sanitizer.bypassSecurityTrustResourceUrl(source);
+  // }
+
   closePopup(): void {
     this.GrnResponse = true;
     this.selectedIndex = null;
@@ -558,8 +717,8 @@ export class QRcodegenrationComponent {
         
         next: (res: any) => {
           console.log('Data:', res);
-           
-          // Append new data to the existing data
+           if(res[0].SAVE){
+              // Append new data to the existing data
           if (this.GrnResponse) {
             this.GrnResponse = [...this.GrnResponse, ...res[0].SAVE];
           } else {
@@ -581,6 +740,11 @@ export class QRcodegenrationComponent {
           // Update the table with the combined data
           this.service.setTableData(this.GrnResponse || []);
           this._fetchData();
+
+           }else{
+            Swal.fire("",res,"error")
+           }
+        
         },
         error: (error: any) => {
           console.error('Error fetching lot reports:', error);
@@ -608,105 +772,124 @@ export class QRcodegenrationComponent {
     this.service.sortColumn = column;
     this.service.sortDirection = direction;
   }
+
   matchMaterial(index: number): void {
     const material = this.tableData[index];
-    console.log("material",material)
+    console.log("material", material);
+
     if (material.ZLABEL > 0 && material.MENGE > 0) {
-      const qty = material.MENGE / material.ZLABEL;
-  
-  if (['NOS', 'PCS', 'EA'].includes(material.MEINS)) {
-    if (!Number.isInteger(qty)) {
-      console.error("Error: Quantity cannot be split into decimal values for NOS, PCS, or EA.");
-    Swal.fire("","Quantity cannot be split into decimal values","error")
-    material.ZLABEL = null;
-    }
-  } // Calculate quantity per label
-      const packets = Array.from({ length: material.ZLABEL }, (_, i) => ({
-        ...material, // Spread original material's properties
-        // DCLABS: qty.toFixed(2), // Add formatted quantity
-        DCLABS: qty,
-        DCHARG: i + 1, // Add packet number
-      }));
-  
-      // Prepare material for matched data
-      const matchedMaterial = {
-        ...material,
-        packets, // Attach packets
-        isMatched: true, // Mark as matched
-      };
-  
-      // Push to shared array
-      this.matchedAndUnmatchedData = this.matchedAndUnmatchedData.filter(
-        (data) => data !== material
-      );
-      this.matchedAndUnmatchedData = matchedMaterial.packets;
-  
-      console.log(`Matched Material at index ${index}:`, this.matchedAndUnmatchedData);
+        let qty = material.MENGE / material.ZLABEL;
+
+        if (['NOS', 'PCS', 'EA'].includes(material.MEINS)) {
+            if (!Number.isInteger(qty)) {
+                console.error("Error: Quantity cannot be split into decimal values for NOS, PCS, or EA.");
+                Swal.fire("", "Quantity cannot be split into decimal values", "error");
+                material.ZLABEL = null;
+                return;
+            }
+        }
+
+        if (qty % 1 !== 0) {  // Check if it's a decimal number
+            qty = parseFloat(qty.toFixed(2));  // Round to 2 decimal places
+        }
+        console.log("Processed Quantity:", qty);
+
+        // Generate packets with the new quantity (based on the latest action)
+        const packets = Array.from({ length: material.ZLABEL }, (_, i) => ({
+            ...material,  // Spread original material's properties
+            DCLABS: qty,  // Add formatted quantity
+            DCHARG: i + 1,  // Add packet number
+        }));
+
+        // Prepare material for matched data
+        const matchedMaterial = {
+            ...material,
+            packets,  // Attach packets
+            isMatched: true,  // Mark as matched
+        };
+
+        // Remove the old data for the material before adding the new one
+        this.matchedAndUnmatchedData = this.matchedAndUnmatchedData.filter((data) => data.materialId !== material.MATNR);
+
+        // Add only the latest matched packets (this will update the state for the material)
+        this.matchedAndUnmatchedData.push(...matchedMaterial.packets);
+
+        console.log(`Matched Material at index ${index}:`, this.matchedAndUnmatchedData);
     } else {
-      Swal.fire("Error", "Invalid Label Quantity or MENGE", "error");
+        Swal.fire("Error", "Invalid Label Quantity or MENGE", "error");
     }
-  }
-  unmatchMaterial(index: number): void {
-    const material = this.tableData[index];
-    console.log("material",material)
-    if (material.ZLABEL > 0) {
+}
+
+
+
+unmatchMaterial(index: number): void {
+  const material = this.tableData[index];
+  console.log("material", material);
+
+  if (material.ZLABEL > 0) {
       // Create deep copy to avoid mutating the original data
       this.selectedMaterial = JSON.parse(JSON.stringify(material));
       this.selectedIndex = index;
-  
+
       // Generate packets with placeholder quantities for user input
       this.selectedMaterial.packets = Array.from({ length: material.ZLABEL }, (_, i) => ({
-        DCHARG: i + 1, // Packet number (1-based)
-        DCLABS: '', // Empty quantity for user to input
+          DCHARG: i + 1, // Packet number (1-based)
+          DCLABS: '', // Empty quantity for user to input
       }));
-  
+
       // Open modal for user input
       this.unmatchModal?.show();
-    } else {
+  } else {
       Swal.fire("Error", "Enter a valid Label Quantity", "error");
-    }
   }
-  saveUnmatched(): void {
-    this.selectedMaterial.packets 
-    if (this.selectedIndex !== null && this.tableData?.[this.selectedIndex]) {
+}
+
+saveUnmatched(): void {
+  if (this.selectedIndex !== null && this.tableData?.[this.selectedIndex]) {
       const selectedMaterial = this.tableData[this.selectedIndex];
-  
+
       // Validate user input
       const isValid = this.selectedMaterial.packets.every((packet) => {
-        return packet.DCLABS !== null && !isNaN(packet.DCLABS) && parseFloat(packet.DCLABS) > 0;
+          return packet.DCLABS !== null && !isNaN(packet.DCLABS) && parseFloat(packet.DCLABS) > 0;
       });
-  
+
       if (!isValid) {
-        Swal.fire("Error", "Please ensure all quantities are valid and filled.", "error");
-        return;
+          Swal.fire("Error", "Please ensure all quantities are valid and filled.", "error");
+          return;
       }
+
       const totalQuantity = this.selectedMaterial.packets.reduce((sum, packet) => sum + parseFloat(packet.DCLABS), 0);
       if (totalQuantity < selectedMaterial.MENGE) {
-        Swal.fire("Error", "The total quantity of packets cannot be less than the original Quantity.", "error");
-        return;
+          Swal.fire("Error", "The total quantity of packets cannot be less than the original Quantity.", "error");
+          return;
       }
-  
+
       // Generate QR data for the unmatched material
       const qrData = this.selectedMaterial.packets.map((packet, i) => ({
-        ...selectedMaterial, // Spread original material's properties
-        DCLABS: packet.DCLABS, // Format quantity to 2 decimal places
-        DCHARG: i + 1, // Packet number
-        isMatched: false, // Mark as unmatched
+          ...selectedMaterial,  // Spread original material's properties
+          DCLABS: packet.DCLABS,  // Format quantity to 2 decimal places
+          DCHARG: i + 1,  // Packet number
+          isMatched: false,  // Mark as unmatched
       }));
-      // Push to shared array
+
+      // Remove the old data for the material before adding the new one
       this.matchedAndUnmatchedData = this.matchedAndUnmatchedData.filter(
-        (data) => data !== selectedMaterial
+          (data) => data.materialId !== selectedMaterial.MATNR
       );
+
+      // Add only the latest unmatched data (this will update the state for the material)
       this.matchedAndUnmatchedData.push(...qrData);
-  
+
       console.log("Unmatched Data Saved:", qrData);
-  
+
       // Hide modal
       this.unmatchModal?.hide();
-    } else {
+  } else {
       Swal.fire("Error", "Unable to save unmatched packets. Please try again.", "error");
-    }
   }
+}
+
+
   isAnyRowSelected(): boolean {
     return this.tableData?.some(table => table.selected);
   }
@@ -714,7 +897,24 @@ export class QRcodegenrationComponent {
     this.GrnResponse = true;
     this.selectedMaterial = false;
     this.qrscreen = false;
+    this.selectAll = false
     this.matchedAndUnmatchedData= [];
+    this.selectedData = [];
+    this.plant = '';
+    // sloc = 'SLOC 456';
+    this.documentDeliveryDate = '';
+    this.invoiceDate = '';
+    this.invoiceNumber = '';
+    this.vendorCode = '';
+    // this.vendorCodeDis = null;
+    this.vendorName = null;
+    this.City  = null;
+    this.GSTIN  = null;
+    this.submit = true;
+    this.service.setTableData([]);
+    this._fetchData();
+
+    this.ngOnInit()
   }
   async generateQR(): Promise<void> {
     // this.saveQRData()

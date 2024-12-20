@@ -243,7 +243,7 @@
       <div class="card-body">
         <div class="col-sm-12 col-md-12 mb-2"> 
           <div id="tickets-table_filter" class="dataTables_filter text-md-end">
-            <button (click)="labelPrint()" 
+            <button (click)="labelPrint(i)" 
                     [disabled]="!isAnyRowSelected() || matchedAndUnmatchedData === 0" 
                     class="btn btn-success btn-lg highlight-3d-btn">
               Generate Labels
@@ -296,7 +296,7 @@
       <div class="card">
         <p *ngIf="isGenerating" class="text-primary">Generating QR codes for all items...</p>
         <div id="printableArea" class="qr-container">
-          <div *ngFor="let qrData of qrCodes; let i = index" class="qr-item">
+          <div *ngFor="let qrData of qrCodess; let i = index" class="qr-item">
             <!-- <div class="qr-code-wrapper">
               <img [src]="qrData.qrCodeUrl" alt="QR Code for Item {{ i + 1 }}" width="150" height="150" />
             </div> -->

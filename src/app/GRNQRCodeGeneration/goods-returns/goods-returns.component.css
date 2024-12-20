@@ -99,4 +99,19 @@ background-color: #cadad6;
     margin: 5px 0;
   }
   
+  .info-row {
+    display: flex;
+    justify-content: space-between; /* Ensures the key and value are evenly spaced */
+    align-items: center;
+    margin-bottom: 8px; /* Adds space between rows */
+  }
+  
+  .info-row span:first-child {
+    flex: 0 0 150px; /* Fixed width for the key column */
+    font-weight: bold;
+  }
+  
+  .info-row span:last-child {
+    flex: 1; /* Dynamic width for the value column */
+  }
   

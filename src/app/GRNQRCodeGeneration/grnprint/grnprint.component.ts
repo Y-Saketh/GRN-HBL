@@ -73,7 +73,7 @@ export class GrnprintComponent implements OnInit {
   qrscreen: boolean = false;
   labelscreen: boolean = false;
   qrCodes: any[];
-  
+  qrCodess: any[];
   constructor(public formBuilder: UntypedFormBuilder, @Inject(AdvancedService) public service: AdvancedService, private apiService: UserProfileService, public loaderservice: LoaderService) {
     this.tables$ = service.tables$;
     console.log("this.tables$", this.tables$)
@@ -364,10 +364,21 @@ export class GrnprintComponent implements OnInit {
     console.log("Generated QR Codes:", this.qrCodes);
   }
 
-  async labelPrint(): Promise<void> {
+  async labelPrint(index): Promise<void> {
+    const material = this.tableData[index];
+    console.log("material", material)
+    if (material.ZLABEL > 0) {
+      // Create deep copy to avoid mutating the original data
+      this.selectedMaterial = JSON.parse(JSON.stringify(material));
+      this.selectedIndex = index;
+    this.matchedAndUnmatchedData = this.matchedAndUnmatchedData.filter(
+      (data) => data !== index
+    );
+    this.matchedAndUnmatchedData.push(...this.selectedMaterial);
+
     this.GrnResponse = false;
     this.labelscreen = true;
-    this.qrCodes = [];
+    this.qrCodess = [];
     for (const table of this.matchedAndUnmatchedData) {
       const packets = table.packets || [];
       const qrData = `
@@ -380,13 +391,14 @@ export class GrnprintComponent implements OnInit {
             Qty: ${table.DCLABS}
           `;
       try {
-        const qrCodeUrl = await this.generateQRCode(qrData);
-        this.qrCodes.push({ qrCodeUrl, data: table });
+        // const qrCodeUrl = await this.generateQRCode(qrData);
+        this.qrCodess.push({ data: table });
       } catch (error) {
         console.error("QR Generation Failed", error);
       }
     }
     console.log("Generated QR Codes:", this.qrCodes);
+  }
   }
 
   printLabels(): void {
