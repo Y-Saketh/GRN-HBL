@@ -279,7 +279,7 @@ export class OpenpolistComponent implements OnInit {
 
 
   getPOLIST(){
-    this.loaderservice.showLoader();
+    
     console.log("validationform",this.form) 
   
     // if (this.validationform.valid) {
@@ -291,15 +291,15 @@ export class OpenpolistComponent implements OnInit {
       BSART: this.form.documentType.value,//"ZPDM", //Document Type
       // BSART_F: this.form.documentTypeFrom.value,//"ZPDM", //Document Type
       // BSART_T: this.form.documentTypeTo.value,//"ZPDM", //Document Type
-      BEDAT_F: this.form.documentFrom.value?moment(this.form.documentFrom.value).format('DD/MM/YYYY') :'',// Purchasing Document  From
-      BEDAT_T: this.form.documentTo.value?moment(this.form.documentTo.value).format('DD/MM/YYYY') :'',// Purchasing Document  To
-      EINDT_F:this.form.deliveryDateFrom.value?moment(this.form.deliveryDateFrom.value).format('DD/MM/YYYY') :'', // Item Delivery Date From
-      EINDT_T: this.form.deliveryDateTo.value? moment(this.form.deliveryDateTo.value.value).format('DD/MM/YYYY'):'', // Item Delivery Date To
+      BEDAT_F: this.form.documentFrom.value, //?moment(this.form.documentFrom.value).format('DD/MM/YYYY') :'',// Purchasing Document  From
+      BEDAT_T: this.form.documentTo.value, //?moment(this.form.documentTo.value).format('DD/MM/YYYY') :'',// Purchasing Document  To
+      EINDT_F:this.form.deliveryDateFrom.value, //?moment(this.form.deliveryDateFrom.value).format('DD/MM/YYYY') :'', // Item Delivery Date From
+      EINDT_T: this.form.deliveryDateTo.value, //? moment(this.form.deliveryDateTo.value.value).format('DD/MM/YYYY'):'', // Item Delivery Date To
       MATKL: this.form.materialgroup.value, // Material Group
     }
     console.log("objobj",obj)
     setTimeout(()=>{
-     
+      this.loaderservice.showLoader();
       this.apiService.OpenPoList(obj).subscribe({
         next: (res: any) => {
           console.log('Data:', res);

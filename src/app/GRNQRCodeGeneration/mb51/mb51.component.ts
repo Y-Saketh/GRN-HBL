@@ -157,8 +157,8 @@ onSort({ column, direction }: SortEvent) {
     this.loaderservice.showLoader();
     console.log("validationform",this.form)
       let obj = {
-        WERKS: "1300",//this.form.plant.value,
-        BWART: this.form.movementType.value,//"",// Movement Type
+        WERKS: this.form.plant.value,//"1300",//
+        BWART: '',//this.form.movementType.value,//"",// Movement Type
         VGART:"WE",// Transaction/Event Type
         BUDAT_F:  this.form.postingDateFrom.value, //,//"2024-11-01",//
         BUDAT_T: this.form.postingDateTo.value  // //"2024-11-30" //

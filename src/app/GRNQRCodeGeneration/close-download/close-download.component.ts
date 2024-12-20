@@ -173,7 +173,7 @@ export class CloseDownloadComponent implements OnInit {
     let obj = {
       "WERKS": this.form.plant.value,// "1300","1025"
       "EKGRP": this.form.purchasegroup.value,//"013",
-      "BADAT_F": this.form.curentdate.value?moment(this.form.curentdate.value):"",// "2024-02-01",
+      "BADAT_F": this.form.date.value,// "2024-02-01",
       // "BADAT_T": this.form.curentdateto.value?moment(this.form.curentdateto.value):""//"2024-02-20"
     }
     console.log("objobj",obj)

@@ -93,7 +93,7 @@ export const MENU: MenuItem[] = [
         id: "grnagainstid",
         label: 'GRN Against PO',
         link: 'grnagainstpo',
-        icon: 'bx-aperture',
+        icon: 'bx-package',
         parentId: "menu"
     },
     {
@@ -108,6 +108,13 @@ export const MENU: MenuItem[] = [
         label: 'MENUITEMS.DASHBOARDS.LIST.QRCODEGENERATION',
         link: 'QRcodegenration',
         icon: 'bx-label',
+        parentId: "menu"
+    },
+    {
+        id: "grnprint",//3,
+        label: 'GRN Print',
+        link: 'grnprint',
+        icon: 'bx-paperclip',
         parentId: "menu"
     },
   
@@ -145,13 +152,7 @@ export const MENU: MenuItem[] = [
                 icon: 'bx-archive',
                 parentId: "menu"
             },
-            {
-                id: "grnprint",//3,
-                label: 'GRN Print',
-                link: 'grnprint',
-                icon: 'bx-paperclip',
-                parentId: "menu"
-            },
+        
             {
                 id: "mb51",//3,
                 label: 'MB51',

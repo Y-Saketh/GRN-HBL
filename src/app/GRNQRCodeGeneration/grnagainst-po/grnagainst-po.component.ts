@@ -376,7 +376,7 @@ export class GRNagainstPOComponent{
       next: (res) => {
         console.log('Saved:', res);
         this.enableQRbutton = true;
-        this.GRN = "dummy"// res[0].MBLNR
+        this.GRN =  res[0].MBLNR;
         if(res[0].MBLNR){  
           this.loaderservice.hideLoader()     
         Swal.fire({
