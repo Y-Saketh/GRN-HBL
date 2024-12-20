@@ -155,7 +155,6 @@ export class Mb52Component implements OnInit {
 
 
   getmb52() {
-    this.loaderservice.showLoader();
     console.log("validationform",this.form)
       let obj = {
         "WERKS": this.form.plant.value,//"1300",
@@ -165,8 +164,10 @@ export class Mb52Component implements OnInit {
     }
     
       console.log("objobj",obj)
+      this.loaderservice.showLoader();
       this.apiService.fetchMb52Data(obj).subscribe({
         next: (res: any) => {
+          this.loaderservice.hideLoader();
           console.log('MB52 data fetched successfully:', res);
           this.mb52table = res;
           this.service.setTableData(res || []);

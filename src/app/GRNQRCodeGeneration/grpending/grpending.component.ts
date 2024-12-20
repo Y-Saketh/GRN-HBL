@@ -238,10 +238,11 @@ export class GrpendingComponent implements OnInit {
 
 
   console.log('Final Payload:', payload);
-
+  this.loaderservice.showLoader();
   // API Call
   this.apiService.grnlist(payload).subscribe({
     next: (res) => {
+      this.loaderservice.hideLoader();
       console.log('Saved:', res);
       if (res[0]?.NUMBER) {
         Swal.fire('', res[0].MESSAGE, 'success');

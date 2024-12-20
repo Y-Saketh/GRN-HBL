@@ -148,7 +148,7 @@ export class InbounddeliveryComponent implements OnInit {
           };
           payload.DETAIL.ITEM.push(item);
         });
-  
+        this.loaderservice.showLoader();
         this.apiService.saveInbound(payload).subscribe({
           next: (res) => {
             if(res[0]?.NUMBER){

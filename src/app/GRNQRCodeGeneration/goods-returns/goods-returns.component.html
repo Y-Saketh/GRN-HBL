@@ -201,7 +201,8 @@
                         <!-- Goods recipient-->
                              <!-- Stock Type-->
                         <td>
-                          <select [(ngModel)]="table.REASON">
+                          <select [(ngModel)]="table.REASON"
+                          class="form-select form-select-sm">
                             <option *ngFor="let reason of reasons" [value]="reason.id">
                               {{ reason.text }}
                             </option>
@@ -209,8 +210,11 @@
                         </td>
                         <!-- <td>{{ table.INSMK }}</td> -->
                         <td>
-                          <select [(ngModel)]="table.INSMK">
-                            <option *ngFor="let stock of stockTypes" [value]="stock.id">{{ stock.text }}</option>
+                          <select [(ngModel)]="table.INSMK"
+                            class="form-select form-select-sm">
+                            <option *ngFor="let stock of stockTypes" [value]="stock.id">
+                              {{ stock.text }}
+                            </option>
                           </select>
                         </td>
                         

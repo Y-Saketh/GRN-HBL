@@ -177,7 +177,6 @@ export class GrdoneComponent implements OnInit {
   }
  
   getGrDone(){
-    this.loaderservice.showLoader();
     console.log("validationform",this.form) 
     let obj = {
  
@@ -190,8 +189,10 @@ export class GrdoneComponent implements OnInit {
       "R2": "X"
     }
     console.log("objobj",obj)
+    this.loaderservice.showLoader();
     this.apiService.GrPending(obj).subscribe({
       next: (res: any) => {
+        this.loaderservice.hideLoader();
         console.log('Data:', res);
         this.POLIST = res;
         this.service.setTableData(res || []);
