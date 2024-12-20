@@ -70,15 +70,14 @@ export class GrnprintComponent implements OnInit {
   GrnResponse: boolean = true;
   selectedOption: string = 'pdf'; // Default selection
   showTable: boolean = false;
-  qrscreen: boolean;
+  qrscreen: boolean = false;
+  labelscreen: boolean = false;
   qrCodes: any[];
+  
   constructor(public formBuilder: UntypedFormBuilder, @Inject(AdvancedService) public service: AdvancedService, private apiService: UserProfileService, public loaderservice: LoaderService) {
     this.tables$ = service.tables$;
     console.log("this.tables$", this.tables$)
     this.total$ = service.total$;
-  }
-  ngOnInIt() {
-
   }
 
   bsConfig = {
@@ -91,8 +90,13 @@ export class GrnprintComponent implements OnInit {
   //   this.showTable = option === 'QR'; // Show table only when 'QR Generate' is selected
   // }
   onPrintOptionChange(): void {
-    this.showTable = this.selectedOption === 'QR';
+    if (this.selectedOption === 'QR'|| this.selectedOption === 'labelPrint') {
+      this.showTable = true;
+    } else {
+      this.showTable = false;
+    }
   }
+
   getGRNPrint() {
     this.submit = true;
     if (this.validationform.invalid) return;
@@ -135,59 +139,6 @@ export class GrnprintComponent implements OnInit {
     });
   }
 
-  exportToPDF(): void {
-    // Retrieve the current table data
-    const dataToExport = this.GrnPrint;
-
-    if (dataToExport.length > 0) {
-      // Automatically retrieve all unique keys from the data
-      const headers = Object.keys(dataToExport[0]);
-      const formattedData = dataToExport.map(row =>
-        headers.map(header => row[header] || '') // Map data to row arrays
-      );
-
-      // Create a new jsPDF instance
-      const doc = new jsPDF();
-
-      // Add a title to the document
-      doc.text('GrnPrint Data', 14, 10);
-
-      // Use autoTable to generate the table
-      (doc as any).autoTable({
-        head: [headers], // Set headers
-        body: formattedData, // Set table data
-        startY: 20, // Space for title
-      });
-
-      // Save the PDF
-      doc.save('GrnPrint_Data.pdf');
-    }
-  }
-
-  resetFormState() {
-    // Clear form data
-    this.validationform.reset();
-    // Clear component state
-    this.GrnPrint = [];
-    this.grno = null;
-    this.grnDate = null;
-    this.vendorCode = null;
-    this.vendorDetails = null;
-    this.dcNo = null;
-    this.dcDate = null;
-    this.inboundNo = null;
-    this.inboundDate = null;
-    this.lrNo = null;
-    this.lrDate = null;
-    this.storageLocation = null;
-    this.vehicleNo = null;
-    this.transporter = null;
-
-    // Reset table data
-    this.service.setTableData([]);
-    this._fetchData();
-  }
-
   _fetchData() {
     if (this.GrnPrint && this.GrnPrint.length > 0) {
       this.tableData = this.GrnPrint;
@@ -210,12 +161,9 @@ export class GrnprintComponent implements OnInit {
     });
   }
 
-
-
   get form() {
     return this.validationform.controls;
   }
-
 
   onSort({ column, direction }: SortEvent) {
     this.headers.forEach(header => {
@@ -226,8 +174,6 @@ export class GrnprintComponent implements OnInit {
     this.service.sortColumn = column;
     this.service.sortDirection = direction;
   }
-
-
 
   downloadPdf(base64String, fileName) {
     const source = `data:application/pdf;base64,${base64String}`;
@@ -372,6 +318,7 @@ export class GrnprintComponent implements OnInit {
     this.GrnResponse = true;
     this.selectedMaterial = false;
     this.qrscreen = false;
+    this.labelscreen = false;
     this.matchedAndUnmatchedData = [];
   }
   async generateQR(): Promise<void> {
@@ -416,6 +363,32 @@ export class GrnprintComponent implements OnInit {
 
     console.log("Generated QR Codes:", this.qrCodes);
   }
+
+  async labelPrint(): Promise<void> {
+    this.GrnResponse = false;
+    this.labelscreen = true;
+    this.qrCodes = [];
+    for (const table of this.matchedAndUnmatchedData) {
+      const packets = table.packets || [];
+      const qrData = `
+            GRN: ${table.MBLNR}
+            VC: ${table.LIFNR}
+            Mat: ${table.MATNR}
+            MatD: ${table.MAKTX}
+            Dt: ${this.currentDate}
+            RN: Reel ${table.DCHARG}
+            Qty: ${table.DCLABS}
+          `;
+      try {
+        const qrCodeUrl = await this.generateQRCode(qrData);
+        this.qrCodes.push({ qrCodeUrl, data: table });
+      } catch (error) {
+        console.error("QR Generation Failed", error);
+      }
+    }
+    console.log("Generated QR Codes:", this.qrCodes);
+  }
+
   printLabels(): void {
     const printableContent = document.getElementById('printableArea');
     if (printableContent) {
@@ -545,4 +518,3 @@ export class GrnprintComponent implements OnInit {
   }
 
 }
-

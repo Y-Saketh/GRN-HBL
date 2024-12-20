@@ -5,8 +5,10 @@ import { Table } from './advanced.model';
 import { Observable, take } from 'rxjs';
 import { AdvancedSortableDirective, SortEvent } from './Advanced-sortable.directive';
 import { AdvancedService } from './advanced.service';
+import { LoaderService } from 'src/app/core/services/loader.service';
 import { DecimalPipe } from '@angular/common'; 
 import { CommonModule } from '@angular/common';
+import Swal from 'sweetalert2';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 
@@ -20,7 +22,7 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
   styleUrl: './goods-returns.component.css'
 })
 export class GoodsReturnsComponent {
-  DAta:  Table[];
+  goodsreturn:  Table[];
   goodsscreen:boolean = false
   validationform: UntypedFormGroup;
   submit: boolean;
@@ -31,7 +33,12 @@ export class GoodsReturnsComponent {
   hideme: boolean[] = [];
   tables$: Observable<Table[]>;
   total$: Observable<number>;
-
+  materialDocument: any;
+  year: any;
+  postingDate: any;
+  documentDate: any;
+  headerText: any;
+  isSubmitting: boolean = false;
   
 
   @ViewChildren(AdvancedSortableDirective) headers: QueryList<AdvancedSortableDirective>;
@@ -39,8 +46,9 @@ export class GoodsReturnsComponent {
   expandedRows: { [key: string]: boolean } = {};
 
 
-  constructor(private apiService:UserProfileService, public formBuilder: UntypedFormBuilder,public service: AdvancedService,){
+  constructor(private apiService:UserProfileService, public formBuilder: UntypedFormBuilder,public service: AdvancedService,public loaderservice:LoaderService){
     this.tables$ = service.tables$;
+    console.log("this.tables$", this.tables$);
     this.total$ = service.total$;
   }
 
@@ -50,14 +58,15 @@ export class GoodsReturnsComponent {
 
   ngOnInit(){
     this.validationform = this.formBuilder.group({
-      inbounddeliverynumber: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]+')]],
+      inbounddeliverynumber: ['', [Validators.required]],
+      year: ['', [Validators.required]],
     });
 
   }
 
-  onStockTypeChange(item: any, index: number) {
-    console.log(`Stock Type for row ${index} changed to:`, item.stockType);
-  }
+  // onStockTypeChange(item: any, index: number) {
+  //   console.log(`Stock Type for row ${index} changed to:`, item.stockType);
+  // }
 
   toggleSelectAll(event: any): void {
     const checked = event.target.checked;
@@ -73,11 +82,68 @@ export class GoodsReturnsComponent {
 
   onRowCheckboxChange(row: any): void {
     this.tables$.pipe(take(1)).subscribe((tables) => {
-      // Ensure the selectAll state aligns with user interaction
       this.selectAll = tables.every((table) => table.selected);
     });
   }
 
+  saveBound() {
+    this.isSubmitting = true;
+    this.tables$.pipe(take(1)).subscribe({
+      next: (tables) => {
+        const payload = {
+          SAVE: {
+            HEADER: {
+              "MBLNR": this.materialDocument,
+              "MJAHR": this.year,
+              "BUDAT": this.postingDate,
+              "BLDAT": this.documentDate,
+              "BKTXT": this.headerText,
+              ITEM: []
+            },
+          }
+        };
+        tables.forEach((table) => {
+          if (table.selected) {
+            payload.SAVE.HEADER.ITEM.push({
+              "MATNR": table.MATNR,
+              "LGORT": table.LGORT,
+              "BWART": table.BWART,
+              "WERKS": table.WERKS,
+              "EBELN": table.EBELN,
+              "EBELP": table.EBELP,
+              "ZEILE": table.ZEILE,
+              "MENGE": table.MENGE,
+              "MEINS": table.MEINS,
+              "REASON": table.REASON,
+              "INSMK": table.INSMK,
+              "WEMPF": table.WEMPF,
+              "CHARG": table.CHARG,
+              "LIFNR": table.LIFNR
+            });
+          }
+        });
+  
+        this.apiService.goodsreturn(payload).subscribe({
+          next: (res) => {
+            if(res[0]?.NUMBER){
+              Swal.fire("", res[0].MSGTXT, res[0].VBELN ? 'success' : 'error');
+            }else{
+              Swal.fire("", res[0].MSGTXT, res[0].VBELN ? 'success' : 'error');
+              this.isSubmitting = false;
+              this.resetFormState();
+            }},
+            error: (err) => {
+            Swal.fire("", "Error occurred while saving", "error");
+            this.isSubmitting = false;
+            }
+      });
+      },
+      error: (err) => {
+        console.error("Error in subscription:", err);
+        this.isSubmitting = false;
+      },
+    });
+  }      
 
   onSort({ column, direction }: SortEvent) {
     this.headers.forEach((header) => {
@@ -92,38 +158,67 @@ export class GoodsReturnsComponent {
   get form() {
     return this.validationform.controls;
   }
+
+  resetFormState() {
+    // Clear form data
+    this.validationform.reset();
+    // Clear component state
+    this.materialDocument = null;
+    this.year  = null;
+    this.postingDate  = null;
+    this.documentDate  = null;
+    this.headerText  = null;
+    // Reset table data
+    this.service.setTableData([]);
+    this._fetchData();
+  }
+
   validSubmit() {
+    this.loaderservice.showLoader();
     this.submit = true;
-    let payload = {
-      // "MBLNR": "5000778295",
-      // "MJAHR": "2024"
-       "EBELN": "4500216733",//"5000778325"//"4500216733"//"4500218779"
-    }
+  
+    const payload = {
+      MBLNR: this.form.inbounddeliverynumber.value, //5000778375
+      MJAHR: this.form.year.value,
+    };
+  
     console.log("Final Payload:", payload);
-    // Pace.restart();
-    this.apiService.QRRequest(payload).subscribe({
-
+  
+    this.apiService.goodsreturn(payload).subscribe({
       next: (res: any) => {
-        console.log('Data:', res);
-        this.DAta = res;
-
-        this.service.setTableData(res || []);
-        this._fetchData();
+        console.log("API Response:", res);
+  
+        if (res[0]?.NUMBER) {
+          Swal.fire("", res[0].MSGTXT, "error");
+          this.loaderservice.hideLoader();
+        } else {
+          const header = res[0]?.HEADER || {};
+          const items = res[0]?.ITEM || [];
+          this.materialDocument = header.MBLNR;
+          this.year = header.MJAHR;
+          this.postingDate = header.BUDAT;
+          this.documentDate = header.BLDAT;
+          this.headerText = header.BKTXT;
+          console.log('res', res)
+          this.service.setTableData(items || []);
+          this.goodsreturn = items;
+          this._fetchData();
+        }
       },
       error: (error: any) => {
         console.error('Error fetching lot reports:', error);
+        alert('Failed to fetch goods return data. Please try again.');
+        this.loaderservice.hideLoader();
       },
       complete: () => {
-        console.log('API call completed.');
-      }
+        this.loaderservice.hideLoader();
+      },
     });
   }
+  
   _fetchData() {
-    this.tableData = this.DAta || [];
-    console.log("this.tableData ", this.tableData)
-    for (let i = 0; i <= this.tableData.length; i++) {
-      this.hideme.push(true);
-    }
+    this.tableData = [...(this.goodsreturn || [])];
+    console.log("this.tableData", this.tableData);
   }
- 
 }
+      

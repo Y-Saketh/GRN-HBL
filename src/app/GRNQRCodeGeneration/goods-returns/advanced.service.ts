@@ -37,20 +37,25 @@ function sort(tables: Table[], column: string, direction: string): Table[] {
  */
 function matches(tables: Table, term: string, pipe: PipeTransform) {
   return (
-    tables.MATNR.toLowerCase().includes(term.toLowerCase()) || // Material Code
-    tables.MAKTX.toLowerCase().includes(term.toLowerCase()) || // Material Description
-    tables.MEINS.toLowerCase().includes(term.toLowerCase()) || // UOM
-    tables.WERKS.toLowerCase().includes(term.toLowerCase()) || // Plant
+    pipe.transform(tables.MBLNR).toString().includes(term) || // Number of Material Document
+    pipe.transform(tables.MJAHR).toString().includes(term) || // Material Document Year
+    tables.BUDAT.toLowerCase().includes(term.toLowerCase()) || // Posting Date in the Document
+    tables.BLDAT.toLowerCase().includes(term.toLowerCase()) || // Document Date in Document
+    tables.BKTXT.toLowerCase().includes(term.toLowerCase()) || // Document header text
+    pipe.transform(tables.MATNR).toString().includes(term) || // Material Number
     tables.LGORT.toLowerCase().includes(term.toLowerCase()) || // Storage Location
-    tables.LIFNR.toLowerCase().includes(term.toLowerCase()) || // Vendor Code
-    tables.GRUND.toLowerCase().includes(term.toLowerCase()) || // Reason for Movement
-    tables.BLDAT.toLowerCase().includes(term.toLowerCase()) || // Doc Date
-    tables.BUDAT.toLowerCase().includes(term.toLowerCase()) || // Posting Date
-    tables.MATKL.toLowerCase().includes(term.toLowerCase()) || // Material Group
-    tables.EBELNL.toLowerCase().includes(term.toLowerCase()) || // PO Number
-    tables.LFBNR.toString().toLowerCase().includes(term.toLowerCase()) || // Reference Doc Number
-    tables.VENDORNAME.toLowerCase().includes(term.toLowerCase()) || // Vendor Name
-    tables.WEMPF.toLowerCase().includes(term.toLowerCase()) // Goods Receipt Name
+    tables.BWART.toLowerCase().includes(term.toLowerCase()) || // Movement Type (Inventory Management)
+    tables.WERKS.toLowerCase().includes(term.toLowerCase()) || // Plant
+    tables.EBELN.toLowerCase().includes(term.toLowerCase()) || // Purchasing Document Number
+    pipe.transform(tables.EBELP).toString().includes(term) || // Item Number of Purchasing Document
+    pipe.transform(tables.ZEILE).toString().includes(term) || // Item in Material Document
+    pipe.transform(tables.MENGE).toString().includes(term) || // Quantity
+    tables.MEINS.toLowerCase().includes(term.toLowerCase()) || // Base Unit of Measure
+    tables.REASON.toLowerCase().includes(term.toLowerCase()) || // Reason for Movement
+    tables.INSMK.toLowerCase().includes(term.toLowerCase()) || // Stock Type
+    tables.WEMPF.toLowerCase().includes(term.toLowerCase()) || // Goods recipient
+    tables.CHARG.toLowerCase().includes(term.toLowerCase()) || // Batch Number
+    tables.LIFNR.toLowerCase().includes(term.toLowerCase()) // Supplier's Account Number
   );
 }
 

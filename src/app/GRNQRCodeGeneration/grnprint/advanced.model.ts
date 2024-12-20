@@ -12,7 +12,7 @@ export interface Table {
     SGST: number; // SGST
     IGST: number; // IGST
     GROSS: number; // Gross value
-
+    
     MAT_DOC: number; // Mat Doc
     MENGE: number; // Quantity
 
@@ -24,7 +24,7 @@ export interface Table {
     BUDAT?:string; //Posting Date
     CHARG?:string;
     ZLABEL?:number;
-    selected:boolean;
+    selected?:boolean;
 }
   
   

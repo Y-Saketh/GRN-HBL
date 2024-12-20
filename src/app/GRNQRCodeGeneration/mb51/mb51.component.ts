@@ -71,7 +71,7 @@ export class Mb51Component implements OnInit {
   exportToExcel(): void {
     // Retrieve the current table data
     const dataToExport = this.mb51table;
-  
+
     if (dataToExport.length > 0) {
       // Define mapping of keys to header names
       const headerMapping: { [key: string]: string } = {

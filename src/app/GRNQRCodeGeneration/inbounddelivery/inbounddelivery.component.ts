@@ -3,7 +3,6 @@ import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Table } from './advanced.model';
 import { AdvancedService } from './advanced.service';
-import { PagetitleComponent } from 'src/app/shared/ui/pagetitle/pagetitle.component';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { AdvancedSortableDirective, SortEvent } from './advanced-sortable.directive';
 import { Observable, take } from 'rxjs';
@@ -25,8 +24,7 @@ import { LoaderService } from 'src/app/core/services/loader.service';
             FormsModule, 
             PaginationModule, 
             AdvancedSortableDirective, 
-            BsDatepickerModule, 
-            PagetitleComponent]
+            BsDatepickerModule]
 })
 
 export class InbounddeliveryComponent implements OnInit {
