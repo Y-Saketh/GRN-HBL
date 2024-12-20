@@ -101,8 +101,7 @@ export class GoodsReturnsComponent {
   }
 
   saveBound() {
-    console.log("this.headerText",this.form.headerText.value,)
-    this.loaderservice.showLoader();
+    console.log("this.headerText", this.form.headerText.value);
     this.isSubmitting = true;
     this.tables$.pipe(take(1)).subscribe({
       next: (tables) => {
@@ -114,19 +113,20 @@ export class GoodsReturnsComponent {
               "BUDAT": this.postingDate,
               "BLDAT": this.documentDate,
               "BKTXT": this.form.headerText.value,
-              ITEM: []
             },
+            ITEM: []
           }
         };
         tables.forEach((table) => {
           if (table.selected) {
-            payload.SAVE.HEADER.ITEM.push({
+            payload.SAVE.ITEM.push({
               "MATNR": table.MATNR,
               "LGORT": table.LGORT,
               "BWART": table.BWART,
               "WERKS": table.WERKS,
               "EBELN": table.EBELN,
               "EBELP": table.EBELP,
+              "MBLNR": table.MBLNR,
               "ZEILE": table.ZEILE,
               "MENGE": table.MENGE,
               "MEINS": table.MEINS,
@@ -138,29 +138,33 @@ export class GoodsReturnsComponent {
             });
           }
         });
-  
+        this.loaderservice.showLoader();
         this.apiService.goodsreturn(payload).subscribe({
           next: (res) => {
             this.loaderservice.hideLoader();
-            if(res[0]?.NUMBER){
-              Swal.fire("", res[0].MSGTXT, res[0].VBELN ? 'success' : 'error');
-            }else{
-              Swal.fire("", res[0].MSGTXT, res[0].VBELN ? 'success' : 'error');
-              this.isSubmitting = false;
+            console.log('res', res)
+            if (res[0]?.NUMBER) {
+              // const message = `Material Doc.No: ${res[0].MBLNR} Successfully Created`;
+              Swal.fire("", res[0].MESSAGE, 'success');
               this.resetFormState();
-            }},
-            error: (err) => {
+            } else {
+              Swal.fire("", "Error: " + res[0].MESSAGE, 'error');
+            }
+            this.isSubmitting = false;
+          },
+          error: (err) => {
             Swal.fire("", "Error occurred while saving", "error");
             this.isSubmitting = false;
-            }
-      });
+          }
+        });
       },
       error: (err) => {
         console.error("Error in subscription:", err);
         this.isSubmitting = false;
-      },
+      }
     });
-  }      
+  }
+     
 
   onSort({ column, direction }: SortEvent) {
     this.headers.forEach((header) => {
@@ -184,7 +188,7 @@ export class GoodsReturnsComponent {
     this.year  = null;
     this.postingDate  = null;
     this.documentDate  = null;
-   
+
     // Reset table data
     this.service.setTableData([]);
     this._fetchData();
@@ -193,7 +197,6 @@ export class GoodsReturnsComponent {
   validSubmit() {
     this.loaderservice.showLoader();
     this.submit = true;
-  // this.loaderservice.showLoader()
     const payload = {
       MBLNR: this.form.inbounddeliverynumber.value, //5000778375
       MJAHR: this.form.year.value,

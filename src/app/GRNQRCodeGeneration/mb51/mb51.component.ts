@@ -154,7 +154,6 @@ onSort({ column, direction }: SortEvent) {
   
 
   getmb51() {
-    this.loaderservice.showLoader();
     console.log("validationform",this.form)
       let obj = {
         WERKS: this.form.plant.value,//"1300",//
@@ -164,8 +163,10 @@ onSort({ column, direction }: SortEvent) {
         BUDAT_T: this.form.postingDateTo.value  // //"2024-11-30" //
       }
       console.log("objobj",obj)
+      this.loaderservice.showLoader();
       this.apiService.fetchMb51Data(obj).subscribe({
         next: (res: any) => {
+          this.loaderservice.hideLoader();
           console.log('MB51 data fetched successfully:', res);
           this.mb51table = res;
           this.service.setTableData(res || []);

@@ -168,7 +168,6 @@ export class CloseDownloadComponent implements OnInit {
   }
 
   getCloseDownload(){
-    this.loaderservice.showLoader();
     console.log("validationform",this.form) 
     let obj = {
       "WERKS": this.form.plant.value,// "1300","1025"
@@ -177,8 +176,10 @@ export class CloseDownloadComponent implements OnInit {
       // "BADAT_T": this.form.curentdateto.value?moment(this.form.curentdateto.value):""//"2024-02-20"
     }
     console.log("objobj",obj)
+    this.loaderservice.showLoader();
     this.apiService.zprClose(obj).subscribe({
       next: (res: any) => {
+        this.loaderservice.hideLoader();
         console.log('Data:', res);
         this.CloseDownload = res;
         this.service.setTableData(res || []);
