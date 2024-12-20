@@ -95,7 +95,7 @@ export class GRNagainstPOComponent{
     // Fallback to getLoginResponse if needed
     this.userName = `${firstName} ${lastName}` || 'to GRN';
     this.validationform = this.formBuilder.group({
-      inbounddeliverynumber: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]+')]],
+      poNUmber: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]+')]],
 
     });
     this.inboundDetailsForm = this.formBuilder.group({
@@ -312,7 +312,9 @@ export class GRNagainstPOComponent{
           this.isSubmitting = false;
           return;
         }
-  
+        let payloads = {
+          "POST": payload
+         }
         if (hasMismatchedQuantities) {
           Swal.fire({
             title: 'Quantity Mismatch',
@@ -323,13 +325,13 @@ export class GRNagainstPOComponent{
             cancelButtonText: 'No, Cancel',
           }).then((result) => {
             if (result.isConfirmed) {
-              this.submitPayload(payload);
+              this.submitPayload(payloads);
             } else {
               this.isSubmitting = false;
             }
           });
         } else {
-          this.submitPayload(payload);
+          this.submitPayload(payloads);
         }
       },
       error: (err) => {
@@ -542,10 +544,13 @@ export class GRNagainstPOComponent{
     this.submit = true;
     console.log("validationform", this.form);
   
-    if (this.form.inbounddeliverynumber.value) {
-      let obj = {
-        "VBELN": this.form.inbounddeliverynumber.value // "4500181937"
-      };
+    if (this.form.poNUmber.value) {
+      let obj = 
+      {
+        "PURDOC": {
+            "EBELN":  this.form.poNUmber.value // "4500181937"
+        }
+    }
       console.log("objobj", obj);
       // this.GrnResponse = []
 

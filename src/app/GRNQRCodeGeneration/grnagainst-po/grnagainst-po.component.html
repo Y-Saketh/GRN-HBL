@@ -12,13 +12,13 @@
                 <!-- Row 1 -->
                 <div class="col-md-2">
                   <div class="mb-3">
-                    <label class="brandcolor" for="inbounddeliverynumber">PO No</label>
-                    <input type="text" class="form-control" id="inbounddeliverynumber"
-                      formControlName="inbounddeliverynumber" placeholder="PO Number" [ngClass]="{
-                        'is-invalid': submit && form.inbounddeliverynumber.errors
+                    <label class="brandcolor" for="poNUmber">PO No</label>
+                    <input type="text" class="form-control" id="poNUmber"
+                      formControlName="poNUmber" placeholder="PO Number" [ngClass]="{
+                        'is-invalid': submit && form.poNUmber.errors
                       }" />
-                    <div *ngIf="submit && form.inbounddeliverynumber.errors" class="invalid-feedback">
-                      <span *ngIf="form.inbounddeliverynumber.errors.required">
+                    <div *ngIf="submit && form.poNUmber.errors" class="invalid-feedback">
+                      <span *ngIf="form.poNUmber.errors.required">
                         Please provide a valid PO Number.
                       </span>
                     </div>

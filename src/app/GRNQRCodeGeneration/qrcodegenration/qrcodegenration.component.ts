@@ -311,7 +311,9 @@ export class QRcodegenrationComponent {
           this.isSubmitting = false;
           return;
         }
-  
+   let payloads = {
+    "POST": payload
+   }
         if (hasMismatchedQuantities) {
           Swal.fire({
             title: 'Quantity Mismatch',
@@ -322,13 +324,13 @@ export class QRcodegenrationComponent {
             cancelButtonText: 'No, Cancel',
           }).then((result) => {
             if (result.isConfirmed) {
-              this.submitPayload(payload);
+              this.submitPayload(payloads);
             } else {
               this.isSubmitting = false;
             }
           });
         } else {
-          this.submitPayload(payload);
+          this.submitPayload(payloads);
         }
       },
       error: (err) => {
@@ -361,14 +363,14 @@ export class QRcodegenrationComponent {
   // }
   submitPayload(payload: any) {
     console.log("payload", payload);
-    this.apiService.grnlist(payload).subscribe({
-      next: (res) => {
-        console.log('Saved:', res);
+    // this.apiService.grnlist(payload).subscribe({
+    //   next: (res) => {
+    //     console.log('Saved:', res);
         this.enableQRbutton = true;
-        this.GRN = res[0].MBLNR
-        if(res[0].MBLNR){       
+        this.GRN = "dummy"// res[0].MBLNR
+        // if(res[0].MBLNR){       
         Swal.fire({
-          title: res[0].MESSAGE,
+          title: "vghjk",//res[0].MESSAGE,
           text: "Do you still want to print the QR labels for generated GRN",
           icon: 'success',
           showCancelButton: true, // Adds the Cancel button
@@ -379,45 +381,48 @@ export class QRcodegenrationComponent {
             // Call generateQR() function when OK is clicked
             this.generateQR();
             
-          } else if (result.isDismissed) {
-            console.log('Action canceled');
-          }
-        });
-        this.isSubmitting = false;
-        }
-        else{
-          Swal.fire({
-            title: res[0].MESSAGE,
-            // text: "Do you still want to print the QR labels for generated GRN",
-            icon: 'error',
-            showCancelButton: true, // Adds the Cancel button
-            confirmButtonText: 'Ok', // Text for OK button
-            cancelButtonText: 'Cancel', // Text for Cancel button
-          }).then((result) => {
-            if (result.isConfirmed) {
-              // Call generateQR() function when OK is clicked
-              // this.generateQR(res[0]);
+          } 
+          
+        //   else if (result.isDismissed) {
+        //     console.log('Action canceled');
+        //   }
+        // });
+        // this.isSubmitting = false;
+        // }
+        // else{
+        //   Swal.fire({
+        //     title: res[0].MESSAGE,
+        //     // text: "Do you still want to print the QR labels for generated GRN",
+        //     icon: 'error',
+        //     showCancelButton: true, // Adds the Cancel button
+        //     confirmButtonText: 'Ok', // Text for OK button
+        //     cancelButtonText: 'Cancel', // Text for Cancel button
+        //   }).then((result) => {
+        //     if (result.isConfirmed) {
+        //       // Call generateQR() function when OK is clicked
+        //       // this.generateQR(res[0]);
               
-            } else if (result.isDismissed) {
-              console.log('Action canceled');
-            }
-          });
-          this.isSubmitting = false;
+        //     } else if (result.isDismissed) {
+        //       console.log('Action canceled');
+        //     }
+        //   });
+        //   this.isSubmitting = false;
 
-        }
-      },
-      error: (err) => {
-        console.error('Error:', err);
-        this.enableQRbutton = false;
-        this.isSubmitting = false;
-      },
+        // }
+      // },
+      // error: (err) => {
+      //   console.error('Error:', err);
+      //   this.enableQRbutton = false;
+      //   this.isSubmitting = false;
+      // },
     });
+  // }
   }
 
 
   generateQRCode(data: string): Promise<string> {
     return new Promise((resolve, reject) => {
-      QRCode.toDataURL(data, { errorCorrectionLevel: 'M' }, (err, url) => {
+      QRCode.toDataURL(data, { errorCorrectionLevel: 'H', scale: 6 }, (err, url) => {
         if (err) {
           reject(err);
         } else {
@@ -426,6 +431,7 @@ export class QRcodegenrationComponent {
       });
     });
   }
+  
   // saveQRData(){
   //   let payload = this.QRData
   //   console.log("Final Payload:", payload);
@@ -839,78 +845,96 @@ export class QRcodegenrationComponent {
   //   }
   // }
   
+  // printLabels(): void {
+  //   const printableContent = document.getElementById('printableArea');
+  //   if (printableContent) {
+  //     const printWindow = window.open('', '_blank', 'width=800,height=600');
+  //     if (printWindow) {
+  //       printWindow.document.write(`
+  //         <html>
+  //         <head>
+  //           <title>Print QR Labels</title>
+  //           <style>${document.styleSheets[0].cssRules}</style> <!-- Import CSS -->
+  //         </head>
+  //         <body>
+  //           <div id="printableArea">${printableContent.innerHTML}</div>
+  //         </body>
+  //         </html>
+  //       `);
+  //       printWindow.document.close();
+  //       printWindow.focus();
+  //       printWindow.print();
+  //       printWindow.close();
+  //     }
+  //   }
+  // }
   printLabels(): void {
+    // this.qrCodes
+
+    // const printData = {
+    //   qrCodeUrl: 'http://example.com/qr-code', // Replace with actual QR code URL
+    //   qrData: {
+    //     LIFNR: 'Vendor123',
+    //     MATNR: 'Material001',
+    //     DCHARG: 'Batch002',
+    //     DCLABS: 100,
+    //     MAKTX: 'Material Description',
+    //   },
+    //   GRN: 'GRN123',
+    //   currentDate: new Date().toLocaleDateString(),
+    // };
+
+    // this.apiService.print(printData).subscribe({
+    //   next: () => alert('Print job sent successfully!'),
+    //   error: (err) => console.error('Error sending print job:', err),
+    // });
     const printableContent = document.getElementById('printableArea');
     if (printableContent) {
       const printWindow = window.open('', '_blank', 'width=800,height=600');
       if (printWindow) {
+        const labelCSS = `
+          @page {
+            size: 50mm 25mm; /* Zebra printer label size */
+            margin: 0; /* Remove margins for accurate printing */
+          }
+          body {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+          }
+          .qr-item {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+          }
+          .qr-code-wrapper {
+            flex: 0 0 auto;
+            margin-right: 5mm; /* Adjust spacing between QR code and text */
+          }
+          .qr-code-wrapper img {
+            width: 20mm; /* Fit QR code size within label */
+            height: 20mm;
+          }
+          .qr-info {
+            flex: 1;
+            font-size: 10px;
+            line-height: 1.2;
+            word-wrap: break-word;
+          }
+          .qr-info p {
+            margin: 0;
+          }
+        `;
+  
         printWindow.document.write(`
           <html>
           <head>
             <title>Print QR Labels</title>
-            <style>
-              @media print {
-                body {
-                  margin: 0;
-                  padding: 0;
-                  box-sizing: border-box;
-                  font-family: Arial, sans-serif; /* Ensure legible fonts */
-                }
-  
-                #printableArea {
-                  display: flex;
-                  flex-wrap: wrap;
-                  gap: 0;
-                  justify-content: flex-start;
-                  margin: 0;
-                }
-  
-                .qr-item {
-                  width: 56mm; /* Full label width (50mm) */
-                  height: 25mm; /* Full label height (25mm) */
-                  display: flex;
-                  flex-direction: row; /* QR  code and info side by side */
-                  align-items: center; /* Center align QR code and text vertically */
-                  justify-content: flex-start; /* Align items to the left */
-                  box-sizing: border-box;
-                  /* border: 1px solid #ddd;  Light border for visibility */
-                  padding: 0; /* Remove padding to use all available space */
-                  margin: 0;
-                }
-  
-                .qr-code-wrapper img {
-                  width: 22mm;  /* Increased QR code size (20mm x 20mm) */
-                  height: 22mm;
-                  object-fit: contain;
-                  margin-right: 1mm; /* Small gap between QR code and text */
-                  margin-left: 2mm;
-                }
-  
-                .qr-info {
-                  font-size: 12px;  /* Adjust font size for better readability */
-                  color: #333; /* Dark text color for contrast */
-                  line-height: 14px; /* Equal line height to distribute space evenly */
-                  letter-spacing: 0.7px; /* Character spacing for more legible text */
-                  text-align: left; 
-                  margin-left: 2mm; /* Small gap between QR code and text */
-                  max-width: calc(50mm - 19mm - 1mm); /* Adjust text width based on QR code size */
-                  padding-right: 1mm; /* Small padding to ensure text doesn't touch the edge */
-                }
-  
-                .qr-info p {
-                  margin: 0; /* Remove default margin from paragraphs */
-                  padding: 0; /* Remove padding */
-                }
-  
-                body * {
-                  visibility: hidden; /* Hide all other content */
-                }
-  
-                #printableArea, #printableArea * {
-                  visibility: visible; /* Show only printable area */
-                }
-              }
-            </style>
+            <style>${labelCSS}</style>
           </head>
           <body>
             <div id="printableArea">${printableContent.innerHTML}</div>
@@ -920,11 +944,13 @@ export class QRcodegenrationComponent {
         printWindow.document.close();
         printWindow.focus();
         printWindow.print();
-        // this.saveQRData()
         printWindow.close();
       }
     }
+
+
   }
+  
   
   onmismatch(mainRow: any, currentPacket: any, index: number): void {
     // Calculate the total DCLABS for all packets

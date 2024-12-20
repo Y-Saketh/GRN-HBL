@@ -350,7 +350,7 @@
     <div *ngFor="let qrData of qrCodes; let i = index" class="qr-item">
       <div class="qr-code-wrapper">
         <!-- Display QR code as image with adjusted size -->
-        <img [src]="qrData.qrCodeUrl" alt="QR Code for Item {{ i + 1 }}" width="14mm" height="14mm" />
+        <img [src]="qrData.qrCodeUrl" alt="QR Code for Item {{ i + 1 }}" width="16mm" height="16mm" />
       </div>
   
       <div class="qr-info">
@@ -413,8 +413,24 @@
 
   <div class="card">
     <p *ngIf="isGenerating" class="text-primary">Generating QR codes for all items...</p>
-
     <div id="printableArea" class="qr-container">
+      <div *ngFor="let qrData of qrCodes; let i = index" class="qr-item">
+        <div class="qr-code-wrapper">
+          <img [src]="qrData.qrCodeUrl" alt="QR Code for Item {{ i + 1 }}"  width="150" height="150"  />
+        </div>
+        <div class="qr-info">
+          <p>{{ qrData.data.GRN }}</p>
+          <p>{{ qrData.data.vendorCode }}</p>
+          <p>{{ qrData.data.MATNR }}</p>
+          <p>Pack: {{ qrData.data.DCHARG }}</p>
+          <p>{{ qrData.data.DCLABS }}</p>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    <!-- <div id="printableArea" class="qr-container">
       <div *ngFor="let qrData of qrCodes; let i = index" class="qr-item">
         <div class="qr-code-wrapper">
           <img [src]="qrData.qrCodeUrl" alt="QR Code for Item {{ i + 1 }}" width="150" height="150" />
@@ -427,7 +443,7 @@
           <p>{{ qrData.data.DCLABS }}</p>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </div>
 <!-- <ng-template #content role="document" let-modal>

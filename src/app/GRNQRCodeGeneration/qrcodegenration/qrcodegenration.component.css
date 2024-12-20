@@ -162,7 +162,6 @@ img {
     /* height: auto;
 }
 } */ 
-
 @media print {
   body {
     margin: 0;
@@ -172,53 +171,46 @@ img {
   }
 
   #printableArea {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0;
-    justify-content: flex-start;
+    display: block;
     margin: 0;
+    padding: 0;
   }
 
   .qr-item {
-    width: 50mm;  /* Label width (50mm) */
-    height: 25mm; /* Label height (25mm) */
-    display: flex;
-    flex-direction: row;
+    display: flex; /* QR code and info side by side */
     align-items: center;
     justify-content: flex-start;
+    width: 100%; /* Full page width */
+    height: 100%; /* Full page height */
     box-sizing: border-box;
-    border: 1px solid #ddd;
-    padding: 0.5mm; /* Small padding to avoid content touching the border */
-    margin: 0;
+    padding: 10mm; /* Add padding to fit content nicely */
+    page-break-after: always; /* Ensure each qr-item starts on a new page */
+  }
+
+  .qr-code-wrapper {
+    flex: 0 0 auto;
+    margin-right: 10mm; /* Spacing between QR code and text */
   }
 
   .qr-code-wrapper img {
-    width: 14mm;  /* QR code size (14mm) */
-    height: 14mm; /* QR code size (14mm) */
-    object-fit: contain;
-    margin-right: 2mm; /* Small gap between QR code and text */
+    width: 50mm; /* QR code width */
+    height: 50mm; /* QR code height */
   }
 
   .qr-info {
-    font-size: 8px;  /* Adjust font size for readability */
-    font-family: Arial, Helvetica, sans-serif;
-    line-height: 9px; /* Line height to ensure adequate spacing between text lines */
-    text-align: left;
-    margin-bottom: 1mm; /* Small space between each text field */
-    word-wrap: break-word; /* Prevent overflow if text is too long */
-    max-width: calc(50mm - 14mm - 4mm);  /* Adjust text area width based on QR code size and margins */
+    flex: 1;
+    font-size: 12px;
+    line-height: 1.5;
   }
 
   .qr-info p {
-    margin: 0; /* Remove default margin from paragraphs */
-    padding: 0; /* Remove padding */
+    margin: 0;
+    padding: 0;
   }
 
-  body * {
-    visibility: hidden; /* Hide everything else */
-  }
-
-  #printableArea, #printableArea * {
-    visibility: visible; /* Show only printable area */
+  /* Remove borders or padding for a clean print if needed */
+  .qr-item {
+    border: none;
   }
 }
+
