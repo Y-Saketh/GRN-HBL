@@ -1,5 +1,5 @@
 export interface Table {
-    selected: any;
+    selected: any; // Optional: Indicates whether the row is selected
     MBLNR: number; // Number of Material Document
     MJAHR: number; // Material Document Year
     BUDAT: string; // Posting Date in the Document
@@ -21,6 +21,7 @@ export interface Table {
     CHARG: string; // Batch Number
     LIFNR: string; // Supplier's Account Number
 }
+
   
   
   export interface SearchResult {

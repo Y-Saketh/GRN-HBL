@@ -143,7 +143,7 @@
             <tbody *ngFor="let table of tables$ | async; let i = index">
               <tr>
                 <td>
-                  <input type="checkbox" [(ngModel)]="table.selected" (change)="onRowCheckboxChange(table)" />
+                  <input type="checkbox" [(ngModel)]="table.selected" (change)="onQRCodeGenerateCheckboxChange(table)" />
                 </td>
                 <td>{{ table.MATNR }}</td>
                 <td>{{ table.MAKTX }}</td>
@@ -230,7 +230,7 @@
               <p>{{ qrData.data.MBLNR }}</p>
               <p>{{ qrData.data.LIFNR }}</p>
               <p>{{ qrData.data.MATNR }}</p>
-              <p>Pack {{ qrData.data.DCHARG }}</p>
+              <p>{{ qrData.data.DCHARG }}</p>
               <p>{{ qrData.data.DCLABS }}</p>
             </div>
           </div>
@@ -270,7 +270,7 @@
             <tbody *ngFor="let table of tables$ | async; let i = index">
               <tr>
                 <td>
-                  <input type="checkbox" [(ngModel)]="table.selected" (change)="onRowCheckboxChange(table)" />
+                  <input type="checkbox" [(ngModel)]="table.selected" (change)="onLabelPrintCheckboxChange(table)" />
                 </td>
                 <td>{{ table.MATNR }}</td>
                 <td>{{ table.MAKTX }}</td>

@@ -1,6 +1,6 @@
 import { Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule, UntypedFormBuilder } from '@angular/forms';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, take} from 'rxjs';
 import { tableData } from './data';
 import { CommonModule } from '@angular/common';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
@@ -85,10 +85,6 @@ export class GrnprintComponent implements OnInit {
     containerClass: 'theme-blue', // Optional: Use a predefined theme
   };
 
-  // onPrintOptionChange(option: string): void {
-  //   this.selectedOption = option;
-  //   this.showTable = option === 'QR'; // Show table only when 'QR Generate' is selected
-  // }
   onPrintOptionChange(): void {
     if (this.selectedOption === 'QR'|| this.selectedOption === 'labelPrint') {
       this.showTable = true;
@@ -96,6 +92,32 @@ export class GrnprintComponent implements OnInit {
       this.showTable = false;
     }
   }
+
+  // onRowCheckboxChange(row: any): void {
+  //     this.tables$.pipe(take(1)).subscribe((tables) => {
+  //       this.selectAll = tables.every((table) => table.selected);
+  //     });
+  //   }
+
+  onQRCodeGenerateCheckboxChange(index: number): void {
+    const material = this.tableData[index];
+    if (material.MENGE > 0) {
+      this.selectedMaterial = { ...material };
+      this.selectedIndex = index;
+    } else {
+      Swal.fire("Error", "Invalid Quantity for QR Code Generation", "error");
+    }
+  }
+
+    onLabelPrintCheckboxChange(index: number): void {
+      const material = this.tableData[index];
+      if (material.ZLABEL > 0) {
+        this.selectedMaterial = { ...material };
+        this.selectedIndex = index;
+      } else {
+        Swal.fire("Error", "Invalid Label Quantity", "error");
+      }
+    }
 
   getGRNPrint() {
     this.submit = true;
@@ -142,14 +164,10 @@ export class GrnprintComponent implements OnInit {
   }
 
   _fetchData() {
-    if (this.GrnPrint && this.GrnPrint.length > 0) {
-      this.tableData = this.GrnPrint;
-      console.log("this.tableData ", this.tableData);
-    } else {
-      console.warn('No GrnPrint data available for fetching.');
-    }
+    this.tableData = this.GrnPrint;
+    console.log("this.tableData ", this.tableData)
   }
-
+  
   /**
   * Sort table data
   * @param param0 sort the column
@@ -214,44 +232,7 @@ export class GrnprintComponent implements OnInit {
       mainRow.shadowRows[mainRow.shadowRows.length - 1].MENGE = null;
     }
   }
-  // matchMaterial(index: number): void {
-  //   const material = this.tableData[index];
-  //   console.log("material", material)
-  //   if (material.ZLABEL > 0 && material.MENGE > 0) {
-  //     const qty = material.MENGE / material.ZLABEL;
 
-  //     if (['NOS', 'PCS', 'EA'].includes(material.MEINS)) {
-  //       if (!Number.isInteger(qty)) {
-  //         console.error("Error: Quantity cannot be split into decimal values for NOS, PCS, or EA.");
-  //         Swal.fire("", "Quantity cannot be split into decimal values", "error")
-  //         material.ZLABEL = null;
-  //       }
-  //     } // Calculate quantity per label
-  //     const packets = Array.from({ length: material.ZLABEL }, (_, i) => ({
-  //       ...material, // Spread original material's properties
-  //       // DCLABS: qty.toFixed(2), // Add formatted quantity
-  //       DCLABS: qty,
-  //       DCHARG: i + 1, // Add packet number
-  //     }));
-
-  //     // Prepare material for matched data
-  //     const matchedMaterial = {
-  //       ...material,
-  //       packets, // Attach packets
-  //       isMatched: true, // Mark as matched
-  //     };
-
-  //     // Push to shared array
-  //     this.matchedAndUnmatchedData = this.matchedAndUnmatchedData.filter(
-  //       (data) => data !== material
-  //     );
-  //     this.matchedAndUnmatchedData = matchedMaterial.packets;
-
-  //     console.log(`Matched Material at index ${index}:`, this.matchedAndUnmatchedData);
-  //   } else {
-  //     Swal.fire("Error", "Invalid Label Quantity or MENGE", "error");
-  //   }
-  // }
 
   matchMaterial(index: number): void {
       const material = this.tableData[index];
@@ -301,26 +282,7 @@ export class GrnprintComponent implements OnInit {
   }
 
 
-  // unmatchMaterial(index: number): void {
-  //   const material = this.tableData[index];
-  //   console.log("material", material)
-  //   if (material.ZLABEL > 0) {
-  //     // Create deep copy to avoid mutating the original data
-  //     this.selectedMaterial = JSON.parse(JSON.stringify(material));
-  //     this.selectedIndex = index;
-
-  //     // Generate packets with placeholder quantities for user input
-  //     this.selectedMaterial.packets = Array.from({ length: material.ZLABEL }, (_, i) => ({
-  //       DCHARG: i + 1, // Packet number (1-based)
-  //       DCLABS: '', // Empty quantity for user to input
-  //     }));
-
-  //     // Open modal for user input
-  //     this.unmatchModal?.show();
-  //   } else {
-  //     Swal.fire("Error", "Enter a valid Label Quantity", "error");
-  //   }
-  // }
+  
 
   unmatchMaterial(index: number): void {
     const material = this.tableData[index];
@@ -345,47 +307,6 @@ export class GrnprintComponent implements OnInit {
   }
 
 
-  // saveUnmatched(): void {
-  //   this.selectedMaterial.packets
-  //   if (this.selectedIndex !== null && this.tableData?.[this.selectedIndex]) {
-  //     const selectedMaterial = this.tableData[this.selectedIndex];
-
-  //     // Validate user input
-  //     const isValid = this.selectedMaterial.packets.every((packet) => {
-  //       return packet.DCLABS !== null && !isNaN(packet.DCLABS) && parseFloat(packet.DCLABS) > 0;
-  //     });
-
-  //     if (!isValid) {
-  //       Swal.fire("Error", "Please ensure all quantities are valid and filled.", "error");
-  //       return;
-  //     }
-  //     const totalQuantity = this.selectedMaterial.packets.reduce((sum, packet) => sum + parseFloat(packet.DCLABS), 0);
-  //     if (totalQuantity < selectedMaterial.MENGE) {
-  //       Swal.fire("Error", "The total quantity of packets cannot be less than the original Quantity.", "error");
-  //       return;
-  //     }
-
-  //     // Generate QR data for the unmatched material
-  //     const qrData = this.selectedMaterial.packets.map((packet, i) => ({
-  //       ...selectedMaterial, // Spread original material's properties
-  //       DCLABS: packet.DCLABS, // Format quantity to 2 decimal places
-  //       DCHARG: i + 1, // Packet number
-  //       isMatched: false, // Mark as unmatched
-  //     }));
-  //     // Push to shared array
-  //     this.matchedAndUnmatchedData = this.matchedAndUnmatchedData.filter(
-  //       (data) => data !== selectedMaterial
-  //     );
-  //     this.matchedAndUnmatchedData.push(...qrData);
-
-  //     console.log("Unmatched Data Saved:", qrData);
-
-  //     // Hide modal
-  //     this.unmatchModal?.hide();
-  //   } else {
-  //     Swal.fire("Error", "Unable to save unmatched packets. Please try again.", "error");
-  //   }
-  // }
 
   saveUnmatched(): void {
     if (this.selectedIndex !== null && this.tableData?.[this.selectedIndex]) {
@@ -436,6 +357,7 @@ export class GrnprintComponent implements OnInit {
   isAnyRowSelected(): boolean {
     return this.tableData?.some(table => table.selected);
   }
+
   backtoQunatity() {
     this.GrnResponse = true;
     this.selectedMaterial = false;
@@ -643,6 +565,8 @@ export class GrnprintComponent implements OnInit {
     //   });
     // });
   }
+
+
   closePopup(): void {
     this.GrnResponse = true;
     this.selectedIndex = null;

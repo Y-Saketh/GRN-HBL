@@ -64,88 +64,115 @@
                   </div>
                 </div>
               </div>
-              <!-- Documnet Type -->
+              <!-- From Date -->
               <div class="col-md-2">
                 <div class="mb-3">
-                  <label class="brandcolor" for="documentType"
-                    >Document Type</label
+                  <label class="brandcolor" for="fromDate"
+                    >FROM DATE</label
                   >
                   <input
                     type="text"
                     class="form-control"
-                    id="documentType"
-                    formControlName="documentType"
-                    placeholder="Document Type"
+                    id="fromDate"
+                    [bsConfig]="bsConfig"
+                    bsDatepicker
+                    formControlName="fromDate"
+                    placeholder="From Date"
                     [ngClass]="{
-                      'is-invalid': submit && form.documentType.errors
+                      'is-invalid': submit && form.fromDate.errors
                     }"
                   />
                   <div
-                    *ngIf="submit && form.documentType.errors"
+                    *ngIf="submit && form.fromDate.errors"
                     class="invalid-feedback"
                   >
-                    <span *ngIf="form.documentType.errors.required"
-                      >Please provide a valid Document Type.</span
+                    <span *ngIf="form.fromDate.errors.required"
+                      >Please provide a valid fromDate.</span
                     >
                   </div>
                 </div>
               </div>
-              <!-- Document From Date -->
+              <!-- To Date -->
               <div class="col-md-2">
                 <div class="mb-3">
-                  <label class="brandcolor" for="docFromDate"
-                    >Doc From Date</label
+                  <label class="brandcolor" for="toDate"
+                    >TO DATE</label
                   >
                   <input
                     type="text"
                     class="form-control"
-                    id="docFromDate"
+                    id="toDate"
                     [bsConfig]="bsConfig"
                     bsDatepicker
-                    formControlName="docFromDate"
-                    placeholder="Document From Date"
+                    formControlName="toDate"
+                    placeholder="To Date"
                     [ngClass]="{
-                      'is-invalid': submit && form.docFromDate.errors
+                      'is-invalid': submit && form.toDate.errors
                     }"
                   />
                   <div
-                    *ngIf="submit && form.docFromDate.errors"
+                    *ngIf="submit && form.toDate.errors"
                     class="invalid-feedback"
                   >
-                    <span *ngIf="form.docFromDate.errors.required"
-                      >Please provide a valid docFromDate.</span
-                    >
-                  </div>
-                </div>
-              </div>
-              <!-- Document To Date -->
-              <div class="col-md-2">
-                <div class="mb-3">
-                  <label class="brandcolor" for="docToDate"
-                    >Doc To Date</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="docToDate"
-                    [bsConfig]="bsConfig"
-                    bsDatepicker
-                    formControlName="docToDate"
-                    placeholder="Document To Date"
-                    [ngClass]="{
-                      'is-invalid': submit && form.docToDate.errors
-                    }"
-                  />
-                  <div
-                    *ngIf="submit && form.docToDate.errors"
-                    class="invalid-feedback"
-                  >
-                    <span *ngIf="form.docToDate.errors.required"
+                    <span *ngIf="form.toDate.errors.required"
                       >Please provide a valid delivery Date To.</span
                     >
                   </div>
                 </div>
               </div>
+              <!-- Documnet From -->
+              <div class="col-md-2">
+                <div class="mb-3">
+                  <label class="brandcolor" for="documentFrom"
+                    >DOC.FROM</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="documentFrom"
+                    formControlName="documentFrom"
+                    placeholder="Document From"
+                    [ngClass]="{
+                      'is-invalid': submit && form.documentFrom.errors
+                    }"
+                  />
+                  <div
+                    *ngIf="submit && form.documentFrom.errors"
+                    class="invalid-feedback"
+                  >
+                    <span *ngIf="form.documentFrom.errors.required"
+                      >Please provide a valid Document From.</span
+                    >
+                  </div>
+                </div>
+              </div>
+              <!-- Documnet To -->
+              <div class="col-md-2">
+                <div class="mb-3">
+                  <label class="brandcolor" for="documentTo"
+                    >DOC.TO</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="documentTo"
+                    formControlName="documentTo"
+                    placeholder="Document To"
+                    [ngClass]="{
+                      'is-invalid': submit && form.documentTo.errors
+                    }"
+                  />
+                  <div
+                    *ngIf="submit && form.documentTo.errors"
+                    class="invalid-feedback"
+                  >
+                    <span *ngIf="form.documentTo.errors.required"
+                      >Please provide a valid Document To.</span
+                    >
+                  </div>
+                </div>
+              </div>
+              
               <!-- Buton -->
               <div class="col-md-1 ms-2 mt-4">
                 <div class="mb-3">
