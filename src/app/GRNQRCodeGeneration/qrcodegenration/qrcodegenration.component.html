@@ -408,7 +408,8 @@
 
   <div class="btn-container">
     <button class="btn btn-danger ml-1" type="button" (click)="backtoQunatity()">Close</button>
-    <button class="text-md-end btn-success btn-lg highlight-3d-btn" (click)="printLabels()">Print Labels</button>
+    <!-- <button class="text-md-end btn-success btn-lg highlight-3d-btn" (click)="printLabels()">Print Labels</button> -->
+    <button class="text-md-end btn-success btn-lg highlight-3d-btn" (click)="initPrinter()">Print Labels</button>
   </div>
 
 
@@ -427,6 +428,20 @@
           <p>{{ qrData.data.DCLABS }}</p>
         </div>
       </div>
+      <!-- <div> -->
+        <!-- <button (click)="discoverPrinters()">Discover Printers</button> -->
+        <!-- <div>
+          <p>Select a Printer:</p>
+          <select [(ngModel)]="selectedPrinter">
+            <option *ngFor="let printer of printers" [value]="printer.name">
+              {{ printer.name }}
+            </option>
+          </select>
+        </div> -->
+        <!-- <button  (click)="printLabel()">Print QR Code</button> -->
+      <!-- </div> -->
+      <!-- <p *ngIf="message">{{ message }}</p> -->
+
     </div>
     
     

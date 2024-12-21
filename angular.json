@@ -68,7 +68,9 @@
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
-              "node_modules/slick-carousel/slick/slick.min.js"
+              "node_modules/slick-carousel/slick/slick.min.js",
+              "src/assets/js/BrowserPrint-3.1.250.min.js",
+              "src/assets/js/BrowserPrint-Zebra-1.1.250.min.js"
             ]
           },
           "configurations": {

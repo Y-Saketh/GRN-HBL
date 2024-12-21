@@ -1,0 +1,7 @@
+{
+  "/zebra": {
+    "target": "https://localhost:9101",
+    "secure": false,
+    "changeOrigin": true
+  }
+}
