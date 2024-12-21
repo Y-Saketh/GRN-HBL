@@ -12,7 +12,7 @@
              [formGroup]="validationform"
              (ngSubmit)="validSubmit()">
              <div class="row mt-4">
-                <!-- Row 1 -->
+                <!-- GRN Number -->
                 <div class="col-md-2">
                   <div class="mb-3">
                     <label class="brandcolor" for="inbounddeliverynumber"
@@ -35,10 +35,11 @@
                     </div>
                   </div>
                 </div>
+                <!-- Year -->
                 <div class="col-md-2">
                   <div class="mb-3">
                     <label class="brandcolor" for="year"
-                      >Year</label
+                      >YEAR</label
                     >
                     <input
                       type="text"
@@ -68,6 +69,7 @@
                     "
                     class="btn"
                     type="submit"
+                    [disabled]="validationform.invalid"
                   >
                     Get Details
                   </button>
@@ -91,9 +93,13 @@
                     <span>: {{ documentDate }}</span>
                   </div>
                   <div class="info-row" *ngIf="postingDate">
-                    <span class="brandcolor">Header Text</span>
-                    <span><input  formControlName="headerText" /></span>
+                    <span class="brandcolor">Header Text <span style="color: red">*</span></span>
+                    <input formControlName="headerText" class="form-control" placeholder="Enter header text" />
+                    <div *ngIf="submit && validationform.get('headerText').invalid" class="invalid-feedback">
+                      Please provide a valid header text.
+                    </div>
                   </div>
+                  
                 </div>
                 
               </div>
@@ -161,9 +167,12 @@
                         <th sortable="CHARG" (sort)="onSort($event)"> Batch</th>
                         <th sortable="LIFNR" (sort)="onSort($event)"> Vendor</th>
                         <th sortable="WEMPF" (sort)="onSort($event)"> Goods recipient </th>
-                        <th sortable="REASON" (sort)="onSort($event)">Reason for MVT</th>
-                        <th sortable="INSMK" (sort)="onSort($event)"> Stock Type </th>
-
+                        <th sortable="REASON" (sort)="onSort($event)">Reason for MVT 
+                          <span style="color: red">*</span>
+                        </th>
+                        <th sortable="INSMK" (sort)="onSort($event)"> Stock Type 
+                          <span style="color: red">*</span>
+                        </th>
                       </tr>
                     </thead>
                     <tbody *ngFor="let table of tables$ | async; let i = index">
@@ -198,30 +207,32 @@
                         <td>{{ table.LIFNR }}</td>
                         <!-- Supplier's Account Number-->
                         <td>{{ table.WEMPF }}</td>
-                        <!-- Goods recipient-->
-                             <!-- Stock Type-->
+                        <!-- Goods recipient-->  
                         <td>
                           <select [(ngModel)]="table.REASON"
-                          class="form-select form-select-sm">
+                                  [disabled]="!table.selected"
+                                  class="form-select form-select-sm">
                             <option *ngFor="let reason of reasons" [value]="reason.id">
                               {{ reason.text }}
                             </option>
                           </select>
                         </td>
+                        <!-- Reason for Movement -->
                         <!-- <td>{{ table.INSMK }}</td> -->
                         <td>
                           <select [(ngModel)]="table.INSMK"
-                            class="form-select form-select-sm">
+                                  [disabled]="!table.selected"
+                                  class="form-select form-select-sm">
                             <option *ngFor="let stock of stockTypes" [value]="stock.id">
                               {{ stock.text }}
                             </option>
                           </select>
                         </td>
-                        
+                         <!-- Stock Type-->
                     
                         
                         <!-- <td>{{ table.REASON }}</td> -->
-                        <!-- Reason for Movement -->
+                        
 
 
                       </tr>
@@ -239,6 +250,9 @@
                     "
                     class="btn"
                     type="submit"
+                    [disabled]="
+                      validationform.get('headerText').value 
+                      && !(isAllFieldsValid() | async)"
                     (click)="saveBound()"
                   >
                     Return

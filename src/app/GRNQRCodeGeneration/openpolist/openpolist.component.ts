@@ -85,9 +85,10 @@ export class OpenpolistComponent implements OnInit {
     this.validationform = this.formBuilder.group({
     plant: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]+')]],
     purchaseGroup: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
-    documentType: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
-    docFromDate: [fortyfiveDaysAgo, [ Validators.pattern('[a-zA-Z0-9]+')]],
-    docToDate: [fifteenDaysAgo, [ Validators.pattern('[a-zA-Z0-9]+')]],     
+    fromDate: [fortyfiveDaysAgo, [ Validators.pattern('[a-zA-Z0-9]+')]],
+    toDate: [fifteenDaysAgo, [ Validators.pattern('[a-zA-Z0-9]+')]],
+    documentFrom: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
+    documentTo: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],     
     });
     this.tableForm = this.formBuilder.group({
       gateEntryNumber: ['', Validators.required],
@@ -285,16 +286,16 @@ export class OpenpolistComponent implements OnInit {
     // if (this.validationform.valid) {
     let obj ={
       WERKS: this.form.plant.value, // Plant
-      EBELN: this.form.poNumber.value, // Purchasing Document Number
-      LIFNR: this.form.vendor.value, // Vendor
-      MATNR: this.form.material.value, // Material
-      BSART: this.form.documentType.value,//"ZPDM", //Document Type
+      EBELN: '',//this.form.poNumber.value, // Purchasing Document Number`
+      LIFNR: '',//this.form.vendor.value, // Vendor
+      MATNR: '',//this.form.material.value, // Material
+      BSART: '',//this.form.documentType.value,//"ZPDM", //Document Type
       // BSART_F: this.form.documentTypeFrom.value,//"ZPDM", //Document Type
       // BSART_T: this.form.documentTypeTo.value,//"ZPDM", //Document Type
-      BEDAT_F: this.form.documentFrom.value?moment(this.form.documentFrom.value).format('DD/MM/YYYY') :'',// Purchasing Document  From
-      BEDAT_T: this.form.documentTo.value?moment(this.form.documentTo.value).format('DD/MM/YYYY') :'',// Purchasing Document  To
-      EINDT_F:this.form.deliveryDateFrom.value?moment(this.form.deliveryDateFrom.value).format('DD/MM/YYYY') :'', // Item Delivery Date From
-      EINDT_T: this.form.deliveryDateTo.value? moment(this.form.deliveryDateTo.value.value).format('DD/MM/YYYY'):'', // Item Delivery Date To
+      BEDAT_F: this.form.documentFrom.value,// Purchasing Document  From
+      BEDAT_T: this.form.documentTo.value,// Purchasing Document  To
+      EINDT_F:this.form.deliveryDateFrom.value, // Item Delivery Date From
+      EINDT_T: this.form.deliveryDateTo.value, // Item Delivery Date To
       MATKL: this.form.materialgroup.value, // Material Group
     }
     console.log("objobj",obj)

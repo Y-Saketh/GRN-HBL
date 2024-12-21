@@ -2,7 +2,7 @@ import { Component, QueryList, ViewChildren } from '@angular/core';
 import { UserProfileService } from 'src/app/core/services/user.service';
 import { FormsModule, FormBuilder, FormGroup, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Table } from './advanced.model';
-import { Observable, take } from 'rxjs';
+import { map, Observable, take } from 'rxjs';
 import { AdvancedSortableDirective, SortEvent } from './Advanced-sortable.directive';
 import { AdvancedService } from './advanced.service';
 import { LoaderService } from 'src/app/core/services/loader.service';
@@ -27,7 +27,7 @@ export class GoodsReturnsComponent {
   validationform: UntypedFormGroup;
   submit: boolean;
   tableData: Table[];
-  selectAll = true;
+  selectAll = false;
   shadowRows = [];
   public selected: any;
   hideme: boolean[] = [];
@@ -77,6 +77,26 @@ export class GoodsReturnsComponent {
     });
  
   }
+
+  isAllFieldsValid(): Observable<boolean> {
+    return this.tables$.pipe(
+      map(tables => {
+        let isValid = true;
+  
+        tables.forEach(table => {
+          if (table.selected) {
+            if (!(table.REASON && table.INSMK)) {
+              isValid = false;
+            }
+          }
+        });
+  
+        return isValid;
+      })
+    );
+  }
+  
+  
 
   // onStockTypeChange(item: any, index: number) {
   //   console.log(`Stock Type for row ${index} changed to:`, item.stockType);

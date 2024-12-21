@@ -94,14 +94,10 @@ export class Mb52Component implements OnInit {
     }
 
     _fetchData() {
-      if (this.mb52table && this.mb52table.length > 0) {
-        this.tableData = this.mb52table;
-        console.log("this.tableData ", this.tableData);
-        for (let i = 0; i < this.tableData.length; i++) {
-          this.hideme.push(true);
-        }
-      } else {
-        console.warn('No MB52 data available for fetching.');
+      this.tableData = this.mb52table;
+      console.log("this.tableData ", this.tableData)
+      for (let i = 0; i <= this.tableData.length; i++) {
+        this.hideme.push(true);
       }
     }
     

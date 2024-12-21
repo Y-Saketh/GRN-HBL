@@ -55,7 +55,7 @@
             </div>
             <!-- Material Type -->
             <div class="col-md-2">
-              <label class="brandcolor" for="materialType">Material Type</label>
+              <label class="brandcolor" for="materialType">MATERIAL TYPE</label>
               <div class="mb-3">
                 <input
                   type="text"
@@ -212,12 +212,6 @@
             <thead class="brandcolor tableHeader">
               <tr>
                 <th></th>
-                <th class="brandcolor" sortable="MATNR" (sort)="onSort($event)">
-                    Mat.No
-                  </th>
-                  <th class="brandcolor" sortable="MAKTX" (sort)="onSort($event)">
-                    Mat Desc
-                  </th>
                 <th class="brandcolor" sortable="WERKS" (sort)="onSort($event)">
                   Plant
                 </th>
@@ -227,6 +221,12 @@
                 <th class="brandcolor" sortable="LGOBE" (sort)="onSort($event)">
                   SL Desc
                 </th>
+                <th class="brandcolor" sortable="MATNR" (sort)="onSort($event)">
+                    Mat.No
+                  </th>
+                  <th class="brandcolor" sortable="MAKTX" (sort)="onSort($event)">
+                    Mat Desc
+                  </th>
                 <th class="brandcolor" sortable="MEINS" (sort)="onSort($event)">
                   Base Unit of Measure
                 </th>
@@ -252,16 +252,16 @@
                 <td align="center">
                   <a class="expand-row" (click)="changeValue(i)">+</a>
                 </td>
-                <td>{{ table.MATNR }}</td>
-                <!-- Material -->
-                <td>{{ table.MAKTX }}</td>
-                <!-- Material Desc -->
                 <td>{{ table.WERKS }}</td>
                 <!-- Plant -->
                 <td>{{ table.LGORT }}</td>
                 <!-- Storage Location -->
                 <td>{{ table.LGOBE }}</td>
                 <!-- SL Desc -->
+                <td>{{ table.MATNR }}</td>
+                <!-- Material -->
+                <td>{{ table.MAKTX }}</td>
+                <!-- Material Desc -->
                 <td>{{ table.MEINS }}</td>
                 <!-- Base Unit of Measure -->
                 <td>{{ table.LABST }}</td>

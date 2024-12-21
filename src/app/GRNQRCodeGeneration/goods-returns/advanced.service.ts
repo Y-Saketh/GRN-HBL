@@ -55,7 +55,8 @@ function matches(tables: Table, term: string, pipe: PipeTransform) {
     tables.INSMK.toLowerCase().includes(term.toLowerCase()) || // Stock Type
     tables.WEMPF.toLowerCase().includes(term.toLowerCase()) || // Goods recipient
     tables.CHARG.toLowerCase().includes(term.toLowerCase()) || // Batch Number
-    tables.LIFNR.toLowerCase().includes(term.toLowerCase()) // Supplier's Account Number
+    tables.LIFNR.toLowerCase().includes(term.toLowerCase()) ||// Supplier's Account Number
+    tables.selected.toLowerCase().includes(term.toLowerCase())
   );
 }
 
