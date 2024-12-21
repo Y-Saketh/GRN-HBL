@@ -75,19 +75,20 @@ export class Mb51Component implements OnInit {
     if (dataToExport.length > 0) {
       // Define mapping of keys to header names
       const headerMapping: { [key: string]: string } = {
-        WERKS: 'Plant',                           // Plant
-        LGORT: 'Storage Location',                // Storage Location
-        MATNR: 'Material',                        // Material
-        BWART: 'Movement Type',                   // Movement Type
+        PLANT: 'Plant',                           // Plant
+        STG_LOC: 'Storage Location',                // Storage Location
+        MATERIAL: 'Material',                        // Material
+        MAT_DES: 'Material Description',            // Material Description
+        MVT_TYPE: 'Movement Type',                   // Movement Type
         MVT_TYPE_TXT: 'Movement Type Text',       // Movement Type Text
-        BUDAT: 'Posting Date',                    // Posting Date
-        MAKTX: 'Material Description',            // Material Description
-        PRICE: 'Quantity in Unit of Entry',       // Quantity in Unit of Entry
+        POSTING_DATE: 'Posting Date',             // Posting Date
+        PRICE: 'Price',                           // Price
         L_CUR_AMT: 'Amount in Local Currency',    // Amount in Local Currency
-        MBLNR: 'Material Document',               // Material Document
-        NAME1: 'Vendor Name',                     // Vendor Name
-        TEXT: 'Text',                             // Text
-        LFIMG: 'Quantity',                        // Quantity
+        MAT_DOC: 'Material Document',               // Material Document
+        //hidden
+        PUR_ORDER: 'Purchase Order',              // Purchase Order
+        DOC_DATE: 'Document Date',                // Document Date
+        QUANITY: 'Quantity',                        // Quantity
         SUPPLIER: 'Supplier',                     // Supplier
         ORDER: 'Order',                           // Order
         GL_ACCOUNT: 'GL account',                 // GL account

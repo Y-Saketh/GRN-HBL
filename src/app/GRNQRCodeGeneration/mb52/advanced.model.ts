@@ -6,9 +6,9 @@ export interface Table {
     LGOBE: string;              // sl Description
     MEINS: string;              // Base Unit of Measure
     LABST: number;              // Unrestricted Stock Quantity   
-    SALK3: number;              // Unrestricted Stock Value
+    WLABS: number;              // Unrestricted Stock Value
     INSME: number;            // Quality Inspection Stock Quantity
-    // SALK3: string;            // Quality Inspection Stock Value
+    WINSM: string;            // Quality Inspection Stock Value
 }
   
 export interface SearchResult {

@@ -9,8 +9,8 @@ export interface Table {
     PRICE: number;      // Quantity in Unit of Entry  //d
     L_CUR_AMT: number;      // Amount in Local Currency
     MAT_DOC: string;      // Material Document
-    // NAME1: string;      // Vendor Name  //d
-    // SGTXT: string;      // Text  //d
+    PUR_ORDER: string;      // Purchase Order
+    DOC_DATE: string;      // Document Date
     QUANITY: number;      // Quantity
     SUPPLIER: number;      // Supplier
     ORDER: string;      // Order
