@@ -1,4 +1,8 @@
 export interface Table {
+    DCLABS: any;
+    DCHARG: any;
+    LIFNR: any;
+    MBLNR: any;
     MATNR: number; // Material code
     MAKTX: string; // Material description
     EBELN: number; // PO number
