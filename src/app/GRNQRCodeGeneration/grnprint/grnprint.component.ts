@@ -109,15 +109,13 @@ export class GrnprintComponent implements OnInit {
     }
   }
 
-    onLabelPrintCheckboxChange(index: number): void {
-      const material = this.tableData[index];
-      if (material.ZLABEL > 0) {
-        this.selectedMaterial = { ...material };
-        this.selectedIndex = index;
-      } else {
-        Swal.fire("Error", "Invalid Label Quantity", "error");
-      }
+
+  onLabelPrintCheckboxChange(table: any): void {
+    if (!table.selected) {
+      table.ZLABEL = 0; // Reset ZLABEL if the row is deselected
     }
+  }
+  
 
   getGRNPrint() {
     this.submit = true;
@@ -407,44 +405,63 @@ export class GrnprintComponent implements OnInit {
 
     console.log("Generated QR Codes:", this.qrCodes);
   }
-
-  async labelPrint(index): Promise<void> {
-    const material = this.tableData[index];
-    console.log("material", material)
-    if (material.ZLABEL > 0) {
-      // Create deep copy to avoid mutating the original data
-      this.selectedMaterial = JSON.parse(JSON.stringify(material));
-      this.selectedIndex = index;
-    this.matchedAndUnmatchedData = this.matchedAndUnmatchedData.filter(
-      (data) => data !== index
-    );
-    this.matchedAndUnmatchedData.push(...this.selectedMaterial);
-
+  // async labelPrint(): Promise<void> {
+  //   this.qrCodess = []; // Clear previously generated QR codes
+    // this.GrnResponse = false;
+    // this.labelscreen = true;
+  
+  //   const selectedRows = this.GrnPrint
+  //     .filter((table: any) => table.selected && table.ZLABEL > 0); // Get selected rows with valid ZLABEL values
+  
+  //   for (const row of selectedRows) {
+  //     const numLabels = row.ZLABEL; // Number of labels to generate
+  //     for (let i = 1; i <= numLabels; i++) {
+  //       const qrData = `
+  //         GRN: ${row.MBLNR}
+  //         VC: ${row.LIFNR}
+  //         Mat: ${row.MATNR}
+  //         RN: Reel ${row.DCHARG}
+  //         Qty: ${row.DCLABS}
+  //       `;
+  //       try {
+  //         // const qrCodeUrl = await this.generateQRCode(qrData);
+  //         this.qrCodess.push({ qrData, reelNo: i });
+  //       } catch (error) {
+  //         console.error("QR Generation Failed", error);
+  //       }
+  //     }
+  //   }
+  
+  //   console.log("Generated QR Codes:", this.qrCodess);
+  // }
+  
+  async labelPrint(): Promise<void> {
     this.GrnResponse = false;
     this.labelscreen = true;
-    this.qrCodess = [];
-    for (const table of this.matchedAndUnmatchedData) {
-      const packets = table.packets || [];
-      const qrData = `
-            GRN: ${table.MBLNR}
-            VC: ${table.LIFNR}
-            Mat: ${table.MATNR}
-            MatD: ${table.MAKTX}
-            Dt: ${this.currentDate}
-            RN: Reel ${table.DCHARG}
-            Qty: ${table.DCLABS}
-          `;
-      try {
-        // const qrCodeUrl = await this.generateQRCode(qrData);
-        this.qrCodess.push({ data: table });
-      } catch (error) {
-        console.error("QR Generation Failed", error);
+  
+    this.qrCodess = []; // Clear previously generated QR codes
+  
+    const selectedRows = this.GrnPrint.filter(
+      (table: any) => table.selected && table.ZLABEL > 0
+    );
+  
+    for (const row of selectedRows) {
+      const numLabels = row.ZLABEL;
+      for (let i = 0; i < numLabels; i++) {
+        this.qrCodess.push({
+          GRN: row.MBLNR,
+          VC: row.LIFNR,
+          Mat: row.MATNR,
+          RN: `Reel ${i + 1}`,
+          Qty: row.DCLABS,
+        });
       }
     }
-    console.log("Generated QR Codes:", this.qrCodes);
+  
+    console.log("Generated QR Labels Data:", this.qrCodess);
   }
-  }
-
+  
+  
   printLabels(): void {
     const printableContent = document.getElementById('printableArea');
     if (printableContent) {

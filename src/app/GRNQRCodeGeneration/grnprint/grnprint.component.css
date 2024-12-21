@@ -244,3 +244,37 @@ background-color: #cadad6;
       visibility: visible; /* Show only printable area */
     }
   }
+
+
+  .qr-itemm {
+    width: 56mm; /* Label width */
+    height: 25mm; /* Label height */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    border: 1px solid #ddd;
+    padding: 5px;
+    box-sizing: border-box;
+    margin: 5px; /* Space between labels */
+  }
+  
+  .qr-infoo p {
+    margin: 0;
+    font-size: 12px;
+    line-height: 14px;
+  }
+
+  .qr-card {
+    width: 250px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    background-color: #f9f9f9;
+  }
+  
+  .qr-card p {
+    margin: 5px 0;
+    font-size: 14px;
+  }

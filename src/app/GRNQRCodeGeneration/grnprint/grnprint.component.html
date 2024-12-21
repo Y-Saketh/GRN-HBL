@@ -221,6 +221,7 @@
       </div>
       <div class="card">
         <p *ngIf="isGenerating" class="text-primary">Generating QR codes for all items...</p>  
+        
         <div id="printableArea" class="qr-container">
           <div *ngFor="let qrData of qrCodes; let i = index" class="qr-item">
             <div class="qr-code-wrapper">
@@ -243,7 +244,7 @@
       <div class="card-body">
         <div class="col-sm-12 col-md-12 mb-2"> 
           <div id="tickets-table_filter" class="dataTables_filter text-md-end">
-            <button (click)="labelPrint(i)" 
+            <button (click)="labelPrint()" 
                     [disabled]="!isAnyRowSelected() || matchedAndUnmatchedData === 0" 
                     class="btn btn-success btn-lg highlight-3d-btn">
               Generate Labels
@@ -294,20 +295,19 @@
         <button class="text-md-end btn-success btn-lg highlight-3d-btn" (click)="printLabels()">Print Labels</button>
       </div>
       <div class="card">
-        <p *ngIf="isGenerating" class="text-primary">Generating QR codes for all items...</p>
-        <div id="printableArea" class="qr-container">
-          <div *ngFor="let qrData of qrCodess; let i = index" class="qr-item">
-            <!-- <div class="qr-code-wrapper">
-              <img [src]="qrData.qrCodeUrl" alt="QR Code for Item {{ i + 1 }}" width="150" height="150" />
-            </div> -->
-            <div class="qr-info">
-              <p>{{ qrData.data.MBLNR }}</p>
-              <p>{{ qrData.data.LIFNR }}</p>
-              <p>{{ qrData.data.MATNR }}</p>
-              <p>{{ qrData.data.DCHARG }}</p>
-              <p>{{ qrData.data.DCLABS }}</p>
+        <div class="card-container">
+          <div *ngFor="let qr of qrCodess" class="card qr-card">
+            <div class="card-body">
+              <p><strong>GRN:</strong> {{ qr.GRN }}</p>
+              <p><strong>VC:</strong> {{ qr.VC }}</p>
+              <p><strong>Mat:</strong> {{ qr.Mat }}</p>
+              <p><strong>RN:</strong> {{ qr.RN }}</p>
+              <p><strong>Qty:</strong> {{ qr.Qty }}</p>
             </div>
           </div>
         </div>
+        
       </div>
+      
+      
     </div>
