@@ -537,15 +537,15 @@ Qty: 10`
 
   submitPayload(payload: any) {
     console.log("payload", payload);
-    // this.loaderservice.showLoader();
-    // this.apiService.grnlist(payload).subscribe({
-    //   next: (res) => {
-    //     console.log('Saved:', res);
+    this.loaderservice.showLoader();
+    this.apiService.grnlist(payload).subscribe({
+      next: (res) => {
+        console.log('Saved:', res);
     this.enableQRbutton = true;
-    this.GRN = "dummy",//res[0].MBLNR
-      // if(res[0].MBLNR){  
-      //   this.loaderservice.hideLoader()     
-      Swal.fire({
+    this.GRN = res[0].MBLNR
+      if(res[0].MBLNR){  
+        this.loaderservice.hideLoader()     
+        Swal.fire({
         title: "dummy",//res[0].MESSAGE,
         text: "Do you still want to print the QR labels for generated GRN",
         icon: 'success',
@@ -557,46 +557,108 @@ Qty: 10`
           // Call generateQR() function when OK is clicked
           this.generateQR();
 
-          // } 
+          } 
 
-          //   else if (result.isDismissed) {
-          //     console.log('Action canceled');
+            else if (result.isDismissed) {
+              console.log('Action canceled');
         }
       });
     this.isSubmitting = false;
-    // }
-    //   else{
-    //     this.loaderservice.hideLoader()     
-    //     Swal.fire({
-    //       title: res[0].MESSAGE,
-    //       // text: "Do you still want to print the QR labels for generated GRN",
-    //       icon: 'error',
-    //       showCancelButton: true, // Adds the Cancel button
-    //       confirmButtonText: 'Ok', // Text for OK button
-    //       cancelButtonText: 'Cancel', // Text for Cancel button
-    //     }).then((result) => {
-    //       if (result.isConfirmed) {
-    //         // Call generateQR() function when OK is clicked
-    //         // this.generateQR(res[0]);
+    }
+      else{
+        this.loaderservice.hideLoader()     
+        Swal.fire({
+          title: res[0].MESSAGE,
+          // text: "Do you still want to print the QR labels for generated GRN",
+          icon: 'error',
+          showCancelButton: true, // Adds the Cancel button
+          confirmButtonText: 'Ok', // Text for OK button
+          cancelButtonText: 'Cancel', // Text for Cancel button
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // Call generateQR() function when OK is clicked
+            // this.generateQR(res[0]);
 
-    //       } else if (result.isDismissed) {
-    //         console.log('Action canceled');
-    //       }
-    //     });
-    //     this.isSubmitting = false;
+          } else if (result.isDismissed) {
+            console.log('Action canceled');
+          }
+        });
+        this.isSubmitting = false;
 
-    //   }
-    // },
-    // error: (err) => {
-    //   this.loaderservice.hideLoader()     
-    //   console.error('Error:', err);
-    //   this.enableQRbutton = false;
-    //   this.isSubmitting = false;
-    // },
-    // });
+      }
+    },
+    error: (err) => {
+      this.loaderservice.hideLoader()     
+      console.error('Error:', err);
+      this.enableQRbutton = false;
+      this.isSubmitting = false;
+    },
+    });
 
 
   }
+  // submitPayload(payload: any) {
+  //   console.log("payload", payload);
+  //   // this.loaderservice.showLoader();
+  //   // this.apiService.grnlist(payload).subscribe({
+  //   //   next: (res) => {
+  //   //     console.log('Saved:', res);
+  //   this.enableQRbutton = true;
+  //   this.GRN = "dummy",//res[0].MBLNR
+  //     // if(res[0].MBLNR){  
+  //     //   this.loaderservice.hideLoader()     
+  //     Swal.fire({
+  //       title: "dummy",//res[0].MESSAGE,
+  //       text: "Do you still want to print the QR labels for generated GRN",
+  //       icon: 'success',
+  //       showCancelButton: true, // Adds the Cancel button
+  //       confirmButtonText: 'generate QR', // Text for OK button
+  //       cancelButtonText: 'Cancel', // Text for Cancel button
+  //     }).then((result) => {
+  //       if (result.isConfirmed) {
+  //         // Call generateQR() function when OK is clicked
+  //         this.generateQR();
+
+  //         // } 
+
+  //         //   else if (result.isDismissed) {
+  //         //     console.log('Action canceled');
+  //       }
+  //     });
+  //   this.isSubmitting = false;
+  //   // }
+  //   //   else{
+  //   //     this.loaderservice.hideLoader()     
+  //   //     Swal.fire({
+  //   //       title: res[0].MESSAGE,
+  //   //       // text: "Do you still want to print the QR labels for generated GRN",
+  //   //       icon: 'error',
+  //   //       showCancelButton: true, // Adds the Cancel button
+  //   //       confirmButtonText: 'Ok', // Text for OK button
+  //   //       cancelButtonText: 'Cancel', // Text for Cancel button
+  //   //     }).then((result) => {
+  //   //       if (result.isConfirmed) {
+  //   //         // Call generateQR() function when OK is clicked
+  //   //         // this.generateQR(res[0]);
+
+  //   //       } else if (result.isDismissed) {
+  //   //         console.log('Action canceled');
+  //   //       }
+  //   //     });
+  //   //     this.isSubmitting = false;
+
+  //   //   }
+  //   // },
+  //   // error: (err) => {
+  //   //   this.loaderservice.hideLoader()     
+  //   //   console.error('Error:', err);
+  //   //   this.enableQRbutton = false;
+  //   //   this.isSubmitting = false;
+  //   // },
+  //   // });
+
+
+  // }
   initPrinter(): void {
     if(this.printer){
       Swal.fire({
