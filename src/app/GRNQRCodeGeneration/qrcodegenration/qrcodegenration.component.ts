@@ -546,7 +546,7 @@ Qty: 10`
       if(res[0].MBLNR){  
         this.loaderservice.hideLoader()     
         Swal.fire({
-        title: "dummy",//res[0].MESSAGE,
+        title: res[0].MESSAGE,
         text: "Do you still want to print the QR labels for generated GRN",
         icon: 'success',
         showCancelButton: true, // Adds the Cancel button
