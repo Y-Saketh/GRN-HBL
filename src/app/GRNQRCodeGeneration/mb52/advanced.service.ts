@@ -44,8 +44,9 @@ function matches(tables: Table, term: string, pipe: PipeTransform) {
     tables.LGOBE.toLowerCase().includes(term.toLowerCase()) || // sl Description
     tables.MEINS.toLowerCase().includes(term.toLowerCase()) || // Base Unit of Measure
     tables.LABST.toString().includes(term.toLowerCase()) || // Unrestricted Stock Quantity
-    pipe.transform(tables.SALK3)?.toString().includes(term) || // Unrestricted Stock Value
-    tables.INSME.toString().includes(term.toLowerCase())  // Quality Inspection Stock Quantity
+    pipe.transform(tables.WLABS)?.toString().includes(term) || // Unrestricted Stock Value
+    tables.INSME.toString().includes(term.toLowerCase())  || // Quality Inspection Stock Quantity
+    tables.WINSM.toString().includes(term.toLowerCase())  // Quality Inspection Stock Quantity
   );
 }
 

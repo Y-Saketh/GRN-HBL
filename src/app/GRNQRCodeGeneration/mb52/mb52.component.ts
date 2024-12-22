@@ -57,19 +57,14 @@ export class Mb52Component implements OnInit {
         const headerMapping: { [key: string]: string } = {
           WERKS: 'Plant',                                // Plant
           LGORT: 'Storage Location',                     // Storage Location
-          MATNR: 'Material',                             // Material
-          BWART: 'Movement Type',                        // Movement Type
-          mvtTypeText: 'Movement Type Text',             // Movement Type Text
-          BUDAT: 'Posting Date',                         // Posting Date
+          LGOBE: 'Storage Location Description',          // Storage Location Description
+          MATNR: 'Material Number',                             // Material
           MAKTX: 'Material Description',                 // Material Description
-          qtyInUnitofEntry: 'Quantity in Unit of Entry', // Quantity in Unit of Entry
-          amtInLocCur: 'Amount in Local Currency',       // Amount in Local Currency
-          MBLNR: 'Material Document',                    // Material Document
-          NAME1: 'Vendor Name',                          // Vendor Name
-          TEXT: 'Text',                                  // Text
-          LFIMG: 'Quantity',                             // Quantity
-          supplier: 'Supplier',                          // Supplier
-          order: 'Order'                                 // Order
+          MEINS: 'Base Unit of Measure',                  // Base Unit of Measure
+          LABST: 'Unrestricted Stock Quantity',           // Unrestricted Stock Quantity
+          WLABS: 'Unrestricted Stock Value',              // Unrestricted Stock Value
+          INSME: 'Quality Inspection Stock Quantity',     // Quality Inspection Stock Quantity
+          WINSM: 'Quality Inspection Stock Value',        // Quality Inspection Stock Value
         };
     
         // Format data to map keys to user-friendly headers
