@@ -36,10 +36,10 @@
                   </div>
                 </div>
                 <!-- Year -->
-                <div class="col-md-2">
+                <div class="col-md-1">
                   <div class="mb-3">
                     <label class="brandcolor" for="year"
-                      >YEAR</label
+                      >Year</label
                     >
                     <input
                       type="text"
@@ -93,9 +93,9 @@
                   </div>
                   <div class="info-row" *ngIf="postingDate">
                     <span class="brandcolor">Header Text <span style="color: red">*</span></span>
-                    <input formControlName="headerText" class="form-control" placeholder="Enter header text" />
+                    <input formControlName="headerText" class="form-control" placeholder="Enter Credit Memo Doc No" />
                     <div *ngIf="submit && validationform.get('headerText').invalid" class="invalid-feedback">
-                      Please provide a valid header text.
+                      Please provide a valid Credit Memo Doc No.
                     </div>
                   </div>
                   

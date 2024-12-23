@@ -161,7 +161,6 @@ export class GoodsReturnsComponent {
         this.loaderservice.showLoader();
         this.apiService.goodsreturn(payload).subscribe({
           next: (res) => {
-            this.loaderservice.hideLoader();
             console.log('res', res)
             if (res[0]?.NUMBER) {
               // const message = `Material Doc.No: ${res[0].MBLNR} Successfully Created`;
@@ -171,7 +170,9 @@ export class GoodsReturnsComponent {
               Swal.fire("", "Error: " + res[0].MESSAGE, 'error');
             }
             this.isSubmitting = false;
+            this.loaderservice.hideLoader();
           },
+          
           error: (err) => {
             Swal.fire("", "Error occurred while saving", "error");
             this.isSubmitting = false;
@@ -243,6 +244,7 @@ export class GoodsReturnsComponent {
           this.service.setTableData(items || []);
           this.goodsreturn = items;
           this._fetchData();
+          this.loaderservice.hideLoader();
         }
       },
       error: (error: any) => {

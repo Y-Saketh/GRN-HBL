@@ -46,7 +46,7 @@
         <div class="row">
           <!-- MATERIAL DOCUMENT NUMBER -->
           <div class="col-md-2">
-            <label class="brandcolor" for="matDocNum">MATERIAL DOCUMENT NUMBER</label>
+            <label class="brandcolor" for="matDocNum">Mat.Doc No</label>
             <div class="mb-3">
               <input
                 type="text"
@@ -64,15 +64,15 @@
             </div>
           </div>
           <!-- Material Document Year -->
-          <div class="col-md-2">
-            <label class="brandcolor" for="matDocYear">MATERIAL DOCUMENT YEAR</label>
+          <div class="col-md-1">
+            <label class="brandcolor" for="matDocYear">Year</label>
             <div class="mb-3">
               <input
                 type="text"
                 class="form-control"
                 id="matDocYear"
                 formControlName="matDocYear"
-                placeholder="Material Document Year"
+                placeholder="Year"
                 [ngClass]="{ 'is-invalid': submit && form.matDocYear.errors }"
               />
               <div *ngIf="submit && form.matDocYear.errors" class="invalid-feedback">

@@ -134,11 +134,12 @@ export class GrnprintComponent implements OnInit {
     this.loaderservice.showLoader();
     this.apiService.Grnprint(obj).subscribe({
       next: (res: any) => {
-        this.loaderservice.hideLoader();
+   
         console.log('Grnprint data fetched successfully:', res);
-        this.loaderservice.hideLoader();
+        // this.loaderservice.hideLoader();
         if (res?.NUMBER) {
           Swal.fire("", res.MSGTXT, "error");
+          this.loaderservice.hideLoader();
         } else {
 
           this.GrnPrint = res[0]?.ITEM || res?.ITEM;
@@ -150,7 +151,7 @@ export class GrnprintComponent implements OnInit {
           if(this.showTable == false){
             this.downloadPdf(base64String, "GrnPrint");
           }
-         
+          this.loaderservice.hideLoader();
 
           console.log("GRN Data:", res);
         }
