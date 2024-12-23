@@ -786,6 +786,7 @@ Qty: 10`
     }
 
     this.backtoQunatity()
+    
 
 
       // const zpl = this.generateZPL(element);
@@ -1238,7 +1239,8 @@ Qty: 10`
     return this.tableData?.some(table => table.selected);
   }
   backtoQunatity() {
-    this.GrnResponse = true;
+    this.GrnResponse = false;
+    // this.GrnResponse = true;
     this.selectedMaterial = false;
     this.qrscreen = false;
     this.selectAll = false

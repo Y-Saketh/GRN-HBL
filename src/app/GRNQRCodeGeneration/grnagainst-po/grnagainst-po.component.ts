@@ -978,7 +978,8 @@ saveUnmatched(): void {
   //   this.matchedAndUnmatchedData= [];
   // }
   backtoQunatity(){
-    this.GrnResponse = true;
+    this.GrnResponse = false;
+    // this.GrnResponse = true;
     this.selectedMaterial = false;
     this.qrscreen = false;
     this.selectAll = false
