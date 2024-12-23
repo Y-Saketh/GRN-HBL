@@ -21,7 +21,6 @@ import QRCode from 'qrcode';
 import { ModalDirective, ModalModule } from 'ngx-bootstrap/modal';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { HttpClient } from '@angular/common/http';
-import { Router, ActivatedRoute  } from '@angular/router';
 declare var BrowserPrint: any;
 
 
@@ -105,7 +104,7 @@ RN: Reel 2
 
 Qty: 10`
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute, public service: qrcodegenrationService, public formBuilder: UntypedFormBuilder, private apiService: UserProfileService, public loaderservice: LoaderService, private sanitizer: DomSanitizer, private http: HttpClient) {
+  constructor(public service: qrcodegenrationService, public formBuilder: UntypedFormBuilder, private apiService: UserProfileService, public loaderservice: LoaderService, private sanitizer: DomSanitizer, private http: HttpClient) {
     this.tables$ = service.tables$;
     this.total$ = service.total$;
   }
@@ -783,8 +782,7 @@ Qty: 10`
       } catch (error) {
         console.error("QR Generation Failed", error);
       }
-      const currentRoute = this.activatedRoute.snapshot.url.map(segment => segment.path).join('/');
-      this.router.navigate([`/${currentRoute}`]);
+      
     }
 
 

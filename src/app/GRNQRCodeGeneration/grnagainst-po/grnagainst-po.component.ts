@@ -19,7 +19,6 @@ import { LoaderService } from 'src/app/core/services/loader.service';
 declare var Pace: any;
 import QRCode from 'qrcode';
 import {  ModalDirective, ModalModule } from 'ngx-bootstrap/modal';
-import { Router, ActivatedRoute  } from '@angular/router';
 declare var BrowserPrint: any;
 
 @Component({
@@ -81,8 +80,7 @@ export class GRNagainstPOComponent{
   enableQRbutton: boolean;
   GRN: any;
   currentDate: Date;
-  activatedRoute: any;
-  constructor(private router: Router,  public service: qrcodegenrationService,public formBuilder: UntypedFormBuilder,private apiService:UserProfileService, public loaderservice: LoaderService) {
+  constructor(public service: qrcodegenrationService,public formBuilder: UntypedFormBuilder,private apiService:UserProfileService, public loaderservice: LoaderService) {
     this.tables$ = service.tables$;
     this.total$ = service.total$;
   }
@@ -559,9 +557,7 @@ export class GRNagainstPOComponent{
         }
   
       }
-      
-      // const currentRoute = this.activatedRoute.snapshot.url.map(segment => segment.path).join('/');
-      // this.router.navigate([`/${currentRoute}`]);
+  
   
         // const zpl = this.generateZPL(element);
         
