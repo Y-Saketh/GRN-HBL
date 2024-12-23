@@ -91,14 +91,14 @@ export const MENU: MenuItem[] = [
     },
     {
         id: "grnagainstid",
-        label: 'GRN Against PO',
+        label: 'MENUITEMS.DASHBOARDS.LIST.GRNAGAINSTPO',
         link: 'grnagainstpo',
         icon: 'bx-package',
         parentId: "menu"
     },
     {
         id: "goodreturns",
-        label: 'Goods Returns',
+        label: 'MENUITEMS.DASHBOARDS.LIST.GOODSRETURN',
         link: 'goodsreturns',
         icon: 'bx-analyse',
         parentId: "menu"
@@ -111,8 +111,8 @@ export const MENU: MenuItem[] = [
         parentId: "menu"
     },
     {
-        id: "grnprint",//3,
-        label: 'GRN Print',
+        id: "grnprint",
+        label: 'MENUITEMS.DASHBOARDS.LIST.GRNPRINT',
         link: 'grnprint',
         icon: 'bx-paperclip',
         parentId: "menu"
@@ -126,27 +126,27 @@ export const MENU: MenuItem[] = [
         subItems: [
             {
                 id: "grpending",
-                label: 'GR Pending',
+                label: 'MENUITEMS.DASHBOARDS.LIST.GRPENDING',
                 link: 'grpending',
                 icon: 'bx-badge',
                 parentId: "zgribdstatus"
             },
             {
                 id: "grdone",
-                label: 'GR Done',
+                label: 'MENUITEMS.DASHBOARDS.LIST.GRDONE',
                 link: 'grdone',
                 icon: 'bx-badge-check',
                 parentId: "zgribdstatus"
             },
             {
                 id: "closeDownload",
-                label: 'Open PR List',
+                label: 'MENUITEMS.DASHBOARDS.LIST.CLOSEDOWNLOAD',
                 link: 'closeDownload',
                 icon: 'bx-cloud-download',
                 parentId: "menu"
             },
             {
-                id: "openpolist",//3,
+                id: "openpolist",
                 label: 'MENUITEMS.DASHBOARDS.LIST.OPENPOLIST',
                 link: 'openpolist',
                 icon: 'bx-archive',
@@ -154,15 +154,15 @@ export const MENU: MenuItem[] = [
             },
         
             {
-                id: "mb51",//3,
-                label: 'MB51',
+                id: "mb51",
+                label: 'MENUITEMS.DASHBOARDS.LIST.MB51',
                 link: 'mb51',
                 icon: 'bx-layer',
                 parentId: "menu"
             },
             {
-                id: "mb52",//3,
-                label: 'MB52',
+                id: "mb52",
+                label: 'MENUITEMS.DASHBOARDS.LIST.MB52',
                 link: 'mb52',
                 icon: 'bx-layer',
                 parentId: "menu"
