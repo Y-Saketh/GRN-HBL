@@ -293,8 +293,9 @@
                         type="text"
                         formControlName="LrDate"
                         placeholder="LR Date is required"
-                        bsDatepicker
                         class="form-control form-control-sm"
+                        [bsConfig]="bsConfig"
+                        bsDatepicker
                       />
                       <small
                         class="text-danger"

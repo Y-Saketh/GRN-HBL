@@ -5,7 +5,7 @@
 
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title"><span style="color: black;"></span> Goods Returns</h4>
+                    <h4 class="card-title"><span style="color: black;"></span> Goods Return</h4>
                     <!-- <p class="card-title-desc">Provide valuable, actionable feedback to your users with HTML5 form
             validation–available in all our supported browsers.</p> -->
              <form  class="needs-validation"
@@ -22,6 +22,7 @@
                       type="text"
                       class="form-control"
                       id="inbounddeliverynumber"
+                      class="form-control"
                       formControlName="inbounddeliverynumber"
                       placeholder="GRN Number"
                     />
@@ -76,30 +77,54 @@
                 <!-- Details -->
                 <div class="col-md-4">
                   <div class="info-row" *ngIf="materialDocument">
-                    <span class="brandcolor">Mat.Doc No</span>
-                    <span>: {{ materialDocument }}</span>
+                    <span class="brandcolor fs-6">Mat.Doc No</span>
+                    <span class="fs-6">: {{ materialDocument }}</span>
                   </div>
                   <div class="info-row" *ngIf="year">
-                    <span class="brandcolor">Mat.Doc Year</span>
-                    <span>: {{ year }}</span>
+                    <span class="brandcolor fs-6">Mat.Doc Year</span>
+                    <span class="fs-6">: {{ year }}</span>
                   </div>
                   <div class="info-row" *ngIf="postingDate">
-                    <span class="brandcolor">Posting Date</span>
-                    <span>: {{ postingDate }}</span>
+                    <span class="brandcolor fs-6">
+                      Posting Date
+                    </span>
+                    <input
+                    type="text"
+                    class="form-control"
+                    id="postingDate"
+                    [bsConfig]="bsConfig"
+                    bsDatepicker
+                    formControlName="postingDate"
+                    class="form-control fs-6"
+                    placeholder="posting date"
+                    [ngClass]="{
+                      'is-invalid': submit && form.postingDate.errors
+                    }"
+                  />
                   </div>
                   <div class="info-row" *ngIf="documentDate">
-                    <span class="brandcolor">Doc Date</span>
-                    <span>: {{ documentDate }}</span>
+                    <span class="brandcolor fs-6">Doc Date</span>
+                    <span class="fs-6">: {{ documentDate | date: 'dd-MM-yyyy' }}</span>
+                  </div>
+                  <div class="info-row" *ngIf="dcNo">
+                    <span class="brandcolor fs-6">Dc No</span>
+                    <span class="fs-6">: {{ dcNo }}</span>
                   </div>
                   <div class="info-row" *ngIf="postingDate">
-                    <span class="brandcolor">Header Text <span style="color: red">*</span></span>
-                    <input formControlName="headerText" class="form-control" placeholder="Enter Credit Memo Doc No" />
-                    <div *ngIf="submit && validationform.get('headerText').invalid" class="invalid-feedback">
+                    <span class="brandcolor fs-6">
+                      Header Text <span style="color: red">*</span>
+                    </span>
+                    <input
+                      formControlName="headerText"
+                      class="form-control fs-6"
+                      placeholder="Enter Credit Memo Doc No"
+                    />
+                    <div *ngIf="submit && validationform.get('headerText').invalid" class="invalid-feedback fs-6">
                       Please provide a valid Credit Memo Doc No.
                     </div>
                   </div>
-                  
                 </div>
+                
                 
               </div>
              </form>         
@@ -159,13 +184,16 @@
                         <th sortable="ZEILE" (sort)="onSort($event)">
                           Mat.Doc Item
                         </th>
-                        <th sortable="MENGE" (sort)="onSort($event)"> Quantity</th>
                         <th sortable="MEINS" (sort)="onSort($event)">
                           BUoM
                         </th>
                         <th sortable="CHARG" (sort)="onSort($event)"> Batch</th>
                         <th sortable="LIFNR" (sort)="onSort($event)"> Vendor</th>
                         <th sortable="WEMPF" (sort)="onSort($event)"> Goods recipient </th>
+                        <th sortable="MENGE" (sort)="onSort($event)"> Quantity</th>
+                        <th sortable="RMENGE" (sort)="onSort($event)">
+                          Return Quantity
+                        </th>
                         <th sortable="REASON" (sort)="onSort($event)">Reason for MVT 
                           <span style="color: red">*</span>
                         </th>
@@ -197,8 +225,6 @@
                         <!-- Item Number of Purchasing Document-->
                         <td>{{ table.ZEILE }}</td>
                         <!-- Item in Material Document-->
-                        <td>{{ table.MENGE }}</td>
-                        <!-- Quantity-->
                         <td>{{ table.MEINS }}</td>
                         <!-- Base Unit of Measure-->
                         <td>{{ table.CHARG }}</td>
@@ -207,6 +233,10 @@
                         <!-- Supplier's Account Number-->
                         <td>{{ table.WEMPF }}</td>
                         <!-- Goods recipient-->  
+                        <td>{{ table.MENGE }}</td>
+                        <!-- Quantity-->
+                         <td><input type="text" [(ngModel)]="table.RMENGE" class="form-control form-control-sm" (input)="returnqty(table, i )"></td>
+                        <!-- Return Quantity-->
                         <td>
                           <select [(ngModel)]="table.REASON"
                                   [disabled]="!table.selected"
