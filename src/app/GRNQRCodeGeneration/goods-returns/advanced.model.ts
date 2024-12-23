@@ -20,6 +20,7 @@ export interface Table {
     WEMPF: string; // Goods recipient
     CHARG: string; // Batch Number
     LIFNR: string; // Supplier's Account Number
+    RMENGE: number; // Return Quantity
 }
 
   

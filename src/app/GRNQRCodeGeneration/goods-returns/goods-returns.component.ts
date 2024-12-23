@@ -37,6 +37,8 @@ export class GoodsReturnsComponent {
   year: any;
   postingDate: any;
   documentDate: any;
+  dcNo: any;
+  headerText: any;
 
   isSubmitting: boolean = false;
   stockTypes= [
@@ -50,6 +52,11 @@ export class GoodsReturnsComponent {
     { text: 'Incomplete', id: '0002' },
     { text: 'Damaged', id: '0003' }
   ];
+
+  bsConfig = {
+    dateInputFormat: 'DD-MM-YYYY', // Set the date format
+    containerClass: 'theme-blue', // Optional: Use a predefined theme
+  };
     
   
 
@@ -69,11 +76,12 @@ export class GoodsReturnsComponent {
   }
 
   ngOnInit(){
-
+    const currentDate = new Date();
     this.validationform = this.formBuilder.group({
       inbounddeliverynumber: ['', [Validators.required]],
       year: ['', [Validators.required]],
-      headerText:['']
+      headerText:[''],
+      postingDate: [currentDate, [Validators.required]],
     });
  
   }
@@ -149,12 +157,13 @@ export class GoodsReturnsComponent {
               "MBLNR": table.MBLNR,
               "ZEILE": table.ZEILE,
               "MENGE": table.MENGE,
+              "RMENGE": table.RMENGE,
               "MEINS": table.MEINS,
               "REASON": table.REASON,
               "INSMK": table.INSMK,
               "WEMPF": table.WEMPF,
               "CHARG": table.CHARG,
-              "LIFNR": table.LIFNR
+              "LIFNR": table.LIFNR,
             });
           }
         });
@@ -185,7 +194,18 @@ export class GoodsReturnsComponent {
       }
     });
   }
-     
+  returnqty(row, index) {
+    if (row.MENGE > row.MENGE) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Limit Exceeded',
+            text: `The Return quantity (${row.RMENGE}) exceeds the Original quantity (${row.MENGE}).`,
+          });
+    
+          // Reset the value of the current packet's DCLABS
+          row.RMENGE = null;
+        }
+  }
 
   onSort({ column, direction }: SortEvent) {
     this.headers.forEach((header) => {
