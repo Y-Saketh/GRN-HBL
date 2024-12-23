@@ -40,14 +40,14 @@
   
             <div *ngIf="GrnResponse" class="card-body ">
               <div class="row">
-                <div class="col-sm-8 col-md-8">
+                <div class="col-sm-6 col-md-6">
                   <form [formGroup]="inboundDetailsForm">
                     <table class="table table-bordered" id="basic-datatable"
                       class="table table-bordered dt-responsive nowrap">
                       <thead class="brandcolor tableHeader">
                         <tr>
                           <th class="brandcolor">Plant</th>
-                          <th class="brandcolor">Invoice Number</th>
+                          <th class="brandcolor" >Invoice Number</th>
                           <th class="brandcolor">Invoice Date</th>
                           <th class="brandcolor">Posting Date</th>
                         </tr>
@@ -58,11 +58,13 @@
                             <span>{{ plant }}</span>
                           </td>
                           <td>
-                            <span>{{ invoiceNumber }}</span>
+                            <!-- <span>{{ invoiceNumber }}</span> -->
+                            <input type="text" [(ngModel)]="invoiceNumber" [ngModelOptions]="{ standalone: true }" maxlength="10" placeholder="Invoice Number" class="form-control custom-posting-date"> 
                           </td>
                           <td>
                             <!-- <span>{{ invoiceDate }}</span> -->
-                            <span>{{ invoiceDate | date: 'dd-MM-yyyy' }}</span>
+                            <!-- <span>{{ invoiceDate | date: 'dd-MM-yyyy' }}</span> -->
+                            <input type="text" [(ngModel)]="invoiceDate" [ngModelOptions]="{ standalone: true }" placeholder=" Enter Invoice Date" class="form-control custom-posting-date" [bsConfig]="bsConfig" bsDatepicker> 
                           </td>
                           <td>
                             <input type="text" class="form-control custom-posting-date" formControlName="postingDate"
@@ -73,7 +75,7 @@
                     </table>
                   </form>
                 </div>
-  
+                <div class="col-sm-2 col-md-2"></div>
                 <div class="col-sm-4 col-md-4">
                   <h5 *ngIf="vendorCode">
                     <span class="brandcolor">Vendor Code</span> :
@@ -407,7 +409,8 @@
   
     <div class="btn-container">
       <button class="btn btn-danger ml-1" type="button" (click)="backtoQunatity()">Close</button>
-      <button class="text-md-end btn-success btn-lg highlight-3d-btn" (click)="printLabels()">Print Labels</button>
+      <!-- <button class="text-md-end btn-success btn-lg highlight-3d-btn" (click)="printLabels()">Print Labels</button> -->
+      <button class="text-md-end btn-success btn-lg highlight-3d-btn" (click)="initPrinter()">Print Labels</button>
     </div>
   
   

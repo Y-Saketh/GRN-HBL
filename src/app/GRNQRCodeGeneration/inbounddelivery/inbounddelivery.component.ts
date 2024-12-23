@@ -161,7 +161,7 @@ export class InbounddeliveryComponent implements OnInit {
               this.resetFormState();
             }
            
-  
+            this.loaderservice.hideLoader(); 
             // Optional: Trigger component refresh (replace this logic if not using routing)
             // location.reload();
           },

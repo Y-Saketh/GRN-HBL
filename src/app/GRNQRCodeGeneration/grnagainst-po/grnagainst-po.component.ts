@@ -19,6 +19,8 @@ import { LoaderService } from 'src/app/core/services/loader.service';
 declare var Pace: any;
 import QRCode from 'qrcode';
 import {  ModalDirective, ModalModule } from 'ngx-bootstrap/modal';
+import { Router, ActivatedRoute  } from '@angular/router';
+declare var BrowserPrint: any;
 
 @Component({
   selector: 'app-grnagainst-po',
@@ -56,6 +58,7 @@ export class GRNagainstPOComponent{
   PostingDate: string;
   selectAll = true;
   plant :any;
+  printer: any;
   // sloc:any;
   documentDeliveryDate :any;
   invoiceDate :any;
@@ -78,12 +81,14 @@ export class GRNagainstPOComponent{
   enableQRbutton: boolean;
   GRN: any;
   currentDate: Date;
-  constructor(public service: qrcodegenrationService,public formBuilder: UntypedFormBuilder,private apiService:UserProfileService, public loaderservice: LoaderService) {
+  activatedRoute: any;
+  constructor(private router: Router,  public service: qrcodegenrationService,public formBuilder: UntypedFormBuilder,private apiService:UserProfileService, public loaderservice: LoaderService) {
     this.tables$ = service.tables$;
     this.total$ = service.total$;
   }
 
   ngOnInit() {
+    this.startPrinter()
     this.currentDate = new Date()
     this.breadCrumbItems = [{ label: 'GRN' }, { label: 'GRN Against InBound Delivery', active: true }];
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
@@ -431,6 +436,147 @@ export class GRNagainstPOComponent{
   
   
   }
+
+   initPrinter(): void {
+      if(this.printer){
+        Swal.fire({
+          title: "Do you want to print the Labels",//res[0].MESSAGE,
+          text: "",
+          icon: 'success',
+          showCancelButton: true, // Adds the Cancel button
+          confirmButtonText: 'Print QR', // Text for OK button
+          cancelButtonText: 'Cancel', // Text for Cancel button
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.printLabel();
+            } 
+          else if (result.isDismissed) {
+            console.log('Action canceled');
+          }
+        });
+      }
+      else{
+        Swal.fire("","Printer is not available","error")
+        this.startPrinter()
+      }
+  
+    }
+    startPrinter(){
+      if (typeof BrowserPrint !== 'undefined') {
+        // Fetch available printers from the API
+        fetch('http://127.0.0.1:9100/available')
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.printer && data.printer.length > 0) {
+              // Select the first available printer (you can change the selection logic as needed)
+              const selectedPrinter = data.printer.find((printer: any) => printer.connection === 'usb');  // Example: choose USB connected printer
+  
+              if (selectedPrinter) {
+                // Fetch local devices using BrowserPrint.getLocalDevices()
+                BrowserPrint.getLocalDevices((devices: any) => {
+                  console.log('Devices found by BrowserPrint:', devices);  // Log the response to inspect it
+  
+                  // Check if devices contains the printer array
+                  if (devices && Array.isArray(devices.printer)) {
+                    // Find the device that matches the selectedPrinter UID
+                    const device = devices.printer.find((dev: any) => dev.uid === selectedPrinter.uid);
+  
+                    if (device) {
+                      this.printer = device;
+                      console.log('Printer found:', this.printer);
+                    } else {
+                      console.error('Printer with UID not found in local devices');
+                    }
+                  } else {
+                    console.error('Devices response does not contain printer array:', devices);
+                  }
+                }, (error: any) => {
+                  console.error('Error fetching local devices:', error);
+                });
+              } else {
+                console.error('No suitable printer found');
+              }
+            } else {
+              console.error('No printers available');
+            }
+          })
+          .catch((error) => {
+            console.error('Error fetching available printers:', error);
+          });
+      } else {
+        console.error('BrowserPrint is not available!');
+        Swal.fire("","Printer is not Available","error")
+      }
+    }
+    generateZPL(ele:any, row, GRNn): string {
+      console.log("initPrinter",ele, row, GRNn)
+      return `
+  CT~~CD,~CC^~CT~
+  ^XA~TA000~JSN^LT0^MNW^MTT^PON^PMN^LH0,0^JMA^PR4,4~SD10^JUS^LRN^CI0^XZ
+  ^XA
+  ^MMT
+  ^PW400
+  ^LL0200
+  ^LS0
+  ^FT52,183^BQN,2,3
+  ^FH\^FDLA,${ele}^FS
+  ^FT223,47^A0N,25,24^FH\^FD${GRNn}^FS
+  ^FT223,74^A0N,25,24^FH\^FD${row.LIFNR}^FS
+  ^FT223,105^A0N,25,24^FH\^FD${row.MATNR}^FS
+  ^FT223,130^A0N,25,24^FH\^FD Reel ${row.DCHARG}^FS
+  ^FT223,161^A0N,25,24^FH\^FD${row.DCLABS}^FS
+  ^PQ1,0,1,Y^XZ
+      `;
+    }
+    async printLabel() {
+      this.qrCodes = [];
+      console.log("matchedAndUnmatchedData", this.matchedAndUnmatchedData)
+      for (const table of this.matchedAndUnmatchedData) {
+     
+        const qrData = `
+            GRN: ${this.GRN}
+            VC: ${table.LIFNR}
+            Mat: ${table.MATNR}
+            MatD: ${table.MAKTX}
+            Dt: ${this.currentDate}
+            RN: Reel ${table.DCHARG}
+            Qty: ${table.DCLABS}
+          `;
+        try {
+          const zpl = await this.generateZPL(qrData,table,this.GRN);
+          if (this.printer) {
+            this.printer.send(zpl, () => {
+              console.log('Label sent to printer!');
+            }, (error: any) => {
+              console.error('Error sending ZPL:', error);
+            });
+          } else {
+            console.error('No printer available!');
+          }
+         
+        } catch (error) {
+          console.error("QR Generation Failed", error);
+        }
+  
+      }
+      
+      // const currentRoute = this.activatedRoute.snapshot.url.map(segment => segment.path).join('/');
+      // this.router.navigate([`/${currentRoute}`]);
+  
+        // const zpl = this.generateZPL(element);
+        
+  
+      // const zpl = this.generateZPL();
+      // if (this.printer) {
+      //   this.printer.send(zpl, () => {
+      //     console.log('Label sent to printer!');
+      //   }, (error: any) => {
+      //     console.error('Error sending ZPL:', error);
+      //   });
+      // } else {
+      //   console.error('No printer available!');
+      // }
+    }
 
 
 
