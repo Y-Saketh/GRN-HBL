@@ -939,51 +939,95 @@ export class GRNagainstPOComponent{
     this.service.sortColumn = column;
     this.service.sortDirection = direction;
   }
-  matchMaterial(index: number): void {
-    const material = this.tableData[index];
-    console.log("material", material);
+//   matchMaterial(index: number): void {
+//     const material = this.tableData[index];
+//     console.log("material", material);
 
-    if (material.ZLABEL > 0 && material.MENGE > 0) {
-        let qty = material.MENGE / material.ZLABEL;
+//     if (material.ZLABEL > 0 && material.MENGE > 0) {
+//         let qty = material.MENGE / material.ZLABEL;
 
-        if (['NOS', 'PCS', 'EA'].includes(material.MEINS)) {
-            if (!Number.isInteger(qty)) {
-                console.error("Error: Quantity cannot be split into decimal values for NOS, PCS, or EA.");
-                Swal.fire("", "Quantity cannot be split into decimal values", "error");
-                material.ZLABEL = null;
-                return;
-            }
-        }
+//         if (['NOS', 'PCS', 'EA'].includes(material.MEINS)) {
+//             if (!Number.isInteger(qty)) {
+//                 console.error("Error: Quantity cannot be split into decimal values for NOS, PCS, or EA.");
+//                 Swal.fire("", "Quantity cannot be split into decimal values", "error");
+//                 material.ZLABEL = null;
+//                 return;
+//             }
+//         }
 
-        if (qty % 1 !== 0) {  // Check if it's a decimal number
-            qty = parseFloat(qty.toFixed(2));  // Round to 2 decimal places
-        }
-        console.log("Processed Quantity:", qty);
+//         if (qty % 1 !== 0) {  // Check if it's a decimal number
+//             qty = parseFloat(qty.toFixed(2));  // Round to 2 decimal places
+//         }
+//         console.log("Processed Quantity:", qty);
 
-        // Generate packets with the new quantity (based on the latest action)
-        const packets = Array.from({ length: material.ZLABEL }, (_, i) => ({
-            ...material,  // Spread original material's properties
-            DCLABS: qty,  // Add formatted quantity
-            DCHARG: i + 1,  // Add packet number
-        }));
+//         // Generate packets with the new quantity (based on the latest action)
+//         const packets = Array.from({ length: material.ZLABEL }, (_, i) => ({
+//             ...material,  // Spread original material's properties
+//             DCLABS: qty,  // Add formatted quantity
+//             DCHARG: i + 1,  // Add packet number
+//         }));
 
-        // Prepare material for matched data
-        const matchedMaterial = {
-            ...material,
-            packets,  // Attach packets
-            isMatched: true,  // Mark as matched
-        };
+//         // Prepare material for matched data
+//         const matchedMaterial = {
+//             ...material,
+//             packets,  // Attach packets
+//             isMatched: true,  // Mark as matched
+//         };
 
-        // Remove the old data for the material before adding the new one
-        this.matchedAndUnmatchedData = this.matchedAndUnmatchedData.filter((data) => data.materialId !== material.MATNR);
+//         // Remove the old data for the material before adding the new one
+//         this.matchedAndUnmatchedData = this.matchedAndUnmatchedData.filter((data) => data.materialId !== material.MATNR);
 
-        // Add only the latest matched packets (this will update the state for the material)
-        this.matchedAndUnmatchedData.push(...matchedMaterial.packets);
+//         // Add only the latest matched packets (this will update the state for the material)
+//         this.matchedAndUnmatchedData.push(...matchedMaterial.packets);
 
-        console.log(`Matched Material at index ${index}:`, this.matchedAndUnmatchedData);
-    } else {
-        Swal.fire("Error", "Invalid Label Quantity or MENGE", "error");
+//         console.log(`Matched Material at index ${index}:`, this.matchedAndUnmatchedData);
+//     } else {
+//         Swal.fire("Error", "Invalid Label Quantity or MENGE", "error");
+//     }
+// }
+matchMaterial(index: number): void {
+  const material = this.tableData[index];
+  console.log("material", material);
+
+  if (material.ZLABEL > 0 && material.MENGE > 0) {
+    let qty = material.MENGE / material.ZLABEL;
+
+    // Check for units that require integer quantities
+    if (['NOS', 'PCS', 'EA'].includes(material.MEINS)) {
+      if (!Number.isInteger(qty)) {
+        console.error("Error: Quantity cannot be split into decimal values for NOS, PCS, or EA.");
+        Swal.fire("", "Quantity cannot be split into decimal values", "error");
+        material.ZLABEL = null;
+        return;
+      }
     }
+
+    // Format quantity to 2 decimal places if necessary
+    if (qty % 1 !== 0) {
+      qty = parseFloat(qty.toFixed(2));
+    }
+    console.log("Processed Quantity:", qty);
+
+    // Remove existing matched data for this material
+    this.matchedAndUnmatchedData = this.matchedAndUnmatchedData.filter(
+      (data) => data.MATNR !== material.MATNR
+    );
+
+    // Generate new matched packets
+    const packets = Array.from({ length: material.ZLABEL }, (_, i) => ({
+      ...material,
+      DCLABS: qty,  // Quantity per packet
+      DCHARG: i + 1,  // Packet number
+      isMatched: true,  // Mark as matched
+    }));
+
+    // Add the new packets to the matched data array
+    this.matchedAndUnmatchedData.push(...packets);
+
+    console.log(`Matched Material at index ${index}:`, this.matchedAndUnmatchedData);
+  } else {
+    Swal.fire("Error", "Invalid Label Quantity or MENGE", "error");
+  }
 }
 
 

@@ -228,11 +228,17 @@
                     <input type="text" [(ngModel)]="table.ABLAD" class="form-control form-control-sm" />
                   </td>
                   <td>
-                    <input type="number"  [(ngModel)]="table.ZLABEL" [disabled]="!table.selected"
+                    <!-- <input type="number"  [(ngModel)]="table.ZLABEL" [disabled]="!table.selected"
+                      placeholder="Label Qty" /> -->
+                      <input type="number" 
+                      [(ngModel)]="table.ZLABEL" 
+                      [disabled]="!table.selected" 
+                      (change)="onZLabelChange(i)" 
                       placeholder="Label Qty" />
-
+                    
                   </td>
-                  <td>
+                  
+                  <!-- <td>
                     <div style="display: flex; gap: 5px; justify-content: center;">
                       <button 
                         class="btn btn-success btn-sm" 
@@ -247,6 +253,20 @@
                         Unmatch
                       </button>
                     </div>
+                  </td> -->
+                  <td>
+                    <button 
+                      class="btn btn-success btn-sm" 
+                      (click)="matchMaterial(i)" 
+                      [disabled]="table.issMatched || !table.selected || !table.ZLABEL">
+                      Match
+                    </button>
+                    <button 
+                      class="btn btn-danger btn-sm" 
+                      (click)="unmatchMaterial(i)" 
+                      [disabled]="table.issMatched || !table.selected || !table.ZLABEL">
+                      Unmatch
+                    </button>
                   </td>
                   
                   <!-- <td>

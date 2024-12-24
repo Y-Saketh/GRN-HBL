@@ -187,44 +187,44 @@ Qty: 10`
   }
 
 
-  splitRows(index: number, splitCount: number) {
-    this.tables$.pipe(take(1)).subscribe((tables) => {
-      const mainRow = tables[index];
+  // splitRows(index: number, splitCount: number) {
+  //   this.tables$.pipe(take(1)).subscribe((tables) => {
+  //     const mainRow = tables[index];
 
-      // If the row is already split, do not perform the split again
-      if (mainRow.shadowRows && mainRow.shadowRows.length > 0) {
-        return;
-      }
+  //     // If the row is already split, do not perform the split again
+  //     if (mainRow.shadowRows && mainRow.shadowRows.length > 0) {
+  //       return;
+  //     }
 
-      // Initialize shadowRows if not present
-      mainRow.shadowRows = mainRow.shadowRows || [];
+  //     // Initialize shadowRows if not present
+  //     mainRow.shadowRows = mainRow.shadowRows || [];
 
-      // Clear existing shadow rows before splitting
-      mainRow.shadowRows = [];
+  //     // Clear existing shadow rows before splitting
+  //     mainRow.shadowRows = [];
 
-      // Add the specified number of shadow rows and set them as selected
-      for (let i = 0; i < splitCount; i++) {
-        const shadowRow = {
-          MATNR: mainRow.MATNR,
-          WERKS: mainRow.WERKS,
-          LGORT: mainRow.LGORT,
-          BWART: mainRow.BWART,
-          // Batch: '',
-          // PostingDate: '',
-          MENGE: null,  // Split quantity (if needed)
-          MEINS: mainRow.MEINS,
-          EBELN: mainRow.EBELN,
-          EBELP: mainRow.EBELP,
-          shadowRows: [],
-          selected: true,  // Set shadow row selected by default
-          isSplit: true,   // Flag to track that this row is a split row
-        };
-        mainRow.shadowRows.push(shadowRow);
-      }
+  //     // Add the specified number of shadow rows and set them as selected
+  //     for (let i = 0; i < splitCount; i++) {
+  //       const shadowRow = {
+  //         MATNR: mainRow.MATNR,
+  //         WERKS: mainRow.WERKS,
+  //         LGORT: mainRow.LGORT,
+  //         BWART: mainRow.BWART,
+  //         // Batch: '',
+  //         // PostingDate: '',
+  //         MENGE: null,  // Split quantity (if needed)
+  //         MEINS: mainRow.MEINS,
+  //         EBELN: mainRow.EBELN,
+  //         EBELP: mainRow.EBELP,
+  //         shadowRows: [],
+  //         selected: true,  // Set shadow row selected by default
+  //         isSplit: true,   // Flag to track that this row is a split row
+  //       };
+  //       mainRow.shadowRows.push(shadowRow);
+  //     }
 
-      console.log("Updated Main Row with Shadow Rows:", mainRow);
-    });
-  }
+  //     console.log("Updated Main Row with Shadow Rows:", mainRow);
+  //   });
+  // }
 
   // saveBound(tables$: Observable<any[]>) {
   //   console.log("labelQuantity",)
@@ -1193,13 +1193,60 @@ Qty: 10`
     this.service.sortDirection = direction;
   }
 
+  // matchMaterial(index: number): void {
+  //   const material = this.tableData[index];
+  //   console.log("material", material);
+
+  //   if (material.ZLABEL > 0 && material.MENGE > 0) {
+  //     let qty = material.MENGE / material.ZLABEL;
+
+  //     if (['NOS', 'PCS', 'EA'].includes(material.MEINS)) {
+  //       if (!Number.isInteger(qty)) {
+  //         console.error("Error: Quantity cannot be split into decimal values for NOS, PCS, or EA.");
+  //         Swal.fire("", "Quantity cannot be split into decimal values", "error");
+  //         material.ZLABEL = null;
+  //         return;
+  //       }
+  //     }
+
+  //     if (qty % 1 !== 0) {  // Check if it's a decimal number
+  //       qty = parseFloat(qty.toFixed(2));  // Round to 2 decimal places
+  //     }
+  //     console.log("Processed Quantity:", qty);
+
+  //     // Generate packets with the new quantity (based on the latest action)
+  //     const packets = Array.from({ length: material.ZLABEL }, (_, i) => ({
+  //       ...material,  // Spread original material's properties
+  //       DCLABS: qty,  // Add formatted quantity
+  //       DCHARG: i + 1,  // Add packet number
+  //     }));
+
+  //     // Prepare material for matched data
+  //     const matchedMaterial = {
+  //       ...material,
+  //       packets,  // Attach packets
+  //       isMatched: true,  // Mark as matched
+  //     };
+
+  //     // Remove the old data for the material before adding the new one
+  //     this.matchedAndUnmatchedData = this.matchedAndUnmatchedData.filter((data) => data.materialId !== material.MATNR);
+
+  //     // Add only the latest matched packets (this will update the state for the material)
+  //     this.matchedAndUnmatchedData.push(...matchedMaterial.packets);
+
+  //     console.log(`Matched Material at index ${index}:`, this.matchedAndUnmatchedData);
+  //   } else {
+  //     Swal.fire("Error", "Invalid Label Quantity or MENGE", "error");
+  //   }
+  // }
   matchMaterial(index: number): void {
     const material = this.tableData[index];
     console.log("material", material);
-
+  
     if (material.ZLABEL > 0 && material.MENGE > 0) {
       let qty = material.MENGE / material.ZLABEL;
-
+  
+      // Check for units that require integer quantities
       if (['NOS', 'PCS', 'EA'].includes(material.MEINS)) {
         if (!Number.isInteger(qty)) {
           console.error("Error: Quantity cannot be split into decimal values for NOS, PCS, or EA.");
@@ -1208,38 +1255,35 @@ Qty: 10`
           return;
         }
       }
-
-      if (qty % 1 !== 0) {  // Check if it's a decimal number
-        qty = parseFloat(qty.toFixed(2));  // Round to 2 decimal places
+  
+      // Format quantity to 2 decimal places if necessary
+      if (qty % 1 !== 0) {
+        qty = parseFloat(qty.toFixed(2));
       }
       console.log("Processed Quantity:", qty);
-
-      // Generate packets with the new quantity (based on the latest action)
+  
+      // Remove existing matched data for this material
+      this.matchedAndUnmatchedData = this.matchedAndUnmatchedData.filter(
+        (data) => data.MATNR !== material.MATNR
+      );
+  
+      // Generate new matched packets
       const packets = Array.from({ length: material.ZLABEL }, (_, i) => ({
-        ...material,  // Spread original material's properties
-        DCLABS: qty,  // Add formatted quantity
-        DCHARG: i + 1,  // Add packet number
-      }));
-
-      // Prepare material for matched data
-      const matchedMaterial = {
         ...material,
-        packets,  // Attach packets
+        DCLABS: qty,  // Quantity per packet
+        DCHARG: i + 1,  // Packet number
         isMatched: true,  // Mark as matched
-      };
-
-      // Remove the old data for the material before adding the new one
-      this.matchedAndUnmatchedData = this.matchedAndUnmatchedData.filter((data) => data.materialId !== material.MATNR);
-
-      // Add only the latest matched packets (this will update the state for the material)
-      this.matchedAndUnmatchedData.push(...matchedMaterial.packets);
-
+      }));
+  
+      // Add the new packets to the matched data array
+      this.matchedAndUnmatchedData.push(...packets);
+  
       console.log(`Matched Material at index ${index}:`, this.matchedAndUnmatchedData);
     } else {
       Swal.fire("Error", "Invalid Label Quantity or MENGE", "error");
     }
   }
-
+  
 
 
   unmatchMaterial(index: number): void {
@@ -1595,5 +1639,17 @@ Qty: 10`
     }
   }
 
+onZLabelChange(index: number): void {
+  const material = this.tableData[index];
+
+  if (material.issMatched) {
+    // Remove previous matches if ZLABEL changes
+    material.issMatched = false;
+    this.matchedAndUnmatchedData = this.matchedAndUnmatchedData.filter(
+      data => data.MATNR !== material.MATNR
+    );
+    console.log(`Cleared matches for material: ${material.MATNR}`);
+  }
+}
 
 }
