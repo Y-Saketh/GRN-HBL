@@ -433,81 +433,175 @@ export class GrnprintComponent implements OnInit {
   ^FT223,47^A0N,25,24^FH\^FD${this.GRN}^FS
   ^FT223,74^A0N,25,24^FH\^FD${row.LIFNR}^FS
   ^FT223,105^A0N,25,24^FH\^FD${row.MATNR}^FS
-  ^FT223,130^A0N,25,24^FH\^FD Pkg ${row.DCHARG}^FS
-  ^FT223,161^A0N,25,24^FH\^FD${row.DCLABS} ${row.MEINS}^FS
+  ^FT223,130^A0N,25,24^FH\^FD Pkg ${row.DCHARG}/${row.ZLABEL}^FS
+  ^FT223,161^A0N,25,24^FH\^FDQTY ${row.DCLABS} ${row.MEINS}^FS
   ^PQ1,0,1,Y^XZ
       `;
     }
   
+    // async printLabel() {
+    //   this.qrCodes = [];
+    //   console.log("matchedAndUnmatchedData", this.matchedAndUnmatchedData)
+    //   for (const table of this.matchedAndUnmatchedData) {
+     
+    //     const qrData = `
+            // GRN: ${this.GRN}
+            // VC: ${table.LIFNR}
+            // Mat: ${table.MATNR}
+            // MatD: ${table.MAKTX}
+            // Dt: ${this.currentDate}
+            // RN: Reel ${table.DCHARG}
+            // Qty: ${table.DCLABS}
+    //       `;
+    //     try {
+    //       const zpl = this.generateZPL(qrData, table);
+    //       if (this.printer) {
+    //         this.printer.send(zpl, () => {
+    //           console.log('Label sent to printer!');
+    //         }, (error: any) => {
+    //           console.error('Error sending ZPL:', error);
+    //         });
+    //       } else {
+    //         console.error('No printer available!');
+    //       }
+         
+    //     } catch (error) {
+    //       console.error("QR Generation Failed", error);
+    //     }
+  
+    //   }
+  
+  
+    //     // const zpl = this.generateZPL(element);
+        
+  
+    //   // const zpl = this.generateZPL();
+    //   // if (this.printer) {
+    //   //   this.printer.send(zpl, () => {
+    //   //     console.log('Label sent to printer!');
+    //   //   }, (error: any) => {
+    //   //     console.error('Error sending ZPL:', error);
+    //   //   });
+    //   // } else {
+    //   //   console.error('No printer available!');
+    //   // }
+    // }
     async printLabel() {
       this.qrCodes = [];
-      console.log("matchedAndUnmatchedData", this.matchedAndUnmatchedData)
-      for (const table of this.matchedAndUnmatchedData) {
-     
+      console.log("matchedAndUnmatchedData", this.matchedAndUnmatchedData);
+    
+      const printPromises = this.matchedAndUnmatchedData.map((table) => {
         const qrData = `
-            GRN: ${this.GRN}
+              GRN: ${this.GRN}
             VC: ${table.LIFNR}
             Mat: ${table.MATNR}
             MatD: ${table.MAKTX}
             Dt: ${this.currentDate}
-            RN: Reel ${table.DCHARG}
-            Qty: ${table.DCLABS}
+            RN: pkg  ${table.DCHARG}/${table.ZLABEL}
+            Qty: ${table.DCLABS} ${table.MEINS}
           `;
-        try {
-          const zpl = this.generateZPL(qrData, table);
-          if (this.printer) {
-            this.printer.send(zpl, () => {
-              console.log('Label sent to printer!');
-            }, (error: any) => {
-              console.error('Error sending ZPL:', error);
-            });
-          } else {
-            console.error('No printer available!');
+    
+        return new Promise<void>((resolve, reject) => {
+          try {
+            const zpl = this.generateZPL(qrData, table);
+            if (this.printer) {
+              this.printer.send(
+                zpl,
+                () => {
+                  console.log("Label sent to printer!");
+                  resolve(); // Resolve if successful
+                },
+                (error: any) => {
+                  console.error("Error sending ZPL:", error);
+                  reject(error); // Reject if there is an error
+                }
+              );
+            } else {
+              console.error("No printer available!");
+              reject(new Error("No printer available"));
+            }
+          } catch (error) {
+            console.error("QR Generation Failed", error);
+            reject(error); // Reject if an error occurs during QR generation
           }
-         
-        } catch (error) {
-          console.error("QR Generation Failed", error);
-        }
-  
+        });
+      });
+    
+      try {
+        await Promise.all(printPromises); // Wait for all promises to resolve
+        console.log("All labels printed successfully!");
+      } catch (error) {
+        console.error("Some labels failed to print:", error);
+        // Optionally, handle specific errors or retry logic here
+      } finally {
+        this.backtoQunatity(); // Always execute this, even if some labels fail
       }
-  
-  
-        // const zpl = this.generateZPL(element);
-        
-  
-      // const zpl = this.generateZPL();
-      // if (this.printer) {
-      //   this.printer.send(zpl, () => {
-      //     console.log('Label sent to printer!');
-      //   }, (error: any) => {
-      //     console.error('Error sending ZPL:', error);
-      //   });
-      // } else {
-      //   console.error('No printer available!');
-      // }
     }
-    async printLabel2(){
-      console.log("qrCodess", this.qrCodess)
-      for (const table of this.qrCodess) {
+    // async printLabel2(){
+    //   console.log("qrCodess", this.qrCodess)
+    //   for (const table of this.qrCodess) {
   
-        try {
-          const zpl = this.generateZPL2(table);
-          if (this.printer) {
-            this.printer.send(zpl, () => {
-              console.log('Label sent to printer!');
-            }, (error: any) => {
-              console.error('Error sending ZPL:', error);
-            });
-          } else {
-            console.error('No printer available!');
-          }
+    //     try {
+    //       const zpl = this.generateZPL2(table);
+    //       if (this.printer) {
+    //         this.printer.send(zpl, () => {
+    //           console.log('Label sent to printer!');
+    //         }, (error: any) => {
+    //           console.error('Error sending ZPL:', error);
+    //         });
+    //       } else {
+    //         console.error('No printer available!');
+    //       }
          
-        } catch (error) {
-          console.error("QR Generation Failed", error);
-        }
+    //     } catch (error) {
+    //       console.error("QR Generation Failed", error);
+    //     }
   
+    //   }
+  
+    // }
+    async printLabel2() {
+      this.qrCodes = [];
+      console.log("this.qrCodess", this.qrCodess);
+    
+      const printPromises = this.qrCodess.map((table) => {
+   
+    
+        return new Promise<void>((resolve, reject) => {
+          try {
+            const zpl = this.generateZPL2(table);
+            if (this.printer) {
+              this.printer.send(
+                zpl,
+                () => {
+                  console.log("Label sent to printer!");
+                  resolve(); // Resolve if successful
+                },
+                (error: any) => {
+                  console.error("Error sending ZPL:", error);
+                  reject(error); // Reject if there is an error
+                }
+              );
+            } else {
+              console.error("No printer available!");
+              reject(new Error("No printer available"));
+            }
+          } catch (error) {
+            console.error("QR Generation Failed", error);
+            reject(error); // Reject if an error occurs during QR generation
+          }
+        });
+      });
+    
+      try {
+        await Promise.all(printPromises); // Wait for all promises to resolve
+        console.log("All labels printed successfully!");
+      } catch (error) {
+        console.error("Some labels failed to print:", error);
+        // Optionally, handle specific errors or retry logic here
+      } finally {
+        this.backtoQunatity(); // Always execute this, even if some labels fail
       }
-  
     }
     generateZPL2(row){
       console.log("initPrinter", row)
@@ -523,7 +617,7 @@ export class GrnprintComponent implements OnInit {
   ^FT20,70^A0N,20,20^FH\\^FDVendor Code: ${row.VC}^FS
   ^FT20,100^A0N,20,20^FH\\^FDMatl&Desc: ${row.Mat}/${row.matDesc.slice(0, 15)}^FS
   ^FT20,130^A0N,20,20^FH\\^FD ${row.matDesc.slice(15, 40)}^FS
-  ^FT20,160^A0N,20,20^FH\\^FDQty&Pkg: ${row.Qty} ${row.ZLABEL} /  ${row.RN}^FS
+  ^FT20,160^A0N,20,20^FH\\^FDQty&Pkg: ${row.Qty} /  ${row.RN}^FS
   ^PQ1,0,1,Y^XZ
       `;
     }

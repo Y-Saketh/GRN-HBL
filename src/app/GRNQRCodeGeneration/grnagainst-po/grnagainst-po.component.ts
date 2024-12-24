@@ -542,55 +542,105 @@ export class GRNagainstPOComponent{
   ^PQ1,0,1,Y^XZ
       `;
     }
+    // async printLabel() {
+    //   this.qrCodes = [];
+    //   console.log("matchedAndUnmatchedData", this.matchedAndUnmatchedData)
+    //   for (const table of this.matchedAndUnmatchedData) {
+     
+    //     const qrData = `
+    //         GRN: ${this.GRN}
+    //         VC: ${table.LIFNR}
+    //         Mat: ${table.MATNR}
+    //         MatD: ${table.MAKTX}
+    //         Dt: ${this.currentDate}
+    //         RN: Pkg ${table.DCHARG}/${table.ZLABEL}
+    //         Qty: ${table.DCLABS} ${table.MEINS}
+    //       `;
+    //     try {
+    //       const zpl = await this.generateZPL(qrData,table,this.GRN);
+    //       if (this.printer) {
+    //         this.printer.send(zpl, () => {
+    //           console.log('Label sent to printer!');
+    //         }, (error: any) => {
+    //           console.error('Error sending ZPL:', error);
+    //         });
+    //       } else {
+    //         console.error('No printer available!');
+    //       }
+         
+    //     } catch (error) {
+    //       console.error("QR Generation Failed", error);
+    //     }
+  
+    //   }
+  
+    //   this.backtoQunatity()
+    //     // const zpl = this.generateZPL(element);
+        
+  
+    //   // const zpl = this.generateZPL();
+    //   // if (this.printer) {
+    //   //   this.printer.send(zpl, () => {
+    //   //     console.log('Label sent to printer!');
+    //   //   }, (error: any) => {
+    //   //     console.error('Error sending ZPL:', error);
+    //   //   });
+    //   // } else {
+    //   //   console.error('No printer available!');
+    //   // }
+    // }
+
     async printLabel() {
       this.qrCodes = [];
-      console.log("matchedAndUnmatchedData", this.matchedAndUnmatchedData)
-      for (const table of this.matchedAndUnmatchedData) {
-     
+      console.log("matchedAndUnmatchedData", this.matchedAndUnmatchedData);
+    
+      const printPromises = this.matchedAndUnmatchedData.map((table) => {
         const qrData = `
             GRN: ${this.GRN}
             VC: ${table.LIFNR}
             Mat: ${table.MATNR}
             MatD: ${table.MAKTX}
             Dt: ${this.currentDate}
-            RN: Pkg ${table.DCHARG}/${table.ZLABEL}
-            Qty: ${table.DCLABS} ${table.MEINS}
+            RN: pkg ${table.DCHARG}
+            Qty: ${table.DCLABS}  ${table.MEINS}
           `;
-        try {
-          const zpl = await this.generateZPL(qrData,table,this.GRN);
-          if (this.printer) {
-            this.printer.send(zpl, () => {
-              console.log('Label sent to printer!');
-            }, (error: any) => {
-              console.error('Error sending ZPL:', error);
-            });
-          } else {
-            console.error('No printer available!');
+    
+        return new Promise<void>((resolve, reject) => {
+          try {
+            const zpl = this.generateZPL(qrData,table,this.GRN);
+            if (this.printer) {
+              this.printer.send(
+                zpl,
+                () => {
+                  console.log("Label sent to printer!");
+                  resolve(); // Resolve if successful
+                },
+                (error: any) => {
+                  console.error("Error sending ZPL:", error);
+                  reject(error); // Reject if there is an error
+                }
+              );
+            } else {
+              console.error("No printer available!");
+              reject(new Error("No printer available"));
+            }
+          } catch (error) {
+            console.error("QR Generation Failed", error);
+            reject(error); // Reject if an error occurs during QR generation
           }
-         
-        } catch (error) {
-          console.error("QR Generation Failed", error);
-        }
-  
+        });
+      });
+    
+      try {
+        await Promise.all(printPromises); // Wait for all promises to resolve
+        console.log("All labels printed successfully!");
+      } catch (error) {
+        console.error("Some labels failed to print:", error);
+        // Optionally, handle specific errors or retry logic here
+      } finally {
+        this.backtoQunatity(); // Always execute this, even if some labels fail
       }
-  
-      this.backtoQunatity()
-        // const zpl = this.generateZPL(element);
-        
-  
-      // const zpl = this.generateZPL();
-      // if (this.printer) {
-      //   this.printer.send(zpl, () => {
-      //     console.log('Label sent to printer!');
-      //   }, (error: any) => {
-      //     console.error('Error sending ZPL:', error);
-      //   });
-      // } else {
-      //   console.error('No printer available!');
-      // }
     }
-
-
 
   generateQRCode(data: string): Promise<string> {
     return new Promise((resolve, reject) => {
