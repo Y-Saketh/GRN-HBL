@@ -6,8 +6,8 @@
   width: 100px;
 }
 
-/* Table Styling */
 .styled-table {
+  margin: 0 auto;
   width: 100%;
   border-collapse: collapse;
   background-color: #f5f5f5;
@@ -21,19 +21,20 @@
   padding: 12px 15px;
   text-align: left;
   transition: background-color 0.3s ease;
+  word-wrap: break-word; /* Prevent overflow of text */
 }
 
 .styled-table th {
-  background-color: #2C3E50; /* Adjust to match the red theme */
+  background-color: #2c3e50;
   color: white;
 }
 
 .styled-table tr:hover td {
-  background-color: #f0e5e5; /* Light hover effect */
+  background-color: #e5e7f0;
 }
 
 .form-control.custom-posting-date {
-  border: 1px solid #b71c1c; /* Match the brand color */
+  border: 1px solid #b71c1c;
   border-radius: 4px;
   box-shadow: none;
   transition: all 0.3s ease;
@@ -55,6 +56,23 @@
   .form-control.custom-posting-date {
     font-size: 14px;
     padding: 6px 8px;
+  }
+}
+
+@media (max-width: 576px) {
+  .styled-table th,
+  .styled-table td {
+    font-size: 12px;
+    padding: 6px 8px;
+  }
+
+  .form-control.custom-posting-date {
+    font-size: 12px;
+    padding: 4px 6px;
+  }
+
+  .styled-table {
+    font-size: 12px;
   }
 }
 
