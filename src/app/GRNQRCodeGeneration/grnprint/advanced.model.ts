@@ -1,4 +1,5 @@
 export interface Table {
+    CLABS: any;
     DCLABS: any;
     DCHARG: any;
     LIFNR: any;

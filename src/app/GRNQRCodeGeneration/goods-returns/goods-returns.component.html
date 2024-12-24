@@ -3,16 +3,15 @@
     <div class="row">
         <div class="col-xl-12">
 
-            <div class="card">
+            <!-- <div class="card">
                 <div class="card-body">
                     <h4 class="card-title"><span style="color: black;"></span> Goods Return</h4>
-                    <!-- <p class="card-title-desc">Provide valuable, actionable feedback to your users with HTML5 form
-            validation–available in all our supported browsers.</p> -->
+     
              <form  class="needs-validation"
              [formGroup]="validationform"
              (ngSubmit)="validSubmit()">
              <div class="row mt-4">
-                <!-- GRN Number -->
+      
                 <div class="col-md-2">
                   <div class="mb-3">
                     <label class="brandcolor" for="inbounddeliverynumber"
@@ -36,7 +35,7 @@
                     </div>
                   </div>
                 </div>
-                <!-- Year -->
+        
                 <div class="col-md-1">
                   <div class="mb-3">
                     <label class="brandcolor" for="year"
@@ -59,7 +58,7 @@
                     </div>
                   </div>
                 </div>
-                <!-- Button-->
+          
                 <div class="col-md-2 text-center">
                   <button
                     style="
@@ -74,7 +73,7 @@
                     Get Details
                   </button>
                 </div>
-                <!-- Details -->
+              
                 <div class="col-md-4">
                   <div class="info-row" *ngIf="materialDocument">
                     <span class="brandcolor fs-6">Mat.Doc No</span>
@@ -110,6 +109,10 @@
                     <span class="brandcolor fs-6">Dc No</span>
                     <span class="fs-6">: {{ dcNo }}</span>
                   </div>
+                  <div class="info-row" *ngIf="invoiceNum">
+                    <span class="brandcolor fs-6">Invoice No</span>
+                    <span class="fs-6">: {{ invoiceNum }}</span>
+                  </div>
                   <div class="info-row" *ngIf="postingDate">
                     <span class="brandcolor fs-6">
                       Header Text <span style="color: red">*</span>
@@ -129,7 +132,185 @@
               </div>
              </form>         
                 </div>
-            </div>
+            </div> -->
+            <div class="card">
+              <div class="card-body">
+                  <h4 class="card-title">
+                      <span style="color: black;"></span> Goods Return
+                  </h4>
+                  <form class="needs-validation" [formGroup]="validationform" (ngSubmit)="validSubmit()">
+                      <div class="row mt-4">
+                          <!-- GRN Number -->
+                          <div class="col-md-2">
+                              <div class="mb-3">
+                                  <label class="brandcolor" for="inbounddeliverynumber">GRN No</label>
+                                  <input
+                                      type="text"
+                                      class="form-control"
+                                      id="inbounddeliverynumber"
+                                      formControlName="inbounddeliverynumber"
+                                      placeholder="GRN Number"
+                                  />
+                                  <div
+                                      *ngIf="submit && form.inbounddeliverynumber.errors"
+                                      class="invalid-feedback"
+                                  >
+                                      <span *ngIf="form.inbounddeliverynumber.errors.required">
+                                          Please provide a valid GRN Number.
+                                      </span>
+                                  </div>
+                              </div>
+                          </div>
+                          <!-- Year -->
+                          <div class="col-md-1">
+                              <div class="mb-3">
+                                  <label class="brandcolor" for="year">Year</label>
+                                  <input
+                                      type="text"
+                                      class="form-control"
+                                      id="year"
+                                      formControlName="year"
+                                      placeholder="Year"
+                                  />
+                                  <div *ngIf="submit && form.year.errors" class="invalid-feedback">
+                                      <span *ngIf="form.year.errors.required">
+                                          Please provide a valid Year.
+                                      </span>
+                                  </div>
+                              </div>
+                          </div>
+                          <!-- Button -->
+                          <div class="col-md-2 text-center">
+                              <button
+                                  style="
+                                      background-color: brown;
+                                      margin-top: 28px;
+                                      width: max-content;
+                                      color: aliceblue;
+                                  "
+                                  class="btn"
+                                  type="submit"
+                              >
+                                  Get Details
+                              </button>
+                          </div>
+                          <!-- Details -->
+                          <div class="col-md-12">
+                              <div class="row mt-4">
+                                  <!-- First 4 Columns -->
+                                  <div class="col-md-3">
+                                      <div class="info-row" *ngIf="materialDocument">
+                                          <span class="brandcolor fs-6">Mat.Doc No</span>
+                                          <input
+                                          type="text"
+                                          class="form-control" 
+                                        [(ngModel)]="materialDocument"  [ngModelOptions]="{ standalone: true }"
+                                          class="form-control fs-6"
+                                        readonly disabled
+                                     
+                                        />
+                                          <!-- <span class="fs-6">: {{ materialDocument }}</span> -->
+                                      </div>
+                                      <div class="info-row" *ngIf="year">
+                                          <span class="brandcolor fs-6">Mat.Doc Year</span>
+                                          <input
+                                          type="text"
+                                          class="form-control"
+                                        [(ngModel)]="year"  [ngModelOptions]="{ standalone: true }"
+                                          class="form-control fs-6"
+                                          readonly disabled
+                                       
+                                        />
+                                          <!-- <span class="fs-6">: {{ year }}</span> -->
+                                      </div>
+                                  </div>
+                                  <!-- Second 4 Columns -->
+                                  <div class="col-md-3">
+                                      <!-- <div class="info-row" *ngIf="postingDate">
+                                          <span class="brandcolor fs-6">Posting Date</span>
+                                          <span class="fs-6">: {{ postingDate }}</span>
+                                      </div> -->
+                                     
+                                      <div class="info-row" *ngIf="documentDate">
+                                          <span class="brandcolor fs-6">Doc Date</span>
+                                          <input
+                                          type="text"
+                                          class="form-control" 
+                                          bsDatepicker
+                                          [bsConfig]="bsConfig"
+                                        [(ngModel)]="documentDate"  [ngModelOptions]="{ standalone: true }"
+                                          class="form-control fs-6"
+                                          readonly disabled
+                                     
+                                        />
+                                          <!-- <span class="fs-6">: {{ documentDate | date: 'dd-MM-yyyy' }}</span> -->
+                                      </div>
+                                      <div class="info-row" *ngIf="postingDate">
+                                        <span class="brandcolor fs-6">
+                                          Posting Date <span style="color: red">*</span>
+                                        </span>
+                                        <input
+                                        type="text"
+                                        class="form-control"
+                                        id="postingDate"
+                                        [bsConfig]="bsConfig"
+                                        bsDatepicker
+                                        formControlName="postingDate"
+                                        class="form-control fs-6"
+                                        placeholder="posting date"
+                                        [ngClass]="{
+                                          'is-invalid': submit && form.postingDate.errors
+                                        }"
+                                      />
+                                      </div>
+                                  </div>
+                                  <!-- Third 4 Columns with Input Fields -->
+                                  <div class="col-md-3">
+                                      <div class="info-row" *ngIf="dcNo">
+                                          <span class="brandcolor fs-6">Dc No</span>
+                                          <input
+                                        type="text"
+                                        class="form-control"
+                                      [(ngModel)]="dcNo"  [ngModelOptions]="{ standalone: true }"
+                                        class="form-control fs-6"
+                                        readonly disabled
+                                   
+                                      />
+                                          <!-- <span class="fs-6">: {{ dcNo }}</span> -->
+                                      </div>
+                                      <div class="info-row" *ngIf="postingDate">
+                                          <span class="brandcolor fs-6">Invoice No</span>
+                                          <input
+                                        type="text"
+                                        class="form-control"
+                                      [(ngModel)]="invoiceNum"  [ngModelOptions]="{ standalone: true }"
+                                        class="form-control fs-6"
+                                      readonly disabled
+                                   
+                                      />
+                                          <!-- <span class="fs-6">: {{ invoiceNum }}</span> -->
+                                      </div>
+                                      <div class="info-row" *ngIf="postingDate">
+                                          <span class="brandcolor fs-6">
+                                              Header Text <span style="color: red">*</span>
+                                          </span>
+                                          <input
+                                              formControlName="headerText"
+                                              class="form-control fs-6"
+                                              placeholder="Enter Credit Memo Doc No"
+                                          />
+                                          <div *ngIf="submit && validationform.get('headerText').invalid" class="invalid-feedback fs-6">
+                                              Please provide a valid Credit Memo Doc No.
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </form>
+              </div>
+          </div>
+          
             <!-- end card -->
             <div class="card">
               <div class="card-body">
@@ -235,7 +416,7 @@
                         <!-- Goods recipient-->  
                         <td>{{ table.MENGE }}</td>
                         <!-- Quantity-->
-                         <td><input type="text" [(ngModel)]="table.RMENGE" class="form-control form-control-sm" (input)="returnqty(table, i )"></td>
+                         <td><input type="text" [(ngModel)]="table.RMENGE" [disabled]="!table.selected" class="form-control form-control-sm" (input)="returnqty(table, i )"></td>
                         <!-- Return Quantity-->
                         <td>
                           <select [(ngModel)]="table.REASON"
@@ -279,9 +460,7 @@
                     "
                     class="btn"
                     type="submit"
-                    [disabled]="
-                      validationform.get('headerText').value 
-                      && !(isAllFieldsValid() | async)"
+                    [disabled]="!(isAllFieldsValid() | async)"
                     (click)="saveBound()"
                   >
                     Return

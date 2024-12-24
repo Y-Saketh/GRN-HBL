@@ -179,7 +179,7 @@
           <thead class="brandcolor tableHeader">
             <tr>
               <th></th>
-              <th sortable="CLOSE" (sort)="onSort($event)">Close</th>
+              <!-- <th sortable="CLOSE" (sort)="onSort($event)">Close</th> -->
               <th sortable="BANFN" (sort)="onSort($event)">Pur Reqn</th>
               <th sortable="BNFPO" (sort)="onSort($event)">Item</th>
               <th sortable="BADAT" (sort)="onSort($event)">Reqn Date</th>
@@ -197,13 +197,13 @@
                 <td align="center">
                   <a class="expand-row" (click)="changeValue($index)">+</a>
                 </td>
-                <td>{{ table.CLOSE }}</td>
+                <!-- <td>{{ table.CLOSE }}</td> -->
                 <!-- Close -->
                 <td>{{ table.BANFN }}</td>
                 <!-- Purchase Requisitioner -->
                 <td>{{ table.BNFPO }}</td>
                 <!-- Purchase Item -->
-                <td>{{ table.BADAT }}</td>
+                <td>{{ table.BADAT| date: 'dd-MM-yyyy'  }}</td>
                 <!-- Requistion Date -->
                 <td>{{ table.BSART }}</td>
                 <!-- Document Type -->
@@ -242,9 +242,9 @@
                           <!-- Updating Text Field -->
                           <td>{{ table.TXZ01 }}</td>
                           <!-- Base Unit of Measure -->
-                          <td>{{ table.LFDAT }}</td>
+                          <td>{{ table.LFDAT | date: 'dd-MM-yyyy'  }}</td>
                           <!-- Stockkeeping Unit -->
-                          <td>{{ table.FRGDT }}</td>
+                          <td>{{ table.FRGDT | date: 'dd-MM-yyyy' }}</td>
                           <!-- Sum of Amount -->
                           <td>{{ table.TOT_VAL }}</td>
                           <!-- Net Price -->

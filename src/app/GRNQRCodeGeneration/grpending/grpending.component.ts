@@ -329,7 +329,8 @@ export class GrpendingComponent implements OnInit {
         BUDAT: 'Posting Date',
         AEDAT: 'PO Date',
         ERNAM: 'Created By',
-        LGOBE: 'Storage Location'
+        LGOBE: 'Storage Location',
+        AGE1:'Pending Days'
       };
   
       // Format data to map keys to user-friendly headers

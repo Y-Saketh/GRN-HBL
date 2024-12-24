@@ -217,7 +217,7 @@
       <h3>QR Code Generation</h3>
       <div class="btn-container">
         <button class="btn btn-primary ml-1" type="button" (click)="backtoQunatity()">Back</button>
-        <button class="text-md-end btn-success btn-lg highlight-3d-btn" (click)="printLabels()">Print Labels</button>
+        <button class="text-md-end btn-success btn-lg highlight-3d-btn" (click)="initPrinter()">Print Labels</button>
       </div>
       <div class="card">
         <p *ngIf="isGenerating" class="text-primary">Generating QR codes for all items...</p>  
@@ -232,7 +232,7 @@
               <p>{{ qrData.data.LIFNR }}</p>
               <p>{{ qrData.data.MATNR }}</p>
               <p>{{ qrData.data.DCHARG }}</p>
-              <p>{{ qrData.data.DCLABS }}</p>
+              <p>{{ qrData.data.DCLABS }} {{ qrData.data.MEINS }}</p>
             </div>
           </div>
         </div>
@@ -293,20 +293,21 @@
       <div class="btn-container">
         <button class="btn btn-primary ml-1" type="button" (click)="backtoQunatity()">Back</button>
         <!-- <button class="text-md-end btn-success btn-lg highlight-3d-btn" (click)="printLabels()">Print Labels</button> -->
-        <button class="text-md-end btn-success btn-lg highlight-3d-btn" (click)="initPrinter()">Print Labels</button>
+        <button class="text-md-end btn-success btn-lg highlight-3d-btn" (click)="initPrinter2()">Print Labels</button>
       </div>
-      <div class="card">
+      <!-- <div class="card"> -->
         <div class="card-container">
           <div *ngFor="let qr of qrCodess" class="card qr-card">
             <div class="card-body">
               <p><strong>GRN:</strong> {{ qr.GRN }}</p>
               <p><strong>VC:</strong> {{ qr.VC }}</p>
               <p><strong>Mat:</strong> {{ qr.Mat }}</p>
+              <p><strong>matDesc:</strong> {{ qr.matDesc}}</p>
               <p><strong>RN:</strong> {{ qr.RN }}</p>
               <p><strong>Qty:</strong> {{ qr.Qty }}</p>
             </div>
           </div>
-        </div>
+        <!-- </div> -->
         
       </div>
       

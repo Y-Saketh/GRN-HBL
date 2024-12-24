@@ -340,7 +340,23 @@ export class GRNagainstPOComponent{
               this.isSubmitting = false;
             }
           });
-        } else {
+        }
+        else  if (this.selectedData?.length === 0) {
+          Swal.fire({
+            title: 'No QR generated',
+            text: 'No of labels not given for QR generation. Do you still want to continue?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, Save',
+            cancelButtonText: 'No, Cancel',
+          }).then((result) => {
+            if (result.isConfirmed) {
+              this.submitPayload(payloads);
+            } else {
+              this.isSubmitting = false;
+            }
+          });
+        }  else {
           this.submitPayload(payloads);
         }
       },
@@ -522,7 +538,7 @@ export class GRNagainstPOComponent{
   ^FT223,74^A0N,25,24^FH\^FD${row.LIFNR}^FS
   ^FT223,105^A0N,25,24^FH\^FD${row.MATNR}^FS
   ^FT223,130^A0N,25,24^FH\^FD Reel ${row.DCHARG}^FS
-  ^FT223,161^A0N,25,24^FH\^FD${row.DCLABS}^FS
+  ^FT223,161^A0N,25,24^FH\^FD${row.DCLABS}  ${row.MEINS}^FS
   ^PQ1,0,1,Y^XZ
       `;
     }
@@ -538,7 +554,7 @@ export class GRNagainstPOComponent{
             MatD: ${table.MAKTX}
             Dt: ${this.currentDate}
             RN: Reel ${table.DCHARG}
-            Qty: ${table.DCLABS}
+            Qty: ${table.DCLABS} ${table.MEINS}
           `;
         try {
           const zpl = await this.generateZPL(qrData,table,this.GRN);
@@ -769,7 +785,21 @@ export class GRNagainstPOComponent{
 
   }
   validSubmit() {
-    this.loaderservice.showLoader();
+    
+    const matchCase = [41,42,45,46,62];
+    const regex = new RegExp(`^(${matchCase.join('|')})`); 
+        const value = this.form.poNUmber.value;
+    
+    if (regex.test(value)) {
+      Swal.fire({
+        title: 'Alert!',
+        text: 'Please check the PO No given.',
+        icon: 'warning',
+      }).then(() => {
+      this.form.poNUmber.setValue(''); 
+    });
+    } 
+    else{
     this.plant = '';
     // sloc = 'SLOC 456';
     this.documentDeliveryDate = '';
@@ -792,7 +822,7 @@ export class GRNagainstPOComponent{
     }
       console.log("objobj", obj);
       // this.GrnResponse = []
-
+      this.loaderservice.showLoader();
       this.apiService.grnlist(obj).subscribe({
         
         next: (res: any) => {
@@ -835,6 +865,8 @@ export class GRNagainstPOComponent{
         }
       });
     }
+  }
+    
   }
   
   /**

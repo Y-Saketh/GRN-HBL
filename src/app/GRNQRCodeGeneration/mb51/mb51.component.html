@@ -233,7 +233,7 @@
               <!-- Movement Type -->
               <td>{{ table.MVT_TYPE_TXT }}</td>
               <!-- Movement Type Text -->
-              <td>{{ table.POSTING_DATE }}</td>
+              <td>{{ table.POSTING_DATE | date: 'dd-MM-yyyy'  }}</td>
               <!-- Posting Date -->
               <td>{{ table.PRICE }}</td>
               <!-- Qty in unit of entry -->
@@ -265,7 +265,7 @@
                       <tr>
                         <td>{{ table.PUR_ORDER }}</td>
                         <!-- Purchase Order -->
-                        <td>{{ table.DOC_DATE }}</td>
+                        <td>{{ table.DOC_DATE | date: 'dd-MM-yyyy'  }}</td>
                         <!-- Doc Date -->
                         <td>{{ table.QUANITY }}</td>
                         <!-- Qty -->
@@ -277,7 +277,7 @@
                         <!-- gl account-->
                          <td>{{ table.DOC_HEADER_TXT }}</td>
                         <!-- Doc Header Text-->
-                         <td>{{ table.ENTRY_DATE }}</td>
+                         <td>{{ table.ENTRY_DATE| date: 'dd-MM-yyyy'  }}</td>
                         <!-- Entry Date-->
                          <td>{{ table.BATCH }}</td>
                         <!-- Batch-->

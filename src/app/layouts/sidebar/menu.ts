@@ -140,7 +140,7 @@ export const MENU: MenuItem[] = [
             },
             {
                 id: "closeDownload",
-                label: 'MENUITEMS.DASHBOARDS.LIST.CLOSEDOWNLOAD',
+                label: 'MENUITEMS.DASHBOARDS.LIST.OPENPRLIST',
                 link: 'closeDownload',
                 icon: 'bx-cloud-download',
                 parentId: "menu"

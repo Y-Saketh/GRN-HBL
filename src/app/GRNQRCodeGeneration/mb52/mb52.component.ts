@@ -32,6 +32,7 @@ export class Mb52Component implements OnInit {
     mb52table: Table[] = [];
     tableData: Table[];
     plants: string[] = [];
+    mattypes: string[] = ["ZANL","ZCNS","ZERM","ZFRT","ZHLB","ZMRN","ZROH","ZVRP"];
     tables$: Observable<Table[]>;
     total$: Observable<number>;
   
@@ -151,7 +152,8 @@ export class Mb52Component implements OnInit {
         "WERKS": this.form.plant.value,//"1300",
         "MATNR_F": this.form.materialFrom.value,//"1000001248",
         "MATNR_T": this.form.materialTo.value,//"1000001248",
-        "MATART": this.form.materialType.value
+        "MATART": this.form.materialType.value,
+        "LGORT":this.form.storageLocation.value
     }
     
       console.log("objobj",obj)

@@ -219,6 +219,20 @@ export class InbounddeliveryComponent implements OnInit {
   }
   
   validSubmit() {
+    const matchCase = [44,47,48,49];
+    const regex = new RegExp(`^(${matchCase.join('|')})`); // Create regex dynamically from the array
+    const value = this.form.inbounddeliverynumber.value;
+    
+    if (regex.test(value)) {
+      Swal.fire({
+        title: 'Alert!',
+        text: 'Please check the PO No given.',
+        icon: 'warning',
+      }).then(() => {
+        this.form.inbounddeliverynumber.setValue(''); 
+      });
+    }
+    else{
     this.submit = true;
     this.loaderservice.showLoader();
     if (this.form.inbounddeliverynumber.value) {
@@ -232,7 +246,7 @@ export class InbounddeliveryComponent implements OnInit {
             Swal.fire("", res[0].MSGTXT, "error");
             this.loaderservice.hideLoader(); 
           }else if(!res?.ITEM[0]){
-            Swal.fire("","No Materials Found","error")
+            Swal.fire("","Given PO is Completely Recieved, Please Verify.","error")
             this.loaderservice.hideLoader(); 
           } 
           else {
@@ -254,4 +268,6 @@ export class InbounddeliveryComponent implements OnInit {
       });
     }
   }
+      
+}
 }

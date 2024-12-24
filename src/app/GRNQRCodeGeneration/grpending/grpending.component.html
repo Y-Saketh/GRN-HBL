@@ -299,6 +299,13 @@
               >
                 Gate Entry Date
               </th>
+              <th
+              class="brandcolor"
+              sortable="AGE1"
+              (sort)="onSort($event)"
+            >
+             Pending Days
+            </th>
             </tr>
           </thead>
           <tbody *ngFor="let table of tables$ | async; let i = index">
@@ -324,13 +331,13 @@
               <!-- Inbound Delivery Item -->
               <!-- <td>{{ table.EKGRP }}</td> -->
               <!-- Purchasing Group -->
-              <td>{{ table.ERDAT }}</td>
+              <td>{{ table.ERDAT| date: 'dd-MM-yyyy'  }}</td>
               <!-- Inbound Created on -->
               <td>{{ table.VGBEL }}</td>
               <!-- PO -->
               <td>{{ table.VGPOS }}</td>
               <!-- PO Item -->
-            <!--  <td>{{ table.LGORT }}</td> -->
+              <!--  <td>{{ table.LGORT }}</td> -->
               <!-- Storage Location -->
               <td>{{ table.MATNR }}</td>
               <!-- Material -->
@@ -342,7 +349,8 @@
               <!-- Qty -->
               <td>{{ table.GATEENTRY }}</td>
               <!-- Gate Entry No -->
-              <td>{{ table.GATEDATE }}</td>
+              <td>{{ table.GATEDATE| date: 'dd-MM-yyyy'  }}</td>
+              <td>{{table.AGE1}}</td>
               <!-- Gate Entry Date -->
             </tr>
             <ng-container *ngIf="!hideme[i]">
@@ -369,7 +377,7 @@
                       <tr>
                         <!--  <td>{{ table.MBLNR }}</td> -->
                         <!-- Material Doc -->
-                        <td>{{ table.BUDAT }}</td>
+                        <td>{{ table.BUDAT | date: 'dd-MM-yyyy'  }}</td>
                         <!-- Posting Date -->
                         <!--  <td>{{ table.AGE }}</td> -->
                         <!-- Days Taken for GR -->
@@ -381,7 +389,7 @@
                         <!-- Invoice No -->
                         <!-- <td>{{ table.BLDAT }}</td> -->
                         <!-- Invoice Date -->
-                        <td>{{ table.AEDAT }}</td>
+                        <td>{{ table.AEDAT| date: 'dd-MM-yyyy'  }}</td>
                         <!-- PO Date -->
                         <td>{{ table.ERNAM }}</td>
                         <!-- Created by -->

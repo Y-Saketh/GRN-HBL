@@ -304,7 +304,7 @@
               <!-- Inbound Delivery Item -->
               <!-- <td>{{ table.EKGRP }}</td> -->
               <!-- Purchasing Group -->
-              <td>{{ table.ERDAT }}</td>
+              <td>{{ table.ERDAT| date: 'dd-MM-yyyy'  }}</td>
               <!-- Inbound Created on -->
               <td>{{ table.VGBEL }}</td>
               <!-- PO -->
@@ -322,7 +322,7 @@
               <!-- Qty -->
               <td>{{ table.GATEENTRY }}</td>
               <!-- Gate Entry No -->
-              <td>{{ table.GATEDATE }}</td>
+              <td>{{ table.GATEDATE | date: 'dd-MM-yyyy'  }}</td>
               <!-- Gate Entry Date -->
             </tr>
             <ng-container *ngIf="!hideme[i]">
@@ -349,7 +349,7 @@
                       <tr>
                         <td>{{ table.MBLNR }}</td>
                         <!-- Material Doc -->
-                        <td>{{ table.BUDAT }}</td>
+                        <td>{{ table.BUDAT | date: 'dd-MM-yyyy'  }}</td>
                         <!-- Posting Date -->
                         <td>{{ table.AGE }}</td>
                         <!-- Days Taken for GR -->
@@ -361,7 +361,7 @@
                         <!-- Invoice No -->
                         <!-- <td>{{ table.BLDAT }}</td> -->
                         <!-- Invoice Date -->
-                        <td>{{ table.AEDAT }}</td>
+                        <td>{{ table.AEDAT | date: 'dd-MM-yyyy'  }}</td>
                         <!-- PO Date -->
                         <td>{{ table.ERNAM }}</td>
                         <!-- Created by -->

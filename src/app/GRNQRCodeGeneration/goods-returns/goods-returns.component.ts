@@ -64,6 +64,7 @@ export class GoodsReturnsComponent {
   public isCollapsed = true;
   expandedRows: { [key: string]: boolean } = {};
   userName: string;
+  invoiceNum: any;
 
   constructor(private apiService:UserProfileService, public formBuilder: UntypedFormBuilder,public service: AdvancedService,public loaderservice:LoaderService){
     this.tables$ = service.tables$;
@@ -89,17 +90,19 @@ export class GoodsReturnsComponent {
   isAllFieldsValid(): Observable<boolean> {
     return this.tables$.pipe(
       map(tables => {
-        let isValid = true;
+        const hasSelectedItem = tables.some(table => table.selected);
   
-        tables.forEach(table => {
+        if (!hasSelectedItem) {
+          return false; 
+        }
+        const allSelectedValid = tables.every(table => {
           if (table.selected) {
-            if (!(table.REASON && table.INSMK)) {
-              isValid = false;
-            }
+            return table.REASON && table.INSMK;
           }
+          return true;
         });
   
-        return isValid;
+        return allSelectedValid;
       })
     );
   }
@@ -129,6 +132,13 @@ export class GoodsReturnsComponent {
   }
 
   saveBound() {
+    if(!this.form.headerText.value){
+      Swal.fire("","Header text is required","error")
+    }
+    else if(!this.form.headerText.value.startsWith('51056')){
+      Swal.fire("","Header text should start with 51056","error")
+    }
+    else{
     console.log("this.headerText", this.form.headerText.value);
     this.isSubmitting = true;
     this.tables$.pipe(take(1)).subscribe({
@@ -169,12 +179,14 @@ export class GoodsReturnsComponent {
         });
         this.loaderservice.showLoader();
         this.apiService.goodsreturn(payload).subscribe({
-          next: (res) => {
+          next: (res: any) => {
             console.log('res', res)
-            if (res[0]?.NUMBER) {
+            
+            if (res[0]?.NUMBER == 200 || res?.NUMBER == 200) {
               // const message = `Material Doc.No: ${res[0].MBLNR} Successfully Created`;
-              Swal.fire("", res[0].MESSAGE, 'success');
+              Swal.fire("", res.MESSAGE, 'success');
               this.resetFormState();
+              this.loaderservice.hideLoader();
             } else {
               Swal.fire("", "Error: " + res[0].MESSAGE, 'error');
             }
@@ -193,6 +205,7 @@ export class GoodsReturnsComponent {
         this.isSubmitting = false;
       }
     });
+  }
   }
   returnqty(row, index) {
     if (row.MENGE > row.MENGE) {
@@ -259,6 +272,7 @@ export class GoodsReturnsComponent {
           this.year = header.MJAHR;
           this.postingDate = header.BUDAT;
           this.documentDate = header.BLDAT;
+          this.invoiceNum  = header.XBLNR
           console.log('res', res)
           items.forEach(data=>data.INSMK = "3")
           this.service.setTableData(items || []);

@@ -118,4 +118,14 @@ background-color: #cadad6;
   .info-row span:last-child {
     flex: 1; /* Dynamic width for the value column */
   }
+  .fs-6{
+    font-size: 14px !important;
+  }
+  input:disabled {
+    background-color: #f5f5f5; /* Light gray background */
+    color: #949090; /* Gray text */
+    cursor: not-allowed; /* Show not-allowed cursor */
+    opacity: 1; /* Ensure it's not too transparent */
+    border: 1px solid #ccc; /* Optional border styling */
+  }
   

@@ -310,6 +310,31 @@ export class GrnprintComponent implements OnInit {
     }
   }
 
+  initPrinter2(): void {
+    if(this.printer){
+      Swal.fire({
+        title: "Do you want to print the Labels",//res[0].MESSAGE,
+        text: "",
+        icon: 'success',
+        showCancelButton: true, // Adds the Cancel button
+        confirmButtonText: 'Print Label', // Text for OK button
+        cancelButtonText: 'Cancel', // Text for Cancel button
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.printLabel2();
+          } 
+        else if (result.isDismissed) {
+          console.log('Action canceled');
+        }
+      });
+    }
+    else{
+      Swal.fire("","Printer is not available","error")
+      this.startPrinter()
+    }
+
+  }
+
   initPrinter(): void {
       if(this.printer){
         Swal.fire({
@@ -398,8 +423,8 @@ export class GrnprintComponent implements OnInit {
   ^FT223,47^A0N,25,24^FH\^FD${this.GRN}^FS
   ^FT223,74^A0N,25,24^FH\^FD${row.LIFNR}^FS
   ^FT223,105^A0N,25,24^FH\^FD${row.MATNR}^FS
-  ^FT223,130^A0N,25,24^FH\^FD Reel ${row.DCHARG}^FS
-  ^FT223,161^A0N,25,24^FH\^FD${row.DCLABS}^FS
+  ^FT223,130^A0N,25,24^FH\^FD Pkg ${row.DCHARG}^FS
+  ^FT223,161^A0N,25,24^FH\^FD${row.DCLABS} ${row.MEINS}^FS
   ^PQ1,0,1,Y^XZ
       `;
     }
@@ -451,7 +476,47 @@ export class GrnprintComponent implements OnInit {
       //   console.error('No printer available!');
       // }
     }
-
+    async printLabel2(){
+      console.log("qrCodess", this.qrCodess)
+      for (const table of this.qrCodess) {
+  
+        try {
+          const zpl = this.generateZPL2(table);
+          if (this.printer) {
+            this.printer.send(zpl, () => {
+              console.log('Label sent to printer!');
+            }, (error: any) => {
+              console.error('Error sending ZPL:', error);
+            });
+          } else {
+            console.error('No printer available!');
+          }
+         
+        } catch (error) {
+          console.error("QR Generation Failed", error);
+        }
+  
+      }
+  
+    }
+    generateZPL2(row){
+      console.log("initPrinter", row)
+      return `
+  CT~~CD,~CC^~CT~
+  ^XA~TA000~JSN^LT0^MNW^MTT^PON^PMN^LH0,0^JMA^PR4,4~SD10^JUS^LRN^CI0^XZ
+  ^XA
+  ^MMT
+  ^PW400
+  ^LL200
+  ^LS0
+  ^FT20,40^A0N,20,20^FH\\^FDGRN: ${row.GRN}^FS
+  ^FT20,70^A0N,20,20^FH\\^FDVendor Code: ${row.VC}^FS
+  ^FT20,100^A0N,20,20^FH\\^FDMatl&Desc: ${row.Mat}/${row.matDesc.slice(0, 15)}^FS
+  ^FT20,130^A0N,20,20^FH\\^FD ${row.matDesc.slice(15, 40)}^FS
+  ^FT20,160^A0N,20,20^FH\\^FDQty&Pkg: ${row.Qty} /  ${row.RN}^FS
+  ^PQ1,0,1,Y^XZ
+      `;
+    }
 
 
   saveUnmatched(): void {
@@ -600,8 +665,9 @@ export class GrnprintComponent implements OnInit {
           GRN: row.MBLNR,
           VC: row.LIFNR,
           Mat: row.MATNR,
-          RN: `Reel ${i + 1}`,
-          Qty: row.DCLABS,
+          matDesc: row.MAKTX,
+          RN: `Pkg ${i + 1}`,
+          Qty: `${row.MENGE} ${row.MEINS}`,
         });
       }
     }

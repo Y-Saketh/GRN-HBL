@@ -57,6 +57,23 @@
             <div class="col-md-2">
               <label class="brandcolor" for="materialType">MATERIAL TYPE</label>
               <div class="mb-3">
+                <select
+                    class="form-select"
+                    id="materialType"
+                    formControlName="materialType"
+                  >
+                    <option value="" disabled selected>Mat.type</option>
+                    <option *ngFor="let typee of mattypes" [value]="typee">
+                      {{ typee }}
+                    </option>
+                  </select>
+                <div *ngIf="submit && form.materialType.errors" class="invalid-feedback">
+                  <span *ngIf="form.materialType.errors.required"
+                    >Please provide a valid material Type.</span
+                  >
+                </div>
+              </div>
+              <!-- <div class="mb-3">
                 <input
                   type="text"
                   class="form-control"
@@ -75,7 +92,7 @@
                     >Please provide a valid POSTING DATE TO.</span
                   >
                 </div>
-              </div>
+              </div> -->
             </div>
              <!-- Material From -->
              <div class="col-md-2">
@@ -108,7 +125,7 @@
                   class="form-control"
                   id="materialTo"
                   formControlName="materialTo"
-                  placeholder="materialTo To"
+                  placeholder="material to"
                   [ngClass]="{ 'is-invalid': submit && form.materialTo.errors }"
                 />
                 <div
