@@ -155,7 +155,8 @@ export class GrnprintComponent implements OnInit {
           let base64String = res[0]?.ZPRINT || res?.ZPRINT;
           // console.log("base64String",base64String)
           if(this.showTable == false && this.GrnPrint ){
-            this.downloadPdf(base64String, "GrnPrint");
+            // this.downloadPdf(base64String, "GrnPrint");
+            this.showPdfPreview(base64String)
           }
           this.loaderservice.hideLoader();
 
@@ -814,5 +815,89 @@ export class GrnprintComponent implements OnInit {
     this.newContactModal?.hide();
 
   }
+
+  
+  
+  showPdfPreview(base64String: string) {
+        try {
+          const binaryString = atob(base64String); // Decode Base64
+          const binaryLen = binaryString.length;
+          const bytes = new Uint8Array(binaryLen);
+      
+          for (let i = 0; i < binaryLen; i++) {
+            bytes[i] = binaryString.charCodeAt(i);
+          }
+      
+          const blob = new Blob([bytes], { type: "application/pdf" });
+      
+          // Create a container for the preview
+          const container = document.createElement("div");
+          container.style.position = "fixed";
+          container.style.top = "0";
+          container.style.left = "0";
+          container.style.width = "100%";
+          container.style.height = "100%";
+          container.style.backgroundColor = "rgba(0, 0, 0, 0.8)";
+          container.style.zIndex = "10000"; // Ensure it stays above other elements
+          container.style.display = "flex";
+          container.style.justifyContent = "center";
+          container.style.alignItems = "center";
+      
+          // Create an iframe for the PDF preview
+          const iframe = document.createElement("iframe");
+          iframe.src = URL.createObjectURL(blob) + "#toolbar=0"; // Disable toolbar
+          iframe.style.width = "80%";
+          iframe.style.height = "100%";
+          iframe.style.border = "none";
+      
+          // // Prevent interaction with right-click or keyboard shortcuts
+          // iframe.onload = () => {
+          //   iframe.contentWindow?.document.addEventListener("contextmenu", (e) => e.preventDefault());
+          //   iframe.contentWindow?.document.addEventListener("keydown", (e) => {
+          //     if (e.ctrlKey && (e.key === "p" || e.key === "s")) e.preventDefault();
+          //   });
+          // };
+      
+          // Create a close button
+          const closeButton = document.createElement("button");
+          closeButton.textContent = "<Close Preview";
+          closeButton.setAttribute("aria-label", "Close PDF Preview");
+          closeButton.style.position = "absolute";
+          closeButton.style.top = "10px";
+          closeButton.style.right = "10px";
+          closeButton.style.padding = "10px 20px";
+          closeButton.style.fontSize = "16px";
+          closeButton.style.color = "#fff";
+          closeButton.style.backgroundColor = "#f00"; // Red color
+          closeButton.style.border = "none";
+          closeButton.style.borderRadius = "5px";
+          closeButton.style.cursor = "pointer";
+          closeButton.style.boxShadow = "0px 0px 10px rgba(255, 255, 255, 0.5)";
+      
+          // Add hover effect
+          closeButton.onmouseover = () => (closeButton.style.backgroundColor = "#d00");
+          closeButton.onmouseout = () => (closeButton.style.backgroundColor = "#f00");
+      
+          // Close the preview on click
+          closeButton.onclick = () => {
+            document.body.removeChild(container);
+            URL.revokeObjectURL(iframe.src);
+            document.body.style.overflow = "auto"; // Restore background scrolling
+          };
+      
+          // Append elements to the container
+          container.appendChild(iframe);
+          container.appendChild(closeButton);
+      
+          // Disable background scrolling
+          document.body.style.overflow = "hidden";
+      
+          // Add the container to the body
+          document.body.appendChild(container);
+        } catch (error) {
+          console.error("Error generating PDF preview:", error);
+          Swal.fire("Error", "Failed to preview the PDF. Please try again.", "error");
+        }
+      }
 
 }
