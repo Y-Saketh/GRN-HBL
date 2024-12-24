@@ -396,7 +396,11 @@ export class GRNagainstPOComponent{
         console.log('Saved:', res);
         this.enableQRbutton = true;
         this.GRN =  res[0].MBLNR;
-        if(res[0].MBLNR){  
+        if(res[0].MBLNR && this.matchedAndUnmatchedData.length == 0){
+          Swal.fire("",res[0].MESSAGE,"success")
+          this.loaderservice.hideLoader()  
+        }
+        else if(res[0].MBLNR && this.matchedAndUnmatchedData){  
           this.loaderservice.hideLoader()     
         Swal.fire({
           title: res[0].MESSAGE,

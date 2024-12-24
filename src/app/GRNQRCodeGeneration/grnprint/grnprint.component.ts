@@ -77,6 +77,7 @@ export class GrnprintComponent implements OnInit {
   labelscreen: boolean = false;
   qrCodes: any[];
   qrCodess: any[];
+  lableavail: Table[];
   constructor(public formBuilder: UntypedFormBuilder, @Inject(AdvancedService) public service: AdvancedService, private apiService: UserProfileService, public loaderservice: LoaderService) {
     this.tables$ = service.tables$;
     console.log("this.tables$", this.tables$)
@@ -670,7 +671,7 @@ export class GrnprintComponent implements OnInit {
 
   
   isAnyRowSelected(): boolean {
-    return this.tableData?.some(table => table.selected);
+    return this.GrnPrint?.some(table => table.selected);
   }
 
   backtoQunatity() {
@@ -753,15 +754,16 @@ export class GrnprintComponent implements OnInit {
   // }
   
   async labelPrint(): Promise<void> {
-    this.GrnResponse = false;
-    this.labelscreen = true;
-  
     this.qrCodess = []; // Clear previously generated QR codes
-  
     const selectedRows = this.GrnPrint.filter(
       (table: any) => table.selected && table.ZLABEL > 0
     );
-  
+    console.log("selectedRows",selectedRows)
+    if(selectedRows.length === 0){
+      Swal.fire("","Please give no of labels","warning")
+    }else{
+    this.GrnResponse = false;
+    this.labelscreen = true;
     for (const row of selectedRows) {
       const numLabels = row.ZLABEL;
       for (let i = 0; i < numLabels; i++) {
@@ -775,7 +777,7 @@ export class GrnprintComponent implements OnInit {
         });
       }
     }
-  
+  }
     console.log("Generated QR Labels Data:", this.qrCodess);
   }
   
