@@ -341,7 +341,7 @@ export class GRNagainstPOComponent{
             }
           });
         }
-        else  if (this.selectedData?.length === 0) {
+        else  if (this.matchedAndUnmatchedData?.length === 0) {
           Swal.fire({
             title: 'No QR generated',
             text: 'No of labels not given for QR generation. Do you still want to continue?',
@@ -537,8 +537,8 @@ export class GRNagainstPOComponent{
   ^FT223,47^A0N,25,24^FH\^FD${GRNn}^FS
   ^FT223,74^A0N,25,24^FH\^FD${row.LIFNR}^FS
   ^FT223,105^A0N,25,24^FH\^FD${row.MATNR}^FS
-  ^FT223,130^A0N,25,24^FH\^FD Reel ${row.DCHARG}^FS
-  ^FT223,161^A0N,25,24^FH\^FD${row.DCLABS}  ${row.MEINS}^FS
+  ^FT223,130^A0N,25,24^FH\^FD pkg ${row.DCHARG}/ ${row.ZLABEL}^FS
+  ^FT223,161^A0N,25,24^FH\^FD Qty ${row.DCLABS}  ${row.MEINS}^FS
   ^PQ1,0,1,Y^XZ
       `;
     }
@@ -553,7 +553,7 @@ export class GRNagainstPOComponent{
             Mat: ${table.MATNR}
             MatD: ${table.MAKTX}
             Dt: ${this.currentDate}
-            RN: Reel ${table.DCHARG}
+            RN: Pkg ${table.DCHARG}/${table.ZLABEL}
             Qty: ${table.DCLABS} ${table.MEINS}
           `;
         try {

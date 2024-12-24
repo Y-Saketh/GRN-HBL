@@ -71,6 +71,7 @@
                 type="text"
                 class="form-control"
                 id="matDocYear"
+                maxlength="4"
                 formControlName="matDocYear"
                 placeholder="Year"
                 [ngClass]="{ 'is-invalid': submit && form.matDocYear.errors }"
@@ -299,12 +300,18 @@
         <div class="card-container">
           <div *ngFor="let qr of qrCodess" class="card qr-card">
             <div class="card-body">
-              <p><strong>GRN:</strong> {{ qr.GRN }}</p>
+              <!-- <p><strong>GRN:</strong> {{ qr.GRN }}</p>
               <p><strong>VC:</strong> {{ qr.VC }}</p>
               <p><strong>Mat:</strong> {{ qr.Mat }}</p>
               <p><strong>matDesc:</strong> {{ qr.matDesc}}</p>
               <p><strong>RN:</strong> {{ qr.RN }}</p>
-              <p><strong>Qty:</strong> {{ qr.Qty }}</p>
+              <p><strong>Qty:</strong> {{ qr.Qty }}</p> -->
+              <p><strong>GRN:</strong> {{ qr.GRN }}</p>
+              <p><strong>VC:</strong> {{ qr.VC }}</p>
+              <p><strong>Matl&Desc</strong> {{ qr.Mat }} / {{ qr.matDesc}}</p>
+              <!-- <p><strong>matDesc:</strong> {{ qr.matDesc}}</p> -->
+              <!-- <p><strong>RN:</strong> {{ qr.RN }}</p> -->
+              <p><strong>Qty&pkg</strong> {{ qr.Qty }}/{{qr.ZLABEL}} {{ qr.RN }}</p>
             </div>
           </div>
         <!-- </div> -->
