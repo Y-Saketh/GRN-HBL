@@ -122,8 +122,11 @@ export class GrnprintComponent implements OnInit {
 
   getGRNPrint() {
     this.submit = true;
-    if (this.validationform.invalid) return;
-    this.loaderservice.showLoader();
+    if (this.validationform.invalid) {
+      Swal.fire("","Please fill all entry fields","error")
+    }
+    else{
+
     console.log("validationform", this.form)
     let obj = {
       MBLNR: this.form.matDocNum.value,//"5000746038",
@@ -137,18 +140,21 @@ export class GrnprintComponent implements OnInit {
    
         console.log('Grnprint data fetched successfully:', res);
         // this.loaderservice.hideLoader();
-        if (res?.NUMBER) {
+        if (!res?.HEADER) {
+          Swal.fire("", res, "error");
+          this.loaderservice.hideLoader();
+        }
+        else if (res?.NUMBER) {
           Swal.fire("", res.MSGTXT, "error");
           this.loaderservice.hideLoader();
-        } else {
-
+        }  else {
           this.GrnPrint = res[0]?.ITEM || res?.ITEM;
           this.service.setTableData(this.GrnPrint);
           this._fetchData();
 
           let base64String = res[0]?.ZPRINT || res?.ZPRINT;
           // console.log("base64String",base64String)
-          if(this.showTable == false){
+          if(this.showTable == false && this.GrnPrint ){
             this.downloadPdf(base64String, "GrnPrint");
           }
           this.loaderservice.hideLoader();
@@ -163,6 +169,9 @@ export class GrnprintComponent implements OnInit {
         console.error(error);
       },
     });
+    
+          
+  }
   }
 
   _fetchData() {
@@ -513,7 +522,7 @@ export class GrnprintComponent implements OnInit {
   ^FT20,70^A0N,20,20^FH\\^FDVendor Code: ${row.VC}^FS
   ^FT20,100^A0N,20,20^FH\\^FDMatl&Desc: ${row.Mat}/${row.matDesc.slice(0, 15)}^FS
   ^FT20,130^A0N,20,20^FH\\^FD ${row.matDesc.slice(15, 40)}^FS
-  ^FT20,160^A0N,20,20^FH\\^FDQty&Pkg: ${row.Qty} /  ${row.RN}^FS
+  ^FT20,160^A0N,20,20^FH\\^FDQty&Pkg: ${row.Qty} ${row.ZLABEL} /  ${row.RN}^FS
   ^PQ1,0,1,Y^XZ
       `;
     }

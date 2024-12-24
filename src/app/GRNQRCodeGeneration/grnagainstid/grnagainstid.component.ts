@@ -316,8 +316,8 @@ export class GrnagainstidComponent implements OnInit {
     ^FT223,47^A0N,25,24^FH\^FD${row.MBLNR}^FS
     ^FT223,74^A0N,25,24^FH\^FD${row.LIFNR}^FS
     ^FT223,105^A0N,25,24^FH\^FD${row.MATNR}^FS
-    ^FT223,130^A0N,25,24^FH\^FD Reel ${row.DCHARG}^FS
-    ^FT223,161^A0N,25,24^FH\^FD${row.DCLABS}^FS
+    ^FT223,130^A0N,25,24^FH\^FD pkg ${row.DCHARG} / ${row.ZLABEL}^FS
+    ^FT223,161^A0N,25,24^FH\^FD${row.DCLABS} ${row.MEINS}^FS
     ^PQ1,0,1,Y^XZ
         `;
       }

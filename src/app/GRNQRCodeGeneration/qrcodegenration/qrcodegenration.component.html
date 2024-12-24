@@ -12,7 +12,7 @@
               <!-- Row 1 -->
               <div class="col-md-2">
                 <div class="mb-3">
-                  <label class="brandcolor" for="inbounddeliverynumber">InBound Delivery No</label>
+                  <label class="brandcolor" for="inbounddeliverynumber">Inbound Delivery No</label>
                   <input type="text" class="form-control" id="inbounddeliverynumber"
                     formControlName="inbounddeliverynumber" placeholder="InBound Delivery Number" [ngClass]="{
                       'is-invalid': submit && form.inbounddeliverynumber.errors
@@ -461,8 +461,8 @@
           <p>{{ GRN }}</p>
           <p>{{ qrData.data.LIFNR }}</p>
           <p>{{ qrData.data.MATNR }}</p>
-          <p>Pack: {{ qrData.data.DCHARG }}</p>
-          <p>{{ qrData.data.DCLABS }}</p>
+          <p>Pack: {{ qrData.data.DCHARG }}/{{qrData.data.ZLABEL}}</p>
+          <p>Qty: {{ qrData.data.DCLABS }} {{ qrData.data.MEINS }}</p>
         </div>
       </div>
       <!-- <div> -->
