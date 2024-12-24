@@ -446,7 +446,9 @@ Qty: 10`
                   MAKTX: table.MAKTX,
                   WEMPF: this.userName,
                   ABLAD: table.ABLAD,
-                  LIFNR: table.LIFNR,
+                  LIFNR: table.LIFNR, 
+                  VBELN :table.VBELN,
+                   POSNR:table.POSNR,
                 });
               } else {
                 validShadowRows.forEach((shadowRow: any) => {
@@ -466,6 +468,8 @@ Qty: 10`
                     ABLAD: shadowRow.ABLAD,
                     MAKTX: table.MAKTX,
                     LIFNR: table.LIFNR,
+                    VBELN :table.VBELN,
+                    POSNR:table.POSNR,
                   });
                 });
 
@@ -490,6 +494,8 @@ Qty: 10`
                 WEMPF: this.userName,
                 ABLAD: table.ABLAD,
                 LIFNR: table.LIFNR,
+                VBELN :table.VBELN,
+                POSNR:table.POSNR,
               });
             }
           }

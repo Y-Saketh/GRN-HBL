@@ -516,6 +516,9 @@ saveUnmatched(): void {
     this.matchedAndUnmatchedData = this.matchedAndUnmatchedData.filter(
       (data) => data !== selectedMaterial
     );
+    this.matchedAndUnmatchedData = this.matchedAndUnmatchedData.filter(
+      (data) => data.MATNR !== selectedMaterial.MATNR
+    );
     this.matchedAndUnmatchedData.push(...qrData);
 
     console.log("Unmatched Data Saved:", qrData);

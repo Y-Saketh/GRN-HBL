@@ -61,7 +61,9 @@ function matches(tables: Table, term: string, pipe: PipeTransform): boolean {
         (tables.SHORT_TEXT?.toLowerCase().includes(lowerTerm) || false) || // Material Description
         (pipe.transform(tables.ORGQTY || '').includes(term) || false) || // Original Quantity
         (pipe.transform(tables.ZLABEL || '').includes(term) || false) ||
-        (pipe.transform(tables.selected || '').includes(term) || false)
+        (pipe.transform(tables.selected || '').includes(term) || false) ||
+        (pipe.transform(tables.VBELN || '').includes(term) || false) ||
+        (pipe.transform(tables.POSNR || '').includes(term) || false)
     );
 }
 

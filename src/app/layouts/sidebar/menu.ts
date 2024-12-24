@@ -90,7 +90,7 @@ export const MENU: MenuItem[] = [
         parentId: "menu"
     },
     {
-        id: "grnagainstid",
+        id: "grnagainstpo",
         label: 'MENUITEMS.DASHBOARDS.LIST.GRNAGAINSTPO',
         link: 'grnagainstpo',
         icon: 'bx-package',

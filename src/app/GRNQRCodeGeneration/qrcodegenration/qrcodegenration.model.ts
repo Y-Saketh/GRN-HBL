@@ -1,5 +1,7 @@
 
 export interface Table {
+    isUnmatchDisabled: boolean;
+    isMatchDisabled: boolean;
     issMatched: boolean;
  
     MATNR: string; // Material Number
@@ -20,6 +22,8 @@ export interface Table {
     CHARG?:string;
     ZLABEL?:number;
     selected:boolean;
+    VBELN :string;
+    POSNR:number;
   }
   
 
