@@ -6,6 +6,59 @@
   width: 100px;
 }
 
+/* Table Styling */
+.styled-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #f5f5f5;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.styled-table th,
+.styled-table td {
+  padding: 12px 15px;
+  text-align: left;
+  transition: background-color 0.3s ease;
+}
+
+.styled-table th {
+  background-color: #2C3E50; /* Adjust to match the red theme */
+  color: white;
+}
+
+.styled-table tr:hover td {
+  background-color: #f0e5e5; /* Light hover effect */
+}
+
+.form-control.custom-posting-date {
+  border: 1px solid #b71c1c; /* Match the brand color */
+  border-radius: 4px;
+  box-shadow: none;
+  transition: all 0.3s ease;
+}
+
+.form-control.custom-posting-date:focus {
+  border-color: #d32f2f;
+  box-shadow: 0 0 5px rgba(211, 47, 47, 0.5);
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
+  .styled-table th,
+  .styled-table td {
+    font-size: 14px;
+    padding: 8px 10px;
+  }
+
+  .form-control.custom-posting-date {
+    font-size: 14px;
+    padding: 6px 8px;
+  }
+}
+
+
 
 .btn-container {
 display: flex;

@@ -42,14 +42,13 @@
               <div class="row">
                 <div class="col-sm-6 col-md-6">
                   <form [formGroup]="inboundDetailsForm">
-                    <table class="table table-bordered" id="basic-datatable"
-                      class="table table-bordered dt-responsive nowrap">
-                      <thead class="brandcolor tableHeader">
+                    <table class="table styled-table">
+                      <thead>
                         <tr>
-                          <th class="brandcolor">Plant</th>
-                          <th class="brandcolor" >Invoice Number</th>
-                          <th class="brandcolor">Invoice Date</th>
-                          <th class="brandcolor">Posting Date</th>
+                          <th>Plant</th>
+                          <th>Invoice Number</th>
+                          <th>Invoice Date</th>
+                          <th>Posting Date</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -58,23 +57,41 @@
                             <span>{{ plant }}</span>
                           </td>
                           <td>
-                            <!-- <span>{{ invoiceNumber }}</span> -->
-                            <input type="text" [(ngModel)]="invoiceNumber" [ngModelOptions]="{ standalone: true }" maxlength="16" placeholder="Invoice Number" class="form-control custom-posting-date"> 
+                            <input
+                              type="text"
+                              [(ngModel)]="invoiceNumber"
+                              [ngModelOptions]="{ standalone: true }"
+                              maxlength="16"
+                              placeholder="Invoice Number"
+                              class="form-control custom-input"
+                            />
                           </td>
                           <td>
-                            <!-- <span>{{ invoiceDate }}</span> -->
-                            <!-- <span>{{ invoiceDate | date: 'dd-MM-yyyy' }}</span> -->
-                            <input type="text" [(ngModel)]="invoiceDate" [ngModelOptions]="{ standalone: true }" placeholder=" Enter Invoice Date" class="form-control custom-posting-date" [bsConfig]="bsConfig" bsDatepicker> 
+                            <input
+                              type="text"
+                              [(ngModel)]="invoiceDate"
+                              [ngModelOptions]="{ standalone: true }"
+                              placeholder="Enter Invoice Date"
+                              class="form-control custom-input"
+                              [bsConfig]="bsConfig"
+                              bsDatepicker
+                            />
                           </td>
                           <td>
-                            <input type="text" class="form-control custom-posting-date" formControlName="postingDate"
-                              [bsConfig]="bsConfig" bsDatepicker />
+                            <input
+                              type="text"
+                              class="form-control custom-input"
+                              formControlName="postingDate"
+                              [bsConfig]="bsConfig"
+                              bsDatepicker
+                            />
                           </td>
                         </tr>
                       </tbody>
                     </table>
                   </form>
                 </div>
+                
                 <div class="col-sm-2 col-md-2"></div>
                 <div class="col-sm-4 col-md-4">
                   <h5 *ngIf="vendorCode">
@@ -360,8 +377,8 @@
           <p>{{ GRN }}</p>
           <p>{{ qrData.data.LIFNR }}</p>
           <p>{{ qrData.data.MATNR }}</p>
-          <p>Pack {{ i + 1 }}</p>
-          <p>{{ qrData.data.ZRQTY }}</p>
+          <p>Pkg {{ i + 1 }}</p>
+          <p>{{ qrData.data.ZRQTY }} {{qrData.data.MEINS}}</p>
         </div>
       </div>
     </div>
