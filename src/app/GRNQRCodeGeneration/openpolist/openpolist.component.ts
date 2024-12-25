@@ -17,6 +17,7 @@ import Swal from 'sweetalert2';
 import { Inject } from '@angular/core';
 import * as XLSX from 'xlsx'; 
 import { LoaderService } from 'src/app/core/services/loader.service';
+import { quantity } from 'chartist';
 
 @Component({
   selector: 'app-openpolist',
@@ -214,7 +215,8 @@ export class OpenpolistComponent implements OnInit {
         // ELIKZ: 'Delivery Completed',
         EINDT: 'Delivery Completed',
         MEINS1: 'UOM1',
-        
+        MENGE1: 'MIGO qty',
+        DMBTR1: 'MIGO Value',
 
       };
   

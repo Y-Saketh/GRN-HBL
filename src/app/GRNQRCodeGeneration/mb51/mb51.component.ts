@@ -60,11 +60,14 @@ export class Mb51Component implements OnInit {
   };
 
   ngOnInit() {
+    const currentDate = new Date();
+    const fifteenDaysAgo = new Date();
+    fifteenDaysAgo.setDate(currentDate.getDate() - 15);
     this.validationform = this.formBuilder.group({
       plant: ['', Validators.required],
       movementType: '',
-      postingDateFrom: ['', Validators.required],
-      postingDateTo: ['', Validators.required]
+      postingDateFrom: [fifteenDaysAgo, Validators.required],
+      postingDateTo: [currentDate, Validators.required]
     });
   }
   onDropdownChange() {     console.log('Selected Movement Type:', this.selectedMovementType); }
@@ -158,7 +161,7 @@ onSort({ column, direction }: SortEvent) {
     console.log("validationform",this.form)
       let obj = {
         WERKS: this.form.plant.value,//"1300",//
-        BWART: '',//this.form.movementType.value,//"",// Movement Type
+        BWART: this.form.movementType.value,//"",// Movement Type
         VGART:"WE",// Transaction/Event Type
         BUDAT_F:  this.form.postingDateFrom.value, //,//"2024-11-01",//
         BUDAT_T: this.form.postingDateTo.value  // //"2024-11-30" //
@@ -169,8 +172,9 @@ onSort({ column, direction }: SortEvent) {
         next: (res: any) => {
           this.loaderservice.hideLoader();
           console.log('MB51 data fetched successfully:', res);
+          this.mb51table = [];
           this.mb51table = res;
-          this.service.setTableData(res || []);
+          this.service.setTableData(this.mb51table || []);
           this._fetchData();
         },
         error: (error) => {

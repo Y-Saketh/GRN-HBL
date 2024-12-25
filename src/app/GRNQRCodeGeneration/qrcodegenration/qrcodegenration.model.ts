@@ -24,6 +24,7 @@ export interface Table {
     selected:boolean;
     VBELN :string;
     POSNR:number;
+    BKTXT?:string;
   }
   
 

@@ -81,6 +81,7 @@
                         <th>Invoice Number</th>
                         <th>Invoice Date</th>
                         <th>Posting Date</th>
+                        <th>Header Text</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -101,6 +102,14 @@
                             formControlName="postingDate"
                             [bsConfig]="bsConfig"
                             bsDatepicker
+                          />
+                        </td>
+                        <td>
+                          <input
+                              type="text"
+                              formControlName="headerText"
+                              class="form-control custom-posting-date"
+                              placeholder="Enter Credit Memo Doc No"
                           />
                         </td>
                       </tr>
@@ -353,7 +362,7 @@
                 background-color: brown;
              
                 color: aliceblue;
-              " class="btn btn-lg highlight-3d-btn" type="button" (click)="saveBound(tables$)">
+              " class="btn btn-lg highlight-3d-btn" type="button"  [disabled]="!selectedd"  (click)="saveBound(tables$)">
               Save
             </button>
             <!-- <button (click)="generateQR()" [disabled]="!enableQRbutton" class="btn btn-success btn-lg highlight-3d-btn">Generate QR</button> -->
