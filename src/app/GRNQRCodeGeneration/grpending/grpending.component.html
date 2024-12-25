@@ -350,7 +350,7 @@
               <td>{{ table.GATEENTRY }}</td>
               <!-- Gate Entry No -->
               <td>{{ table.GATEDATE| date: 'dd-MM-yyyy'  }}</td>
-              <td>{{table.AGE1}}</td>
+              <td>{{table.gr}}</td>
               <!-- Gate Entry Date -->
             </tr>
             <ng-container *ngIf="!hideme[i]">
@@ -371,7 +371,7 @@
                         <th>Created by</th>
                         <th>Storage Location</th>
                         <th>Storage Location Name</th>
-                        <!-- <th>Days taken for IBD</th> -->
+                        <th>Days taken for GR</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -398,8 +398,8 @@
                          <!-- Storage Location -->
                         <td>{{ table.LGOBE }}</td>
                         <!-- Storage Location Name -->
-                        <!--  <td>{{ table.AGE1 }}</td> -->
-                        <!-- Days taken for IBD -->
+                         <td>{{ table.AGE1 }}</td>
+                        <!-- Days taken for GR -->
                       </tr>
                     </tbody>
                   </table>

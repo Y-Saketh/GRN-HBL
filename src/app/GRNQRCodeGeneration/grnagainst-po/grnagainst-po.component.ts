@@ -55,9 +55,11 @@ export class GRNagainstPOComponent{
   isSubmitting: boolean;
   shadowRows = [];
   PostingDate: string;
+  headerText: any;
   selectAll = true;
   plant :any;
   printer: any;
+  selectedd: boolean = true;
   // sloc:any;
   documentDeliveryDate :any;
   invoiceDate :any;
@@ -104,6 +106,7 @@ export class GRNagainstPOComponent{
     this.inboundDetailsForm = this.formBuilder.group({
 
       postingDate: [new Date(), [Validators.required]],
+      headerText:[''],
         });
 
     /**
@@ -159,6 +162,7 @@ export class GRNagainstPOComponent{
         table.selected || (table.shadowRows && table.shadowRows.every(shadow => shadow.selected))
       );
     });
+    this.selectedd=row.selected==true ? true : false;
   }
   
   
@@ -212,10 +216,10 @@ export class GRNagainstPOComponent{
            WERKS:  this.plant,
            BLDAT: this.documentDeliveryDate,
           //  BUDAT: "",
-           IN_DATE: this.invoiceDate,
-           INVOICE: this.invoiceNumber,
-           LIFNR: this.vendorCode,
-         
+          IN_DATE: this.invoiceDate,
+          INVOICE: this.invoiceNumber,
+          LIFNR: this.vendorCode,
+          BXTXT: this.formpostingdate.headerText.value,
           NAME1: this.vendorName ,
           ORT01: this.City,
           STCD3:  this.GSTIN,
@@ -390,6 +394,10 @@ export class GRNagainstPOComponent{
   // }
   submitPayload(payload: any) {
     console.log("payload", payload);
+    if(!this.formpostingdate.headerText.value){
+              Swal.fire("","Header text is required","error")
+            }
+            else{
     this.loaderservice.showLoader();
     this.apiService.grnlist(payload).subscribe({
       next: (res) => {
@@ -449,7 +457,7 @@ export class GRNagainstPOComponent{
     });
   
   
-  }
+  }}
 
    initPrinter(): void {
       if(this.printer){
@@ -903,11 +911,13 @@ export class GRNagainstPOComponent{
           this._fetchData();
 
            }else{
+            this.loaderservice.hideLoader();
             Swal.fire("",res,"error")
            }
         
         },
         error: (error: any) => {
+          this.loaderservice.hideLoader();
           console.error('Error fetching lot reports:', error);
         },
         complete: () => {

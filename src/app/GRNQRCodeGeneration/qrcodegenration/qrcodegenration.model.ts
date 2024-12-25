@@ -19,6 +19,7 @@ export interface Table {
     CHARG?:string;
     ZLABEL?:number;
     selected:boolean;
+    BKTXT?:string;
   }
   
 

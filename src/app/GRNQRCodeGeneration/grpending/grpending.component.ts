@@ -326,11 +326,13 @@ export class GrpendingComponent implements OnInit {
         LFIMG: 'Qty',
         GATEENTRY: 'Gate Entry No',
         GATEDATE: 'Gate Entry Date',
-        BUDAT: 'Posting Date',
+        AGE1:'Pending Days',
+        postingDate: 'Posting Date',
         AEDAT: 'PO Date',
         ERNAM: 'Created By',
-        LGOBE: 'Storage Location',
-        AGE1:'Pending Days'
+        LGORT: 'Storage Location',
+        LGOBE: 'Storage Location Name',
+        gr: 'Days taken for GR',
       };
   
       // Format data to map keys to user-friendly headers

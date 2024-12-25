@@ -60,11 +60,14 @@ export class Mb51Component implements OnInit {
   };
 
   ngOnInit() {
+    const currentDate = new Date();
+    const fifteenDaysAgo = new Date();
+    fifteenDaysAgo.setDate(currentDate.getDate() - 15);
     this.validationform = this.formBuilder.group({
       plant: ['', Validators.required],
       movementType: '',
-      postingDateFrom: ['', Validators.required],
-      postingDateTo: ['', Validators.required]
+      postingDateFrom: [fifteenDaysAgo, Validators.required],
+      postingDateTo: [currentDate, Validators.required]
     });
   }
   onDropdownChange() {     console.log('Selected Movement Type:', this.selectedMovementType); }

@@ -430,7 +430,7 @@ export class GrnprintComponent implements OnInit {
   ^LS0
   ^FT49,181^BQN,2,3
   ^FH\^FDLA,${ele}^FS
-  ^FT223,47^A0N,25,24^FH\^FD${this.GRN}^FS
+  ^FT223,47^A0N,25,24^FH\^FD${row.GRN}^FS
   ^FT223,74^A0N,25,24^FH\^FD${row.LIFNR}^FS
   ^FT223,105^A0N,25,24^FH\^FD${row.MATNR}^FS
   ^FT223,130^A0N,25,24^FH\^FD Pkg ${row.DCHARG}/${row.ZLABEL}^FS

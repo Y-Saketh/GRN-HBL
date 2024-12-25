@@ -86,23 +86,8 @@ export class QRcodegenrationComponent {
   selectedPrinter: string = '';
   message: string = '';
   printer: any;
-  QRcode: `GRN: 5000778531
-
-VC: 2000829
-
-Mat: 1000001735
-
-MatD:
-
-BUSBAR_ALUMINIUM_40MMx10MM
-
-Dt: Thu Dec 19 2024 10:47:56 GMT+0530
-
-(India Standard Time)
-
-RN: Reel 2
-
-Qty: 10`
+  headerText: any;
+  selectedd: boolean = true;
 
   constructor(public service: qrcodegenrationService, public formBuilder: UntypedFormBuilder, private apiService: UserProfileService, public loaderservice: LoaderService, private sanitizer: DomSanitizer, private http: HttpClient) {
     this.tables$ = service.tables$;
@@ -113,6 +98,9 @@ Qty: 10`
     this.selectedData = [];
     this.startPrinter()
     this.currentDate = new Date()
+    this.validationform = this.formBuilder.group({
+      headerText:[''],
+    });
     this.breadCrumbItems = [{ label: 'GRN' }, { label: 'GRN Against InBound Delivery', active: true }];
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
 
@@ -129,6 +117,7 @@ Qty: 10`
     this.inboundDetailsForm = this.formBuilder.group({
 
       postingDate: [new Date(), [Validators.required]],
+      headerText: ['']
     });
 
     /**
@@ -184,6 +173,7 @@ Qty: 10`
         table.selected || (table.shadowRows && table.shadowRows.every(shadow => shadow.selected))
       );
     });
+    this.selectedd=row.selected==true ? true : false;
   }
 
 
@@ -406,6 +396,7 @@ Qty: 10`
         const payload = {
           BUDAT: this.formpostingdate.postingDate.value,
           WERKS: this.plant,
+          BKTXT: this.formpostingdate.headerText.value,
           BLDAT: this.documentDeliveryDate,
           IN_DATE: this.invoiceDate,
           INVOICE: this.invoiceNumber,
@@ -554,6 +545,10 @@ Qty: 10`
 
   submitPayload(payload: any) {
     console.log("payload", payload);
+    if(!this.formpostingdate.headerText.value){
+          Swal.fire("","Header text is required","error")
+        }
+        else{
     this.loaderservice.showLoader();
     this.apiService.grnlist(payload).subscribe({
       next: (res) => {
@@ -614,7 +609,7 @@ Qty: 10`
     });
 
 
-  }
+  }}
   // submitPayload(payload: any) {
   //   console.log("payload", payload);
   //   // this.loaderservice.showLoader();
@@ -1157,11 +1152,13 @@ Qty: 10`
             this._fetchData();
 
           } else {
+            this.loaderservice.hideLoader();
             Swal.fire("", res, "error")
           }
 
         },
         error: (error: any) => {
+          this.loaderservice.hideLoader();
           console.error('Error fetching lot reports:', error);
         },
         complete: () => {
