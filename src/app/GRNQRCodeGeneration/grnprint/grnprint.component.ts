@@ -35,6 +35,7 @@ declare var BrowserPrint: any;
 export class GrnprintComponent implements OnInit {
   @ViewChild('newContactModal', { static: false }) newContactModal?: ModalDirective;
   @ViewChild('unmatchModal', { static: false }) unmatchModal?: ModalDirective;
+  @ViewChild('unmatchModalindividual', { static: false }) unmatchModalindividual?: ModalDirective;
   breadCrumbItems: Array<{}>;
   validationform!: FormGroup; // Form group for the input fields
   submit = false; // Form submission flag
@@ -75,6 +76,7 @@ export class GrnprintComponent implements OnInit {
   showTable: boolean = false;
   qrscreen: boolean = false;
   labelscreen: boolean = false;
+  userscreen: boolean = false;
   qrCodes: any[];
   qrCodess: any[];
   lableavail: Table[];
@@ -90,7 +92,7 @@ export class GrnprintComponent implements OnInit {
   };
 
   onPrintOptionChange(): void {
-    if (this.selectedOption === 'QR'|| this.selectedOption === 'labelPrint') {
+    if (this.selectedOption === 'QR'|| this.selectedOption === 'labelPrint' || this.selectedOption === 'userprint') {
       this.showTable = true;
     } else {
       this.showTable = false;
@@ -117,6 +119,12 @@ export class GrnprintComponent implements OnInit {
   onLabelPrintCheckboxChange(table: any): void {
     if (!table.selected) {
       table.ZLABEL = 0; // Reset ZLABEL if the row is deselected
+    }
+  }
+
+  onUserPrintCheckboxChange(table: any): void {
+    if (!table.selected) {
+      table.ZUSER = 0; // Reset ZUSER if the row is deselected
     }
   }
   
@@ -722,7 +730,9 @@ export class GrnprintComponent implements OnInit {
     this.selectedMaterial = false;
     this.qrscreen = false;
     this.labelscreen = false;
+    this.userscreen = false;
     this.matchedAndUnmatchedData = [];
+
   }
   async generateQR(): Promise<void> {
     // this.saveQRData()
@@ -951,11 +961,10 @@ export class GrnprintComponent implements OnInit {
     this.GrnResponse = true;
     this.selectedIndex = null;
     this.unmatchModal?.hide();
+    this.unmatchModalindividual?.hide();
     this.newContactModal?.hide();
 
   }
-
-  
   
   showPdfPreview(base64String: string) {
         try {
@@ -1038,5 +1047,214 @@ export class GrnprintComponent implements OnInit {
           Swal.fire("Error", "Failed to preview the PDF. Please try again.", "error");
         }
       }
+
+
+  async userlabel(): Promise<void> {
+    this.GrnResponse = false;
+    this.userscreen = true;
+    this.qrCodes = [];
+    console.log("matchedAndUnmatchedData", this.matchedAndUnmatchedData)
+    for (const table of this.matchedAndUnmatchedData) {
+      const packets = table.packets || [];
+      const qrData = `
+            GRN: ${table.MBLNR}
+            VC: ${table.LIFNR}
+            Mat: ${table.MATNR}
+            MatD: ${table.MAKTX}
+            Dt: ${this.currentDate}
+            RN: Reel ${table.DCHARG}
+            Qty: ${table.DCLABS}
+          `;
+      try {
+        const qrCodeUrl = await this.generateQRCode(qrData);
+        this.qrCodes.push({ qrCodeUrl, data: table });
+      } catch (error) {
+        console.error("QR Generation Failed", error);
+      }
+    }
+    console.log("Generated QR Codes:", this.qrCodes);
+  }
+
+  initPrinter3(): void {
+    if(this.printer){
+      Swal.fire({
+        title: "Do you want to print the Labels",//res[0].MESSAGE,
+        text: "",
+        icon: 'success',
+        showCancelButton: true, // Adds the Cancel button
+        confirmButtonText: 'Print User QR', // Text for OK button
+        cancelButtonText: 'Cancel', // Text for Cancel button
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.printLabel3();
+          } 
+        else if (result.isDismissed) {
+          console.log('Action canceled');
+        }
+      });
+    }
+    else{
+      Swal.fire("","Printer is not available","error")
+      this.startPrinter()
+    }
+
+  }
+
+  async printLabel3() {
+    this.qrCodes = [];
+    console.log("matchedAndUnmatchedData", this.matchedAndUnmatchedData);
+  
+    const printPromises = this.matchedAndUnmatchedData.map((table) => {
+      const qrData = `
+            GRN: ${this.GRN}
+          VC: ${table.LIFNR}
+          Mat: ${table.MATNR}
+          MatD: ${table.MAKTX}
+          Dt: ${this.currentDate}
+          RN: pkg  ${table.DCHARG}/${table.ZLABEL}
+          Qty: ${table.DCLABS} ${table.MEINS}
+        `;
+  
+      return new Promise<void>((resolve, reject) => {
+        try {
+          const zpl = this.generateZPL(qrData, table);
+          if (this.printer) {
+            this.printer.send(
+              zpl,
+              () => {
+                console.log("Label sent to printer!");
+                resolve(); // Resolve if successful
+              },
+              (error: any) => {
+                console.error("Error sending ZPL:", error);
+                reject(error); // Reject if there is an error
+              }
+            );
+          } else {
+            console.error("No printer available!");
+            reject(new Error("No printer available"));
+          }
+        } catch (error) {
+          console.error("QR Generation Failed", error);
+          reject(error); // Reject if an error occurs during QR generation
+        }
+      });
+    });
+  
+    try {
+      await Promise.all(printPromises); // Wait for all promises to resolve
+      console.log("All labels printed successfully!");
+    } catch (error) {
+      console.error("Some labels failed to print:", error);
+      // Optionally, handle specific errors or retry logic here
+    } finally {
+      this.backtoQunatity(); // Always execute this, even if some labels fail
+    }
+  }
+
+  generateZPL3(ele:any, row): string {
+    console.log("initPrinter3",ele, row)
+    return `
+      CT~~CD,~CC^~CT~
+      ^XA~TA000~JSN^LT0^MNW^MTT^PON^PMN^LH0,0^JMA^PR4,4~SD10^JUS^LRN^CI0^XZ
+      ^XA
+      ^MMT
+      ^PW400
+      ^LL0200
+      ^LS0
+      ^FT49,181^BQN,2,3
+      ^FH\^FDLA,${ele}^FS
+      ^FT223,47^A0N,25,24^FH\^FD${row.GRN}^FS
+      ^FT223,74^A0N,25,24^FH\^FD${row.LIFNR}^FS
+      ^FT223,105^A0N,25,24^FH\^FD${row.MATNR}^FS
+      ^FT223,130^A0N,25,24^FH\^FD Pkg ${row.DCHARG}/${row.ZLABEL}^FS
+      ^FT223,161^A0N,25,24^FH\^FDQTY ${row.DCLABS} ${row.MEINS}^FS
+      ^PQ1,0,1,Y^XZ
+    `;
+  }
+
+  unmatchMaterial1(index: number): void {
+    const material = this.tableData[index];
+    console.log("material", material);
+  
+    if (material.ZLABEL > 0) {
+        // Create deep copy to avoid mutating the original data
+        this.selectedMaterial = JSON.parse(JSON.stringify(material));
+        this.selectedIndex = index;
+  
+        // Generate packets with placeholder quantities for user input
+        this.selectedMaterial.packets = Array.from({ length: material.ZLABEL }, (_, i) => ({
+            DCHARG: '', // Packet number (1-based)
+            DCLABS: '', // Empty quantity for user to input
+        }));
+  
+        // Open modal for user input
+        this.unmatchModalindividual?.show();
+    } else {
+        Swal.fire("Error", "Enter a valid Label Quantity", "error");
+    }
+  }
+
+  onmismatchindividual(mainRow: any, currentPacket: any, index: number): void {
+    // Calculate the total DCLABS for all packets
+    const totalDCLABS = mainRow.packets.reduce((sum: number, packet: any) => {
+      return sum + (parseFloat(packet.DCLABS) || 0);
+    }, 0);
+
+    // Check if the total exceeds the main row's MENGE
+    if (totalDCLABS > parseFloat(mainRow.MENGE)) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Limit Exceeded',
+        text: `The total quantity (${totalDCLABS}) exceeds the main row's quantity (${mainRow.MENGE}).`,
+      });
+
+      // Reset the value of the current packet's DCLABS
+      currentPacket.DCLABS = null;
+
+      // Optionally, update the UI by triggering Angular's change detection
+      mainRow.packets[index].DCLABS = null;
+    }
+  }
+
+  saveUnmatchedindividual(): void {
+    if (this.selectedIndex !== null && this.tableData?.[this.selectedIndex]) {
+        const selectedMaterial = this.tableData[this.selectedIndex];
+  
+        // Validate user input
+        const isValid = this.selectedMaterial.packets.every((packet) => {
+            return packet.DCLABS !== null && !isNaN(packet.DCLABS) && parseFloat(packet.DCLABS) > 0;
+        });
+  
+        if (!isValid) {
+            Swal.fire("Error", "Please ensure all quantities are valid and filled.", "error");
+            return;
+        }
+  
+        // Generate QR data for the unmatched material
+        const qrData = this.selectedMaterial.packets.map((packet, i) => ({
+            ...selectedMaterial,  // Spread original material's properties
+            DCLABS: packet.DCLABS,  // Format quantity to 2 decimal places
+            DCHARG: packet.DCHARG,  // Packet number
+            isMatched: false,  // Mark as unmatched
+        }));
+  
+        // Remove the old data for the material before adding the new one
+        this.matchedAndUnmatchedData = this.matchedAndUnmatchedData.filter(
+            (data) => data.materialId !== selectedMaterial.MATNR
+        );
+  
+        // Add only the latest unmatched data (this will update the state for the material)
+        this.matchedAndUnmatchedData.push(...qrData);
+  
+        console.log("Unmatched Data Saved:", qrData);
+  
+        // Hide modal
+        this.unmatchModalindividual?.hide();
+    } else {
+        Swal.fire("Error", "Unable to save unmatched packets. Please try again.", "error");
+    }
+  }
+
 
 }
