@@ -1,3 +1,4 @@
+import { filter } from 'rxjs/operators';
 import { CommonModule, DecimalPipe } from '@angular/common';
 import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
@@ -167,8 +168,8 @@ export class InbounddeliveryComponent implements OnInit {
             ITEM: [],
           },
         };
-  
-        tables.forEach((table) => {
+        this.INBOUND = this.INBOUND.filter(table => table.selected);
+        this.INBOUND.forEach((table) => {
           const item = {
             MATNR: table.MATNR,
             DMENGE: parseFloat(table.DMENGE) || 0,
@@ -182,7 +183,8 @@ export class InbounddeliveryComponent implements OnInit {
           };
           payload.DETAIL.ITEM.push(item);
         });
-        this.loaderservice.showLoader();
+        // this.loaderservice.showLoader();
+        console.log(JSON.stringify(payload));
         this.apiService.saveInbound(payload).subscribe({
           next: (res) => {
             if(res[0]?.NUMBER){
