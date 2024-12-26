@@ -139,6 +139,12 @@ export class GRNagainstPOComponent{
       this.hideme.push(true);
     }
   }
+  filterSelectedRows() {
+    this.GrnResponse = this.GrnResponse.filter(table => table.selected);
+    this.service.setTableData(this.GrnResponse || []); 
+    this._fetchData(); 
+  }
+
   toggleSelectAll(event: any): void {
     const checked = event.target.checked;
     this.tables$.pipe(take(1)).subscribe((tables) => {

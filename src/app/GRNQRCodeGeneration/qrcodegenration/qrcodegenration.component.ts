@@ -162,6 +162,11 @@ export class QRcodegenrationComponent {
       });
     });
   }
+  filterSelectedRows() {
+    this.GrnResponse = this.GrnResponse.filter(table => table.selected);
+    this.service.setTableData(this.GrnResponse || []); 
+    this._fetchData(); 
+  }
 
   onRowCheckboxChange(row: any): void {
     this.selectAll = false;  // If a single row is unchecked, deselect "selectAll"

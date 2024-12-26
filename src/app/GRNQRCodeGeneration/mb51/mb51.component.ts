@@ -14,22 +14,33 @@ import { AdvancedSortableDirective, SortEvent } from './Advanced-sortable.direct
 import { Table } from './advanced.model'; // Import the correct Table type
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { DecimalPipe } from '@angular/common'; 
-
+import { IDropdownSettings, NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { ColorFormats } from 'ngx-color-picker/lib/formats';
 
 
 
 @Component({
   selector: 'app-mb51',
   standalone: true,
-  providers: [AdvancedService, DecimalPipe, UserProfileService],
-  imports: [ReactiveFormsModule, FormsModule, CommonModule, BsDatepickerModule, AdvancedSortableDirective],
+  providers: [AdvancedService, DecimalPipe, UserProfileService,],
+  imports: [ReactiveFormsModule, FormsModule, CommonModule, BsDatepickerModule, AdvancedSortableDirective, NgMultiSelectDropDownModule,],
   templateUrl: './mb51.component.html',
   styleUrls: ['./mb51.component.css']
 })
 export class Mb51Component implements OnInit {
   movementTypes: number[] = [101, 102, 122, 123]; // Movement Type
-  ValuesselectedMovementType: number | null = null;
-
+  // selectedMovementTypes = [];
+  // movementTypes = [
+  //   { id: 101, itemName: 'Type 101' },
+  //   { id: 102, itemName: 'Type 102' },
+  //   { id: 122, itemName: 'Type 122' },
+  //   { id: 123, itemName: 'Type 123' }
+  // ];
+  
+  dropdownList = [];
+  selectedItems = [];
+  dropdownSettings = {};
+  
   plants: number[] = [1100, 1200, 1300]; // Plant
   Valuesselectedplants: number | null = null;
 
@@ -65,10 +76,43 @@ export class Mb51Component implements OnInit {
     fifteenDaysAgo.setDate(currentDate.getDate() - 15);
     this.validationform = this.formBuilder.group({
       plant: ['', Validators.required],
-      movementType: '',
+      movementType:  [[], Validators.required],
       postingDateFrom: [fifteenDaysAgo, Validators.required],
       postingDateTo: [currentDate, Validators.required]
     });
+    this.dropdownList = [
+      { item_id: 101, item_text: '101' },
+      { item_id: 102, item_text: '102' },
+      { item_id: 122, item_text: '122' },
+      { item_id: 123, item_text: '123' },
+    ];
+    this.selectedItems = [
+    ];
+    this.dropdownSettings = {
+      singleSelection: false,
+      idField: 'item_id',
+      textField: 'item_text',
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      itemsShowLimit: 3,
+      allowSearchFilter: false,
+      limitSelection:4
+  
+    };
+  }
+  onItemSelect(item: any) {
+    console.log(item);
+    this.validationform.patchValue({
+      movementType: this.selectedItems,
+    });
+  }
+  onSelectAll(items: any) {
+    console.log(items);
+    this.selectedItems = items;
+    this.validationform.patchValue({
+      movementType: this.selectedItems,
+    });
+  
   }
   onDropdownChange() {     console.log('Selected Movement Type:', this.selectedMovementType); }
   exportToExcel(): void {

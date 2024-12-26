@@ -40,6 +40,7 @@ export class InbounddeliveryComponent implements OnInit {
   expandedRows: { [key: string]: boolean } = {};
   lotReportsData: any;
   INBOUND: Table[] = [];
+  
   plant: string;
   supplier: string;
   Originalquantity: any;
@@ -59,6 +60,8 @@ export class InbounddeliveryComponent implements OnInit {
   City: any ;
   GSTIN: any;
   HSNCODE: any;
+  selectedTables: Table[] = [];
+   isAllSelected: boolean = false;
 
   constructor(public formBuilder: UntypedFormBuilder, public service: AdvancedService, private apiService: UserProfileService,public loaderservice:LoaderService) {
     this.tables$ = service.tables$;
@@ -105,6 +108,37 @@ export class InbounddeliveryComponent implements OnInit {
 
   removeRow(index: number): void {
     this.INBOUND.splice(index, 1);
+  }
+  trackByIndex(index: number): number {
+    return index;
+  }
+
+  // Method to select/deselect all rows
+  selectAllRows() {
+    // If "Select All" checkbox is checked, set all rows' selected to true
+    if (this.isAllSelected) {
+      this.INBOUND.forEach(table => table.selected = true);
+    } else {
+      // If "Select All" checkbox is unchecked, set all rows' selected to false
+      this.INBOUND.forEach(table => table.selected = false);
+    }
+    
+    // Update table data after selection/deselection
+    this.service.setTableData(this.INBOUND || []);
+    this._fetchData();
+  }
+
+
+  updateSelectAllStatus() {
+
+    this.isAllSelected = this.INBOUND.every(table => table.selected);
+  }
+
+  
+  filterSelectedRows() {
+    this.INBOUND = this.INBOUND.filter(table => table.selected);
+    this.service.setTableData(this.INBOUND || []); 
+    this._fetchData(); 
   }
 
   changeValue() {
@@ -196,8 +230,8 @@ export class InbounddeliveryComponent implements OnInit {
 }
 
   _fetchData() {
-    this.tableData = this.INBOUND || [];
-    console.log("this.tableData", this.tableData);
+    this.INBOUND = this.INBOUND || [];
+    console.log("this.tableData", this.INBOUND);
   }
 
   onSort({ column, direction }: SortEvent) {
@@ -256,7 +290,9 @@ export class InbounddeliveryComponent implements OnInit {
             this.City = res.ORT01
             this.GSTIN = res.STCD3
             // this.HSNCODE = res.STEUC
-            this.service.setTableData(res.ITEM || []);
+            this.INBOUND?.forEach(sel =>{sel.selected = true})
+            this.service.setTableData(this.INBOUND || []);
+            this.isAllSelected = true;
             this._fetchData();
             this.loaderservice.hideLoader(); 
           }

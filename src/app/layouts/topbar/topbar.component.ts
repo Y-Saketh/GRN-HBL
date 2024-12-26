@@ -140,7 +140,9 @@ export class TopbarComponent implements OnInit {
       icon: 'info',
       confirmButtonText: 'OK'
     }).then(() => {
-      window.location.href = 'http://10.10.4.178';
+      // window.location.href = 'http://10.10.4.178';
+      //Production
+      window.location.href = 'https://ims.hbl.in/';
     });
   }
 

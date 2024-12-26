@@ -1,6 +1,7 @@
 // Table data
 
 export interface Table {
+  selected: unknown;
   gateEntryNumber: string; // Entry Gate Pass Number
   vehicleNumber: string; // Vehicle Number
   invoiceDate: string; // Invoice Date

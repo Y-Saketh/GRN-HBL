@@ -95,7 +95,7 @@
               </div> -->
             </div>
              <!-- Material From -->
-             <!-- <div class="col-md-2">
+             <div class="col-md-2">
                 <div class="mb-3">
                   <label class="brandcolor" for="materialFrom">MATERIAL FROM</label>
                   <input
@@ -115,9 +115,9 @@
                     >
                   </div>
                 </div>
-              </div> -->
+              </div>
               <!-- Material To -->
-             <!-- <div class="col-md-2">
+             <div class="col-md-2">
               <div class="mb-3">
                 <label class="brandcolor" for="materialTo">MATERIAL TO</label>
                 <input
@@ -137,7 +137,7 @@
                   >
                 </div>
               </div>
-            </div> -->
+            </div>
             <!-- BATCH -->
             <!-- <div class="col-md-2">
               <label class="brandcolor" for="batch">BATCH</label>
@@ -262,6 +262,34 @@
                 >
                 Unrestricted Stock Value
                 </th>
+                <th
+                class="brandcolor"
+                sortable="WLABS"
+                (sort)="onSort($event)"
+              >
+              Blocked Stock
+              </th>
+              <th
+              class="brandcolor"
+              sortable="WLABS"
+              (sort)="onSort($event)"
+            >
+            Blocked Stock Value
+            </th>
+            <th
+            class="brandcolor"
+            sortable="WLABS"
+            (sort)="onSort($event)"
+          >
+         Stock in Transit
+          </th>
+          <th
+          class="brandcolor"
+          sortable="WLABS"
+          (sort)="onSort($event)"
+        >
+        Value in Transit
+        </th>
               </tr>
             </thead>
             <tbody *ngFor="let table of tables$ | async; let i = index">
@@ -285,6 +313,10 @@
                 <!-- Unrestricted Stock Quantity -->
                 <td>{{ table.WLABS }}</td>
                 <!-- Unrestricted Stock Value -->
+                <td>{{ table.WLABS }}</td>
+                <td>{{ table.WLABS }}</td>
+                <td>{{ table.WLABS }}</td>
+                <td>{{ table.WLABS }}</td>
               </tr>
               <ng-container *ngIf="!hideme[i]">
                 <tr class="sub-table no-bg">

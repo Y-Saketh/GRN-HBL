@@ -815,7 +815,7 @@ export class GrnprintComponent implements OnInit {
           VC: row.LIFNR,
           Mat: row.MATNR,
           matDesc: row.MAKTX,
-          RN: `Pkg ${i + 1}`,
+          RN: `Pkg ${i + 1}/${row.ZLABEL}`,
           Qty: `${row.MENGE} ${row.MEINS}`,
         });
       }
