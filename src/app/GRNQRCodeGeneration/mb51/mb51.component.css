@@ -53,4 +53,8 @@ background-color: #cadad6;
     text-align: left;
     border-bottom: 2px solid #6A3B0E; 
   }
+
+  :host ::ng-deep .multiselect-dropdown .dropdown-btn {
+    background-color: white;
+  }
   

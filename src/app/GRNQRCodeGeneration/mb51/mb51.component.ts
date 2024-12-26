@@ -202,10 +202,12 @@ onSort({ column, direction }: SortEvent) {
   
 
   getmb51() {
-    console.log("validationform",this.form)
+    let bwart = [];
+    bwart = this.form.movementType.value.map(data=>data.item_id)
+    console.log("validationform",this.form, bwart)
       let obj = {
         WERKS: this.form.plant.value,//"1300",//
-        BWART: '101',//this.form.movementType.value,//"",// Movement Type
+        BWART: bwart, //this.form.movementType.value,//"",// Movement Type
         VGART:"WE",// Transaction/Event Type
         BUDAT_F:  this.form.postingDateFrom.value, //,//"2024-11-01",//
         BUDAT_T: this.form.postingDateTo.value  // //"2024-11-30" //

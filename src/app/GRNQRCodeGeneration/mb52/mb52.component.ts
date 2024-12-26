@@ -66,10 +66,11 @@ export class Mb52Component implements OnInit {
           WLABS: 'Unrestricted Stock Value',              // Unrestricted Stock Value
           INSME: 'Quality Inspection Stock Quantity',     // Quality Inspection Stock Quantity
           WINSM: 'Quality Inspection Stock Value',        // Quality Inspection Stock Value
-          // WINSM: 'Blocked Stock',
-          // WINSM: 'Blocked Stock Value',
-          // WINSM: 'Stock in Transit',
-          // WINSM: 'Value in Transit'
+          SPEME: 'Blocked Stock',
+          WSPEM: 'Blocked Stock Value',
+          TRAME: 'Stock in Transit',
+          WTRAM: 'Value in Transit'
+
         };
     
         // Format data to map keys to user-friendly headers

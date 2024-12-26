@@ -62,7 +62,8 @@
             [placeholder]="'select movement type'"
             [settings]="dropdownSettings"
             [data]="dropdownList"
-            [(ngModel)]="selectedItems"   
+            [(ngModel)]="selectedItems"  
+            [ngModelOptions]="{standalone: true}" 
             (onSelect)="onItemSelect($event)"
             (onSelectAll)="onSelectAll($event)"
           >
@@ -158,6 +159,7 @@
                 aria-controls="tickets-table"
                 class="form-control form-control-sm mx-2"
                 [(ngModel)]="service.pageSize"
+                [ngModelOptions]="{standalone: true}"
               >
                 <option [ngValue]="10">10</option>
                 <option [ngValue]="25">25</option>
