@@ -168,8 +168,9 @@
                 <tbody>
                   <tr>
                     <td align="center">
-                      <!-- <a class="expand-row">+</a> -->
-                    </td>
+                      <button (click)="filterSelectedRows()" class="btn custom-btn rounded-circle shadow-lg p-3">
+                        <i class="bx bx-repeat"></i>
+                      </button>
                     <td>
                       <input
                         type="text"
@@ -336,7 +337,15 @@
                       <table class="table mb-0 table-striped">
                         <thead class="bg-dark text-white">
                           <tr>
-                            <th></th>
+                            <th>   
+                               <input
+                              type="checkbox"
+                              [(ngModel)]="isAllSelected"
+                              [ngModelOptions]="{standalone: true}"
+                              (change)="selectAllRows()"
+                              class="form-check-input"
+                            />
+                          </th>
                             <th>Plant</th>
                             <th>S Loc</th>
                             <th>PO Number</th>
@@ -351,17 +360,24 @@
                             <!-- <th>Supplier/Vendor Code</th> -->
                           </tr>
                         </thead>
-                        @for(table of tables$ | async;track $index){
+                        @for(table of tables$ | async; track $index){
                         <tbody>
                           <tr>
                             <td>
-                              <button
+                              <!-- <button
                               type="button"
                               class="btn btn-danger btn-sm"
                               (click)="removeRow($index)"
                             >
                               -
-                            </button>
+                            </button> -->
+                            <input
+                            type="checkbox"
+                            [(ngModel)]="table.selected"
+                            (change)="updateSelectAllStatus()"
+                            [ngModelOptions]="{standalone: true}"
+                            class="form-check-input"
+                          />
                             
                             </td>
                             <td>{{ table.WERKS }}</td>

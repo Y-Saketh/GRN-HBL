@@ -54,4 +54,26 @@
     text-align: left;
     border-bottom: 2px solid #6A3B0E; 
   }
+  .custom-btn {
+    background-color: #426994; /* Adjust the color as needed (for example, blue) */
+    color: white; /* Icon color */
+    font-size: 24px; /* Adjust the icon size */
+    width: 50px; /* Button width */
+    height: 50px; /* Button height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    transition: all 0.3s ease; /* Smooth transition */
+  }
+  
+  .custom-btn:hover {
+    background-color: #364b61; /* Darker shade on hover */
+    transform: scale(1.1); /* Slightly enlarges on hover */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
+  }
+  
+  .custom-btn:focus {
+    outline: none; /* Removes focus outline */
+  }
   

@@ -66,6 +66,10 @@ export class Mb52Component implements OnInit {
           WLABS: 'Unrestricted Stock Value',              // Unrestricted Stock Value
           INSME: 'Quality Inspection Stock Quantity',     // Quality Inspection Stock Quantity
           WINSM: 'Quality Inspection Stock Value',        // Quality Inspection Stock Value
+          // WINSM: 'Blocked Stock',
+          // WINSM: 'Blocked Stock Value',
+          // WINSM: 'Stock in Transit',
+          // WINSM: 'Value in Transit'
         };
     
         // Format data to map keys to user-friendly headers
@@ -108,8 +112,8 @@ export class Mb52Component implements OnInit {
     this.validationform = this.formBuilder.group({
       plant: ['', Validators.required],
       storageLocation: ['', Validators.required],
-      // materialFrom: ['', Validators.required],
-      // materialTo: ['', Validators.required],
+      materialFrom: ['', Validators.required],
+      materialTo: ['', Validators.required],
       materialType: ['', Validators.required],
     });
 
@@ -150,8 +154,8 @@ export class Mb52Component implements OnInit {
     console.log("validationform",this.form)
       let obj = {
         "WERKS": this.form.plant.value,//"1300",
-        "MATNR_F": '',//this.form.materialFrom.value,//"1000001248",
-        "MATNR_T": '',//this.form.materialTo.value,//"1000001248",
+        "MATNR_F": this.form.materialFrom.value,//"1000001248",
+        "MATNR_T": this.form.materialTo.value,//"1000001248",
         "MATART": this.form.materialType.value,
         "LGORT":this.form.storageLocation.value
     }

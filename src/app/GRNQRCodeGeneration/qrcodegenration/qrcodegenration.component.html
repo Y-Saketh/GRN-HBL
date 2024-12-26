@@ -72,7 +72,7 @@
                   </table>
                 </form>
               </div> -->
-              <div class="col-sm-6 col-md-6">
+              <div class="col-sm-8 col-md-8">
                 <form [formGroup]="inboundDetailsForm">
                   <table class="table styled-table">
                     <thead>
@@ -80,8 +80,9 @@
                         <th>Plant</th>
                         <th>Invoice Number</th>
                         <th>Invoice Date</th>
-                        <th>Posting Date</th>
-                        <th>Header Text</th>
+                        <th>Posting Date<span style="color: red">*</span></th>
+                        <th>Header Text<span style="color: red">*</span></th>
+                        <th>Bill of Lading</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -107,9 +108,17 @@
                         <td>
                           <input
                               type="text"
-                              formControlName="headerText"
+                              formControlName="headerText" maxlength="20"
                               class="form-control custom-posting-date"
                               placeholder="Enter Credit Memo Doc No"
+                          />
+                        </td>
+                        <td>
+                          <input
+                              type="text"
+                              formControlName="billOfLading" maxlength="15"
+                              class="form-control custom-posting-date"
+                              placeholder="Enter Bill of lading"
                           />
                         </td>
                       </tr>
@@ -117,7 +126,7 @@
                   </table>
                 </form>
               </div>
-              <div class="col-sm-2 col-md-2"></div>
+              <!-- <div class="col-sm-2 col-md-2"></div> -->
               <!-- Details -->
               <div class="col-sm-4 col-md-4">
                 <h5 *ngIf="vendorCode">
@@ -151,6 +160,11 @@
                 <button (click)="generateQR()" [disabled]=" !isAnyRowSelected() ||matchedAndUnmatchedData == 0 " class="btn btn-success btn-lg highlight-3d-btn">Re-Generate QR</button>
             </div>
         </div> -->
+        <div>
+          <button (click)="filterSelectedRows()" class="btn custom-btn rounded-circle shadow-lg p-3">
+            <i class="bx bx-repeat"></i>
+          </button>
+                  </div>
           <div class="table table-responsive">
             <table id="basic-datatable"
               class="table table-bordered dt-responsive nowrap datatables no-footer dtr-inline">

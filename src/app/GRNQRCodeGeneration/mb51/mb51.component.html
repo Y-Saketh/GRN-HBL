@@ -30,25 +30,44 @@
             </div>
           </div>
           <!-- Movement Type -->
-          <div class="col-md-2">
+          <!-- <div class="col-md-2">
             <label class="brandcolor" for="movementType">MOVEMENT TYPE</label>
             <div class="mb-3">
               <select
                 class="form-select"
                 id="movementType"
                 formControlName="movementType"
+                multiple
               >
-                <option value="" disabled selected>Select Movement Type</option>
-                <option *ngFor="let type of movementTypes" [value]="type">
+                <option
+                  *ngFor="let type of movementTypes"
+                  [value]="type"
+                >
                   {{ type }}
                 </option>
               </select>
-              <div *ngIf="submit && form.movementType.errors" class="invalid-feedback">
-                <span *ngIf="form.movementType.errors.required"
-                  >Please select a valid Movement Type.</span
-                >
+              <div
+                *ngIf="submit && form.controls['movementType'].errors"
+                class="invalid-feedback"
+              >
+                <span *ngIf="form.controls['movementType'].errors.required">
+                  Please select at least one Movement Type.
+                </span>
               </div>
             </div>
+          </div> -->
+          <div class="col-md-2">
+            <label class="brandcolor">MOVEMENT TYPE</label>
+            <ng-multiselect-dropdown
+            [placeholder]="'select movement type'"
+            [settings]="dropdownSettings"
+            [data]="dropdownList"
+            [(ngModel)]="selectedItems"   
+            (onSelect)="onItemSelect($event)"
+            (onSelectAll)="onSelectAll($event)"
+          >
+          </ng-multiselect-dropdown>
+          
           </div>
           <!-- Posting Date From -->
           <div class="col-md-2">
@@ -174,14 +193,46 @@
               <th class="brandcolor" sortable="PLANT" (sort)="onSort($event)">
                 Plant
               </th>
-              <th class="brandcolor" sortable="STG_LOC" (sort)="onSort($event)">
-                S.Loc
+              <th class="brandcolor" sortable="STGE_LOC" (sort)="onSort($event)">
+                GL Account
+              </th>
+              <th class="brandcolor" sortable="MAT_DES" (sort)="onSort($event)">
+                Order
+              </th>
+              <th class="brandcolor" sortable="MAT_DES" (sort)="onSort($event)">
+                Material Document
+              </th>
+              <th class="brandcolor" sortable="MVT_TYPE" (sort)="onSort($event)">
+                Document Date
+              </th>
+              <th class="brandcolor" sortable="POSTING_DATE" (sort)="onSort($event)">
+                Posting Date
               </th>
               <th class="brandcolor" sortable="MATERIAL" (sort)="onSort($event)">
                 Material
               </th>
               <th class="brandcolor" sortable="MAT_DES" (sort)="onSort($event)">
-                Material Description
+                Mat.Desc
+              </th>
+              <th class="brandcolor" sortable="MVT_TYPE" (sort)="onSort($event)">
+                Quantity
+              </th>
+              <th
+                class="brandcolor"
+                sortable="L_CUR_AMT"
+                (sort)="onSort($event)"
+              >
+                Amt in loc.cur
+              </th>
+              <th class="brandcolor" sortable="L_CUR_AMT" (sort)="onSort($event)">
+                Purchase Order
+              </th>
+              <th
+                class="brandcolor"
+                sortable="PRICE"
+                (sort)="onSort($event)"
+              >
+                Price
               </th>
               <th class="brandcolor" sortable="MVT_TYPE" (sort)="onSort($event)">
                 Mvt Type
@@ -193,27 +244,24 @@
               >
                 Mvt Type Txt
               </th>
-              <th class="brandcolor" sortable="POSTING_DATE" (sort)="onSort($event)">
-                Posting Date
+              <th class="brandcolor" sortable="MVT_TYPE" (sort)="onSort($event)">
+                Doc.Header Text
               </th>
-              
-              <th
-                class="brandcolor"
-                sortable="PRICE"
-                (sort)="onSort($event)"
-              >
-                Price
+              <th class="brandcolor" sortable="STG_LOC" (sort)="onSort($event)">
+                S.Loc
               </th>
-              <th
-                class="brandcolor"
-                sortable="L_CUR_AMT"
-                (sort)="onSort($event)"
-              >
-                Amt in loc.cur
+              <!-- <th class="brandcolor" sortable="MVT_TYPE" (sort)="onSort($event)">
+                Entry Date
               </th>
-              <th class="brandcolor" sortable="MAT_DOC" (sort)="onSort($event)">
-                Mat Doc
+              <th class="brandcolor" sortable="MVT_TYPE" (sort)="onSort($event)">
+                Batch
               </th>
+              <th class="brandcolor" sortable="MVT_TYPE" (sort)="onSort($event)">
+                Consumption
+              </th>
+              <th class="brandcolor" sortable="MVT_TYPE" (sort)="onSort($event)">
+                Supplier
+              </th> -->
             </tr>
           </thead>
           <tbody *ngFor="let table of tables$ | async; let i = index">
@@ -223,24 +271,36 @@
               </td>
               <td>{{ table.PLANT }}</td>
               <!-- Plant -->
-              <td>{{ table.STG_LOC }}</td>
-              <!-- Storage Location -->
+              <td>{{ table.GL_ACCOUNT }}</td>
+              <!-- gl account-->
+              <td>{{ table.ORDER }}</td>
+              <!-- Order -->
+              <td>{{ table.MAT_DOC }}</td>
+              <!-- Material Doc -->
+              <td>{{ table.DOC_DATE | date: 'dd-MM-yyyy'  }}</td>
+              <!-- Doc Date -->
+              <td>{{ table.POSTING_DATE | date: 'dd-MM-yyyy'  }}</td>
+              <!-- Posting Date -->
               <td>{{ table.MATERIAL }}</td>
               <!-- Material -->
               <td>{{ table.MAT_DES }}</td>
               <!-- Material Desc -->
+              <td>{{ table.QUANITY }}</td>
+              <!-- Qty -->
+              <td>{{ table.L_CUR_AMT }}</td>
+              <!-- Amt in loc.cur -->
+              <td>{{ table.PUR_ORDER }}</td>
+              <!-- Purchase Order -->
+              <td>{{ table.PRICE }}</td>
+              <!-- Price -->
               <td>{{ table.MVT_TYPE }}</td>
               <!-- Movement Type -->
               <td>{{ table.MVT_TYPE_TXT }}</td>
               <!-- Movement Type Text -->
-              <td>{{ table.POSTING_DATE | date: 'dd-MM-yyyy'  }}</td>
-              <!-- Posting Date -->
-              <td>{{ table.PRICE }}</td>
-              <!-- Qty in unit of entry -->
-              <td>{{ table.L_CUR_AMT }}</td>
-              <!-- Amt in loc.cur -->
-              <td>{{ table.MAT_DOC }}</td>
-              <!-- Material Doc -->
+              <td>{{ table.DOC_HEADER_TXT }}</td>
+              <!-- Doc Header Text-->
+              <td>{{ table.STG_LOC }}</td>
+              <!-- Storage Location -->
             </tr>
             <ng-container *ngIf="!hideme[i]">
               <tr class="sub-table no-bg">
@@ -263,20 +323,14 @@
                     </thead>
                     <tbody>
                       <tr>
-                        <td>{{ table.PUR_ORDER }}</td>
-                        <!-- Purchase Order -->
-                        <td>{{ table.DOC_DATE | date: 'dd-MM-yyyy'  }}</td>
-                        <!-- Doc Date -->
-                        <td>{{ table.QUANITY }}</td>
-                        <!-- Qty -->
+                       
+                       
+                       
                         <td>{{ table.SUPPLIER }}</td>
                         <!-- Supplier -->
-                        <td>{{ table.ORDER }}</td>
-                        <!-- Order -->
-                        <td>{{ table.GL_ACCOUNT }}</td>
-                        <!-- gl account-->
-                         <td>{{ table.DOC_HEADER_TXT }}</td>
-                        <!-- Doc Header Text-->
+                       
+                       
+                         
                          <td>{{ table.ENTRY_DATE| date: 'dd-MM-yyyy'  }}</td>
                         <!-- Entry Date-->
                          <td>{{ table.BATCH }}</td>
