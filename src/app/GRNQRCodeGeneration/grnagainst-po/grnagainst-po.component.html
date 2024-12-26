@@ -144,7 +144,7 @@
               </div>
           </div> -->
           <button (click)="filterSelectedRows()" class="btn custom-btn rounded-circle shadow-lg p-3">
-            <i class="bx bx-repeat"></i>
+            <i class="bx bx-revision"></i>
           </button>
             <div class="table table-responsive">
               <table id="basic-datatable"
@@ -331,13 +331,20 @@
               </table>
             </div>
             <div class="col-md-4 text-left">
-              <button style="
+              <!-- <button style="
                   background-color: brown;
                
                   color: aliceblue;
                 " class="btn btn-lg highlight-3d-btn" type="button" [disabled]="!selectedd" (click)="saveBound(tables$)">
                 Save
-              </button>
+              </button> -->
+              <button style="
+              background-color: brown;
+           
+              color: aliceblue;
+            " class="btn btn-lg highlight-3d-btn" type="button" (click)="saveBound(tables$)">
+            Save
+          </button>
               <!-- <button (click)="generateQR()" [disabled]="!enableQRbutton" class="btn btn-success btn-lg highlight-3d-btn">Generate QR</button> -->
   
               <!-- &nbsp;  &nbsp;  

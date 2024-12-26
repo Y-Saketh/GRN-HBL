@@ -135,7 +135,7 @@ export class Mb51Component implements OnInit {
         //hidden
         PUR_ORDER: 'Purchase Order',              // Purchase Order
         DOC_DATE: 'Document Date',                // Document Date
-        QUANITY: 'Quantity',                        // Quantity
+        Qty: 'Quantity',                        // Quantity
         SUPPLIER: 'Supplier',                     // Supplier
         ORDER: 'Order',                           // Order
         GL_ACCOUNT: 'GL account',                 // GL account
@@ -205,7 +205,7 @@ onSort({ column, direction }: SortEvent) {
     console.log("validationform",this.form)
       let obj = {
         WERKS: this.form.plant.value,//"1300",//
-        BWART: this.form.movementType.value,//"",// Movement Type
+        BWART: '101',//this.form.movementType.value,//"",// Movement Type
         VGART:"WE",// Transaction/Event Type
         BUDAT_F:  this.form.postingDateFrom.value, //,//"2024-11-01",//
         BUDAT_T: this.form.postingDateTo.value  // //"2024-11-30" //

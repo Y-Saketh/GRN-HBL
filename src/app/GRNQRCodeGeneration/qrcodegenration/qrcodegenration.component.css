@@ -289,9 +289,9 @@ img {
 .custom-btn {
   background-color: #426994; /* Adjust the color as needed (for example, blue) */
   color: white; /* Icon color */
-  font-size: 24px; /* Adjust the icon size */
-  width: 50px; /* Button width */
-  height: 50px; /* Button height */
+  font-size: 14px; /* Adjust the icon size */
+  width: 30px; /* Button width */
+  height: 30px; /* Button height */
   display: flex;
   align-items: center;
   justify-content: center;

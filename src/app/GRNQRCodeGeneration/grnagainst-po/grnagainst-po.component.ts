@@ -106,7 +106,8 @@ export class GRNagainstPOComponent{
     this.inboundDetailsForm = this.formBuilder.group({
 
       postingDate: [new Date(), [Validators.required]],
-      headerText:[''],
+      headerText: ['', [Validators.required]],
+      billOfLading:['']
         });
 
     /**
