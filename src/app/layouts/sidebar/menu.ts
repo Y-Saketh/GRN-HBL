@@ -167,6 +167,13 @@ export const MENU: MenuItem[] = [
                 icon: 'bx-layer',
                 parentId: "menu"
             },
+            {
+                id: "mb52",
+                label: 'MENUITEMS.DASHBOARDS.LIST.PREVIEW',
+                link: 'popreview',
+                icon: 'bx-layer',
+                parentId: "menu"
+            }
         
         ]
     },
