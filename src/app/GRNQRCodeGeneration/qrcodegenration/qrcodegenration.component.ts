@@ -7,7 +7,7 @@ import { Table } from './qrcodegenration.model';
 
 // import { tableData } from './data';
 
-import { qrcodegenrationService } from './qrcodegenration.service';
+import { AdvancedService } from './qrcodegenration.service';
 import { qrSortableDirective, SortEvent } from './qr-sortable.directive';
 import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
@@ -28,7 +28,7 @@ declare var BrowserPrint: any;
   selector: 'app-qrcodegenration',
   templateUrl: './qrcodegenration.component.html',
   styleUrl: './qrcodegenration.component.css',
-  providers: [qrcodegenrationService, DecimalPipe],
+  providers: [AdvancedService, DecimalPipe],
   standalone: true,
   imports: [PagetitleComponent, ReactiveFormsModule,
     CommonModule,
@@ -89,7 +89,7 @@ export class QRcodegenrationComponent {
   headerText: any;
   selectedd: boolean = true;
 
-  constructor(public service: qrcodegenrationService, public formBuilder: UntypedFormBuilder, private apiService: UserProfileService, public loaderservice: LoaderService, private sanitizer: DomSanitizer, private http: HttpClient) {
+  constructor(public service: AdvancedService, public formBuilder: UntypedFormBuilder, private apiService: UserProfileService, public loaderservice: LoaderService, private sanitizer: DomSanitizer, private http: HttpClient) {
     this.tables$ = service.tables$;
     this.total$ = service.total$;
   }
@@ -117,7 +117,7 @@ export class QRcodegenrationComponent {
     this.inboundDetailsForm = this.formBuilder.group({
 
       postingDate: [new Date(), [Validators.required]],
-      headerText: ['', [Validators.required]],
+      headerText: [''],
       billOfLading:['']
     });
 
@@ -403,6 +403,7 @@ export class QRcodegenrationComponent {
           BUDAT: this.formpostingdate.postingDate.value,
           WERKS: this.plant,
           BKTXT: this.formpostingdate.headerText.value,
+          FRBNR: this.formpostingdate.billofLoading.value,
           BLDAT: this.documentDeliveryDate,
           IN_DATE: this.invoiceDate,
           INVOICE: this.invoiceNumber,
@@ -415,8 +416,8 @@ export class QRcodegenrationComponent {
 
         let hasEmptyShadows = false;
         let hasMismatchedQuantities = false;
-
-        tables.forEach((table) => {
+        this.GrnResponse = this.GrnResponse.filter(table => table.selected);
+        this.GrnResponse.forEach((table) => {
           if (table.selected) {  // Check if the row is selected
             console.log(`Adding table ${table.MATNR} to payload`);
             let shadowTotal = 0;

@@ -7,7 +7,7 @@ import { Table } from './qrcodegenration.model';
 
 // import { tableData } from './data';
 
-import { qrcodegenrationService } from './qrcodegenration.service';
+import { AdvancedService } from './qrcodegenration.service';
 import { qrSortableDirective, SortEvent } from './qr-sortable.directive';
 import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
@@ -25,7 +25,7 @@ declare var BrowserPrint: any;
   selector: 'app-grnagainst-po',
   templateUrl: './grnagainst-po.component.html',
   styleUrl: './grnagainst-po.component.css',
-  providers: [qrcodegenrationService, DecimalPipe],
+  providers: [AdvancedService, DecimalPipe],
   standalone:true,
   imports:[PagetitleComponent,ReactiveFormsModule, 
     CommonModule, 
@@ -82,7 +82,7 @@ export class GRNagainstPOComponent{
   enableQRbutton: boolean;
   GRN: any;
   currentDate: Date;
-  constructor(public service: qrcodegenrationService,public formBuilder: UntypedFormBuilder,private apiService:UserProfileService, public loaderservice: LoaderService) {
+  constructor(public service: AdvancedService,public formBuilder: UntypedFormBuilder,private apiService:UserProfileService, public loaderservice: LoaderService) {
     this.tables$ = service.tables$;
     this.total$ = service.total$;
   }
@@ -106,7 +106,7 @@ export class GRNagainstPOComponent{
     this.inboundDetailsForm = this.formBuilder.group({
 
       postingDate: [new Date(), [Validators.required]],
-      headerText: ['', [Validators.required]],
+      headerText: [''],
       billOfLading:['']
         });
 
@@ -226,7 +226,8 @@ export class GRNagainstPOComponent{
           IN_DATE: this.invoiceDate,
           INVOICE: this.invoiceNumber,
           LIFNR: this.vendorCode,
-          BXTXT: this.formpostingdate.headerText.value,
+          BKTXT: this.formpostingdate.headerText.value,
+          FRBNR: this.formpostingdate.billofLoading.value,
           NAME1: this.vendorName ,
           ORT01: this.City,
           STCD3:  this.GSTIN,
@@ -236,8 +237,8 @@ export class GRNagainstPOComponent{
         let hasEmptyShadows = false;
         let hasMismatchedQuantities = false;
         
-  
-        tables.forEach((table) => {
+        this.GrnResponse = this.GrnResponse.filter(table => table.selected);
+        this.GrnResponse.forEach((table) => {
           let shadowTotal = 0;
   
           if (table.shadowRows && table.shadowRows.length > 0) {

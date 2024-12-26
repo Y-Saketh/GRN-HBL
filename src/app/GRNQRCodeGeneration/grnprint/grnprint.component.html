@@ -162,7 +162,8 @@
                   <input type="text" [(ngModel)]="table.ABLAD" class="form-control form-control-sm" />
                 </td> -->
                 <td>
-                  <input type="number" [(ngModel)]="table.ZLABEL" [disabled]="!table.selected" placeholder="Label Qty" />
+                  <input type="number" [(ngModel)]="table.ZLABEL" [disabled]="!table.selected" placeholder="Label Qty"  style="width: 8ch; text-align: center;"
+                  />
                 </td>
                 <td>
                   <div style="display: flex; gap: 5px; justify-content: center;">
@@ -282,7 +283,8 @@
                 <td>{{ table.EBELN }}</td>
                 <td>{{ table.EBELP }}</td>
                 <td>
-                  <input type="number" [(ngModel)]="table.ZLABEL" [disabled]="!table.selected" placeholder="Label Qty" />
+                  <input type="number" [(ngModel)]="table.ZLABEL" [disabled]="!table.selected" placeholder="Label Qty" style="width: 8ch; text-align: center;"
+                  />
                 </td>
               </tr>
             </tbody>
@@ -363,7 +365,8 @@
                 <td >{{ table.EBELN }}</td>
                 <td>{{ table.EBELP }}</td>
                 <td>
-                  <input type="number" [(ngModel)]="table.ZLABEL" [disabled]="!table.selected" placeholder="Label Qty" />
+                  <input type="number" [(ngModel)]="table.ZLABEL" [disabled]="!table.selected" placeholder="Label Qty"  style="width: 8ch; text-align: center;"
+                  />
                 </td>
                 <td>
                   <div style="display: flex; gap: 5px; justify-content: center;">
@@ -441,6 +444,46 @@
               <p>Qty {{ qrData.data.DCLABS }} {{ qrData.data.MEINS }}</p>
             </div>
           </div>
+      <!-- Pagination -->
+      <div class="row justify-content-md-between align-items-md-center mt-2">
+        <div class="col-sm-12 col-md-5">
+          <div class="dataTables_info mb-2" role="status" aria-live="polite">
+            Showing {{ service.startIndex }} to {{ service.endIndex }} of
+            {{ service.totalRecords }} entries
+          </div>
+        </div>
+        <div class="col-sm-12 col-md-5">
+          <div class="text-md-right float-md-end pagination-rounded">
+            <ul class="pagination justify-content-end mb-0">
+              <!-- Previous Button -->
+              <li
+                class="page-item"
+                [class.disabled]="service.page === 1"
+                (click)="service.changePage(service.page - 1)"
+              >
+                <a class="page-link" href="javascript:void(0)">Previous</a>
+              </li>
+
+              <!-- Current Page Display -->
+              <li class="page-item active">
+                <a class="page-link" href="javascript:void(0)">{{
+                  service.page
+                }}</a>
+              </li>
+
+              <!-- Next Button -->
+              <li
+                class="page-item"
+                [class.disabled]="service.page === service.totalPages"
+                (click)="service.changePage(service.page + 1)"
+              >
+                <a class="page-link" href="javascript:void(0)">Next</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- End of Pagination -->
         </div>
       </div>
     </div>

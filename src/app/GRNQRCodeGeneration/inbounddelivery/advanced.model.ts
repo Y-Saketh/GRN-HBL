@@ -1,6 +1,7 @@
 // Table data
 
 export interface Table {
+  DMENGE: string;
   selected: unknown;
   gateEntryNumber: string; // Entry Gate Pass Number
   vehicleNumber: string; // Vehicle Number
@@ -9,7 +10,7 @@ export interface Table {
   DocumentDate: string; // Document Date
   MATNR: string; // Material Number
   SHORT_TEXT: string; // Material Description
-  ORGQTY: number; // Original Quantity
+  ORGQTY: string; // Original Quantity
   supplier: string; // Supplier/Vendor Code
   WERKS: string; // Plant
   LGORT: string; // Storage Location

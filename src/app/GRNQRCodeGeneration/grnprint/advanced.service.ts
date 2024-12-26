@@ -56,8 +56,6 @@ function matches(tables: Table, term: string, pipe: PipeTransform) {
 
 
 
-
-
 @Injectable({
   providedIn: 'root',
 })
@@ -155,7 +153,6 @@ export class AdvancedService {
     this._set({ page });
   }
 }
-
 
   setTableData(data: Table[]) {
     this.apiData = data;
