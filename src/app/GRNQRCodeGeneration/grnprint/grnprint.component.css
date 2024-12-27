@@ -278,3 +278,44 @@ background-color: #cadad6;
     margin: 5px 0;
     font-size: 14px;
   }
+  .custom-btn {
+    background-color: #426994; /* Adjust the color as needed (for example, blue) */
+    color: white; /* Icon color */
+    font-size: 14px; /* Adjust the icon size */
+    width: 30px; /* Button width */
+    height: 30px; /* Button height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    transition: all 0.3s ease; /* Smooth transition */
+  }
+  
+  .custom-btn:hover {
+    background-color: #364b61; /* Darker shade on hover */
+    transform: scale(1.1); /* Slightly enlarges on hover */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
+  }
+  
+  .custom-btn:focus {
+    outline: none; /* Removes focus outline */
+  }
+  .table-responsive {
+    overflow-x: auto; /* Enables horizontal scroll only when needed */
+    overflow-y: hidden; /* Prevent vertical scroll in the same container */
+    max-width: 100%; /* Ensures table stays within the viewport width */
+  }
+  
+  .table-responsive::-webkit-scrollbar {
+    height: 10px; /* Adjust scrollbar height */
+  }
+  
+  .table-responsive::-webkit-scrollbar-thumb {
+    background: #ccc; /* Scrollbar color */
+    border-radius: 10px; /* Rounded corners for the scrollbar */
+  }
+  
+  .table-responsive::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Track color */
+  }
+  

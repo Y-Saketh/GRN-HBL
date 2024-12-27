@@ -81,6 +81,7 @@ export class GrnprintComponent implements OnInit {
   qrCodess: any[];
   lableavail: Table[];
   isAllSelected: boolean = true;
+  GrnPrints: Table[];
   constructor(public formBuilder: UntypedFormBuilder, @Inject(AdvancedService) public service: AdvancedService, private apiService: UserProfileService, public loaderservice: LoaderService) {
     this.tables$ = service.tables$;
     console.log("this.tables$", this.tables$)
@@ -307,7 +308,7 @@ export class GrnprintComponent implements OnInit {
   //         Swal.fire("Error", "Invalid Label Quantity or MENGE", "error");
   //     }
   // }
-  matchMaterial(index: number, table): void {
+  matchMaterial(index: number,id, table): void {
     // const material = this.tableData[index];
     const material = table;
     console.log("material", material);
@@ -1289,4 +1290,10 @@ export class GrnprintComponent implements OnInit {
       console.log(`Cleared matches for material: ${material.MATNR}`);
     }
   }
+  filterSelectedRows() {
+    this.GrnPrints = this.GrnPrint?.filter(table => table.selected);
+    this.service.setTableData(this.GrnPrints || []); 
+    this._fetchData(); 
+  }
+
 }

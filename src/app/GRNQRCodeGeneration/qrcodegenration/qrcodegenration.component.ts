@@ -181,8 +181,8 @@ export class QRcodegenrationComponent {
   }
 
   filterSelectedRows() {
-    this.GrnResponse = this.GrnResponse.filter(table => table.selected);
-    this.service.setTableData(this.GrnResponse || []); 
+    this.GrnResponses = this.GrnResponse?.filter(table => table.selected);
+    this.service.setTableData(this.GrnResponses || []); 
     this._fetchData(); 
   }
 
@@ -1171,6 +1171,7 @@ export class QRcodegenrationComponent {
             if (this.GrnResponse) {
               this.GrnResponse = [...this.GrnResponse, ...res[0].SAVE];
             } else {
+              this.isAllSelected = true;
               this.GrnResponse = res[0].SAVE;
             }
             console.log("this.GrnResponse", this.GrnResponse)
@@ -1185,6 +1186,7 @@ export class QRcodegenrationComponent {
             this.City = res[0].ORT01
             this.GSTIN = res[0].STCD3
             this.GrnResponse.forEach((item) => { item.selected = true });
+        
             console.log("this.GrnResponse2", this.GrnResponse)
             // Update the table with the combined data
             this.service.setTableData(this.GrnResponse || []);
