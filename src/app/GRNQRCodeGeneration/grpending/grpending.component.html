@@ -270,9 +270,18 @@
               <th class="brandcolor" sortable="VGPOS" (sort)="onSort($event)">
                 PO Item
               </th>
-            <!--  <th class="brandcolor" sortable="LGORT" (sort)="onSort($event)">
-                Storage Location
-              </th> -->
+              <th class="brandcolor" sortable="AEDAT" (sort)="onSort($event)">
+                PO Date
+              </th>
+              <th class="brandcolor" sortable="ERNAM" (sort)="onSort($event)">
+                Created By
+              </th>
+              <th class="brandcolor" sortable="LGORT" (sort)="onSort($event)">
+                S.Loc
+              </th>
+              <th class="brandcolor" sortable="LGOBE" (sort)="onSort($event)">
+                S.Loc Name
+              </th>
               <th class="brandcolor" sortable="MATNR" (sort)="onSort($event)">
                 Material
               </th>
@@ -285,7 +294,7 @@
               <th class="brandcolor" sortable="LFIMG" (sort)="onSort($event)">
                 Qty
               </th>
-              <th
+              <!-- <th
                 class="brandcolor"
                 sortable="GATEENTRY"
                 (sort)="onSort($event)"
@@ -305,7 +314,7 @@
               (sort)="onSort($event)"
             >
              Pending Days
-            </th>
+            </th> -->
             </tr>
           </thead>
           <tbody *ngFor="let table of tables$ | async; let i = index">
@@ -337,8 +346,14 @@
               <!-- PO -->
               <td>{{ table.VGPOS }}</td>
               <!-- PO Item -->
-              <!--  <td>{{ table.LGORT }}</td> -->
+              <td>{{ table.AEDAT| date: 'dd-MM-yyyy'  }}</td>
+              <!-- PO Date -->
+              <td>{{ table.ERNAM }}</td>
+              <!-- Created By -->
+              <td>{{ table.LGORT }}</td>
               <!-- Storage Location -->
+                <td>{{ table.LGOBE }}</td>
+              <!-- Storage Location Name -->
               <td>{{ table.MATNR }}</td>
               <!-- Material -->
               <td>{{ table.MAKTX }}</td>
@@ -347,11 +362,6 @@
               <!-- UOM -->
               <td>{{ table.LFIMG }}</td>
               <!-- Qty -->
-              <td>{{ table.GATEENTRY }}</td>
-              <!-- Gate Entry No -->
-              <td>{{ table.GATEDATE| date: 'dd-MM-yyyy'  }}</td>
-              <td>{{table.gr}}</td>
-              <!-- Gate Entry Date -->
             </tr>
             <ng-container *ngIf="!hideme[i]">
               <tr class="sub-table no-bg">
@@ -360,25 +370,35 @@
                   <table class="table mb-0 table-striped">
                     <thead class="bg-dark text-white">
                       <tr>
-                        <!--  <th>Material Doc</th> -->
+                        <th>Gate Entry No</th>
+                        <th>Gate Entry Date</th>
+                        <th>Pending Days</th>
+                         <!-- <th>Material Doc</th>
                         <th>Posting Date</th>
-                        <!--  <th>Days Taken for GR</th> -->
-                        <!-- <th>MIRO No</th>
+                         <th>Days Taken for GR</th>
+                        <th>MIRO No</th>
                         <th>MIRO Date</th>
                         <th>Invoice No</th>
-                        <th>Invoice Date</th> -->
+                        <th>Invoice Date</th>
                         <th>PO Date</th>
                         <th>Created by</th>
                         <th>Storage Location</th>
                         <th>Storage Location Name</th>
-                        <th>Days taken for GR</th>
+                        <th>Days taken for GR</th> -->
                       </tr>
                     </thead>
                     <tbody>
                       <tr>
+                        <td>{{ table.GATEENTRY }}</td>
+                        <!-- Gate Entry No -->
+                        <td>{{ table.GATEDATE| date: 'dd-MM-yyyy'  }}</td>
+                        <!-- Gate Entry Date -->
+                        <td>{{ table.AGE1 }}</td>
+                        <!-- Pending Days -->
+
                         <!--  <td>{{ table.MBLNR }}</td> -->
                         <!-- Material Doc -->
-                        <td>{{ table.BUDAT | date: 'dd-MM-yyyy'  }}</td>
+                        <!-- <td>{{ table.BUDAT | date: 'dd-MM-yyyy'  }}</td> -->
                         <!-- Posting Date -->
                         <!--  <td>{{ table.AGE }}</td> -->
                         <!-- Days Taken for GR -->
@@ -390,15 +410,15 @@
                         <!-- Invoice No -->
                         <!-- <td>{{ table.BLDAT }}</td> -->
                         <!-- Invoice Date -->
-                        <td>{{ table.AEDAT| date: 'dd-MM-yyyy'  }}</td>
+                        <!-- <td>{{ table.AEDAT| date: 'dd-MM-yyyy'  }}</td> -->
                         <!-- PO Date -->
-                        <td>{{ table.ERNAM }}</td>
+                        <!-- <td>{{ table.ERNAM }}</td> -->
                         <!-- Created by -->
-                         <td>{{ table.LGORT }}</td>
+                         <!-- <td>{{ table.LGORT }}</td> -->
                          <!-- Storage Location -->
-                        <td>{{ table.LGOBE }}</td>
+                        <!-- <td>{{ table.LGOBE }}</td> -->
                         <!-- Storage Location Name -->
-                         <td>{{ table.AGE1 }}</td>
+                         <!-- <td>{{ table.AGE1 }}</td> -->
                         <!-- Days taken for GR -->
                       </tr>
                     </tbody>
