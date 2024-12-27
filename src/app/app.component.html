@@ -1,5 +1,7 @@
 <div *ngIf="(loaderService.isLoading$ | async)" class="loading-overlay">
     <img class="loading-icon" src="assets/images/Double Ring white.gif" />
   </div>
-  
+  <div *ngIf="(loaderService.isPrinterLoading$ | async)" class="loading-overlay">
+    <img src="assets/images/printnewgif.gif" alt="Printing..." class="loader" />
+  </div>
 <router-outlet></router-outlet>

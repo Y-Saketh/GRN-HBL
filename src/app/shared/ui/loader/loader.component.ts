@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common';
 export class LoaderComponent implements OnInit {
 
   loading: boolean = true;
-
+  isLoadingprint: boolean = false;
   constructor(private loaderService: LoaderService) {
 
     this.loaderService.isLoading.subscribe((v) => {
@@ -20,6 +20,13 @@ export class LoaderComponent implements OnInit {
         this.loading = v;
       }, 1500);     
     });
+
+    this.loaderService.isPrinterLoading$.subscribe((v) => {
+      setTimeout(() => {
+        this.isLoadingprint = v;
+      }, 1500);
+    });
+  
   }
   ngOnInit(): void {
   }
