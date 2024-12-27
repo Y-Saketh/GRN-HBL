@@ -3,7 +3,9 @@
 }
 
   .card-body {
-    background-color: #cadad6;
+    /* background-color: #cadad6; */ 
+ 
+
     color: #2C3E50;
     border-radius: 10px;
     padding: 20px;
@@ -49,7 +51,9 @@
   }
   
   .card-body {
-    background-color: #cadad6;
+    /* background-color: #cadad6; */ 
+ 
+
     color: #2C3E50;
     border-radius: 10px;
     padding: 20px;
