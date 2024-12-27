@@ -663,6 +663,7 @@ export class GRNagainstPOComponent{
               reject(new Error("No printer available"));
             }
           } catch (error) {
+            this.loaderservice.hideLoader();
             console.error("QR Generation Failed", error);
             reject(error); // Reject if an error occurs during QR generation
           }
@@ -673,6 +674,7 @@ export class GRNagainstPOComponent{
         await Promise.all(printPromises); // Wait for all promises to resolve
         console.log("All labels printed successfully!");
       } catch (error) {
+        this.loaderservice.hideLoader();
         console.error("Some labels failed to print:", error);
         // Optionally, handle specific errors or retry logic here
       } finally {
@@ -1206,6 +1208,7 @@ saveUnmatched(): void {
           const qrCodeUrl = await this.generateQRCode(qrData);
           this.qrCodes.push({ qrCodeUrl, data: table });
         } catch (error) {
+          this.loaderservice.hideLoader();
           console.error("QR Generation Failed", error);
         }
       // }
