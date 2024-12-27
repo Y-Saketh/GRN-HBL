@@ -85,7 +85,7 @@ export class OpenpolistComponent implements OnInit {
     fortyfiveDaysAgo.setDate(currentDate.getDate() - 45);
     this.validationform = this.formBuilder.group({
     plant: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]+')]],
-    purchaseGroup: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
+    // purchaseGroup: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
     fromDate: [fortyfiveDaysAgo, [ Validators.pattern('[a-zA-Z0-9]+')]],
     toDate: [fifteenDaysAgo, [ Validators.pattern('[a-zA-Z0-9]+')]],
     documentFrom: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
@@ -197,35 +197,37 @@ export class OpenpolistComponent implements OnInit {
       const headerMapping: { [key: string]: string } = {
         EBELN: 'PO',
         EBELP: 'PO Item',
-        MATNR: 'Material',
-        TXZ01: 'Material Description',
-        LIFNR: 'Vendor Code',
-        NAME1: 'Vendor Name',
-        EKGRP: 'Purchase Group',
-        WERKS: 'Plant',
-        MEINS: 'UOM',
-        MENGE: 'PO Qty',
-        //hidden
+        ELIKZ: 'Delivery Completed',
         BEDAT: 'Document Date',
         ERNAM: 'Created By',
         BUYER: 'Buyer',
-        EKNAM: 'Purchase Group Description',
-        NETWR: 'PO Value',
+        LIFNR: 'Vendor Code',
+        NAME1: 'Vendor Name',
         LOEKZ: 'Deletion Indicator',
-        // ELIKZ: 'Delivery Completed',
-        EINDT: 'Delivery Completed',
+        EKGRP: 'Purchase Group',
+        EKNAM: 'Pur Grp Desc',
+        MATNR: 'Material',
+        MAKTX: 'Material Description',
+        WERKS: 'Plant',
+        MEINS: 'UOM',
+        MENGE: 'PO Qty',
+        NETWR: 'PO Value',
         MEINS1: 'UOM1',
         MENGE1: 'MIGO qty',
         DMBTR1: 'MIGO Value',
-
       };
   
       // Format data to map keys to user-friendly headers
       const formattedData = dataToExport.map(row => {
-        const formattedRow = {};
+        const formattedRow: { [key: string]: any } = {};
         for (const key in headerMapping) {
           if (row.hasOwnProperty(key)) {
-            formattedRow[headerMapping[key]] = row[key];
+            // Format date fields to dd-mm-yyyy
+            if (key === 'BEDAT') {
+              formattedRow[headerMapping[key]] = this.formatDate(row[key]); // Call formatDate for date fields
+            } else {
+              formattedRow[headerMapping[key]] = row[key];
+            }
           }
         }
         return formattedRow;
@@ -239,6 +241,14 @@ export class OpenpolistComponent implements OnInit {
       // Generate an Excel file and trigger the download
       XLSX.writeFile(workbook, 'OpenPO_Data.xlsx');
     }
+  }
+
+  private formatDate(dateString: string): string {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
   }
 
 
@@ -288,11 +298,11 @@ export class OpenpolistComponent implements OnInit {
     // if (this.validationform.valid) {
       let obj ={
         WERKS: this.form.plant.value, // Plant
-        MEINS: this.form.purchaseGroup.value, // purchase group
-        BEDAT_F: this.form.documentFrom.value,// Purchasing Document  From
-        BEDAT_T: this.form.documentTo.value,// Purchasing Document  To
-        EINDT_F:this.form.fromDate.value, // Item Delivery Date From
-        EINDT_T: this.form.toDate.value, // Item Delivery Date To
+        // MEINS: this.form.purchaseGroup.value, // purchase group
+        BSART_F: this.form.documentFrom.value,// Purchasing Document  From
+        BSART_T: this.form.documentTo.value,// Purchasing Document  To
+        BEDAT_F:this.form.fromDate.value, // Item Delivery Date From
+        BEDAT_T: this.form.toDate.value, // Item Delivery Date To
         // EBELN: '',//this.form.poNumber.value, // Purchasing Document Number`
         // LIFNR: '',//this.form.vendor.value, // Vendor
         // MATNR: '',//this.form.material.value, // Material

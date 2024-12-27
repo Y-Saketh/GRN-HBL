@@ -111,29 +111,35 @@ export class GrdoneComponent implements OnInit {
         VBELN: 'Inbound Delivery',
         POSNR: 'Inbound Delivery Item',
         ERDAT: 'Inbound Created On',
+        MBLNR: 'Material Doc',
+        BUDAT: 'Posting Date',
+        AGE: 'Days Taken for GR',
         VGBEL: 'PO',
         VGPOS: 'PO Item',
+        AEDAT: 'PO Date',
+        ERNAM: 'Created By',
+        LGORT: 'Storage Location',
+        LGOBE: 'Storage Location Name',
         MATNR: 'Material',
         MAKTX: 'Material Description',
         MEINS: 'UOM',
         LFIMG: 'Qty',
         GATEENTRY: 'Gate Entry No',
         GATEDATE: 'Gate Entry Date',
-        MBLNR: 'Material Doc',
-        BUDAT: 'Posting Date',
-        AGE: 'Days Taken for GR',
-        AEDAT: 'PO Date',
-        ERNAM: 'Created By',
-        LGOBE: 'Storage Location Name',
         AGE1: 'Days Taken for IBD'
       };
   
       // Format data to map keys to user-friendly headers
       const formattedData = dataToExport.map(row => {
-        const formattedRow = {};
+        const formattedRow: { [key: string]: any } = {};
         for (const key in headerMapping) {
           if (row.hasOwnProperty(key)) {
-            formattedRow[headerMapping[key]] = row[key];
+            // Format date fields to dd-mm-yyyy
+            if (key === 'ERDAT' || key === 'AEDAT' || key === 'GATEDATE' || key === 'BUDAT') {
+              formattedRow[headerMapping[key]] = this.formatDate(row[key]); // Call formatDate for date fields
+            } else {
+              formattedRow[headerMapping[key]] = row[key];
+            }
           }
         }
         return formattedRow;
@@ -147,6 +153,14 @@ export class GrdoneComponent implements OnInit {
       // Generate an Excel file and trigger the download
       XLSX.writeFile(workbook, 'GrDone_Data.xlsx');
     }
+  }
+
+  private formatDate(dateString: string): string {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
   }
 
   /**

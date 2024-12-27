@@ -29,6 +29,71 @@
                 </div>
               </div>
             </div>
+            <!-- Material Type -->
+            <div class="col-md-2">
+              <label class="brandcolor" for="materialType">MATERIAL TYPE</label>
+              <div class="mb-3">
+                <select
+                    class="form-select"
+                    id="materialType"
+                    formControlName="materialType"
+                  >
+                    <option value="" disabled selected>Mat.type</option>
+                    <option *ngFor="let typee of mattypes" [value]="typee">
+                      {{ typee }}
+                    </option>
+                  </select>
+                <div *ngIf="submit && form.materialType.errors" class="invalid-feedback">
+                  <span *ngIf="form.materialType.errors.required"
+                    >Please provide a valid material Type.</span
+                  >
+                </div>
+              </div>
+            </div>
+            <!-- Material Code From -->
+            <div class="col-md-2">
+              <div class="mb-3">
+                <label class="brandcolor" for="materialFrom">MATERIAL CODE FROM</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="materialFrom"
+                  formControlName="materialFrom"
+                  placeholder="Material Code From"
+                  [ngClass]="{ 'is-invalid': submit && form.materialFrom.errors }"
+                />
+                <div
+                  *ngIf="submit && form.materialFrom.errors"
+                  class="invalid-feedback"
+                >
+                  <span *ngIf="form.materialFrom.errors.required"
+                    >Please provide a valid Material Code From.</span
+                  >
+                </div>
+              </div>
+            </div>
+            <!-- Material Code To -->
+           <div class="col-md-2">
+            <div class="mb-3">
+              <label class="brandcolor" for="materialTo">MATERIAL CODE TO</label>
+              <input
+                type="text"
+                class="form-control"
+                id="materialTo"
+                formControlName="materialTo"
+                placeholder="Material Code To"
+                [ngClass]="{ 'is-invalid': submit && form.materialTo.errors }"
+              />
+              <div
+                *ngIf="submit && form.materialTo.errors"
+                class="invalid-feedback"
+              >
+                <span *ngIf="form.materialTo.errors.required"
+                  >Please provide a valid Material Code To.</span
+                >
+              </div>
+            </div>
+           </div>
             <!-- STORAGE LOCATION -->
             <div class="col-md-2">
               <label class="brandcolor" for="storageLocation">STORAGE LOCATION</label>
@@ -53,91 +118,7 @@
                 </div>
               </div>
             </div>
-            <!-- Material Type -->
-            <div class="col-md-2">
-              <label class="brandcolor" for="materialType">MATERIAL TYPE</label>
-              <div class="mb-3">
-                <select
-                    class="form-select"
-                    id="materialType"
-                    formControlName="materialType"
-                  >
-                    <option value="" disabled selected>Mat.type</option>
-                    <option *ngFor="let typee of mattypes" [value]="typee">
-                      {{ typee }}
-                    </option>
-                  </select>
-                <div *ngIf="submit && form.materialType.errors" class="invalid-feedback">
-                  <span *ngIf="form.materialType.errors.required"
-                    >Please provide a valid material Type.</span
-                  >
-                </div>
-              </div>
-              <!-- <div class="mb-3">
-                <input
-                  type="text"
-                  class="form-control"
-                  id="materialType"
-                  formControlName="materialType"
-                  placeholder="Material Type"
-                  [ngClass]="{
-                    'is-invalid': submit && form.materialType.errors
-                  }"
-                />
-                <div
-                  *ngIf="submit && form.materialType.errors"
-                  class="invalid-feedback"
-                >
-                  <span *ngIf="form.materialType.errors.required"
-                    >Please provide a valid POSTING DATE TO.</span
-                  >
-                </div>
-              </div> -->
-            </div>
-             <!-- Material From -->
-             <div class="col-md-2">
-                <div class="mb-3">
-                  <label class="brandcolor" for="materialFrom">MATERIAL FROM</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="materialFrom"
-                    formControlName="materialFrom"
-                    placeholder="Material From"
-                    [ngClass]="{ 'is-invalid': submit && form.materialFrom.errors }"
-                  />
-                  <div
-                    *ngIf="submit && form.materialFrom.errors"
-                    class="invalid-feedback"
-                  >
-                    <span *ngIf="form.materialFrom.errors.required"
-                      >Please provide a valid Material From.</span
-                    >
-                  </div>
-                </div>
-              </div>
-              <!-- Material To -->
-             <div class="col-md-2">
-              <div class="mb-3">
-                <label class="brandcolor" for="materialTo">MATERIAL TO</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="materialTo"
-                  formControlName="materialTo"
-                  placeholder="material to"
-                  [ngClass]="{ 'is-invalid': submit && form.materialTo.errors }"
-                />
-                <div
-                  *ngIf="submit && form.materialTo.errors"
-                  class="invalid-feedback"
-                >
-                  <span *ngIf="form.materialTo.errors.required"
-                    >Please provide a valid materialTo.</span
-                  >
-                </div>
-              </div>
-            </div>
+
             <!-- BATCH -->
             <!-- <div class="col-md-2">
               <label class="brandcolor" for="batch">BATCH</label>
@@ -240,14 +221,13 @@
                 </th>
                 <th class="brandcolor" sortable="MATNR" (sort)="onSort($event)">
                     Mat.No
-                  </th>
-                  <th class="brandcolor" sortable="MAKTX" (sort)="onSort($event)">
+                </th>
+                <th class="brandcolor" sortable="MAKTX" (sort)="onSort($event)">
                     Mat Desc
                   </th>
                 <th class="brandcolor" sortable="MEINS" (sort)="onSort($event)">
                   Base Unit of Measure
                 </th>
-                
                 <th
                   class="brandcolor"
                   sortable="LABST"
@@ -281,7 +261,7 @@
             sortable="TRAME"
             (sort)="onSort($event)"
           >
-         Stock in Transit
+          Stock in Transit
           </th>
           <th
           class="brandcolor"
@@ -304,7 +284,7 @@
                 <td>{{ table.LGOBE }}</td>
                 <!-- SL Desc -->
                 <td>{{ table.MATNR }}</td>
-                <!-- Material -->
+                <!-- Material Number -->
                 <td>{{ table.MAKTX }}</td>
                 <!-- Material Desc -->
                 <td>{{ table.MEINS }}</td>
@@ -314,9 +294,13 @@
                 <td>{{ table.WLABS }}</td>
                 <!-- Unrestricted Stock Value -->
                 <td>{{ table.SPEME }}</td>
+                <!-- Blocked Stock -->
                 <td>{{ table.WSPEM }}</td>
+                <!-- Blocked Stock Value -->
                 <td>{{ table.TRAME }}</td>
+                <!-- Stock in Transit -->
                 <td>{{ table.WTRAM }}</td>
+                <!-- Value in Transit -->
               </tr>
               <ng-container *ngIf="!hideme[i]">
                 <tr class="sub-table no-bg">

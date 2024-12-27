@@ -122,35 +122,38 @@ export class Mb51Component implements OnInit {
     if (dataToExport.length > 0) {
       // Define mapping of keys to header names
       const headerMapping: { [key: string]: string } = {
-        PLANT: 'Plant',                           // Plant
-        STG_LOC: 'Storage Location',                // Storage Location
-        MATERIAL: 'Material',                        // Material
-        MAT_DES: 'Material Description',            // Material Description
-        MVT_TYPE: 'Movement Type',                   // Movement Type
-        MVT_TYPE_TXT: 'Movement Type Text',       // Movement Type Text
-        POSTING_DATE: 'Posting Date',             // Posting Date
-        PRICE: 'Price',                           // Price
-        L_CUR_AMT: 'Amount in Local Currency',    // Amount in Local Currency
-        MAT_DOC: 'Material Document',               // Material Document
-        //hidden
-        PUR_ORDER: 'Purchase Order',              // Purchase Order
-        DOC_DATE: 'Document Date',                // Document Date
-        Qty: 'Quantity',                        // Quantity
-        SUPPLIER: 'Supplier',                     // Supplier
-        ORDER: 'Order',                           // Order
-        GL_ACCOUNT: 'GL account',                 // GL account
-        DOC_HEADER_TXT: 'Document Header Text',   // Document Header Text
-        ENTRY_DATE: 'Entry Date',                 // Entry Date
-        BATCH: 'Batch',                           // Batch
-        CONSUMPTION: 'Consumption'                // Consumption
+        PLANT: 'Plant',                      
+        GL_ACCOUNT: 'GL account',
+        MAT_DOC: 'Mat Doc',
+        DOC_DATE: 'Doc Date',
+        POSTING_DATE: 'Posting Date',
+        MATERIAL: 'Material', 
+        MAT_DES: 'Mat Desc', 
+        QUANTITY: 'Quantity',
+        L_CUR_AMT: 'Amt in loc.cur',
+        PUR_ORDER: 'Pur Order',
+        PRICE: 'Price', 
+        MVT_TYPE: 'Movement Type',                  
+        MVT_TYPE_TXT: 'Movement Type Text', 
+        DOC_HEADER_TXT: 'Doc Header Text', 
+        STG_LOC: 'Storage Location',            
+        ENTRY_DATE: 'Entry Date',                 
+        BATCH: 'Batch',                          
+        CONSUMPTION: 'Consumption',     
+        SUPPLIER: 'Supplier'                                                          
       };
   
       // Format data to map keys to user-friendly headers
       const formattedData = dataToExport.map(row => {
-        const formattedRow = {};
+        const formattedRow: { [key: string]: any } = {};
         for (const key in headerMapping) {
           if (row.hasOwnProperty(key)) {
-            formattedRow[headerMapping[key]] = row[key];
+            // Format date fields to dd-mm-yyyy
+            if (key === 'DOC_DATE' || key === 'POSTING_DATE' || key === 'ENTRY_DATE') {
+              formattedRow[headerMapping[key]] = this.formatDate(row[key]); // Call formatDate for date fields
+            } else {
+              formattedRow[headerMapping[key]] = row[key];
+            }
           }
         }
         return formattedRow;
@@ -164,6 +167,14 @@ export class Mb51Component implements OnInit {
       // Generate an Excel file and trigger the download
       XLSX.writeFile(workbook, 'mb51_Data.xlsx');
     }
+  }
+
+  private formatDate(dateString: string): string {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
   }
 
   _fetchData() {

@@ -39,7 +39,7 @@
                 </div>
               </div>
               <!-- Purchase Group -->
-              <div class="col-md-2">
+              <!-- <div class="col-md-2">
                 <div class="mb-3">
                   <label class="brandcolor" for="purchaseGroup"
                     >PURCHASE GROUP</label
@@ -60,6 +60,58 @@
                   >
                     <span *ngIf="form.purchaseGroup.errors.required"
                       >Please provide a valid purchase group.</span
+                    >
+                  </div>
+                </div>
+              </div> -->
+              <!-- Documnet Type From -->
+              <div class="col-md-2">
+                <div class="mb-3">
+                  <label class="brandcolor" for="documentFrom"
+                    >DOC TYPE FROM</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="documentFrom"
+                    formControlName="documentFrom"
+                    placeholder="Document Type From"
+                    [ngClass]="{
+                      'is-invalid': submit && form.documentFrom.errors
+                    }"
+                  />
+                  <div
+                    *ngIf="submit && form.documentFrom.errors"
+                    class="invalid-feedback"
+                  >
+                    <span *ngIf="form.documentFrom.errors.required"
+                      >Please provide a valid Document Type From.</span
+                    >
+                  </div>
+                </div>
+              </div>
+              <!-- Documnet Type To -->
+              <div class="col-md-2">
+                <div class="mb-3">
+                  <label class="brandcolor" for="documentTo"
+                    >DOC TYPE TO</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="documentTo"
+                    formControlName="documentTo"
+                    placeholder="Document Type To"
+                    [ngClass]="{
+                      'is-invalid': submit && form.documentTo.errors
+                    }"
+                  />
+                  <div
+                    *ngIf="submit && form.documentTo.errors"
+                    class="invalid-feedback"
+                  >
+                    <span *ngIf="form.documentTo.errors.required"
+                      >Please provide a valid Document Type To.</span
                     >
                   </div>
                 </div>
@@ -87,7 +139,7 @@
                     class="invalid-feedback"
                   >
                     <span *ngIf="form.fromDate.errors.required"
-                      >Please provide a valid fromDate.</span
+                      >Please provide a valid From Date.</span
                     >
                   </div>
                 </div>
@@ -115,64 +167,11 @@
                     class="invalid-feedback"
                   >
                     <span *ngIf="form.toDate.errors.required"
-                      >Please provide a valid delivery Date To.</span
+                      >Please provide a valid To Date.</span
                     >
                   </div>
                 </div>
               </div>
-              <!-- Documnet From -->
-              <div class="col-md-2">
-                <div class="mb-3">
-                  <label class="brandcolor" for="documentFrom"
-                    >DOC.FROM</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="documentFrom"
-                    formControlName="documentFrom"
-                    placeholder="Document From"
-                    [ngClass]="{
-                      'is-invalid': submit && form.documentFrom.errors
-                    }"
-                  />
-                  <div
-                    *ngIf="submit && form.documentFrom.errors"
-                    class="invalid-feedback"
-                  >
-                    <span *ngIf="form.documentFrom.errors.required"
-                      >Please provide a valid Document From.</span
-                    >
-                  </div>
-                </div>
-              </div>
-              <!-- Documnet To -->
-              <div class="col-md-2">
-                <div class="mb-3">
-                  <label class="brandcolor" for="documentTo"
-                    >DOC.TO</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="documentTo"
-                    formControlName="documentTo"
-                    placeholder="Document To"
-                    [ngClass]="{
-                      'is-invalid': submit && form.documentTo.errors
-                    }"
-                  />
-                  <div
-                    *ngIf="submit && form.documentTo.errors"
-                    class="invalid-feedback"
-                  >
-                    <span *ngIf="form.documentTo.errors.required"
-                      >Please provide a valid Document To.</span
-                    >
-                  </div>
-                </div>
-              </div>
-              
               <!-- Buton -->
               <div class="col-md-1 ms-2 mt-4">
                 <div class="mb-3">
@@ -364,7 +363,7 @@
                   <th></th>
                   <th
                     class="brandcolor"
-                    sortable="purchasingDocument"
+                    sortable="EBELN"
                     (sort)="onSort($event)"
                   >
                     PO
@@ -378,14 +377,77 @@
                   </th>
                   <th
                     class="brandcolor"
-                    sortable="material"
+                    sortable="ELIKZ"
+                    (sort)="onSort($event)"
+                  >
+                    Delivery Completed
+                  </th>
+                  <th
+                    class="brandcolor"
+                    sortable="BEDAT"
+                    (sort)="onSort($event)"
+                  >
+                    Document Date
+                  </th>
+                  <th
+                    class="brandcolor"
+                    sortable="ERNAM"
+                    (sort)="onSort($event)"
+                  >
+                    Created By
+                  </th>
+                  <th
+                    class="brandcolor"
+                    sortable="BUYER"
+                    (sort)="onSort($event)"
+                  >
+                    Buyer
+                  </th>
+                  <th
+                    class="brandcolor"
+                    sortable="vendorCode"
+                    (sort)="onSort($event)"
+                  >
+                    Vendor Code
+                  </th>
+                  <th
+                    class="brandcolor"
+                    sortable="vendorName"
+                    (sort)="onSort($event)"
+                  >
+                    Vendor Name
+                  </th>
+                  <th
+                    class="brandcolor"
+                    sortable="LOEKZ"
+                    (sort)="onSort($event)"
+                  >
+                    Deletion Indicator
+                  </th>
+                  <th
+                    class="brandcolor"
+                    sortable="EKGRP"
+                    (sort)="onSort($event)"
+                  >
+                    Purchase Group
+                  </th>
+                  <th
+                    class="brandcolor"
+                    sortable="EKNAM"
+                    (sort)="onSort($event)"
+                  >
+                    Pur GRP Desc
+                  </th>
+                  <th
+                    class="brandcolor"
+                    sortable="MATNR"
                     (sort)="onSort($event)"
                   >
                     Material
                   </th>
                   <th
                     class="brandcolor"
-                    sortable="materialDescription"
+                    sortable="MAKTX"
                     (sort)="onSort($event)"
                   >
                     Material Description
@@ -397,13 +459,7 @@
               >
                 Purchasing Doc. Type
               </th> -->
-                  <th
-                    class="brandcolor"
-                    sortable="vendorCode"
-                    (sort)="onSort($event)"
-                  >
-                    Vendor Code
-                  </th>
+                  
                   <!-- <th
                 class="brandcolor"
                 sortable="documentDate"
@@ -413,35 +469,21 @@
               </th> -->
                   <th
                     class="brandcolor"
-                    sortable="vendorName"
-                    (sort)="onSort($event)"
-                  >
-                    Vendor Name
-                  </th>
-                  <th
-                    class="brandcolor"
-                    sortable="purchasingGroup"
-                    (sort)="onSort($event)"
-                  >
-                    purchase Group
-                  </th>
-                  <th
-                    class="brandcolor"
-                    sortable="plant"
+                    sortable="WERKS"
                     (sort)="onSort($event)"
                   >
                     Plant
                   </th>
-                  <th class="brandcolor" sortable="uom" (sort)="onSort($event)">
+                  <!-- <th class="brandcolor" sortable="MEINS" (sort)="onSort($event)">
                     UOM
                   </th>
                   <th
                     class="brandcolor"
-                    sortable="poQty"
+                    sortable="MENGE"
                     (sort)="onSort($event)"
                   >
                     PO Qty
-                  </th>
+                  </th> -->
 
                   <!-- <th>Actions</th> -->
                 </tr>
@@ -452,31 +494,39 @@
                   <td align="center">
                     <a class="expand-row" (click)="changeValue($index)">+</a>
                   </td>
-                  <!-- Purchase Document Number -->
                   <td
                     (click)="openinbounddeleveryPopup(table.EBELN, $index)"
                     style="color: brown"
                   >
                     {{ table.EBELN }}
-                  </td>
-                  <!-- Item Number -->
+                  </td> 
+                  <!-- PO -->
                   <td>{{ table.EBELP }}</td>
-                  <!-- Material -->
-                  <td>{{ table.MATNR }}</td>
-                  <!-- Material Description -->
-                  <td>{{ table.MAKTX }}</td>
-                  <!-- Vendor Code -->
+                  <!-- PO Item -->
+                  <td>{{ table.ELIKZ }}</td>
+                  <!-- Delivery Completed -->
+                  <td>{{ table.BEDAT }}</td>
+                  <!-- Document Date -->
+                  <td>{{ table.ERNAM }}</td>
+                  <!-- Created By -->
+                  <td>{{ table.BUYER }}</td>
+                  <!-- Buyer -->
                   <td>{{ table.LIFNR }}</td>
-                  <!-- Vendor Name -->
+                  <!-- Vendor Code --> 
                   <td>{{ table.NAME1 }}</td>
+                  <!-- Vendor Name --> 
+                  <td>{{ table.LOEKZ }}</td>
+                  <!-- Deletion Indicator -->
+                   <td>{{ table.EKGRP }}</td>
                   <!-- Purchase Group -->
-                  <td>{{ table.EKGRP }}</td>
-                  <!-- Plant -->
+                  <td>{{ table.EKNAM }}</td>
+                  <!-- Pur Grp Desc -->
+                  <td>{{ table.MATNR }}</td>
+                  <!-- Material --> 
+                  <td>{{ table.MAKTX }}</td>
+                  <!-- Material Description --> 
                   <td>{{ table.WERKS }}</td>
-                  <!-- UOM-->
-                  <td>{{ table.MEINS }}</td>
-                  <!-- PO Quantity -->
-                  <td>{{ table.MENGE }}</td>
+                  <!-- Plant --> 
                 </tr>
                 <ng-container *ngIf="!hideme[$index]">
                   <tr class="sub-table no-bg">
@@ -485,35 +535,23 @@
                       <table class="table mb-0 table-striped">
                         <thead class="bg-dark text-white">
                           <tr>
-                            <th>Document Date</th>
-                            <th>Created by</th>
-                            <th>Buyer</th>
-                            <th>Purchasing Group Description</th>
-                            <th>PO Value</th>
-                            <th>Deletion Indicator</th>
-                            <th>Delivery Completed</th>
                             <th>UOM</th>
+                            <th>PO Qty</th>
+                            <th>PO Value</th>
+                            <th>UOM1</th>
                             <th>MIGO Qty</th>
                             <th>MIGO Value</th>
                           </tr>
                         </thead>
                         <tbody>
                           <tr>
-                            <td>{{ table.BEDAT }}</td>
-                            <!-- Document Date -->
-                            <td>{{ table.ERNAM }}</td>
-                            <!-- Created by -->
-                            <td>{{ table.BUYER }}</td>
-                            <!-- Buyer -->
-                            <td>{{ table.EKNAM }}</td>
-                            <!-- Purchasing Group Description -->
+                            <td>{{ table.MEINS }}</td>
+                            <!-- UOM--> 
+                            <td>{{ table.MENGE }}</td>
+                            <!-- PO Quantity -->
                             <td>{{ table.NETWR }}</td>
                             <!-- PO Value -->
-                            <td>{{ table.LOEKZ }}</td>
-                            <!-- Deletion Indicator -->
-                            <td>{{ table.ELIKZ }}</td>
-                            <!-- Delivery Completed -->
-                            <td>{{ table.VRAME }}</td>
+                            <td>{{ table.MEINS1 }}</td>
                             <!-- UOM -->
                             <td>{{ table.MENGE1 }}</td>
                             <!-- MIGO Qty -->

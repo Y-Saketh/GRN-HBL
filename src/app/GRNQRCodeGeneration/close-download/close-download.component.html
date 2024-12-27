@@ -184,7 +184,10 @@
               <th sortable="BNFPO" (sort)="onSort($event)">Item</th>
               <th sortable="BADAT" (sort)="onSort($event)">Reqn Date</th>
               <th sortable="BSART" (sort)="onSort($event)">Doc Type</th>
+              <th sortable="LOEKZ" (sort)="onSort($event)">Del Ind</th>
               <th sortable="EKGRP" (sort)="onSort($event)">Pur GRP</th>
+              <th sortable="AFNAM" (sort)="onSort($event)">Requisitioner</th>
+              <th sortable="TXZ01" (sort)="onSort($event)">Short Text</th>
               <th sortable="MATNR" (sort)="onSort($event)">Material Number</th>
               <th sortable="WERKS" (sort)="onSort($event)">Plant</th>
               <th sortable="MENGE" (sort)="onSort($event)">Qty Requested</th>
@@ -207,8 +210,14 @@
                 <!-- Requistion Date -->
                 <td>{{ table.BSART }}</td>
                 <!-- Document Type -->
+                <td>{{ table.LOEKZ }}</td>
+                <!-- Delivery Indicator -->
                 <td>{{ table.EKGRP }}</td>
                 <!-- Purchase Group -->
+                <td>{{ table.AFNAM }}</td>
+                <!-- Requisitioner -->
+                <td>{{ table.TXZ01 }}</td>
+                <!-- Short Text -->
                 <td>{{ table.MATNR }}</td>
                 <!-- <Material Number> -->
                 <td>{{ table.WERKS }}</td>
@@ -225,30 +234,22 @@
                     <table class="table mb-0 table-striped">
                       <thead class="bg-dark text-white">
                         <tr>
-                          <th>Del Ind</th>
-                          <th>Requisitioner</th>
-                          <th>Short Text</th>
-                          <th>Del Date</th>
-                          <th>Rel Date</th>
+                          <th>Delivery Date</th>
+                          <th>Release Date</th>
                           <th>Total Value</th>
                           <th>Pending Days</th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr>
-                          <td>{{ table.LOEKZ }}</td>
-                          <!-- Delivery Indicator -->
-                          <td>{{ table.AFNAM }}</td>
-                          <!-- Updating Text Field -->
-                          <td>{{ table.TXZ01 }}</td>
-                          <!-- Base Unit of Measure -->
                           <td>{{ table.LFDAT | date: 'dd-MM-yyyy'  }}</td>
-                          <!-- Stockkeeping Unit -->
+                          <!-- Delivery Date -->
                           <td>{{ table.FRGDT | date: 'dd-MM-yyyy' }}</td>
-                          <!-- Sum of Amount -->
+                          <!-- Release Date -->
                           <td>{{ table.TOT_VAL }}</td>
-                          <!-- Net Price -->
+                          <!-- Total Value -->
                           <td>{{ table.AGE }}</td>
+                          <!-- Pending Days -->
                         </tr>
                       </tbody>
                     </table>

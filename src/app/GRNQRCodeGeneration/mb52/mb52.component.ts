@@ -56,21 +56,20 @@ export class Mb52Component implements OnInit {
       if (dataToExport.length > 0) {
         // Define mapping of keys to header names
         const headerMapping: { [key: string]: string } = {
-          WERKS: 'Plant',                                // Plant
-          LGORT: 'Storage Location',                     // Storage Location
-          LGOBE: 'Storage Location Description',          // Storage Location Description
-          MATNR: 'Material Number',                             // Material
-          MAKTX: 'Material Description',                 // Material Description
-          MEINS: 'Base Unit of Measure',                  // Base Unit of Measure
-          LABST: 'Unrestricted Stock Quantity',           // Unrestricted Stock Quantity
-          WLABS: 'Unrestricted Stock Value',              // Unrestricted Stock Value
-          INSME: 'Quality Inspection Stock Quantity',     // Quality Inspection Stock Quantity
-          WINSM: 'Quality Inspection Stock Value',        // Quality Inspection Stock Value
+          WERKS: 'Plant',                                
+          LGORT: 'S.Loc',                     
+          LGOBE: 'S.Loc Desc',          
+          MATNR: 'Material Number',                             
+          MAKTX: 'Mat Desc',                 
+          MEINS: 'Base Unit of Measure',                  
+          LABST: 'Unrestricted Stock Quantity',           
+          WLABS: 'Unrestricted Stock Value',                      
           SPEME: 'Blocked Stock',
           WSPEM: 'Blocked Stock Value',
           TRAME: 'Stock in Transit',
-          WTRAM: 'Value in Transit'
-
+          WTRAM: 'Value in Transit',
+          INSME: 'Quality Inspection Stock Quantity',     
+          WINSM: 'Quality Inspection Stock Value',
         };
     
         // Format data to map keys to user-friendly headers
