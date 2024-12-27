@@ -258,16 +258,34 @@
               <th class="brandcolor" sortable="ERDAT" (sort)="onSort($event)">
                 Inbound Created on
               </th>
+              <th class="brandcolor" sortable="MBLNR" (sort)="onSort($event)">
+                Material Doc
+              </th>
+              <th class="brandcolor" sortable="BUDAT" (sort)="onSort($event)">
+                Posting Date
+              </th>
+              <th class="brandcolor" sortable="AGE" (sort)="onSort($event)">
+                Days Taken for GR
+              </th>
               <th class="brandcolor" sortable="VGBEL" (sort)="onSort($event)">
                 PO
               </th>
               <th class="brandcolor" sortable="VGPOS" (sort)="onSort($event)">
                 PO Item
               </th>
-            <!--  <th class="brandcolor" sortable="LGORT" (sort)="onSort($event)">
-                Storage Location
-              </th> -->
-              <th class="brandcolor" sortable="MATNR" (sort)="onSort($event)">
+              <th class="brandcolor" sortable="AEDAT" (sort)="onSort($event)">
+                PO Date
+              </th>
+              <th class="brandcolor" sortable="ERNAM" (sort)="onSort($event)">
+                Created By
+              </th>
+              <th class="brandcolor" sortable="LGORT" (sort)="onSort($event)">
+                S.Loc
+              </th>
+              <th class="brandcolor" sortable="LGOBE" (sort)="onSort($event)">
+                S.Loc Name
+              </th>
+              <!-- <th class="brandcolor" sortable="MATNR" (sort)="onSort($event)">
                 Material
               </th>
               <th class="brandcolor" sortable="MAKTX" (sort)="onSort($event)">
@@ -283,12 +301,13 @@
                 Gate Entry No
               </th>
               <th
-                class="brandcolor"
-                sortable="gateEntryDate"
-                (sort)="onSort($event)"
-              >
+                class="brandcolor" sortable="gateEntryDate" (sort)="onSort($event)">
                 Gate Entry Date
               </th>
+              <th
+                class="brandcolor" sortable="AGE1" (sort)="onSort($event)">
+                Days taken for IBD
+              </th> -->
             </tr>
           </thead>
           <tbody *ngFor="let table of tables$ | async; let i = index">
@@ -306,24 +325,39 @@
               <!-- Purchasing Group -->
               <td>{{ table.ERDAT| date: 'dd-MM-yyyy'  }}</td>
               <!-- Inbound Created on -->
+              <td>{{ table.MBLNR }}</td>
+              <!-- Material Doc -->
+              <td>{{ table.BUDAT | date: 'dd-MM-yyyy'  }}</td>
+              <!-- Posting Date -->
+              <td>{{ table.AGE }}</td>
+              <!-- Days Taken for GR -->
               <td>{{ table.VGBEL }}</td>
               <!-- PO -->
               <td>{{ table.VGPOS }}</td>
               <!-- PO Item -->
-            <!--  <td>{{ table.LGORT }}</td> -->
+              <td>{{ table.AEDAT | date: 'dd-MM-yyyy'  }}</td>
+                <!-- PO Date -->
+              <td>{{ table.ERNAM }}</td>
+              <!-- Created By -->
+             <td>{{ table.LGORT }}</td>
               <!-- Storage Location -->
-              <td>{{ table.MATNR }}</td>
+              <td>{{ table.LGOBE }}</td>
+              <!-- Storage Location Name -->
+               
+              <!-- <td>{{ table.MATNR }}</td> -->
               <!-- Material -->
-              <td>{{ table.MAKTX }}</td>
+              <!-- <td>{{ table.MAKTX }}</td> -->
               <!-- Material Desc -->
-              <td>{{ table.MEINS }}</td>
+              <!-- <td>{{ table.MEINS }}</td> -->
               <!-- UOM -->
-              <td>{{ table.LFIMG }}</td>
+              <!-- <td>{{ table.LFIMG }}</td> -->
               <!-- Qty -->
-              <td>{{ table.GATEENTRY }}</td>
+              <!-- <td>{{ table.GATEENTRY }}</td> -->
               <!-- Gate Entry No -->
-              <td>{{ table.GATEDATE | date: 'dd-MM-yyyy'  }}</td>
+              <!-- <td>{{ table.GATEDATE | date: 'dd-MM-yyyy'  }}</td> -->
               <!-- Gate Entry Date -->
+                <!-- <td>{{ table.AGE1 }}</td> -->
+              <!-- Days taken for IBD -->
             </tr>
             <ng-container *ngIf="!hideme[i]">
               <tr class="sub-table no-bg">
@@ -332,26 +366,51 @@
                   <table class="table mb-0 table-striped">
                     <thead class="bg-dark text-white">
                       <tr>
-                        <th>Material Doc</th>
+                        <th>Material</th>
+                        <th>Material Description</th>
+                        <th>UOM</th>
+                        <th>Qty</th>
+                        <th>Gate Entry No</th>
+                        <th>Gate Entry Date</th>
+                        <th>Days taken for IBD</th>
+                        <!-- <th>Material Doc</th>
                         <th>Posting Date</th>
                         <th>Days Taken for GR</th>
-                        <!-- <th>MIRO No</th>
+                        <th>MIRO No</th>
                         <th>MIRO Date</th>
                         <th>Invoice No</th>
-                        <th>Invoice Date</th> -->
+                        <th>Invoice Date</th>
                         <th>PO Date</th>
                         <th>Created by</th>
-                        <th>Storage Location Name</th>
-                        <th>Days taken for IBD</th>
+                        <th>Storage Location Name</th> -->
+                        
                       </tr>
                     </thead>
                     <tbody>
                       <tr>
-                        <td>{{ table.MBLNR }}</td>
+                        <td>{{ table.MATNR }}</td>
+                        <!-- Material -->
+                        <td>{{ table.MAKTX }}</td>
+                        <!-- Material Description -->
+                        <td>{{ table.MEINS }}</td>
+                        <!-- UOM -->
+                        <td>{{ table.LFIMG }}</td>
+                        <!-- Qty -->
+                        <td>{{ table.GATEENTRY }}</td>
+                        <!-- Gate Entry No -->
+                        <td>{{ table.GATEDATE | date: 'dd-MM-yyyy'  }}</td>
+                        <!-- Gate Entry Date -->
+                        <td>{{ table.AGE1 }}</td>
+                        <!-- Days taken for IBD -->
+                        <!-- <td>{{ table.MBLNR }}</td> -->
                         <!-- Material Doc -->
-                        <td>{{ table.BUDAT | date: 'dd-MM-yyyy'  }}</td>
+                        <!-- <td>{{ table.AGE }}</td> -->
+                        <!-- Days Taken for GR -->
+                        <!-- <td>{{ table.MBLNR }}</td> -->
+                        <!-- Material Doc -->
+                        <!-- <td>{{ table.BUDAT | date: 'dd-MM-yyyy'  }}</td> -->
                         <!-- Posting Date -->
-                        <td>{{ table.AGE }}</td>
+                        <!-- <td>{{ table.AGE }}</td> -->
                         <!-- Days Taken for GR -->
                         <!-- <td>{{ table.BELNR_MIRO }}</td> -->
                         <!-- MIRO No -->
@@ -361,14 +420,12 @@
                         <!-- Invoice No -->
                         <!-- <td>{{ table.BLDAT }}</td> -->
                         <!-- Invoice Date -->
-                        <td>{{ table.AEDAT | date: 'dd-MM-yyyy'  }}</td>
+                        <!-- <td>{{ table.AEDAT | date: 'dd-MM-yyyy'  }}</td> -->
                         <!-- PO Date -->
-                        <td>{{ table.ERNAM }}</td>
+                        <!-- <td>{{ table.ERNAM }}</td> -->
                         <!-- Created by -->
-                        <td>{{ table.LGOBE }}</td>
-                        <!-- Storage Location Name -->
-                        <td>{{ table.AGE1 }}</td>
-                        <!-- Days taken for IBD -->
+                        
+                        
                       </tr>
                     </tbody>
                   </table>

@@ -311,34 +311,28 @@
                   <table class="table mb-0 table-striped">
                     <thead class="bg-dark text-white">
                       <tr>
-                        <th>Purchase Order</th>
+                        <!-- <th>Purchase Order</th>
                         <th>Doc Date</th>
                         <th>Qty</th>
-                        <th>Supplier</th>
                         <th>Order</th>
                         <th>GL account</th>
-                        <th>Doc Header Text</th>
+                        <th>Doc Header Text</th> -->
                         <th>Entry Date</th>
                         <th>Batch</th>
                         <th>Consumption</th>
+                        <th>Supplier</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr>
-                       
-                       
-                       
-                        <td>{{ table.SUPPLIER }}</td>
-                        <!-- Supplier -->
-                       
-                       
-                         
                          <td>{{ table.ENTRY_DATE| date: 'dd-MM-yyyy'  }}</td>
                         <!-- Entry Date-->
                          <td>{{ table.BATCH }}</td>
                         <!-- Batch-->
                          <td>{{ table.CONSUMPTION }}</td>
                         <!-- Consumption-->
+                        <td>{{ table.SUPPLIER }}</td>
+                        <!-- Supplier -->
                       </tr>
                     </tbody>
                   </table>

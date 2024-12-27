@@ -104,19 +104,18 @@ export class CloseDownloadComponent implements OnInit {
     if (dataToExport.length > 0) {
       // Define mapping of keys to header names
       const headerMapping: { [key: string]: string } = {
-        CLOSE: 'Close',
-        BANFN: 'Purchase Requisition',
+        BANFN: 'Pur Req',
         BNFPO: 'Item',
-        BADAT: 'Requisition Date',
-        BSART: 'Document Type',
-        EKGRP: 'Purchase Group',
+        BADAT: 'Reqn Date',
+        BSART: 'Doc Type',
+        LOEKZ: 'Del Ind',
+        EKGRP: 'Pur GRP',
+        AFNAM: 'Requisitioner',
+        TXZ01: 'Short Text',
         MATNR: 'Material Number',
         WERKS: 'Plant',
         MENGE: 'Quantity Requested',
         MEINS: 'UOM',
-        LOEKZ: 'Deletion Indicator',
-        AFNAM: 'Requisitioner',
-        TXZ01: 'Short Text',
         LFDAT: 'Delivery Date',
         FRGDT: 'Release Date',
         TOT_VAL: 'Total Value',
@@ -125,10 +124,15 @@ export class CloseDownloadComponent implements OnInit {
   
       // Format data to map keys to user-friendly headers
       const formattedData = dataToExport.map(row => {
-        const formattedRow = {};
+        const formattedRow: { [key: string]: any } = {};
         for (const key in headerMapping) {
           if (row.hasOwnProperty(key)) {
-            formattedRow[headerMapping[key]] = row[key];
+            // Format date fields to dd-mm-yyyy
+            if (key === 'BADAT' || key === 'LFDAT' || key === 'FRGDT') {
+              formattedRow[headerMapping[key]] = this.formatDate(row[key]); // Call formatDate for date fields
+            } else {
+              formattedRow[headerMapping[key]] = row[key];
+            }
           }
         }
         return formattedRow;
@@ -142,6 +146,14 @@ export class CloseDownloadComponent implements OnInit {
       // Generate an Excel file and trigger the download
       XLSX.writeFile(workbook, 'ZPRCLose_Data.xlsx');
     }
+  }
+
+  private formatDate(dateString: string): string {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
   }
 
   /**
@@ -172,7 +184,7 @@ export class CloseDownloadComponent implements OnInit {
     let obj = {
       "WERKS": this.form.plant.value,// "1300","1025"
       "EKGRP": this.form.purchasegroup.value,//"013",
-      "BADAT_F": this.form.date.value,// "2024-02-01",
+      "BADAT": this.form.date.value,// "2024-02-01",
       // "BADAT_T": this.form.curentdateto.value?moment(this.form.curentdateto.value):""//"2024-02-20"
     }
     console.log("objobj",obj)

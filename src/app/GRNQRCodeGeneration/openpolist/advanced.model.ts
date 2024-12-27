@@ -60,6 +60,11 @@ export interface Table {
   DAYS: number; // -
   WRBTR: number; // Local Current Amount
   ELIKZ: string; // Delivery Indicator
+
+  BSART_F: string;
+  BSART_T: string;
+  BEDAT_F: string;
+  BEDAT_T: string;
 }
 
 
