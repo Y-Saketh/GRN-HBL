@@ -906,6 +906,53 @@ export class QRcodegenrationComponent {
       this.backtoQunatity(); // Always execute this, even if some labels fail
     }
   }
+
+  //future purpose 
+  // async printLabel() {
+  //   this.qrCodes = [];
+  //   console.log("matchedAndUnmatchedData", this.matchedAndUnmatchedData);
+  
+  //   for (const table of this.matchedAndUnmatchedData) {
+  //     const qrData = `
+  //         GRN: ${this.GRN}
+  //         VC: ${table.LIFNR}
+  //         Mat: ${table.MATNR}
+  //         MatD: ${table.MAKTX}
+  //         Dt: ${this.currentDate}
+  //         RN: pkg ${table.DCHARG}
+  //         Qty: ${table.DCLABS}  ${table.MEINS}
+  //       `;
+  
+  //     try {
+  //       const zpl = this.generateZPL(qrData, table);
+  //       if (this.printer) {
+  //         await new Promise<void>((resolve, reject) => {
+  //           this.printer.send(
+  //             zpl,
+  //             () => {
+  //               console.log("Label sent to printer!");
+  //               resolve();
+  //             },
+  //             (error: any) => {
+  //               console.error("Error sending ZPL:", error);
+  //               reject(error);
+  //             }
+  //           );
+  //         });
+  //       } else {
+  //         console.error("No printer available!");
+  //         throw new Error("No printer available");
+  //       }
+  //     } catch (error) {
+  //       console.error("Failed to print label:", error);
+  //       // Optionally handle retry logic here if needed
+  //     }
+  //   }
+  
+  //   console.log("All labels printed sequentially!");
+  //   this.backtoQunatity(); // Always execute after printing
+  // }
+  
   
   generateQRCode(data: string): Promise<string> {
     return new Promise((resolve, reject) => {
