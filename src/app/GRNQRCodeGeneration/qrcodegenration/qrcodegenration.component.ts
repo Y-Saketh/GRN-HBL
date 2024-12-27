@@ -88,6 +88,8 @@ export class QRcodegenrationComponent {
   printer: any;
   headerText: any;
   selectedd: boolean = true;
+  isAllSelected: boolean = true;
+  GrnResponses: any;
 
   constructor(public service: AdvancedService, public formBuilder: UntypedFormBuilder, private apiService: UserProfileService, public loaderservice: LoaderService, private sanitizer: DomSanitizer, private http: HttpClient) {
     this.tables$ = service.tables$;
@@ -162,7 +164,22 @@ export class QRcodegenrationComponent {
         }
       });
     });
+    if (this.isAllSelected) {
+      this.GrnResponse.forEach(table => table.selected = true);
+    } else {
+      // If "Select All" checkbox is unchecked, set all rows' selected to false
+      this.GrnResponse.forEach(table => table.selected = false);
+    }
+    
+    // Update table data after selection/deselection
+    this.service.setTableData(this.GrnResponse || []);
+    this._fetchData();
   }
+  updateSelectAllStatus() {
+
+    this.selectAll = this.GrnResponse.every(table => table.selected);
+  }
+
   filterSelectedRows() {
     this.GrnResponse = this.GrnResponse.filter(table => table.selected);
     this.service.setTableData(this.GrnResponse || []); 
@@ -170,7 +187,7 @@ export class QRcodegenrationComponent {
   }
 
   onRowCheckboxChange(row: any): void {
-    this.selectAll = false;  // If a single row is unchecked, deselect "selectAll"
+    // this.selectAll = false;  // If a single row is unchecked, deselect "selectAll"
 
     // Optionally update "selectAll" logic if needed to check if all rows are selected
     this.tables$.pipe(take(1)).subscribe((tables) => {
@@ -180,6 +197,7 @@ export class QRcodegenrationComponent {
       );
     });
     this.selectedd=row.selected==true ? true : false;
+    this.isAllSelected = this.GrnResponse.every(table => table.selected);
   }
 
 
@@ -403,7 +421,7 @@ export class QRcodegenrationComponent {
           BUDAT: this.formpostingdate.postingDate.value,
           WERKS: this.plant,
           BKTXT: this.formpostingdate.headerText.value,
-          FRBNR: this.formpostingdate.billofLoading.value,
+          FRBNR: this.formpostingdate.billOfLading.value,
           BLDAT: this.documentDeliveryDate,
           IN_DATE: this.invoiceDate,
           INVOICE: this.invoiceNumber,
@@ -416,8 +434,10 @@ export class QRcodegenrationComponent {
 
         let hasEmptyShadows = false;
         let hasMismatchedQuantities = false;
-        this.GrnResponse = this.GrnResponse.filter(table => table.selected);
-        this.GrnResponse.forEach((table) => {
+        // console.log("this.GrnResponse",this.GrnResponse)
+        this.GrnResponses = this.GrnResponse?.filter(table => table.selected);
+        // console.log("this.GrnResponses",this.GrnResponses)
+        this.GrnResponses.forEach((table) => {
           if (table.selected) {  // Check if the row is selected
             console.log(`Adding table ${table.MATNR} to payload`);
             let shadowTotal = 0;
@@ -558,10 +578,10 @@ export class QRcodegenrationComponent {
 
   submitPayload(payload: any) {
     console.log("payload", payload);
-    if(!this.formpostingdate.headerText.value){
-          Swal.fire("","Header text is required","error")
-        }
-        else{
+    // if(!this.formpostingdate.headerText.value){
+    //       Swal.fire("","Header text is required","error")
+    //     }
+    //     else{
     this.loaderservice.showLoader();
     this.apiService.grnlist(payload).subscribe({
       next: (res) => {
@@ -627,7 +647,8 @@ export class QRcodegenrationComponent {
     });
 
 
-  }}
+  // }
+}
   // submitPayload(payload: any) {
   //   console.log("payload", payload);
   //   // this.loaderservice.showLoader();
@@ -1249,8 +1270,10 @@ export class QRcodegenrationComponent {
   //     Swal.fire("Error", "Invalid Label Quantity or MENGE", "error");
   //   }
   // }
-  matchMaterial(index: number): void {
-    const material = this.tableData[index];
+  matchMaterial(index: number,label, table): void {
+    console.log("index",index,label , table)
+    // const material = this.GrnResponse[index];
+    const material = table
     console.log("material", material);
   
     if (material.ZLABEL > 0 && material.MENGE > 0) {
@@ -1296,8 +1319,9 @@ export class QRcodegenrationComponent {
   
 
 
-  unmatchMaterial(index: number): void {
-    const material = this.tableData[index];
+  unmatchMaterial(index: number, table): void {
+    // const material = this.GrnResponse[index];
+    const material = table
     console.log("material", material);
 
     if (material.ZLABEL > 0) {
@@ -1319,9 +1343,10 @@ export class QRcodegenrationComponent {
   }
 
   saveUnmatched(): void {
-    if (this.selectedIndex !== null && this.tableData?.[this.selectedIndex]) {
-      const selectedMaterial = this.tableData[this.selectedIndex];
-
+    // if (this.selectedIndex !== null && this.GrnResponse?.[this.selectedIndex]) {
+    if(this.selectedMaterial){
+      // const selectedMaterial = this.GrnResponse[this.selectedIndex];
+      const selectedMaterial = this.selectedMaterial
       // Validate user input
       const isValid = this.selectedMaterial.packets.every((packet) => {
         return packet.DCLABS !== null && !isNaN(packet.DCLABS) && parseFloat(packet.DCLABS) > 0;
@@ -1375,6 +1400,7 @@ export class QRcodegenrationComponent {
     this.selectAll = false
     this.matchedAndUnmatchedData = [];
     this.selectedData = [];
+    // this.GrnResponse = [];
     this.plant = '';
     // sloc = 'SLOC 456';
     this.documentDeliveryDate = '';
@@ -1649,8 +1675,8 @@ export class QRcodegenrationComponent {
     }
   }
 
-onZLabelChange(index: number): void {
-  const material = this.tableData[index];
+onZLabelChange(index: number, table): void {
+  const material = table;
 
   if (material.issMatched) {
     // Remove previous matches if ZLABEL changes

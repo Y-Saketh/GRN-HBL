@@ -305,4 +305,22 @@
   .custom-btn:focus {
     outline: none; /* Removes focus outline */
   }
+  .table-responsive {
+    overflow-x: auto; /* Enables horizontal scroll only when needed */
+    overflow-y: hidden; /* Prevent vertical scroll in the same container */
+    max-width: 100%; /* Ensures table stays within the viewport width */
+  }
+  
+  .table-responsive::-webkit-scrollbar {
+    height: 10px; /* Adjust scrollbar height */
+  }
+  
+  .table-responsive::-webkit-scrollbar-thumb {
+    background: #ccc; /* Scrollbar color */
+    border-radius: 10px; /* Rounded corners for the scrollbar */
+  }
+  
+  .table-responsive::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Track color */
+  }
   

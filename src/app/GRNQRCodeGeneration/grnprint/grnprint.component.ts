@@ -80,6 +80,7 @@ export class GrnprintComponent implements OnInit {
   qrCodes: any[];
   qrCodess: any[];
   lableavail: Table[];
+  isAllSelected: boolean = true;
   constructor(public formBuilder: UntypedFormBuilder, @Inject(AdvancedService) public service: AdvancedService, private apiService: UserProfileService, public loaderservice: LoaderService) {
     this.tables$ = service.tables$;
     console.log("this.tables$", this.tables$)
@@ -105,8 +106,9 @@ export class GrnprintComponent implements OnInit {
   //     });
   //   }
 
-  onQRCodeGenerateCheckboxChange(index: number): void {
-    const material = this.tableData[index];
+  onQRCodeGenerateCheckboxChange(index: number, table): void {
+    // const material = this.tableData[index];
+    const material = table
     if (material.MENGE > 0) {
       this.selectedMaterial = { ...material };
       this.selectedIndex = index;
@@ -120,6 +122,8 @@ export class GrnprintComponent implements OnInit {
     if (!table.selected) {
       table.ZLABEL = 0; // Reset ZLABEL if the row is deselected
     }
+    this.isAllSelected = this.GrnPrint.every(table => table.selected);
+
   }
 
   onUserPrintCheckboxChange(table: any): void {
@@ -303,8 +307,9 @@ export class GrnprintComponent implements OnInit {
   //         Swal.fire("Error", "Invalid Label Quantity or MENGE", "error");
   //     }
   // }
-  matchMaterial(index: number): void {
-    const material = this.tableData[index];
+  matchMaterial(index: number, table): void {
+    // const material = this.tableData[index];
+    const material = table;
     console.log("material", material);
   
     if (material.ZLABEL > 0 && material.MENGE > 0) {
@@ -350,8 +355,9 @@ export class GrnprintComponent implements OnInit {
 
   
 
-  unmatchMaterial(index: number): void {
-    const material = this.tableData[index];
+  unmatchMaterial(index: number, table): void {
+    // const material = this.tableData[index];
+    const material = table
     console.log("material", material);
   
     if (material.ZLABEL > 0) {
@@ -676,9 +682,11 @@ export class GrnprintComponent implements OnInit {
 
 
   saveUnmatched(): void {
-    if (this.selectedIndex !== null && this.tableData?.[this.selectedIndex]) {
-        const selectedMaterial = this.tableData[this.selectedIndex];
-  
+    // if (this.selectedIndex !== null && this.tableData?.[this.selectedIndex]) {
+    //     const selectedMaterial = this.tableData[this.selectedIndex];
+    if(this.selectedMaterial){
+      // const selectedMaterial = this.GrnResponse[this.selectedIndex];
+      const selectedMaterial = this.selectedMaterial
         // Validate user input
         const isValid = this.selectedMaterial.packets.every((packet) => {
             return packet.DCLABS !== null && !isNaN(packet.DCLABS) && parseFloat(packet.DCLABS) > 0;
@@ -954,6 +962,16 @@ export class GrnprintComponent implements OnInit {
     //     }
     //   });
     // });
+    if (this.isAllSelected) {
+      this.GrnPrint.forEach(table => table.selected = true);
+    } else {
+      // If "Select All" checkbox is unchecked, set all rows' selected to false
+      this.GrnPrint.forEach(table => table.selected = false);
+    }
+    
+    // Update table data after selection/deselection
+    this.service.setTableData(this.GrnPrint || []);
+    this._fetchData();
   }
 
 
@@ -1173,8 +1191,9 @@ export class GrnprintComponent implements OnInit {
     `;
   }
 
-  unmatchMaterial1(index: number): void {
-    const material = this.tableData[index];
+  unmatchMaterial1(index: number, table): void {
+    // const material = this.tableData[index];
+    const material = table;
     console.log("material", material);
   
     if (material.ZLABEL > 0) {
@@ -1218,9 +1237,11 @@ export class GrnprintComponent implements OnInit {
   }
 
   saveUnmatchedindividual(): void {
-    if (this.selectedIndex !== null && this.tableData?.[this.selectedIndex]) {
-        const selectedMaterial = this.tableData[this.selectedIndex];
-  
+    // if (this.selectedIndex !== null && this.tableData?.[this.selectedIndex]) {
+    //     const selectedMaterial = this.tableData[this.selectedIndex];
+    if(this.selectedMaterial){
+      // const selectedMaterial = this.GrnResponse[this.selectedIndex];
+      const selectedMaterial = this.selectedMaterial
         // Validate user input
         const isValid = this.selectedMaterial.packets.every((packet) => {
             return packet.DCLABS !== null && !isNaN(packet.DCLABS) && parseFloat(packet.DCLABS) > 0;
@@ -1256,5 +1277,16 @@ export class GrnprintComponent implements OnInit {
     }
   }
 
-
+  onZLabelChange(index: number, table): void {
+    const material = table;
+  
+    if (material.issMatched) {
+      // Remove previous matches if ZLABEL changes
+      material.issMatched = false;
+      this.matchedAndUnmatchedData = this.matchedAndUnmatchedData.filter(
+        data => data.MATNR !== material.MATNR
+      );
+      console.log(`Cleared matches for material: ${material.MATNR}`);
+    }
+  }
 }

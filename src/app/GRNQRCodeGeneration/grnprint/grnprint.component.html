@@ -119,12 +119,18 @@
               </div>
           </div>
         <div *ngIf="GrnResponse" class="table table-responsive">
+          <div>
+            <button (click)="filterSelectedRows()" class="btn custom-btn rounded-circle shadow-lg p-3">
+              <i class="bx bx-revision"></i>
+            </button>
+          </div>
           <table id="basic-datatable"
             class="table table-bordered dt-responsive nowrap datatables no-footer dtr-inline">
             <thead>
               <tr>
                 <th>
-                  <input type="checkbox" [checked]="selectAll" (change)="toggleSelectAll($event)" />
+                  <input type="checkbox" [checked]="selectAll"   [(ngModel)]="isAllSelected"
+                  [ngModelOptions]="{standalone: true}"  (change)="toggleSelectAll($event)" />
                 </th>
                 <th sortable="MATNR" (sort)="onSort($event)">Mat. No</th>
                 <th sortable="MAKTX" (sort)="onSort($event)">Mat. Desc</th>
@@ -148,7 +154,9 @@
                   <input type="checkbox" [(ngModel)]="table.selected" (change)="onQRCodeGenerateCheckboxChange(table)" />
                 </td>
                 <td>{{ table.MATNR }}</td>
-                <td>{{ table.MAKTX }}</td>
+                <!-- <td>{{ table.MAKTX }}</td> -->
+                <td [title]="table.MAKTX">{{ table.MAKTX | slice: 0:20 }}{{ table.MAKTX.length > 40 ? '...' : '' }}</td>
+
                 <!-- <td>{{ table.LGORT }}</td> -->
                 <!-- <td>{{ table.BWART }}</td> -->
                 <td>{{ table.MENGE }}</td>
@@ -162,15 +170,16 @@
                   <input type="text" [(ngModel)]="table.ABLAD" class="form-control form-control-sm" />
                 </td> -->
                 <td>
-                  <input type="number" [(ngModel)]="table.ZLABEL" [disabled]="!table.selected" placeholder="Label Qty"  style="width: 12ch; text-align: center;"
+                  <input type="number" [(ngModel)]="table.ZLABEL" [disabled]="!table.selected"       [disabled]="!table.selected" 
+                  (change)="onZLabelChange(i, table)"  placeholder="Label Qty"  style="width: 12ch; text-align: center;"
                   />
                 </td>
                 <td>
                   <div style="display: flex; gap: 5px; justify-content: center;">
-                    <button class="btn btn-success btn-sm" (click)="matchMaterial(i)" [disabled]="!table.selected">
+                    <button class="btn btn-success btn-sm"   (click)="matchMaterial(i,table.ZLABEL, table)" [disabled]="!table.selected">
                       Match
                     </button>
-                    <button class="btn btn-danger btn-sm" (click)="unmatchMaterial(i)" [disabled]="!table.selected">
+                    <button class="btn btn-danger btn-sm"  (click)="unmatchMaterial(i, table)"  [disabled]="!table.selected">
                       Unmatch
                     </button>
                   </div>
@@ -277,7 +286,9 @@
                   <input type="checkbox" [(ngModel)]="table.selected" (change)="onLabelPrintCheckboxChange(table)" />
                 </td>
                 <td>{{ table.MATNR }}</td>
-                <td>{{ table.MAKTX }}</td>
+                <!-- <td>{{ table.MAKTX }}</td> -->
+                <td [title]="table.MAKTX">{{ table.MAKTX | slice: 0:20 }}{{ table.MAKTX.length > 40 ? '...' : '' }}</td>
+
                 <td>{{ table.MENGE }}</td>
                 <td>{{ table.MEINS }}</td>
                 <td>{{ table.EBELN }}</td>
@@ -359,7 +370,9 @@
                   <input type="checkbox" [(ngModel)]="table.selected" (change)="onUserPrintCheckboxChange(table)" />
                 </td>
                 <td>{{ table.MATNR }}</td>
-                <td>{{ table.MAKTX }}</td>
+                <!-- <td>{{ table.MAKTX }}</td> -->
+                <td [title]="table.MAKTX">{{ table.MAKTX | slice: 0:20 }}{{ table.MAKTX.length > 40 ? '...' : '' }}</td>
+
                 <td>{{ table.MENGE }}</td>
                 <td>{{ table.MEINS }}</td>
                 <td >{{ table.EBELN }}</td>
@@ -370,7 +383,7 @@
                 </td>
                 <td>
                   <div style="display: flex; gap: 5px; justify-content: center;">
-                    <button class="btn btn-danger btn-sm" (click)="unmatchMaterial1(i)" [disabled]="!table.selected">
+                    <button class="btn btn-danger btn-sm" (click)="unmatchMaterial1(i, table)" [disabled]="!table.selected">
                       individual
                     </button>
                   </div>

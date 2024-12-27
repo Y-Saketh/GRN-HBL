@@ -193,7 +193,8 @@
                         placeholder="Enter Document Date"
                         class="form-control form-control-sm"
                         [bsConfig]="bsConfig"
-                        bsDatepicker
+                        bsDatepicker  (focus)="openDatepicker(datepicker)" 
+                        #datepicker="bsDatepicker" 
                       />
                       <small
                         class="text-danger"
@@ -223,7 +224,8 @@
                         placeholder="Enter Invoice Date"
                         class="form-control form-control-sm"
                         [bsConfig]="bsConfig"
-                        bsDatepicker
+                        bsDatepicker  (focus)="openDatepicker(invdatepicker)" 
+                        #invdatepicker="bsDatepicker"
                       />
                       <small
                         class="text-danger"
@@ -281,7 +283,8 @@
                         placeholder="Enter Gate Entry Date"
                         class="form-control form-control-sm"
                         [bsConfig]="bsConfig"
-                        bsDatepicker
+                        bsDatepicker  (focus)="openDatepicker(gatedatepicker)" 
+                        #gatedatepicker="bsDatepicker"
                       />
                       <small
                         class="text-danger"
@@ -296,7 +299,8 @@
                         placeholder="LR Date is required"
                         class="form-control form-control-sm"
                         [bsConfig]="bsConfig"
-                        bsDatepicker
+                        bsDatepicker  (focus)="openDatepicker(lrdatepicker)" 
+                        #lrdatepicker="bsDatepicker"
                       />
                       <small
                         class="text-danger"

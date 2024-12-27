@@ -82,6 +82,8 @@ export class GRNagainstPOComponent{
   enableQRbutton: boolean;
   GRN: any;
   currentDate: Date;
+  isAllSelected: boolean = true;
+  GrnResponses: any;
   constructor(public service: AdvancedService,public formBuilder: UntypedFormBuilder,private apiService:UserProfileService, public loaderservice: LoaderService) {
     this.tables$ = service.tables$;
     this.total$ = service.total$;
@@ -157,8 +159,23 @@ export class GRNagainstPOComponent{
         }
       });
     });
-  }
+    if (this.isAllSelected) {
+      this.GrnResponse.forEach(table => table.selected = true);
+    } else {
+      // If "Select All" checkbox is unchecked, set all rows' selected to false
+      this.GrnResponse.forEach(table => table.selected = false);
+    }
+    
+    // Update table data after selection/deselection
+    this.service.setTableData(this.GrnResponse || []);
+    this._fetchData();
   
+  }
+  updateSelectAllStatus() {
+
+    this.selectAll = this.GrnResponse.every(table => table.selected);
+  }
+
   onRowCheckboxChange(row: any): void {
     this.selectAll = false;  // If a single row is unchecked, deselect "selectAll"
   
@@ -227,7 +244,7 @@ export class GRNagainstPOComponent{
           INVOICE: this.invoiceNumber,
           LIFNR: this.vendorCode,
           BKTXT: this.formpostingdate.headerText.value,
-          FRBNR: this.formpostingdate.billofLoading.value,
+          FRBNR: this.formpostingdate.billOfLading.value,
           NAME1: this.vendorName ,
           ORT01: this.City,
           STCD3:  this.GSTIN,
@@ -236,9 +253,9 @@ export class GRNagainstPOComponent{
          };
         let hasEmptyShadows = false;
         let hasMismatchedQuantities = false;
-        
-        this.GrnResponse = this.GrnResponse.filter(table => table.selected);
-        this.GrnResponse.forEach((table) => {
+        this.GrnResponses = this.GrnResponse?.filter(table => table.selected);
+        // console.log("this.GrnResponses",this.GrnResponses)
+        this.GrnResponses.forEach((table) => {
           let shadowTotal = 0;
   
           if (table.shadowRows && table.shadowRows.length > 0) {
@@ -402,10 +419,10 @@ export class GRNagainstPOComponent{
   // }
   submitPayload(payload: any) {
     console.log("payload", payload);
-    if(!this.formpostingdate.headerText.value){
-              Swal.fire("","Header text is required","error")
-            }
-            else{
+    // if(!this.formpostingdate.headerText.value){
+    //           Swal.fire("","Header text is required","error")
+    //         }
+    //         else{
     this.loaderservice.showLoader();
     this.apiService.grnlist(payload).subscribe({
       next: (res) => {
@@ -469,7 +486,8 @@ export class GRNagainstPOComponent{
     });
   
   
-  }}
+  // }
+}
 
    initPrinter(): void {
       if(this.printer){
@@ -1003,8 +1021,10 @@ export class GRNagainstPOComponent{
 //         Swal.fire("Error", "Invalid Label Quantity or MENGE", "error");
 //     }
 // }
-matchMaterial(index: number): void {
-  const material = this.tableData[index];
+matchMaterial(index: number,label, table): void {
+  console.log("index",index,label , table)
+  // const material = this.tableData[index];
+  const material = table
   console.log("material", material);
 
   if (material.ZLABEL > 0 && material.MENGE > 0) {
@@ -1050,8 +1070,9 @@ matchMaterial(index: number): void {
 
 
 
-unmatchMaterial(index: number): void {
-  const material = this.tableData[index];
+unmatchMaterial(index: number, table): void {
+  // const material = this.tableData[index];
+  const material = table
   console.log("material", material);
 
   if (material.ZLABEL > 0) {
@@ -1073,9 +1094,10 @@ unmatchMaterial(index: number): void {
 }
 
 saveUnmatched(): void {
-  if (this.selectedIndex !== null && this.tableData?.[this.selectedIndex]) {
-      const selectedMaterial = this.tableData[this.selectedIndex];
-
+  // if (this.selectedIndex !== null && this.tableData?.[this.selectedIndex]) {
+    if(this.selectedMaterial){
+  // const selectedMaterial = this.tableData[this.selectedIndex];
+  const selectedMaterial = this.selectedMaterial
       // Validate user input
       const isValid = this.selectedMaterial.packets.every((packet) => {
           return packet.DCLABS !== null && !isNaN(packet.DCLABS) && parseFloat(packet.DCLABS) > 0;
@@ -1134,6 +1156,7 @@ saveUnmatched(): void {
     this.selectAll = false
     this.matchedAndUnmatchedData= [];
     this.selectedData = [];
+       // this.GrnResponse = [];
     this.plant = '';
     // sloc = 'SLOC 456';
     this.documentDeliveryDate = '';
@@ -1388,5 +1411,16 @@ saveUnmatched(): void {
     }
 }
 
-  
+onZLabelChange(index: number, table): void {
+  const material = table;
+
+  if (material.issMatched) {
+    // Remove previous matches if ZLABEL changes
+    material.issMatched = false;
+    this.matchedAndUnmatchedData = this.matchedAndUnmatchedData.filter(
+      data => data.MATNR !== material.MATNR
+    );
+    console.log(`Cleared matches for material: ${material.MATNR}`);
+  }
+}
 }

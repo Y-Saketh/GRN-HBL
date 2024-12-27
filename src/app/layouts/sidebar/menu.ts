@@ -168,7 +168,7 @@ export const MENU: MenuItem[] = [
                 parentId: "menu"
             },
             {
-                id: "mb52",
+                id: "popreview",
                 label: 'MENUITEMS.DASHBOARDS.LIST.PREVIEW',
                 link: 'popreview',
                 icon: 'bx-layer',

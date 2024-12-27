@@ -101,7 +101,10 @@ export class InbounddeliveryComponent implements OnInit {
     const control = this.tableForm.get(fieldName);
     return control?.invalid && (control.dirty || control.touched);
   }
-
+  openDatepicker(datepicker: any) {
+    datepicker.show(); // Programmatically opens the date picker
+  }
+  
   bsConfig = {
     dateInputFormat: 'DD/MM/YYYY',
     containerClass: 'theme-blue',
