@@ -890,6 +890,7 @@ export class QRcodegenrationComponent {
             reject(new Error("No printer available"));
           }
         } catch (error) {
+          this.loaderservice.hideLoader();
           console.error("QR Generation Failed", error);
           reject(error); // Reject if an error occurs during QR generation
         }
@@ -900,6 +901,7 @@ export class QRcodegenrationComponent {
       await Promise.all(printPromises); // Wait for all promises to resolve
       console.log("All labels printed successfully!");
     } catch (error) {
+      this.loaderservice.hideLoader();
       console.error("Some labels failed to print:", error);
       // Optionally, handle specific errors or retry logic here
     } finally {
@@ -1165,6 +1167,7 @@ export class QRcodegenrationComponent {
         // Add the container to the body
         document.body.appendChild(container);
       } catch (error) {
+        this.loaderservice.hideLoader();
         console.error("Error generating PDF preview:", error);
         Swal.fire("Error", "Failed to preview the PDF. Please try again.", "error");
       }
@@ -1499,6 +1502,7 @@ export class QRcodegenrationComponent {
         const qrCodeUrl = await this.generateQRCode(qrData);
         this.qrCodes.push({ qrCodeUrl, data: table });
       } catch (error) {
+        this.loaderservice.hideLoader();
         console.error("QR Generation Failed", error);
       }
       // }
