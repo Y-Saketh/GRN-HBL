@@ -1136,7 +1136,7 @@ export class GrnprintComponent implements OnInit {
           Mat: ${table.MATNR}
           MatD: ${table.MAKTX}
           Dt: ${this.currentDate}
-          RN: pkg  ${table.DCHARG}/${table.ZLABEL}
+          RN: pkg  ${table.DCHARG}
           Qty: ${table.DCLABS} ${table.MEINS}
         `;
   
@@ -1194,7 +1194,7 @@ export class GrnprintComponent implements OnInit {
       ^FT223,47^A0N,25,24^FH\^FD${row.GRN}^FS
       ^FT223,74^A0N,25,24^FH\^FD${row.LIFNR}^FS
       ^FT223,105^A0N,25,24^FH\^FD${row.MATNR}^FS
-      ^FT223,130^A0N,25,24^FH\^FD Pkg ${row.DCHARG}/${row.ZLABEL}^FS
+      ^FT223,130^A0N,25,24^FH\^FD Pkg ${row.DCHARG}^FS
       ^FT223,161^A0N,25,24^FH\^FDQTY ${row.DCLABS} ${row.MEINS}^FS
       ^PQ1,0,1,Y^XZ
     `;

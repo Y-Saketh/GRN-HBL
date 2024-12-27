@@ -78,8 +78,8 @@
                     <thead>
                       <tr>
                         <th>Plant</th>
-                        <th>Invoice Number</th>
-                        <th>Invoice Date</th>
+                        <th>Inv No</th>
+                        <th>Inv Date</th>
                         <th>Posting Date<span style="color: red">*</span></th>
                         <th>Header Text</th>
                         <th>Bill of Lading</th>
@@ -129,19 +129,24 @@
               <!-- <div class="col-sm-2 col-md-2"></div> -->
               <!-- Details -->
               <div class="col-sm-4 col-md-4 ">
-                <h5 *ngIf="vendorCode">
-                  <span class="brandcolor">Vendor Code</span> :
-                  {{ vendorCode }}
-                </h5>
-                <h5 *ngIf="vendorName">
-                  <span class="brandcolor">Vendor Name</span> : {{ vendorName }}
-                </h5>
-                <h5 *ngIf="City">
-                  <span class="brandcolor">City</span> : {{ City }}
-                </h5>
-                <h5 *ngIf="GSTIN">
-                  <span class="brandcolor">GSTIN</span> : {{ GSTIN }}
-                </h5>
+                <div class="d-flex flex-column" style="font-size: large; font-weight: 500; font-style: bold;">
+                  <div *ngIf="vendorCode" class="d-flex">
+                    <div class="col-4 brandcolor">Vendor Code:</div>
+                    <div class="col-8">{{ vendorCode }}</div>
+                  </div>
+                  <div *ngIf="vendorName" class="d-flex">
+                    <div class="col-4 brandcolor">Vendor Name:</div>
+                    <div class="col-8">{{ vendorName }}</div>
+                  </div>
+                  <div *ngIf="City" class="d-flex">
+                    <div class="col-4 brandcolor">City:</div>
+                    <div class="col-8">{{ City }}</div>
+                  </div>
+                  <div *ngIf="GSTIN" class="d-flex">
+                    <div class="col-4 brandcolor">GSTIN:</div>
+                    <div class="col-8">{{ GSTIN }}</div>
+                  </div>
+                </div>
               </div>
               
             </div>
@@ -255,10 +260,10 @@
                     <input type="text" [(ngModel)]="table.ABLAD" class="form-control form-control-sm" />
                   </td>
                   <td>
-                    <!-- <input type="number"  [(ngModel)]="table.ZLABEL" [disabled]="!table.selected"
+                    <!-- <input type="number"  [(ngModel)]="table.ZLABEL" min="0"  [disabled]="!table.selected"
                       placeholder="Label Qty" /> -->
                       <input type="number" 
-                      [(ngModel)]="table.ZLABEL" 
+                      [(ngModel)]="table.ZLABEL" min="0"  
                       [disabled]="!table.selected" 
                       (change)="onZLabelChange(i, table)" 
                       placeholder="Label Qty"  style="width: 8ch; text-align: center;"
@@ -302,7 +307,7 @@
                   <!-- <td>
                     <input
                       type="number" disabled
-                      [(ngModel)]="table.ZLABEL"
+                      [(ngModel)]="table.ZLABEL" min="0" 
                       class="form-control form-control-sm"
                     />
 
@@ -525,7 +530,7 @@
             <tr *ngFor="let packet of selectedMaterial?.packets; let j = index">
               <td>Pack {{ packet.DCHARG }}</td>
               <td>
-                <input type="number" class="form-control" (input)="onmismatch(selectedMaterial,packet, j )"
+                <input type="number" min="0" class="form-control" (input)="onmismatch(selectedMaterial,packet, j )"
                   [(ngModel)]="packet.DCLABS" />
               </td>
             </tr>

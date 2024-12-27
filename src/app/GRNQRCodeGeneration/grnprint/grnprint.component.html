@@ -170,7 +170,7 @@
                   <input type="text" [(ngModel)]="table.ABLAD" class="form-control form-control-sm" />
                 </td> -->
                 <td>
-                  <input type="number" [(ngModel)]="table.ZLABEL" [disabled]="!table.selected"       [disabled]="!table.selected" 
+                  <input type="number" [(ngModel)]="table.ZLABEL" min="0"  [disabled]="!table.selected"       [disabled]="!table.selected" 
                   (change)="onZLabelChange(i, table)"  placeholder="Label Qty"  style="width: 12ch; text-align: center;"
                   />
                 </td>
@@ -251,7 +251,7 @@
                 <tr *ngFor="let packet of selectedMaterial?.packets; let j = index">
                   <td>Pack {{ packet.DCHARG }}</td>
                   <td>
-                    <input type="number" class="form-control" (input)="onmismatch(selectedMaterial,packet, j )"
+                    <input type="number" min="0" class="form-control" (input)="onmismatch(selectedMaterial,packet, j )"
                       [(ngModel)]="packet.DCLABS" />
                   </td>
                 </tr>
@@ -334,7 +334,7 @@
                 <td>{{ table.EBELN }}</td>
                 <td>{{ table.EBELP }}</td>
                 <td>
-                  <input type="number" [(ngModel)]="table.ZLABEL" [disabled]="!table.selected" placeholder="Label Qty" style="width: 12ch; text-align: center;"
+                  <input type="number" [(ngModel)]="table.ZLABEL" min="0"  [disabled]="!table.selected" placeholder="Label Qty" style="width: 12ch; text-align: center;"
                   />
                 </td>
               </tr>
@@ -418,7 +418,7 @@
                 <td >{{ table.EBELN }}</td>
                 <td>{{ table.EBELP }}</td>
                 <td>
-                  <input type="number" [(ngModel)]="table.ZLABEL" [disabled]="!table.selected" placeholder="Label Qty"  style="width: 12ch; text-align: center;"
+                  <input type="number" [(ngModel)]="table.ZLABEL" min="0"  [disabled]="!table.selected" placeholder="Label Qty"  style="width: 12ch; text-align: center;"
                   />
                 </td>
                 <td>
@@ -461,7 +461,7 @@
                       [(ngModel)]="packet.DCHARG" />
                   </td>
                   <td>
-                    <input type="number" class="form-control" (input)="onmismatchindividual(selectedMaterial,packet, j )"
+                    <input type="number" min="0" class="form-control" (input)="onmismatchindividual(selectedMaterial,packet, j )"
                       [(ngModel)]="packet.DCLABS" />
                   </td>
                 </tr>
@@ -493,7 +493,8 @@
               <p>{{ qrData.data.MBLNR }}</p>
               <p>{{ qrData.data.LIFNR }}</p>
               <p>{{ qrData.data.MATNR }}</p>
-              <p>pkg {{ qrData.data.DCHARG }}/{{qrData.data.ZLABEL}}</p>
+              <!-- <p>pkg {{ qrData.data.DCHARG }}/{{qrData.data.ZLABEL}}</p> -->
+              <p>pkg {{ qrData.data.DCHARG }}</p>
               <p>Qty {{ qrData.data.DCLABS }} {{ qrData.data.MEINS }}</p>
             </div>
           </div>

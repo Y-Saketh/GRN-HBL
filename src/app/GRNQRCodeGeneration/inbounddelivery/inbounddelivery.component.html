@@ -62,26 +62,31 @@
                   Get Details
                 </button>
               </div>
-              <div class="col-md-4 mt-4">
+              <div class="col-md-2 mt-4">
                 <div class="mb-3">
                   <!-- <label class="brandcolor" class="brandcolor" for="vendorCode">Vendor Code</label> -->
                   <!-- <input type="text" class="form-control" id="vendorCode" [(ngModel)]="vendorCode"> -->
                 </div>
               </div>
-              <div class="col-md-4">
-                <h5 *ngIf="vendorCodeDis">
-                  <span class="brandcolor">Vendor Code</span> :
-                  {{ vendorCodeDis }}
-                </h5>
-                <h5 *ngIf="vendorName">
-                  <span class="brandcolor">Vendor Name</span> : {{ vendorName }}
-                </h5>
-                <h5 *ngIf="City">
-                  <span class="brandcolor">City</span> : {{ City }}
-                </h5>
-                <h5 *ngIf="GSTIN">
-                  <span class="brandcolor">GSTIN</span> : {{ GSTIN }}
-                </h5>
+              <div class="col-md-6">
+                <div class="d-flex flex-column" style="font-size: large; font-weight: 500; font-style: bold;">
+                  <div *ngIf="vendorCodeDis" class="d-flex">
+                    <div class="col-4 brandcolor">Vendor Code:</div>
+                    <div class="col-8">{{ vendorCodeDis }}</div>
+                  </div>
+                  <div *ngIf="vendorName" class="d-flex">
+                    <div class="col-4 brandcolor">Vendor Name:</div>
+                    <div class="col-8">{{ vendorName }}</div>
+                  </div>
+                  <div *ngIf="City" class="d-flex">
+                    <div class="col-4 brandcolor">City:</div>
+                    <div class="col-8">{{ City }}</div>
+                  </div>
+                  <div *ngIf="GSTIN" class="d-flex">
+                    <div class="col-4 brandcolor">GSTIN:</div>
+                    <div class="col-8">{{ GSTIN }}</div>
+                  </div>
+                </div>
               </div>
             </div>
           </form>

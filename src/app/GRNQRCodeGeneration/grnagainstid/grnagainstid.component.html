@@ -131,7 +131,7 @@
                                         <td>{{ table.LIFNR }}</td>
                                         <td>{{ table.NAME1 }}</td>
                                         <td>
-                                            <input type="number" class="form-control" [(ngModel)]="table.ZLABEL"  [disabled]="!table.selected" placeholder="Label Qty" /> 
+                                            <input type="number" class="form-control" [(ngModel)]="table.ZLABEL" min="0"   [disabled]="!table.selected" placeholder="Label Qty" /> 
                                        
                                         </td>
                                         <td>
@@ -172,7 +172,7 @@
                                                 <tr *ngFor="let packet of selectedMaterial?.packets; let j = index">
                                                     <td>Pack {{ packet.DCHARG }}</td>
                                                     <td>
-                                                        <input type="number" class="form-control"
+                                                        <input type="number" min="0" class="form-control"
                                                         (input)="onmismatch(selectedMaterial,packet, j )"
                                                             [(ngModel)]="packet.DCLABS" />
                                                     </td>
