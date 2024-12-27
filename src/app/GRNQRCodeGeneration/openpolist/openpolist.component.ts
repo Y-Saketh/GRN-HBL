@@ -199,7 +199,7 @@ export class OpenpolistComponent implements OnInit {
         EBELP: 'PO Item',
         ELIKZ: 'Delivery Completed',
         BEDAT: 'Document Date',
-        ERNAM: 'Created By',
+        creat: 'Created By',
         BUYER: 'Buyer',
         LIFNR: 'Vendor Code',
         NAME1: 'Vendor Name',
