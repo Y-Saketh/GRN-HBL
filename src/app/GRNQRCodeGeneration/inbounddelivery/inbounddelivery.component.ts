@@ -188,7 +188,7 @@ export class InbounddeliveryComponent implements OnInit {
           };
           payload.DETAIL.ITEM.push(item);
         });
-        // this.loaderservice.showLoader();
+        this.loaderservice.showLoader();
         console.log(JSON.stringify(payload));
         this.apiService.saveInbound(payload).subscribe({
           next: (res) => {
@@ -209,12 +209,14 @@ export class InbounddeliveryComponent implements OnInit {
           error: (err) => {
             Swal.fire("", "Error occurred while saving", "error");
             this.isSubmitting = false;
+            this.loaderservice.hideLoader(); 
           },
         });
       },
       error: (err) => {
         console.error("Error in subscription:", err);
         this.isSubmitting = false;
+        this.loaderservice.hideLoader(); 
       },
     });
   }
