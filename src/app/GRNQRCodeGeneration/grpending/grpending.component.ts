@@ -250,6 +250,7 @@ export class GrpendingComponent implements OnInit {
       this.isSubmitting = false;
     },
     error: (err) => {
+      this.loaderservice.hideLoader(); 
       console.error('Error:', err);
       this.isSubmitting = false;
     },
@@ -386,6 +387,7 @@ export class GrpendingComponent implements OnInit {
         // this._fetchData();
       },
       error: (error: any) => {
+        this.loaderservice.hideLoader(); 
         console.error('Error fetching lot reports:', error);
       },
       complete: () => {
@@ -419,6 +421,7 @@ export class GrpendingComponent implements OnInit {
         // this.validationform.reset()
       },
       error: (error: any) => {
+        this.loaderservice.hideLoader(); 
         console.error('Error fetching lot reports:', error);
         // this.validationform.reset()
       },

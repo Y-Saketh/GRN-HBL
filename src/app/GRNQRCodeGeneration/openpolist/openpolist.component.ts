@@ -160,6 +160,7 @@ export class OpenpolistComponent implements OnInit {
           this._fetchData2();
         },
         error: (error: any) => {
+          this.loaderservice.hideLoader(); 
           console.error('Error fetching lot reports:', error);
         },
         complete: () => {
@@ -325,6 +326,7 @@ export class OpenpolistComponent implements OnInit {
           
         },
         error: (error: any) => {
+          this.loaderservice.hideLoader(); 
           console.error('Error fetching lot reports:', error);
           // this.validationform.reset()
         },
@@ -408,6 +410,7 @@ export class OpenpolistComponent implements OnInit {
         this.tableForm.reset();
       },
       error: (err) => {
+        this.loaderservice.hideLoader(); 
         console.error("Error while saving:", err);
         Swal.fire("", "Error occurred while saving", "error");
         this.isSubmitting = false;

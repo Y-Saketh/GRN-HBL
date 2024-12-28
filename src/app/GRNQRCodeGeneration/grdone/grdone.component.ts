@@ -210,6 +210,7 @@ export class GrdoneComponent implements OnInit {
         // this.validationform.reset()
       },
       error: (error: any) => {
+        this.loaderservice.hideLoader(); 
         console.error('Error fetching lot reports:', error);
         // this.validationform.reset()
       },

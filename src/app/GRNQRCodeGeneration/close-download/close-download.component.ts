@@ -200,6 +200,7 @@ export class CloseDownloadComponent implements OnInit {
      
       },
       error: (error: any) => {
+        this.loaderservice.hideLoader(); 
         console.error('Error fetching lot reports:', error);
         // this.validationform.reset()
       },
