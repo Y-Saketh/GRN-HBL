@@ -190,5 +190,9 @@ export class AdvancedService {
   
     return of({ tables: paginatedTables, total });
   }
+
+  resetPagination() {
+    this._set({ page: 1 }); // Reset to the first page
+  }
   
 }

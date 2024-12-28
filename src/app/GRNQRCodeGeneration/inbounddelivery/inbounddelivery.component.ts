@@ -140,10 +140,12 @@ export class InbounddeliveryComponent implements OnInit {
 
   
   filterSelectedRows() {
-    this.INBOUND = this.INBOUND.filter(table => table.selected);
-    this.service.setTableData(this.INBOUND || []); 
-    this._fetchData(); 
+    this.INBOUND = this.INBOUND.filter((table) => table.selected); // Filter rows where 'selected' is true
+    this.service.setTableData(this.INBOUND || []); // Update table data in the service
+    this.service.resetPagination(); // Reset pagination to the first page
+    this._fetchData(); // Fetch additional data if needed (optional)
   }
+  
 
   changeValue() {
     this.hideme = !this.hideme;

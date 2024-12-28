@@ -145,6 +145,7 @@ export class GRNagainstPOComponent{
   filterSelectedRows() {
     this.GrnResponse = this.GrnResponse.filter(table => table.selected);
     this.service.setTableData(this.GrnResponse || []); 
+    this.service.resetPagination();
     this._fetchData(); 
   }
 

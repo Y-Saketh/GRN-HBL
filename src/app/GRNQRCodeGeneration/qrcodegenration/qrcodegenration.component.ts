@@ -183,6 +183,7 @@ export class QRcodegenrationComponent {
   filterSelectedRows() {
     this.GrnResponses = this.GrnResponse?.filter(table => table.selected);
     this.service.setTableData(this.GrnResponses || []); 
+    this.service.resetPagination();
     this._fetchData(); 
   }
 

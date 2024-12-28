@@ -1301,6 +1301,7 @@ export class GrnprintComponent implements OnInit {
   filterSelectedRows() {
     this.GrnPrints = this.GrnPrint?.filter(table => table.selected);
     this.service.setTableData(this.GrnPrints || []); 
+    this.service.resetPagination();
     this._fetchData(); 
   }
 
