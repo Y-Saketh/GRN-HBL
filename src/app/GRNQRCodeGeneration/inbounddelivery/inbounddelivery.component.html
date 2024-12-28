@@ -400,7 +400,7 @@
                             <td>{{ table.ORGQTY }}</td>
                             <td>
                               <input
-                              type="text"
+                              type="text"   [disabled]="!table.selected" 
                               [ngModelOptions]="{ standalone: true }"
                               [(ngModel)]="table.DMENGE"
                               class="form-control form-control-sm"

@@ -1,6 +1,6 @@
 export interface Table {
     selected: any; // Optional: Indicates whether the row is selected
-    MBLNR: number; // Number of Material Document
+    MBLNR: string; // Number of Material Document
     MJAHR: number; // Material Document Year
     BUDAT: string; // Posting Date in the Document
     BLDAT: string; // Document Date in Document

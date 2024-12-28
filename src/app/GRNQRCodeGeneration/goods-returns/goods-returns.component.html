@@ -416,7 +416,7 @@
                         <!-- Goods recipient-->  
                         <td>{{ table.MENGE }}</td>
                         <!-- Quantity-->
-                         <td><input type="text" [(ngModel)]="table.RMENGE" [disabled]="!table.selected" class="form-control form-control-sm" (input)="returnqty(table, i )"></td>
+                         <td><input type="number" min="0" [(ngModel)]="table.RMENGE" [disabled]="!table.selected" class="form-control form-control-sm" (input)="returnqty(table, i )"></td>
                         <!-- Return Quantity-->
                         <td>
                           <select [(ngModel)]="table.REASON"

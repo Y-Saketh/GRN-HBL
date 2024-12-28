@@ -37,7 +37,8 @@ function sort(tables: Table[], column: string, direction: string): Table[] {
  */
 function matches(tables: Table, term: string, pipe: PipeTransform) {
   return (
-    pipe.transform(tables.MBLNR).toString().includes(term) || // Number of Material Document
+
+    tables.MBLNR.toLowerCase().includes(term.toLowerCase()) ||// Number of Material Document
     pipe.transform(tables.MJAHR).toString().includes(term) || // Material Document Year
     tables.BUDAT.toLowerCase().includes(term.toLowerCase()) || // Posting Date in the Document
     tables.BLDAT.toLowerCase().includes(term.toLowerCase()) || // Document Date in Document

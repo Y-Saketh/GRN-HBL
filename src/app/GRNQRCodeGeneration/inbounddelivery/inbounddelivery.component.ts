@@ -259,7 +259,7 @@ export class InbounddeliveryComponent implements OnInit {
   
   validSubmit() {
     const matchCase = [44,47,48,49];
-    const regex = new RegExp(`^(${matchCase.join('|')})`); // Create regex dynamically from the array
+    const regex = new RegExp(`^(${matchCase.join('|')})`);
     const value = this.form.inbounddeliverynumber.value;
     
     if (regex.test(value)) {
