@@ -590,10 +590,11 @@ export class QRcodegenrationComponent {
     this.GRN = res[0].MBLNR
     if(res[0].MBLNR && this.matchedAndUnmatchedData.length == 0){
       Swal.fire("",res[0].MESSAGE,"success")
-      this.loaderservice.hideLoader()  
+      this.loaderservice.hideLoader();
+      this.resetFormAndData();
     }
     else if(res[0].MBLNR && this.matchedAndUnmatchedData ){  
-        this.loaderservice.hideLoader()     
+        this.loaderservice.hideLoader();    
         Swal.fire({
         title: res[0].MESSAGE,
         text: "Do you still want to print the QR labels for generated GRN",
@@ -610,7 +611,7 @@ export class QRcodegenrationComponent {
 
             else if (result.isDismissed) {
               console.log('Action canceled');
-              this.backtoQunatity()
+              this.backtoQunatity();
         }
       });
     this.isSubmitting = false;
