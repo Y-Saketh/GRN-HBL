@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { LoaderService } from './core/services/loader.service';
+import { SessionServiceService } from './shared/ui/session-service.service';
 
 @Component({
   selector: 'app-root',
@@ -17,5 +18,5 @@ export class AppComponent implements OnInit {
     console.log("appplication started")
     
   }
-  constructor(public loaderService: LoaderService) {}
+  constructor(public loaderService: LoaderService, private sessionService:SessionServiceService) {}
 }
