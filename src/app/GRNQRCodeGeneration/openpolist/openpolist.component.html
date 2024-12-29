@@ -447,7 +447,7 @@
                   </th>
                   <th
                     class="brandcolor"
-                    sortable="MAKTX"
+                    sortable="TXZ01"
                     (sort)="onSort($event)"
                   >
                     Material Description
@@ -467,13 +467,13 @@
               >
                 Document Date
               </th> -->
-                  <th
+                  <!-- <th
                     class="brandcolor"
                     sortable="WERKS"
                     (sort)="onSort($event)"
                   >
                     Plant
-                  </th>
+                  </th> -->
                   <!-- <th class="brandcolor" sortable="MEINS" (sort)="onSort($event)">
                     UOM
                   </th>
@@ -507,7 +507,7 @@
                   <!-- Delivery Completed -->
                   <td>{{ table.BEDAT }}</td>
                   <!-- Document Date -->
-                  <td>{{ table.creat }}</td>
+                  <td>{{ table.CREAT }}</td>
                   <!-- Created By -->
                   <td>{{ table.BUYER }}</td>
                   <!-- Buyer -->
@@ -523,10 +523,8 @@
                   <!-- Pur Grp Desc -->
                   <td>{{ table.MATNR }}</td>
                   <!-- Material --> 
-                  <td>{{ table.MAKTX }}</td>
+                  <td>{{ table.TXZ01 }}</td>
                   <!-- Material Description --> 
-                  <td>{{ table.WERKS }}</td>
-                  <!-- Plant --> 
                 </tr>
                 <ng-container *ngIf="!hideme[$index]">
                   <tr class="sub-table no-bg">
@@ -535,6 +533,7 @@
                       <table class="table mb-0 table-striped">
                         <thead class="bg-dark text-white">
                           <tr>
+                            <th>Plant</th>
                             <th>UOM</th>
                             <th>PO Qty</th>
                             <th>PO Value</th>
@@ -545,6 +544,8 @@
                         </thead>
                         <tbody>
                           <tr>
+                            <td>{{ table.WERKS }}</td>
+                            <!-- Plant --> 
                             <td>{{ table.MEINS }}</td>
                             <!-- UOM--> 
                             <td>{{ table.MENGE }}</td>
