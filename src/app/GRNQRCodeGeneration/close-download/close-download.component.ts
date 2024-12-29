@@ -195,7 +195,7 @@ export class CloseDownloadComponent implements OnInit {
         this.loaderservice.hideLoader();
         console.log('Data:', res);
         this.CloseDownload = res;
-        this.service.setTableData(this.CloseDownload || []);
+        this.service.setTableData(this.CloseDownload || res[0] ||  []);
         this._fetchData();
         console.log("this.tables$ ",this.tables$ )
         this.validationform.reset()

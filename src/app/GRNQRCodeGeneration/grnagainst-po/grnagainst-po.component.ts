@@ -878,11 +878,11 @@ export class GRNagainstPOComponent{
   }
   validSubmit() {
     
-    const matchCase = [41,42,45,46,62];
+    const matchCase = [41,42,45,46,62, 78];
     const regex = new RegExp(`^(${matchCase.join('|')})`); 
         const value = this.form.poNUmber.value;
     
-    if (regex.test(value)) {
+    if (!regex.test(value)) {
       Swal.fire({
         title: 'Alert!',
         text: 'Please check the PO No given.',
