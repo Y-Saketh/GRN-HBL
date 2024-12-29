@@ -39,7 +39,7 @@ export class CloseDownloadComponent implements OnInit {
   CloseDownload: Table[];
   constructor(public formBuilder: UntypedFormBuilder, public service: AdvancedService, private apiService:UserProfileService, public loaderservice:LoaderService) {
     this.tables$ = service.tables$;
-    console.log("this.tables$", this.tables$)
+    console.log("this.tables$$", this.tables$)
     this.total$ = service.total$;
   }
   validationform: UntypedFormGroup;
@@ -180,6 +180,7 @@ export class CloseDownloadComponent implements OnInit {
   }
 
   getCloseDownload(){
+    try{
     console.log("validationform",this.form) 
     let obj = {
       "WERKS": this.form.plant.value,// "1300","1025"
@@ -194,8 +195,9 @@ export class CloseDownloadComponent implements OnInit {
         this.loaderservice.hideLoader();
         console.log('Data:', res);
         this.CloseDownload = res;
-        this.service.setTableData(res || []);
+        this.service.setTableData(this.CloseDownload || []);
         this._fetchData();
+        console.log("this.tables$ ",this.tables$ )
         this.validationform.reset()
      
       },
@@ -210,6 +212,8 @@ export class CloseDownloadComponent implements OnInit {
         // this.validationform.reset()
       }
     });
- 
+  }catch{
+    this.loaderservice.hideLoader();
+  }
   }
 }

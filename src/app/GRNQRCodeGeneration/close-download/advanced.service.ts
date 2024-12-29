@@ -37,6 +37,7 @@ function sort(tables: Table[], column: string, direction: string): Table[] {
  */
 function matches(tables: Table, term: string, pipe: PipeTransform): boolean {
   const lowerCaseTerm = term.toLowerCase();
+  // console.log("tables",tables)
   return (
     (tables.CLOSE && tables.CLOSE.toLowerCase().includes(lowerCaseTerm)) || // Close
     (tables.BANFN && tables.BANFN.toLowerCase().includes(lowerCaseTerm)) || // Purchase Requisition
@@ -195,3 +196,4 @@ export class AdvancedService {
   }
   
 }
+
