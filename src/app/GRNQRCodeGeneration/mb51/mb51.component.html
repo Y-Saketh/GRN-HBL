@@ -246,12 +246,12 @@
               >
                 Mvt Type Txt
               </th>
-              <th class="brandcolor" sortable="MVT_TYPE" (sort)="onSort($event)">
+              <!-- <th class="brandcolor" sortable="MVT_TYPE" (sort)="onSort($event)">
                 Doc.Header Text
               </th>
               <th class="brandcolor" sortable="STG_LOC" (sort)="onSort($event)">
                 S.Loc
-              </th>
+              </th> -->
               <!-- <th class="brandcolor" sortable="MVT_TYPE" (sort)="onSort($event)">
                 Entry Date
               </th>
@@ -299,10 +299,6 @@
               <!-- Movement Type -->
               <td>{{ table.MVT_TYPE_TXT }}</td>
               <!-- Movement Type Text -->
-              <td>{{ table.DOC_HEADER_TXT }}</td>
-              <!-- Doc Header Text-->
-              <td>{{ table.STG_LOC }}</td>
-              <!-- Storage Location -->
             </tr>
             <ng-container *ngIf="!hideme[i]">
               <tr class="sub-table no-bg">
@@ -315,8 +311,9 @@
                         <th>Doc Date</th>
                         <th>Qty</th>
                         <th>Order</th>
-                        <th>GL account</th>
-                        <th>Doc Header Text</th> -->
+                        <th>GL account</th> -->
+                        <th>Doc Header Text</th>
+                        <th>S.Loc</th>
                         <th>Entry Date</th>
                         <th>Batch</th>
                         <th>Consumption</th>
@@ -325,6 +322,10 @@
                     </thead>
                     <tbody>
                       <tr>
+                        <td>{{ table.DOC_HEADER_TXT }}</td>
+                        <!-- Doc Header Text-->
+                        <td>{{ table.STG_LOC }}</td>
+                        <!-- Storage Location -->
                          <td>{{ table.ENTRY_DATE| date: 'dd-MM-yyyy'  }}</td>
                         <!-- Entry Date-->
                          <td>{{ table.BATCH }}</td>

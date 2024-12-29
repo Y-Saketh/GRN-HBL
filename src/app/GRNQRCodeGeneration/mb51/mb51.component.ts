@@ -212,39 +212,82 @@ onSort({ column, direction }: SortEvent) {
 
   
 
-  getmb51() {
-    let bwart = [];
-    bwart = this.form.movementType.value.map(data=>data.item_id)
-    console.log("validationform",this.form, bwart)
-      let obj = {
-        WERKS: this.form.plant.value,//"1300",//
-        BWART: bwart, //this.form.movementType.value,//"",// Movement Type
-        VGART:"WE",// Transaction/Event Type
-        BUDAT_F:  this.form.postingDateFrom.value, //,//"2024-11-01",//
-        BUDAT_T: this.form.postingDateTo.value  // //"2024-11-30" //
-      }
-      console.log("objobj",obj)
-      this.loaderservice.showLoader();
-      this.apiService.fetchMb51Data(obj).subscribe({
-        next: (res: any) => {
-          this.loaderservice.hideLoader();
-          console.log('MB51 data fetched successfully:', res);
-          this.mb51table = [];
-          this.mb51table = res;
-          this.service.setTableData(this.mb51table || []);
-          this._fetchData();
-        },
-        error: (error) => {
-          this.loaderservice.hideLoader();
-          console.error('Error fetching MB51 data:', error);
+  // getmb51() {
+  //   let bwart = [];
+  //   bwart = this.form.movementType.value.map(data=>data.item_id)
+  //   console.log("validationform",this.form, bwart)
+  //     let obj = {
+  //       WERKS: this.form.plant.value,//"1300",//
+  //       BWART: bwart, //this.form.movementType.value,//"",// Movement Type
+  //       VGART:"WE",// Transaction/Event Type
+  //       BUDAT_F:  this.form.postingDateFrom.value, //,//"2024-11-01",//
+  //       BUDAT_T: this.form.postingDateTo.value  // //"2024-11-30" //
+  //     }
+  //     console.log("objobj",obj)
+  //     this.loaderservice.showLoader();
+  //     this.apiService.fetchMb51Data(obj).subscribe({
+  //       next: (res: any) => {
+  //         this.loaderservice.hideLoader();
+  //         console.log('MB51 data fetched successfully:', res);
+  //         this.mb51table = [];
+  //         this.mb51table = res;
+  //         this.service.setTableData(this.mb51table || []);
+  //         this._fetchData();
+  //       },
+  //       error: (error) => {
+  //         this.loaderservice.hideLoader();
+  //         console.error('Error fetching MB51 data:', error);
          
-        },
-        complete: () => {
-          console.log('API call completed.');
-          // this.loaderservice.hideLoader(); 
-          this.loaderservice.hideLoader(); 
-        }
+  //       },
+  //       complete: () => {
+  //         console.log('API call completed.');
+  //         // this.loaderservice.hideLoader(); 
+  //         this.loaderservice.hideLoader(); 
+  //       }
+  //     });
+  //   }
+
+  getmb51() {
+  let bwart = [];
+  bwart = this.form.movementType.value.map(data => data.item_id);
+  console.log("validationform", this.form, bwart);
+
+  let obj = {
+    WERKS: this.form.plant.value, // Plant
+    BWART: bwart, // Movement Type
+    VGART: "WE", // Transaction/Event Type
+    BUDAT_F: this.form.postingDateFrom.value, // From Posting Date
+    BUDAT_T: this.form.postingDateTo.value  // To Posting Date
+  };
+
+  console.log("objobj", obj);
+  this.loaderservice.showLoader();
+
+  this.apiService.fetchMb51Data(obj).subscribe({
+    next: (res: any) => {
+      this.loaderservice.hideLoader();
+      console.log('MB51 data fetched successfully:', res);
+
+      // Sort the response data by POSTING_DATE in descending order
+      this.mb51table = (res || []).sort((a, b) => {
+        const dateA = new Date();
+        const dateB = new Date(b.POSTING_DATE);
+        return dateB.getTime() - dateA.getTime(); // Recent dates first
       });
+
+      this.service.setTableData(this.mb51table || []);
+      this._fetchData();
+    },
+    error: (error) => {
+      this.loaderservice.hideLoader();
+      console.error('Error fetching MB51 data:', error);
+    },
+    complete: () => {
+      console.log('API call completed.');
+      this.loaderservice.hideLoader();
     }
+  });
+}
+
   }
 

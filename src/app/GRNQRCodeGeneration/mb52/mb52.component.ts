@@ -59,17 +59,17 @@ export class Mb52Component implements OnInit {
           WERKS: 'Plant',                                
           LGORT: 'S.Loc',                     
           LGOBE: 'S.Loc Desc',          
-          MATNR: 'Material Number',                             
+          MATNR: 'Mat No',                             
           MAKTX: 'Mat Desc',                 
-          MEINS: 'Base Unit of Measure',                  
-          LABST: 'Unrestricted Stock Quantity',           
-          WLABS: 'Unrestricted Stock Value',                      
+          MEINS: 'BUom',                  
+          LABST: 'Unrestricted Qty',           
+          WLABS: 'Value Unrestricted',  
+          INSME: 'In Quality Insp.',     
+          WINSM: 'In Quality Insp. Value',                    
           SPEME: 'Blocked Stock',
           WSPEM: 'Blocked Stock Value',
           TRAME: 'Stock in Transit',
           WTRAM: 'Value in Transit',
-          INSME: 'Quality Inspection Stock Quantity',     
-          WINSM: 'Quality Inspection Stock Value',
         };
     
         // Format data to map keys to user-friendly headers

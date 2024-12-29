@@ -29,6 +29,30 @@
                 </div>
               </div>
             </div>
+            <!-- STORAGE LOCATION -->
+            <div class="col-md-2">
+              <label class="brandcolor" for="storageLocation">STORAGE LOCATION</label>
+              <div class="mb-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="storageLocation"
+                  formControlName="storageLocation"
+                  placeholder="Storage location"
+                  [ngClass]="{
+                    'is-invalid': submit && form.storageLocation.errors
+                  }"
+                />
+                <div
+                  *ngIf="submit && form.storageLocation.errors"
+                  class="invalid-feedback"
+                >
+                  <span *ngIf="form.storageLocation.errors.required"
+                    >Please provide a valid POSTING DATE TO.</span
+                  >
+                </div>
+              </div>
+            </div>
             <!-- Material Type -->
             <div class="col-md-2">
               <label class="brandcolor" for="materialType">MATERIAL TYPE</label>
@@ -94,30 +118,7 @@
               </div>
             </div>
            </div>
-            <!-- STORAGE LOCATION -->
-            <div class="col-md-2">
-              <label class="brandcolor" for="storageLocation">STORAGE LOCATION</label>
-              <div class="mb-3">
-                <input
-                  type="text"
-                  class="form-control"
-                  id="storageLocation"
-                  formControlName="storageLocation"
-                  placeholder="Storage location"
-                  [ngClass]="{
-                    'is-invalid': submit && form.storageLocation.errors
-                  }"
-                />
-                <div
-                  *ngIf="submit && form.storageLocation.errors"
-                  class="invalid-feedback"
-                >
-                  <span *ngIf="form.storageLocation.errors.required"
-                    >Please provide a valid POSTING DATE TO.</span
-                  >
-                </div>
-              </div>
-            </div>
+            
 
             <!-- BATCH -->
             <!-- <div class="col-md-2">
@@ -226,28 +227,42 @@
                     Mat Desc
                   </th>
                 <th class="brandcolor" sortable="MEINS" (sort)="onSort($event)">
-                  Base Unit of Measure
+                  BUom
                 </th>
                 <th
                   class="brandcolor"
                   sortable="LABST"
                   (sort)="onSort($event)"
                 >
-                Unrestricted Stock Quantity
+                Unrestricted Qty
                 </th>
                 <th
                   class="brandcolor"
                   sortable="WLABS"
                   (sort)="onSort($event)"
                 >
-                Unrestricted Stock Value
+                Value Unrestricted
                 </th>
-                <th
+              <th
+                class="brandcolor"
+                sortable="INSME"
+                (sort)="onSort($event)"
+                >
+                In Quality Insp.
+              </th>
+              <th
+                class="brandcolor"
+                sortable="WINSM"
+                (sort)="onSort($event)"
+                >
+                In Quality Insp. Value
+              </th>
+              <th
                 class="brandcolor"
                 sortable="SPEME"
                 (sort)="onSort($event)"
-              >
-              Blocked Stock
+                >
+                Blocked Stock
               </th>
               <th
               class="brandcolor"
@@ -256,7 +271,7 @@
             >
             Blocked Stock Value
             </th>
-            <th
+            <!-- <th
             class="brandcolor"
             sortable="TRAME"
             (sort)="onSort($event)"
@@ -269,7 +284,7 @@
           (sort)="onSort($event)"
         >
         Value in Transit
-        </th>
+        </th> -->
               </tr>
             </thead>
             <tbody *ngFor="let table of tables$ | async; let i = index">
@@ -293,14 +308,14 @@
                 <!-- Unrestricted Stock Quantity -->
                 <td>{{ table.WLABS }}</td>
                 <!-- Unrestricted Stock Value -->
+                <td>{{ table.INSME }}</td>
+                <!-- Quality Inspection Stock Quantity -->
+                <td>{{ table.WINSM }}</td>
+                <!-- Quality Inspection Stock Value -->
                 <td>{{ table.SPEME }}</td>
                 <!-- Blocked Stock -->
                 <td>{{ table.WSPEM }}</td>
                 <!-- Blocked Stock Value -->
-                <td>{{ table.TRAME }}</td>
-                <!-- Stock in Transit -->
-                <td>{{ table.WTRAM }}</td>
-                <!-- Value in Transit -->
               </tr>
               <ng-container *ngIf="!hideme[i]">
                 <tr class="sub-table no-bg">
@@ -309,17 +324,16 @@
                     <table class="table mb-0 table-striped">
                       <thead class="bg-dark text-white">
                         <tr>
-                          <th>Quality Inspection Stock Quantity</th>
-                          <th>Quality Inspection Stock Value</th>
+                          <th>Stock in Transit</th>
+                          <th>Value in Transit</th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr>
-                          <td>{{ table.INSME }}</td>
-                          <!-- Quality Inspection Stock Quantity -->
-                          <td>{{ table.WINSM }}</td>
-                          <!-- Quality Inspection Stock Value -->
-                          
+                          <td>{{ table.TRAME }}</td>
+                          <!-- Stock in Transit -->
+                          <td>{{ table.WTRAM }}</td>
+                          <!-- Value in Transit -->
                         </tr>
                       </tbody>
                     </table>

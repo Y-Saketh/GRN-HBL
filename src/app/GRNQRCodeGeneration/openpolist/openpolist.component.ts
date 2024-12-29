@@ -208,7 +208,7 @@ export class OpenpolistComponent implements OnInit {
         EKGRP: 'Purchase Group',
         EKNAM: 'Pur Grp Desc',
         MATNR: 'Material',
-        MAKTX: 'Material Description',
+        TXZ01: 'Material Description',
         WERKS: 'Plant',
         MEINS: 'UOM',
         MENGE: 'PO Qty',
