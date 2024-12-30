@@ -150,7 +150,7 @@ export class GoodsReturnsComponent {
               "MBLNR": this.materialDocument,
               "MJAHR": this.year,
               "BUDAT": this.postingDate,
-              "BLDAT": this.documentDate,
+              "BLDAT":  moment(this.documentDate).format('YYYY-MM-YY'),//this.documentDate,
               "BKTXT": this.form.headerText.value,
             },
             ITEM: []

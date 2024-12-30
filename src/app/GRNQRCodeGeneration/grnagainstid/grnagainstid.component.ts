@@ -13,6 +13,7 @@ import QRCode from 'qrcode';
 import { ModalDirective, ModalModule } from 'ngx-bootstrap/modal';
 import { UserProfileService } from 'src/app/core/services/user.service';
 import Swal from 'sweetalert2';
+import { LoaderService } from 'src/app/core/services/loader.service';
 declare var BrowserPrint: any;
 
 declare var Pace: any;
@@ -71,7 +72,7 @@ export class GrnagainstidComponent implements OnInit {
   matchedAndUnmatchedData: any[] = [];
   table: any;
   selectedData: any[];
-  constructor(public formBuilder: UntypedFormBuilder, public service: AdvancedService, private apiService: UserProfileService) {
+  constructor(public formBuilder: UntypedFormBuilder, public service: AdvancedService, private apiService: UserProfileService, private loaderservice: LoaderService) {
     this.tables$ = service.tables$;
     console.log("this.tables$", this.tables$)
     this.total$ = service.total$;
@@ -373,8 +374,12 @@ export class GrnagainstidComponent implements OnInit {
         this.qrCodes = [];
         console.log("matchedAndUnmatchedData", this.matchedAndUnmatchedData);
       
-        const printPromises = this.matchedAndUnmatchedData.map((table) => {
-          const qrData = `
+        // Show printer loader
+        this.loaderservice.showPrinterLoader();
+      
+        try {
+          for (const table of this.matchedAndUnmatchedData) {
+            const qrData = `
             GRN: ${table.MBLNR}
             VC: ${table.LIFNR}
            Mat: ${table.MATNR}
@@ -383,43 +388,93 @@ export class GrnagainstidComponent implements OnInit {
            RN: pkg ${table.DCHARG}/ ${table.ZLABEL}
             Qty: ${table.DCLABS} ${table.MEINS}
             `;
-      
-          return new Promise<void>((resolve, reject) => {
             try {
               const zpl = this.generateZPL(qrData, table);
               if (this.printer) {
-                this.printer.send(
-                  zpl,
-                  () => {
-                    console.log("Label sent to printer!");
-                    resolve(); // Resolve if successful
-                  },
-                  (error: any) => {
-                    console.error("Error sending ZPL:", error);
-                    reject(error); // Reject if there is an error
-                  }
-                );
+                await new Promise<void>((resolve, reject) => {
+                  this.printer.send(
+                    zpl,
+                    () => {
+                      console.log("Label sent to printer!");
+                      resolve();
+                    },
+                    (error: any) => {
+                      console.error("Error sending ZPL:", error);
+                      reject(error);
+                    }
+                  );
+                });
               } else {
                 console.error("No printer available!");
-                reject(new Error("No printer available"));
+                throw new Error("No printer available");
               }
             } catch (error) {
-              console.error("QR Generation Failed", error);
-              reject(error); // Reject if an error occurs during QR generation
+              console.error("Failed to print label:", error);
+              // Handle per-label errors here if needed
             }
-          });
-        });
+          }
       
-        try {
-          await Promise.all(printPromises); // Wait for all promises to resolve
-          console.log("All labels printed successfully!");
-        } catch (error) {
-          console.error("Some labels failed to print:", error);
-          // Optionally, handle specific errors or retry logic here
+          console.log("All labels printed sequentially!");
+          this.backtoQunatity(); // Post-print operation
+        } catch (globalError) {
+          console.error("Error during the label printing process:", globalError);
+          // Handle overall errors if needed
         } finally {
-          this.backtoQunatity(); // Always execute this, even if some labels fail
+          // Hide loader after all print operations
+          this.loaderservice.hidePrinterLoader();
         }
       }
+      // async printLabel() {
+      //   this.qrCodes = [];
+      //   console.log("matchedAndUnmatchedData", this.matchedAndUnmatchedData);
+      
+      //   const printPromises = this.matchedAndUnmatchedData.map((table) => {
+      //     const qrData = `
+      //       GRN: ${table.MBLNR}
+      //       VC: ${table.LIFNR}
+      //      Mat: ${table.MATNR}
+      //      MatD: ${table.MAKTX}
+      //      Dt: ${table.ZQRGEN_DT}
+      //      RN: pkg ${table.DCHARG}/ ${table.ZLABEL}
+      //       Qty: ${table.DCLABS} ${table.MEINS}
+      //       `;
+      
+      //     return new Promise<void>((resolve, reject) => {
+      //       try {
+      //         const zpl = this.generateZPL(qrData, table);
+      //         if (this.printer) {
+      //           this.printer.send(
+      //             zpl,
+      //             () => {
+      //               console.log("Label sent to printer!");
+      //               resolve(); // Resolve if successful
+      //             },
+      //             (error: any) => {
+      //               console.error("Error sending ZPL:", error);
+      //               reject(error); // Reject if there is an error
+      //             }
+      //           );
+      //         } else {
+      //           console.error("No printer available!");
+      //           reject(new Error("No printer available"));
+      //         }
+      //       } catch (error) {
+      //         console.error("QR Generation Failed", error);
+      //         reject(error); // Reject if an error occurs during QR generation
+      //       }
+      //     });
+      //   });
+      
+      //   try {
+      //     await Promise.all(printPromises); // Wait for all promises to resolve
+      //     console.log("All labels printed successfully!");
+      //   } catch (error) {
+      //     console.error("Some labels failed to print:", error);
+      //     // Optionally, handle specific errors or retry logic here
+      //   } finally {
+      //     this.backtoQunatity(); // Always execute this, even if some labels fail
+      //   }
+      // }
   /**
    * Sort table data
    * @param param0 sort the column
