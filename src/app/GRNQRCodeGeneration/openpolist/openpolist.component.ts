@@ -225,6 +225,7 @@ export class OpenpolistComponent implements OnInit {
           if (row.hasOwnProperty(key)) {
             // Format date fields to dd-mm-yyyy
             if (key === 'BEDAT') {
+              console.log("key",key)
               formattedRow[headerMapping[key]] = this.formatDate(row[key]); // Call formatDate for date fields
             } else {
               formattedRow[headerMapping[key]] = row[key] || '';
@@ -243,14 +244,18 @@ export class OpenpolistComponent implements OnInit {
       XLSX.writeFile(workbook, 'OpenPO_Data.xlsx');
     }
   }
-
   private formatDate(dateString: string): string {
-    const date = new Date(dateString);
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
-    const year = date.getFullYear();
+    const [day, month, year] = dateString.split('.'); 
     return `${day}-${month}-${year}`;
   }
+  
+  // private formatDate(dateString: string): string {
+  //   const date = new Date(dateString);
+  //   const day = String(date.getDate()).padStart(2, '0');
+  //   const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+  //   const year = date.getFullYear();
+  //   return `${day}-${month}-${year}`;
+  // }
 
 
   /**

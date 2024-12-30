@@ -129,7 +129,7 @@ export class Mb51Component implements OnInit {
         POSTING_DATE: 'Posting Date',
         MATERIAL: 'Material', 
         MAT_DES: 'Mat Desc', 
-        QUANTITY: 'Quantity',
+        QUANITY: 'Quantity',
         L_CUR_AMT: 'Amt in loc.cur',
         PUR_ORDER: 'Pur Order',
         PRICE: 'Price', 
