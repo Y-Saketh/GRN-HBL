@@ -41,7 +41,7 @@ export class Mb51Component implements OnInit {
   selectedItems = [];
   dropdownSettings = {};
   
-  plants: number[] = [1100, 1200, 1300]; // Plant
+  // plants: number[] = [1100, 1200, 1300]; // Plant
   Valuesselectedplants: number | null = null;
 
   @ViewChild('newContactModal', { static: false }) newContactModal?: ModalDirective;
@@ -57,6 +57,7 @@ export class Mb51Component implements OnInit {
 
   @ViewChildren(AdvancedSortableDirective) headers: QueryList<AdvancedSortableDirective>;
   selectedMovementType: any;
+  plants: string[] = [];
 
   constructor(public formBuilder: UntypedFormBuilder, @Inject(AdvancedService) public service: AdvancedService, private apiService:UserProfileService,public loaderservice:LoaderService) {
     this.tables$ = service.tables$;
@@ -99,6 +100,15 @@ export class Mb51Component implements OnInit {
       limitSelection:4
   
     };
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    console.log("currentUser", currentUser)
+    const werksArray: string[] = [];  
+    Object.keys(currentUser[0].ZWERKS).forEach((key) => {   
+      const value = currentUser[0].ZWERKS[key];   
+      if (value) {  werksArray.push(value);   
+      } 
+    });
+    this.plants = werksArray;
   }
   onItemSelect(item: any) {
     console.log(item);

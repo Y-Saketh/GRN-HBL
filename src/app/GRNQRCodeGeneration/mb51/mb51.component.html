@@ -13,15 +13,15 @@
             <label class="brandcolor" for="plant">PLANT</label>
             <div class="mb-3">
               <select
-                  class="form-select"
-                  id="plant"
-                  formControlName="plant"
-                >
-                  <option value="" disabled selected>Plant</option>
-                  <option *ngFor="let type of plants" [value]="type">
-                    {{ type }}
-                  </option>
-                </select>
+              class="form-select"
+              id="plant"
+              formControlName="plant"
+            >
+              <option value="" disabled selected>Plant</option>
+              <option *ngFor="let type of plants" [value]="type">
+                {{ type }}
+              </option>
+            </select>
               <div *ngIf="submit && form.plant.errors" class="invalid-feedback">
                 <span *ngIf="form.plant.errors.required"
                   >Please provide a valid plant.</span
