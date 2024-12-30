@@ -270,7 +270,7 @@ onSort({ column, direction }: SortEvent) {
 
       // Sort the response data by POSTING_DATE in descending order
       this.mb51table = (res || []).sort((a, b) => {
-        const dateA = new Date();
+        const dateA = new Date(a.POSTING_DATE);
         const dateB = new Date(b.POSTING_DATE);
         return dateB.getTime() - dateA.getTime(); // Recent dates first
       });

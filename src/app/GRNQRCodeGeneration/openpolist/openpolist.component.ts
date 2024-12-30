@@ -121,54 +121,54 @@ export class OpenpolistComponent implements OnInit {
    
 
   }
-  openinbounddeleveryPopup(ponumber, index: number): void {
-    console.log("ponumber",ponumber, index)
-    this.selectedMaterial = []//JSON.parse(JSON.stringify(this.materials[index])); // Deep copy
-    this.selectedIndex = index;
-    this.newContactModal?.show();
+  // openinbounddeleveryPopup(ponumber, index: number): void {
+  //   console.log("ponumber",ponumber, index)
+  //   this.selectedMaterial = []//JSON.parse(JSON.stringify(this.materials[index])); // Deep copy
+  //   this.selectedIndex = index;
+  //   this.newContactModal?.show();
 
-    this.PONUMBER = ponumber
+  //   this.PONUMBER = ponumber
 
-    this.submit = true;
-    console.log("validationform",this.form) 
-    if(ponumber){
-      let obj = {
-        "EBELN": ponumber//"4500181937"
-      }
-      console.log("objobj",obj)
-      this.apiService.OpenINBOUND(obj).subscribe({
-        next: (res: any) => {
-          console.log('Data:', res);
-          this.INBOUND = res;
-          console.log('InboundData', this.INBOUND);
-          this.inboundData = this.INBOUND; 
-          // this.INBOUND.subscribe((data: any[]) => {
-            // this.inboundData = data || [];
-          // });
-          // this.service.setTableData(res || []);
-          this.deleveryChallanNumber = '1100101108';
-          this.DocumentDate ='20-01-2023';
-          this.invoiceNo = '1';
-          this.invoiceDate = '20-01-20';
-          this.vehicleNumber = 'ap20hf124';
-          this.transporterName = 'ABC Transport';
-          this.gateEntryNumber = '4500181937';
-          this.gateEntryDate = '20';
-          this.lrDate = '20-09-2024';
-          this.LrNo = '788';
+  //   this.submit = true;
+  //   console.log("validationform",this.form) 
+  //   if(ponumber){
+  //     let obj = {
+  //       "EBELN": ponumber//"4500181937"
+  //     }
+  //     console.log("objobj",obj)
+  //     this.apiService.OpenINBOUND(obj).subscribe({
+  //       next: (res: any) => {
+  //         console.log('Data:', res);
+  //         this.INBOUND = res;
+  //         console.log('InboundData', this.INBOUND);
+  //         this.inboundData = this.INBOUND; 
+  //         // this.INBOUND.subscribe((data: any[]) => {
+  //           // this.inboundData = data || [];
+  //         // });
+  //         // this.service.setTableData(res || []);
+  //         this.deleveryChallanNumber = '1100101108';
+  //         this.DocumentDate ='20-01-2023';
+  //         this.invoiceNo = '1';
+  //         this.invoiceDate = '20-01-20';
+  //         this.vehicleNumber = 'ap20hf124';
+  //         this.transporterName = 'ABC Transport';
+  //         this.gateEntryNumber = '4500181937';
+  //         this.gateEntryDate = '20';
+  //         this.lrDate = '20-09-2024';
+  //         this.LrNo = '788';
 
-          this._fetchData2();
-        },
-        error: (error: any) => {
-          this.loaderservice.hideLoader(); 
-          console.error('Error fetching lot reports:', error);
-        },
-        complete: () => {
-          console.log('API call completed.');
-        }
-      });
-    }
-  }
+  //         this._fetchData2();
+  //       },
+  //       error: (error: any) => {
+  //         this.loaderservice.hideLoader(); 
+  //         console.error('Error fetching lot reports:', error);
+  //       },
+  //       complete: () => {
+  //         console.log('API call completed.');
+  //       }
+  //     });
+  //   }
+  // }
   private _fetchData2(): void {
     this.hidemee = new Array(this.INBOUND.length).fill(true); // Initialize hideme for each row
     console.log("this.hidemee",this.hidemee)
@@ -227,7 +227,7 @@ export class OpenpolistComponent implements OnInit {
             if (key === 'BEDAT') {
               formattedRow[headerMapping[key]] = this.formatDate(row[key]); // Call formatDate for date fields
             } else {
-              formattedRow[headerMapping[key]] = row[key];
+              formattedRow[headerMapping[key]] = row[key] || '';
             }
           }
         }
