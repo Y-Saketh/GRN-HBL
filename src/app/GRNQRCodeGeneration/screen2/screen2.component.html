@@ -1,24 +1,134 @@
 <div class="col-xl-12">
     <div class="card" style="background-color: beige">
       <div class="card-body">
-        <h4 class="card-title">PO Preview</h4>
+        <h4 class="card-title">Debit Note</h4>
         <form class="needs-validation" [formGroup]="validationform" (ngSubmit)="openMe23()">
           <div class="row">
-            <div class="col-md-2">
-              <label class="brandcolor" for="poNum">PO Number</label>
+            <div class="col-md-1">
+              <label class="brandcolor" for="plant">PLANT</label>
               <div class="mb-3">
+                <select
+                    class="form-select"
+                    id="plant"
+                    formControlName="plant"
+                  >
+                    <option value="" disabled selected>Plant</option>
+                    <option *ngFor="let type of plants" [value]="type">
+                      {{ type }}
+                    </option>
+                  </select>
+                <div *ngIf="submit && form.plant.errors" class="invalid-feedback">
+                  <span *ngIf="form.plant.errors.required"
+                    >Please provide a valid plant.</span
+                  >
+                </div>
+              </div>
+            </div>
+             <!-- Documnet Type From -->
+             <div class="col-md-2">
+              <div class="mb-3">
+                <label class="brandcolor" for="documentFrom"
+                  >DOC TYPE FROM</label
+                >
                 <input
                   type="text"
                   class="form-control"
-                  id="poNum"
-                  formControlName="poNum"
-                  placeholder="PO Number"
-                  [ngClass]="{ 'is-invalid': submit && validationform.get('poNum')?.errors }"
+                  id="documentFrom"
+                  formControlName="documentFrom"
+                  placeholder="Document Type From"
+                  [ngClass]="{
+                    'is-invalid': submit && form.documentFrom.errors
+                  }"
                 />
-                <div *ngIf="submit && validationform.get('poNum')?.errors" class="invalid-feedback">
-                  <span *ngIf="validationform.get('poNum')?.errors.required">
-                    Please provide a valid PO Number.
-                  </span>
+                <div
+                  *ngIf="submit && form.documentFrom.errors"
+                  class="invalid-feedback"
+                >
+                  <span *ngIf="form.documentFrom.errors.required"
+                    >Please provide a valid Document Type From.</span
+                  >
+                </div>
+              </div>
+            </div>
+            <!-- Documnet Type To -->
+            <div class="col-md-2">
+              <div class="mb-3">
+                <label class="brandcolor" for="documentTo"
+                  >DOC TYPE TO</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="documentTo"
+                  formControlName="documentTo"
+                  placeholder="Document Type To"
+                  [ngClass]="{
+                    'is-invalid': submit && form.documentTo.errors
+                  }"
+                />
+                <div
+                  *ngIf="submit && form.documentTo.errors"
+                  class="invalid-feedback"
+                >
+                  <span *ngIf="form.documentTo.errors.required"
+                    >Please provide a valid Document Type To.</span
+                  >
+                </div>
+              </div>
+            </div>
+            <!-- From Date -->
+            <div class="col-md-2">
+              <div class="mb-3">
+                <label class="brandcolor" for="fromDate"
+                  >FROM DATE</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="fromDate"
+                  [bsConfig]="bsConfig"
+                  bsDatepicker
+                  formControlName="fromDate"
+                  placeholder="From Date"
+                  [ngClass]="{
+                    'is-invalid': submit && form.fromDate.errors
+                  }"
+                />
+                <div
+                  *ngIf="submit && form.fromDate.errors"
+                  class="invalid-feedback"
+                >
+                  <span *ngIf="form.fromDate.errors.required"
+                    >Please provide a valid From Date.</span
+                  >
+                </div>
+              </div>
+            </div>
+            <!-- To Date -->
+            <div class="col-md-2">
+              <div class="mb-3">
+                <label class="brandcolor" for="toDate"
+                  >TO DATE</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="toDate"
+                  [bsConfig]="bsConfig"
+                  bsDatepicker
+                  formControlName="toDate"
+                  placeholder="To Date"
+                  [ngClass]="{
+                    'is-invalid': submit && form.toDate.errors
+                  }"
+                />
+                <div
+                  *ngIf="submit && form.toDate.errors"
+                  class="invalid-feedback"
+                >
+                  <span *ngIf="form.toDate.errors.required"
+                    >Please provide a valid To Date.</span
+                  >
                 </div>
               </div>
             </div>

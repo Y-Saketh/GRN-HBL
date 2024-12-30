@@ -4,31 +4,58 @@ import { UntypedFormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsMo
 import { UserProfileService } from 'src/app/core/services/user.service';
 import { LoaderService } from 'src/app/core/services/loader.service';
 import { CommonModule } from '@angular/common';
-
-
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { ModalDirective, ModalModule } from 'ngx-bootstrap/modal';
 @Component({
   selector: 'app-screen2',
   standalone: true,
-  imports: [ReactiveFormsModule, FormsModule, CommonModule],
+  imports: [ReactiveFormsModule, FormsModule, CommonModule,BsDatepickerModule],
   templateUrl: './screen2.component.html',
   styleUrl: './screen2.component.css'
 })
 export class Screen2Component {
   submit = false; 
   validationform!: FormGroup;
+  plants: string[];
 
   constructor(
     public formBuilder: UntypedFormBuilder,
     private apiService: UserProfileService,
     public loaderservice: LoaderService
   ) {}
-
+  bsConfig = {
+    dateInputFormat: 'DD-MM-YYYY', // Set the date format
+    containerClass: 'theme-blue', // Optional: Use a predefined theme
+  };
   ngOnInit() {
-    this.validationform = this.formBuilder.group({
-      poNum: ['', Validators.required],
-    });
-  }
+    const currentDate = new Date();
+    const fifteenDaysAgo = new Date();
+    fifteenDaysAgo.setDate(currentDate.getDate() - 15);
+    const fortyfiveDaysAgo = new Date();
+    fortyfiveDaysAgo.setDate(currentDate.getDate() - 45);
 
+    this.validationform = this.formBuilder.group({
+      plant: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]+')]],
+      // purchaseGroup: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
+      fromDate: [fortyfiveDaysAgo, [ Validators.pattern('[a-zA-Z0-9]+')]],
+      toDate: [fifteenDaysAgo, [ Validators.pattern('[a-zA-Z0-9]+')]],
+      documentFrom: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
+      documentTo: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],     
+      });
+
+      const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+      console.log("currentUser", currentUser)
+      const werksArray: string[] = [];  
+      Object.keys(currentUser[0].ZWERKS).forEach((key) => {   
+        const value = currentUser[0].ZWERKS[key];   
+        if (value) {  werksArray.push(value);   
+        } 
+      });
+      this.plants = werksArray;
+  }
+  get form() {
+    return this.validationform.controls;
+  }
   openMe23() {
     this.submit = true;
 
