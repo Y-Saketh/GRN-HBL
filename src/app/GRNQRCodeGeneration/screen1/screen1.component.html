@@ -262,12 +262,11 @@
               
                 <button
                   style="
-                    background-color: brown;
                     margin-top: 28px;
                     width: max-content;
                     color: aliceblue;
                   "
-                  class="btn"
+                  class="btn btn-success"
                   type="submit"
                   [disabled]="!(isAllFieldsValid() | async)"
                   (click)="saveBound()"
