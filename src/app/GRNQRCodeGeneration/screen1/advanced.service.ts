@@ -37,30 +37,30 @@ function sort(tables: Table[], column: string, direction: string): Table[] {
  */
 function matches(tables: Table, term: string, pipe: PipeTransform) {
   return (
-    pipe.transform(tables.PLANT).toString().includes(term)   ||  // Plant
-    tables.STG_LOC.toLowerCase().includes(term.toLowerCase()) ||  // Storage Location
-    pipe.transform(tables.MATERIAL).toString().includes(term) ||  // Material
-    tables.MAT_DES.toLowerCase().includes(term.toLowerCase()) ||  // Material Description
-    pipe.transform(tables.MVT_TYPE).toString().includes(term) ||  // Movement Type
-    tables.MVT_TYPE_TXT?.toLowerCase().includes(term.toLowerCase()) ||  // Movement Type Text
-    tables.POSTING_DATE.toLowerCase().includes(term.toLowerCase()) ||  // Posting Date
-    pipe.transform(tables.PRICE).toString().includes(term)  ||   // Quantity in Unit of Entry
-    pipe.transform(tables.L_CUR_AMT).toString().includes(term)  ||   // Amount in Local Currency
-    tables.MAT_DOC.toLowerCase().includes(term.toLowerCase()) ||  // Material Document
-    // tables.NAME1?.toLowerCase().includes(term.toLowerCase()) ||  // Vendor Name
-    // tables.SGTXT?.toLowerCase().includes(term.toLowerCase()) ||  // Text
-    pipe.transform(tables.QUANITY).toString().includes(term)  ||  // Quantity
-    pipe.transform(tables.SUPPLIER).toString().includes(term) ||  // Supplier
-    tables.ORDER.toLowerCase().includes(term.toLowerCase()) ||  // Order
-    tables.GL_ACCOUNT.toLowerCase().includes(term.toLowerCase()) ||  // GL account 
-    tables.DOC_HEADER_TXT.toLowerCase().includes(term.toLowerCase()) ||  // Doc Header Text
-    tables.ENTRY_DATE.toLowerCase().includes(term.toLowerCase()) ||  // Entry Date
-    pipe.transform(tables.QUANITY).toString().includes(term) ||  // Batch
-    tables.CONSUMPTION.toLowerCase().includes(term.toLowerCase())     // Consumption
+
+    tables.MBLNR.toLowerCase().includes(term.toLowerCase()) ||// Number of Material Document
+    pipe.transform(tables.MJAHR).toString().includes(term) || // Material Document Year
+    tables.BUDAT.toLowerCase().includes(term.toLowerCase()) || // Posting Date in the Document
+    tables.BLDAT.toLowerCase().includes(term.toLowerCase()) || // Document Date in Document
+    tables.BKTXT.toLowerCase().includes(term.toLowerCase()) || // Document header text
+    pipe.transform(tables.MATNR).toString().includes(term) || // Material Number
+    tables.LGORT.toLowerCase().includes(term.toLowerCase()) || // Storage Location
+    tables.BWART.toLowerCase().includes(term.toLowerCase()) || // Movement Type (Inventory Management)
+    tables.WERKS.toLowerCase().includes(term.toLowerCase()) || // Plant
+    tables.EBELN.toLowerCase().includes(term.toLowerCase()) || // Purchasing Document Number
+    pipe.transform(tables.EBELP).toString().includes(term) || // Item Number of Purchasing Document
+    pipe.transform(tables.ZEILE).toString().includes(term) || // Item in Material Document
+    pipe.transform(tables.MENGE).toString().includes(term) || // Quantity
+    tables.MEINS.toLowerCase().includes(term.toLowerCase()) || // Base Unit of Measure
+    tables.REASON.toLowerCase().includes(term.toLowerCase()) || // Reason for Movement
+    tables.INSMK.toLowerCase().includes(term.toLowerCase()) || // Stock Type
+    tables.WEMPF.toLowerCase().includes(term.toLowerCase()) || // Goods recipient
+    tables.CHARG.toLowerCase().includes(term.toLowerCase()) || // Batch Number
+    tables.LIFNR.toLowerCase().includes(term.toLowerCase()) ||// Supplier's Account Number
+    pipe.transform(tables.RMENGE).toString().includes(term) || // Return Quantity
+    tables.selected.toLowerCase().includes(term.toLowerCase()) 
   );
 }
-
-
 
 @Injectable({
   providedIn: 'root',
@@ -160,6 +160,7 @@ export class AdvancedService {
   }
 }
 
+
   setTableData(data: Table[]) {
     this.apiData = data;
     this._search$.next();
@@ -195,5 +196,10 @@ export class AdvancedService {
   
     return of({ tables: paginatedTables, total });
   }
+
+  resetPagination() {
+    this._set({ page: 1 }); // Reset to the first page
+  }
+  
   
 }

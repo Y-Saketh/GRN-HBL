@@ -1,62 +1,155 @@
 .brandcolor{
-    color: brown;
+  color: brown;
 }
 
 
-  
-  .card-body {
-     /* background-color: #f7f3f1; */
+
+.card-body {
+   /* background-color: #f7f3f1; */
 background-color: #cadad6;
- 
 
-    color: #2C3E50;
-    border-radius: 10px;
-    padding: 20px;
-  }
-  
-  .card-body input[type="text"] {
-    border: 1px solid #BDC3C7;
-    border-radius: 5px;
-    padding: 10px;
-  }
-  
-  .card-body input[type="text"]:focus {
-    border-color: #3498DB;
-    outline: none;
-    box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
-  }
 
-  .card-title {
-    font-family: 'Poppins', sans-serif;
-    font-size: 20px;
-    font-weight: 500;
-    color: brown;
-    /* text-transform: uppercase; */
-    letter-spacing: 2px;
-    margin-bottom: 20px;
-    background: linear-gradient(90deg, brown, #670a0a);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-align: left;
-    border-bottom: 2px solid brown;
-    padding-bottom: 5px;
-  }
-  #basic-datatable thead tr {
-    background-color: #8B4513; 
-    color: #FFFFFF; 
-    font-family: 'Poppins', sans-serif;
-    font-size: 14px;
-    font-weight: bold;
-    text-transform: capitalize;
-  }
-  
-  #basic-datatable thead th {
-    padding: 10px;
-    text-align: left;
-    border-bottom: 2px solid #6A3B0E; 
-  }
+  color: #2C3E50;
+  border-radius: 10px;
+  padding: 20px;
+}
 
-  :host ::ng-deep .multiselect-dropdown .dropdown-btn {
-    background-color: white;
-  }
-  
+.card-body input[type="text"] {
+  border: 1px solid #BDC3C7;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.card-body input[type="text"]:focus {
+  border-color: #3498DB;
+  outline: none;
+  box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+}
+.card-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  color: brown;
+  /* text-transform: uppercase; */
+  letter-spacing: 2px;
+  margin-bottom: 20px;
+  background: linear-gradient(90deg, brown, #670a0a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: left;
+  border-bottom: 2px solid brown;
+  padding-bottom: 5px;
+}
+
+
+#basic-datatable thead tr {
+  background-color: #8B4513; 
+  color: #FFFFFF; 
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+#basic-datatable thead th {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 2px solid #6A3B0E; 
+}
+
+.custom-btn-group {
+  display: inline-flex;
+  gap: 10px; /* Adjust spacing between buttons */
+  justify-content: flex-end;
+  width: 100%; /* Align buttons to the right of the parent container */
+}
+.qr-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px; /* Space between each item */
+  justify-content: flex-start;
+}
+
+.qr-item {
+  display: flex;
+  flex-direction: row; /* QR and data side by side */
+  align-items: center; /* Align items vertically in the center */
+  width: 280px; /* Set the card width */
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 10px;
+}
+
+.qr-code-wrapper {
+  margin-right: 10px; /* Space between QR and data */
+}
+
+.qr-image {
+  width: 80px; /* QR code width */
+  height: 80px; /* QR code height */
+}
+
+.qr-info {
+  display: flex;
+  flex-direction: column; /* Stack data fields vertically */
+  font-size: 14px; /* Adjust font size for better readability */
+}
+
+.qr-info p {
+  margin: 5px 0;
+}
+
+.info-row {
+  display: flex;
+  /* justify-content: space-between;  Ensures the key and value are evenly spaced */
+  align-items: center;
+  margin-bottom: 8px; /* Adds space between rows */
+}
+
+.info-row input.form-control {
+  max-width: 150px; /* Adjust the width as needed */
+}
+
+.info-row span:first-child {
+  flex: 0 0 150px; /* Fixed width for the key column */
+  font-weight: bold;
+}
+
+.info-row span:last-child {
+  flex: 1; /* Dynamic width for the value column */
+}
+.fs-6{
+  font-size: 14px !important;
+}
+input:disabled {
+  background-color: #f5f5f5; /* Light gray background */
+  color: #949090; /* Gray text */
+  cursor: not-allowed; /* Show not-allowed cursor */
+  opacity: 1; /* Ensure it's not too transparent */
+  border: 1px solid #ccc; /* Optional border styling */
+}
+
+.custom-btn {
+  background-color: #426994; /* Adjust the color as needed (for example, blue) */
+  color: white; /* Icon color */
+  font-size: 14px; /* Adjust the icon size */
+  width: 30px; /* Button width */
+  height: 30px; /* Button height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  transition: all 0.3s ease; /* Smooth transition */
+}
+
+.custom-btn:hover {
+  background-color: #364b61; /* Darker shade on hover */
+  transform: scale(1.1); /* Slightly enlarges on hover */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
+}
+
+.custom-btn:focus {
+  outline: none; /* Removes focus outline */
+}

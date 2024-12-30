@@ -1,27 +1,31 @@
 export interface Table {
-    PLANT: string;       // Plant
-    STG_LOC: string;      // Storage Location
-    MATERIAL: string;      // Material
-    MAT_DES: string;      // Material Description
-    MVT_TYPE: number;      // Movement Type
-    MVT_TYPE_TXT: string;      // Movement Type Text
-    POSTING_DATE: string;      // Posting Date
-    PRICE: number;      // Quantity in Unit of Entry  //d
-    L_CUR_AMT: number;      // Amount in Local Currency
-    MAT_DOC: string;      // Material Document
-    PUR_ORDER: string;      // Purchase Order
-    DOC_DATE: string;      // Document Date
-    QUANITY: number;      // Quantity
-    SUPPLIER: number;      // Supplier
-    ORDER: string;      // Order
-    GL_ACCOUNT: string;      // GL account
-    DOC_HEADER_TXT: string;      // Doc Header Text
-    ENTRY_DATE: string;      // Entry Date
-    BATCH: number;      // Batch
-    CONSUMPTION: string;      // Consumption
+    selected: any; // Optional: Indicates whether the row is selected
+    MBLNR: string; // Number of Material Document
+    MJAHR: number; // Material Document Year
+    BUDAT: string; // Posting Date in the Document
+    BLDAT: string; // Document Date in Document
+    BKTXT: string; // Document header text
+    
+    MATNR: number; // Material Number
+    LGORT: string; // Storage Location
+    BWART: string; // Movement Type (Inventory Management)
+    WERKS: string; // Plant
+    EBELN: string; // Purchasing Document Number
+    EBELP: number; // Item Number of Purchasing Document
+    ZEILE: number; // Item in Material Document
+    MENGE: number; // Quantity
+    MEINS: string; // Base Unit of Measure
+    REASON: string; // Reason for Movement
+    INSMK: string; // Stock Type
+    WEMPF: string; // Goods recipient
+    CHARG: string; // Batch Number
+    LIFNR: string; // Supplier's Account Number
+    RMENGE: number; // Return Quantity
 }
+
   
-export interface SearchResult {
-    tables: Table[];
-    total: number;
+  
+  export interface SearchResult {
+      tables: Table[];
+      total: number;
   }

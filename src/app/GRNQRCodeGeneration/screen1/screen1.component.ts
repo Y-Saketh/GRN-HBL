@@ -1,245 +1,317 @@
-import { Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormsModule,  ReactiveFormsModule, UntypedFormBuilder  } from '@angular/forms';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { CommonModule } from '@angular/common';
-import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
-import * as XLSX from 'xlsx';
+import { Component, QueryList, ViewChildren } from '@angular/core';
+import { UserProfileService } from 'src/app/core/services/user.service';
+import { FormsModule, FormBuilder, FormGroup, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { Table } from './advanced.model';
+import { map, Observable, take } from 'rxjs';
+import { AdvancedSortableDirective, SortEvent } from './Advanced-sortable.directive';
 import { AdvancedService } from './advanced.service';
 import { LoaderService } from 'src/app/core/services/loader.service';
-import { UserProfileService } from 'src/app/core/services/user.service';
-import { Inject } from '@angular/core';
-import * as moment from 'moment';
-import { AdvancedSortableDirective, SortEvent } from './Advanced-sortable.directive';
-import { Table } from './advanced.model'; // Import the correct Table type
-import { ModalDirective } from 'ngx-bootstrap/modal';
 import { DecimalPipe } from '@angular/common'; 
-import { IDropdownSettings, NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
-import { ColorFormats } from 'ngx-color-picker/lib/formats';
+import { CommonModule } from '@angular/common';
+import Swal from 'sweetalert2';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
+import * as moment from 'moment';
+
 
 @Component({
   selector: 'app-screen1',
   standalone: true,
-  providers: [AdvancedService, DecimalPipe, UserProfileService,],
-  imports: [ReactiveFormsModule, FormsModule, CommonModule, BsDatepickerModule, AdvancedSortableDirective, NgMultiSelectDropDownModule,],
+  providers: [AdvancedService, DecimalPipe, UserProfileService],
+  imports: [ReactiveFormsModule, CommonModule, FormsModule, PaginationModule, AdvancedSortableDirective,BsDatepickerModule],
   templateUrl: './screen1.component.html',
   styleUrl: './screen1.component.css'
 })
-export class Screen1Component implements OnInit {
-  movementTypes: number[] = [101, 102, 122, 123]; // Movement Type
-  dropdownList = [];
-  selectedItems = [];
-  dropdownSettings = {};
-  
+export class Screen1Component{
+  goodsreturn:  Table[];
+  goodsscreen:boolean = false
+  validationform: UntypedFormGroup;
+  submit: boolean;
+  tableData: Table[];
+  selectAll = false;
+  shadowRows = [];
+  public selected: any;
+  hideme: boolean[] = [];
+  tables$: Observable<Table[]>;
+  total$: Observable<number>;
+  materialDocument: any;
+  year: any;
+  postingDate: any;
+  documentDate: any;
+  dcNo: any;
+  headerText: any;
+  screen1: any;
+
   plants: number[] = [1100, 1200, 1300]; // Plant
   Valuesselectedplants: number | null = null;
 
-  @ViewChild('newContactModal', { static: false }) newContactModal?: ModalDirective;
-  breadCrumbItems: Array<{}>;
-  validationform!: FormGroup; // Form group for the input fields
-  submit = false; // Form submission flag
-  hideme: boolean[] = [];
-  // mb51table: any;
-  mb51table: Table[];
-  tableData: Table[];
-  tables$: Observable<Table[]>;
-  total$: Observable<number>;
+  isSubmitting: boolean = false;
+  stockTypes= [
+   {text: 'Unrestricted Use',id: '1'} ,
+   { text:'Quality Inspection',id:'2'},
+   {text: 'Blocked Stock', id:'3'}
+  ];
 
-  @ViewChildren(AdvancedSortableDirective) headers: QueryList<AdvancedSortableDirective>;
-  selectedMovementType: any;
-
-  constructor(public formBuilder: UntypedFormBuilder, @Inject(AdvancedService) public service: AdvancedService, private apiService:UserProfileService,public loaderservice:LoaderService) {
-    this.tables$ = service.tables$;
-    console.log("this.tables$", this.tables$)
-    this.total$ = service.total$;
-  }
+  reasons = [
+    { text: 'Poor Quality', id: '0001' },
+    { text: 'Incomplete', id: '0002' },
+    { text: 'Damaged', id: '0003' }
+  ];
 
   bsConfig = {
     dateInputFormat: 'DD-MM-YYYY', // Set the date format
-    // showWeekNumbers: false, // Optional: Hide week numbers
     containerClass: 'theme-blue', // Optional: Use a predefined theme
   };
+    
+  
 
-  ngOnInit() {
+  @ViewChildren(AdvancedSortableDirective) headers: QueryList<AdvancedSortableDirective>;
+  public isCollapsed = true;
+  expandedRows: { [key: string]: boolean } = {};
+  userName: string;
+  invoiceNum: any;
+
+  constructor(private apiService:UserProfileService, public formBuilder: UntypedFormBuilder,public service: AdvancedService,public loaderservice:LoaderService){
+    this.tables$ = service.tables$;
+    console.log("this.tables$", this.tables$);
+    this.total$ = service.total$;
+  }
+
+  changeValue(i) {
+    this.hideme[i] = !this.hideme[i];
+  }
+
+  filterSelectedRows() {
+    this.screen1 = this.screen1?.filter(table => table.selected);
+    this.service.setTableData(this.screen1 || []); 
+    this.service.resetPagination();
+    this._fetchData(); 
+  }
+
+  ngOnInit(){
     const currentDate = new Date();
     const fifteenDaysAgo = new Date();
     fifteenDaysAgo.setDate(currentDate.getDate() - 15);
     this.validationform = this.formBuilder.group({
-      plant: ['', Validators.required],
-      movementType:  [[], Validators.required],
+      plant: ['', [Validators.required]],
+      year: ['', [Validators.required]],
       postingDateFrom: [fifteenDaysAgo, Validators.required],
-      postingDateTo: [currentDate, Validators.required]
+      postingDateTo: [currentDate, Validators.required],
+      vechile: ['', [Validators.required]],
+      transporter: ['', [Validators.required]],
+      lrNumber: ['', [Validators.required]],
+      lrDate: ['', [Validators.required]],
+      gross: ['', [Validators.required]],
+      net: ['', [Validators.required]],
+      reasonForCancel: ['', [Validators.required]]
     });
-    this.dropdownList = [
-      { item_id: 101, item_text: '101' },
-      { item_id: 102, item_text: '102' },
-      { item_id: 122, item_text: '122' },
-      { item_id: 123, item_text: '123' },
-    ];
-    this.selectedItems = [
-    ];
-    this.dropdownSettings = {
-      singleSelection: false,
-      idField: 'item_id',
-      textField: 'item_text',
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 3,
-      allowSearchFilter: false,
-      limitSelection:4
-  
-    };
+ 
   }
-  onItemSelect(item: any) {
-    console.log(item);
-    this.validationform.patchValue({
-      movementType: this.selectedItems,
-    });
-  }
-  onSelectAll(items: any) {
-    console.log(items);
-    this.selectedItems = items;
-    this.validationform.patchValue({
-      movementType: this.selectedItems,
-    });
-  
-  }
-  onDropdownChange() {     console.log('Selected Movement Type:', this.selectedMovementType); }
-  exportToExcel(): void {
-    // Retrieve the current table data
-    const dataToExport = this.mb51table;
 
-    if (dataToExport.length > 0) {
-      // Define mapping of keys to header names
-      const headerMapping: { [key: string]: string } = {
-        PLANT: 'Plant',                      
-        GL_ACCOUNT: 'GL account',
-        MAT_DOC: 'Mat Doc',
-        DOC_DATE: 'Doc Date',
-        POSTING_DATE: 'Posting Date',
-        MATERIAL: 'Material', 
-        MAT_DES: 'Mat Desc', 
-        QUANTITY: 'Quantity',
-        L_CUR_AMT: 'Amt in loc.cur',
-        PUR_ORDER: 'Pur Order',
-        PRICE: 'Price', 
-        MVT_TYPE: 'Movement Type',                  
-        MVT_TYPE_TXT: 'Movement Type Text', 
-        DOC_HEADER_TXT: 'Doc Header Text', 
-        STG_LOC: 'Storage Location',            
-        ENTRY_DATE: 'Entry Date',                 
-        BATCH: 'Batch',                          
-        CONSUMPTION: 'Consumption',     
-        SUPPLIER: 'Supplier'                                                          
-      };
+  isAllFieldsValid(): Observable<boolean> {
+    return this.tables$.pipe(
+      map(tables => {
+        const hasSelectedItem = tables.some(table => table.selected);
   
-      // Format data to map keys to user-friendly headers
-      const formattedData = dataToExport.map(row => {
-        const formattedRow: { [key: string]: any } = {};
-        for (const key in headerMapping) {
-          if (row.hasOwnProperty(key)) {
-            // Format date fields to dd-mm-yyyy
-            if (key === 'DOC_DATE' || key === 'POSTING_DATE' || key === 'ENTRY_DATE') {
-              formattedRow[headerMapping[key]] = this.formatDate(row[key]); // Call formatDate for date fields
-            } else {
-              formattedRow[headerMapping[key]] = row[key];
-            }
-          }
+        if (!hasSelectedItem) {
+          return false; 
         }
-        return formattedRow;
+        const allSelectedValid = tables.every(table => {
+          if (table.selected) {
+            return table.REASON && table.INSMK;
+          }
+          return true;
+        });
+  
+        return allSelectedValid;
+      })
+    );
+  }
+  
+
+
+  toggleSelectAll(event: any): void {
+    const checked = event.target.checked;
+    this.tables$.pipe(take(1)).subscribe((tables) => {
+      tables.forEach((table) => {
+        table.selected = false; 
+        if (checked) {
+          table.selected = true; 
+        }
       });
-  
-      // Create a new workbook and worksheet with the formatted data
-      const worksheet = XLSX.utils.json_to_sheet(formattedData);
-      const workbook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(workbook, worksheet, 'mb51 Data');
-  
-      // Generate an Excel file and trigger the download
-      XLSX.writeFile(workbook, 'mb51_Data.xlsx');
-    }
+    });
   }
 
-  private formatDate(dateString: string): string {
-    const date = new Date(dateString);
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
-    const year = date.getFullYear();
-    return `${day}-${month}-${year}`;
+  onRowCheckboxChange(row: any): void {
+    this.tables$.pipe(take(1)).subscribe((tables) => {
+      this.selectAll = tables.every((table) => table.selected);
+    });
   }
 
-  _fetchData() {
-    this.tableData = this.mb51table;
-    console.log("this.tableData ", this.tableData)
-    for (let i = 0; i <= this.tableData.length; i++) {
-      this.hideme.push(true);
+  saveBound() {
+    if(!this.form.headerText.value){
+      Swal.fire("","Header text is required","error")
     }
+    else if(!this.form.headerText.value.startsWith('51056')){
+      Swal.fire("","Header text should start with 51056","error")
+    }
+    else{
+    console.log("this.headerText", this.form.headerText.value);
+    this.isSubmitting = true;
+    this.tables$.pipe(take(1)).subscribe({
+      next: (tables) => {
+        const payload = {
+          SAVE: {
+            HEADER: {
+              "MBLNR": this.materialDocument,
+              "MJAHR": this.year,
+              "BUDAT": this.postingDate,
+              "BLDAT":moment(this.documentDate, 'DD-MM-YYYY').format(),// moment(this.documentDate, 'DD-MM-YYYY').toISOString(),//this.documentDate,
+              "BKTXT": this.form.headerText.value,
+            },
+            ITEM: []
+          }
+        };
+        tables.forEach((table) => {
+          if (table.selected) {
+            payload.SAVE.ITEM.push({
+              "MATNR": table.MATNR,
+              "LGORT": table.LGORT,
+              "BWART": table.BWART,
+              "WERKS": table.WERKS,
+              "EBELN": table.EBELN,
+              "EBELP": table.EBELP,
+              "MBLNR": table.MBLNR,
+              "ZEILE": table.ZEILE,
+              "MENGE": table.MENGE,
+              "RMENGE": table.RMENGE,
+              "MEINS": table.MEINS,
+              "REASON": table.REASON,
+              "INSMK": table.INSMK,
+              "WEMPF": table.WEMPF,
+              "CHARG": table.CHARG,
+              "LIFNR": table.LIFNR,
+            });
+          }
+        });
+        this.loaderservice.showLoader();
+        this.apiService.goodsreturn(payload).subscribe({
+          next: (res: any) => {
+            console.log('res', res)
+            
+            if (res[0]?.NUMBER == 200 || res?.NUMBER == 200) {
+              // const message = `Material Doc.No: ${res[0].MBLNR} Successfully Created`;
+              Swal.fire("", res.MESSAGE, 'success');
+              this.resetFormState();
+              this.loaderservice.hideLoader();
+            } else {
+              Swal.fire("", "Error: " + res[0].MESSAGE, 'error');
+            }
+            this.isSubmitting = false;
+            this.loaderservice.hideLoader();
+          },
+          
+          error: (err) => {
+            Swal.fire("", "Error occurred while saving", "error");
+            this.isSubmitting = false;
+          }
+        });
+      },
+      error: (err) => {
+        console.error("Error in subscription:", err);
+        this.isSubmitting = false;
+      }
+    });
+  }
+  }
+  returnqty(row, index) {
+    if (row.MENGE > row.MENGE) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Limit Exceeded',
+            text: `The Return quantity (${row.RMENGE}) exceeds the Original quantity (${row.MENGE}).`,
+          });
+    
+          // Reset the value of the current packet's DCLABS
+          row.RMENGE = null;
+        }
   }
 
-/**
-* Sort table data
-* @param param0 sort the column
-*
-*/
-  
-changeValue(i) {
-  this.hideme[i] = !this.hideme[i];
-}
-
-onSort({ column, direction }: SortEvent) {
-  // resetting other headers
-  this.headers.forEach(header => {
-    if (header.sortable !== column) {
-      header.direction = '';
-    }
-  });
-  this.service.sortColumn = column;
-  this.service.sortDirection = direction;
-}
+  onSort({ column, direction }: SortEvent) {
+    this.headers.forEach((header) => {
+      if (header.sortable !== column) {
+        header.direction = '';
+      }
+    });
+    this.service.sortColumn = column;
+    this.service.sortDirection = direction;
+  }
 
   get form() {
     return this.validationform.controls;
   }
 
-  getmb51() {
-  let bwart = [];
-  bwart = this.form.movementType.value.map(data => data.item_id).join(', ');
-  console.log("validationform", this.form, bwart);
+  resetFormState() {
+    // Clear form data
+    this.validationform.reset();
+    // Clear component state
+    this.materialDocument = null;
+    this.year  = null;
+    this.postingDate  = null;
+    this.documentDate  = null;
 
-  let obj = {
-    WERKS: this.form.plant.value, // Plant
-    BWART: bwart, // Movement Type
-    VGART: "WE", // Transaction/Event Type
-    BUDAT_F: this.form.postingDateFrom.value, // From Posting Date
-    BUDAT_T: this.form.postingDateTo.value  // To Posting Date
-  };
-
-  console.log("objobj", obj);
-  this.loaderservice.showLoader();
-
-  this.apiService.fetchMb51Data(obj).subscribe({
-    next: (res: any) => {
-      this.loaderservice.hideLoader();
-      console.log('MB51 data fetched successfully:', res);
-
-      // Sort the response data by POSTING_DATE in descending order
-      this.mb51table = (res || []).sort((a, b) => {
-        const dateA = new Date(a.POSTING_DATE);
-        const dateB = new Date(b.POSTING_DATE);
-        return dateB.getTime() - dateA.getTime(); // Recent dates first
-      });
-
-      this.service.setTableData(this.mb51table || []);
-      this._fetchData();
-    },
-    error: (error) => {
-      this.loaderservice.hideLoader();
-      console.error('Error fetching MB51 data:', error);
-    },
-    complete: () => {
-      console.log('API call completed.');
-      this.loaderservice.hideLoader();
-    }
-  });
+    // Reset table data
+    this.service.setTableData([]);
+    this._fetchData();
   }
 
+  validSubmit() {
+    this.loaderservice.showLoader();
+    this.submit = true;
+    const payload = {
+      MBLNR: this.form.inbounddeliverynumber.value, //5000778375
+      MJAHR: this.form.year.value,
+    };
+  
+    console.log("Final Payload:", payload);
+  
+    this.apiService.goodsreturn(payload).subscribe({
+      next: (res: any) => {
+        console.log("API Response:", res);
+  
+        if (res[0]?.NUMBER) {
+          Swal.fire("", res[0].MSGTXT, "error");
+          this.loaderservice.hideLoader();
+        } else {
+          const header = res[0]?.HEADER || {};
+          const items = res[0]?.ITEM || [];
+          this.materialDocument = header.MBLNR;
+          this.year = header.MJAHR;
+          this.postingDate = header.BUDAT;
+          this.documentDate = moment(header.BLDAT).format('DD-MM-YYYY');
+          this.invoiceNum  = header.XBLNR
+          console.log('res', res)
+          items.forEach(data=>data.INSMK = "3")
+          this.service.setTableData(items || []);
+          this.goodsreturn = items;
+          this._fetchData();
+          this.loaderservice.hideLoader();
+        }
+      },
+      error: (error: any) => {
+        console.error('Error fetching lot reports:', error);
+        alert('Failed to fetch goods return data. Please try again.');
+        this.loaderservice.hideLoader();
+      },
+      complete: () => {
+        this.loaderservice.hideLoader();
+      },
+    });
+  }
+  
+  _fetchData() {
+    this.tableData = [...(this.goodsreturn || [])];
+    console.log("this.tableData", this.tableData);
+  }
 }
-
+      

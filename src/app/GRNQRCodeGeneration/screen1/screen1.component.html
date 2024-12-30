@@ -1,321 +1,320 @@
-<div class="col-xl-12">
-    <div class="card" style="background-color: beige">
-      <div class="card-body">
-        <h4 class="card-title">
-          <span style="color: black"></span>
-          Screen 1
-        </h4>
-        <form class="needs-validation" [formGroup]="validationform">
-          <div class="row">
-            <!-- Row 1 -->
-            <!-- Plant -->
-            <div class="col-md-1">
-              <label class="brandcolor" for="plant">PLANT</label>
-              <div class="mb-3">
-                <select
-                    class="form-select"
-                    id="plant"
-                    formControlName="plant"
-                  >
-                    <option value="" disabled selected>Plant</option>
-                    <option *ngFor="let type of plants" [value]="type">
-                      {{ type }}
-                    </option>
-                  </select>
-                <div *ngIf="submit && form.plant.errors" class="invalid-feedback">
-                  <span *ngIf="form.plant.errors.required"
-                    >Please provide a valid plant.</span
-                  >
-                </div>
-              </div>
+<div class="container-fluid">
+  <div class="row">
+      <div class="col-xl-12">
+          <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">
+                    <span style="color: black;"></span> Screen 1
+                </h4>
+                <form class="needs-validation" [formGroup]="validationform" (ngSubmit)="validSubmit()">
+                    <div class="row mt-4">
+                        <!-- Plant -->
+                        <div class="col-md-1">
+                          <label class="brandcolor" for="plant">PLANT</label>
+                          <div class="mb-3">
+                            <select
+                                class="form-select"
+                                id="plant"
+                                formControlName="plant"
+                              >
+                                <option value="" disabled selected>Plant</option>
+                                <option *ngFor="let type of plants" [value]="type">
+                                  {{ type }}
+                                </option>
+                              </select>
+                            <div *ngIf="submit && form.plant.errors" class="invalid-feedback">
+                              <span *ngIf="form.plant.errors.required"
+                                >Please provide a valid plant.</span
+                              >
+                            </div>
+                          </div>
+                        </div>
+                        <!-- Year -->
+                        <div class="col-md-1">
+                            <div class="mb-3">
+                                <label class="brandcolor" for="year">Year</label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="year"
+                                    formControlName="year"
+                                    placeholder="Year"
+                                />
+                                <div *ngIf="submit && form.year.errors" class="invalid-feedback">
+                                    <span *ngIf="form.year.errors.required">
+                                        Please provide a valid Year.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Posting Date From -->
+                        <div class="col-md-2">
+                          <label class="brandcolor" for="postingDateFrom"
+                            >FROM DATE</label
+                          >
+                          <div class="mb-3">
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="postingDateFrom"
+                              formControlName="postingDateFrom"
+                              [bsConfig]="bsConfig"
+                              bsDatepicker
+                              placeholder="POSTING DATE FROM"
+                              [ngClass]="{
+                                'is-invalid': submit && form.postingDateFrom.errors
+                              }"
+                            />
+                            <div
+                              *ngIf="submit && form.postingDateFrom.errors"
+                              class="invalid-feedback"
+                            >
+                              <span *ngIf="form.postingDateFrom.errors.required"
+                                >Please provide a valid POSTING DATE FROM.</span
+                              >
+                            </div>
+                          </div>
+                        </div>
+                        <!-- Posting Date To -->
+                        <div class="col-md-2">
+                          <label class="brandcolor" for="postingDateTo">TO DATE</label>
+                          <div class="mb-3">
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="postingDateTo"
+                              formControlName="postingDateTo"
+                              [bsConfig]="bsConfig"
+                              bsDatepicker
+                              placeholder="POSTING DATE TO"
+                              [ngClass]="{
+                                'is-invalid': submit && form.postingDateTo.errors
+                              }"
+                            />
+                            <div
+                              *ngIf="submit && form.postingDateTo.errors"
+                              class="invalid-feedback"
+                            >
+                              <span *ngIf="form.postingDateTo.errors.required"
+                                >Please provide a valid POSTING DATE TO.</span
+                              >
+                            </div>
+                          </div>
+                        </div>
+                        <!-- Button -->
+                        <div class="col-md-2 text-center">
+                            <button
+                                style="
+                                    background-color: brown;
+                                    margin-top: 28px;
+                                    width: max-content;
+                                    color: aliceblue;
+                                "
+                                class="btn"
+                                type="submit"
+                            >
+                                Get Details
+                            </button>
+                        </div>
+                    </div>
+                </form>
             </div>
-            
-            <!-- Posting Date From -->
-            <div class="col-md-2">
-              <label class="brandcolor" for="postingDateFrom"
-                >FROM DATE</label
-              >
-              <div class="mb-3">
-                <input
-                  type="text"
-                  class="form-control"
-                  id="postingDateFrom"
-                  formControlName="postingDateFrom"
-                  [bsConfig]="bsConfig"
-                  bsDatepicker
-                  placeholder="POSTING DATE FROM"
-                  [ngClass]="{
-                    'is-invalid': submit && form.postingDateFrom.errors
-                  }"
-                />
-                <div
-                  *ngIf="submit && form.postingDateFrom.errors"
-                  class="invalid-feedback"
+        </div>
+        
+          <!-- end card -->
+          <div class="card">
+            <div class="card-body">
+              <!-- Refresh Button -->
+              <div>
+                <button (click)="filterSelectedRows()" class="btn custom-btn rounded-circle shadow-lg p-3">
+                  <i class="bx bx-revision"></i>
+                </button>
+              </div>
+
+              <!-- Table -->
+              <div class="table-responsive">
+                <table
+                  id="basic-datatable"
+                  class="table table-bordered dt-responsive nowrap"
                 >
-                  <span *ngIf="form.postingDateFrom.errors.required"
-                    >Please provide a valid POSTING DATE FROM.</span
-                  >
-                </div>
+                  <thead class="brandcolor tableHeader">
+                    <tr>
+                      <th>
+                        <input
+                          type="checkbox"
+                          [checked]="selectAll"
+                          (change)="toggleSelectAll($event)"
+                        />
+                      </th>
+                      <!-- <th>
+                        <input type="checkbox" [checked]="selectAll"     
+                        [(ngModel)]="isAllSelected"
+                        [ngModelOptions]="{standalone: true}" 
+                        (change)="toggleSelectAll($event)" />
+                      </th> -->
+                      <th sortable="MATNR" (sort)="onSort($event)">
+                        Inv.Doc.No
+                      </th>
+                      <th sortable="LGORT" (sort)="onSort($event)">
+                        Fiscal Year
+                      </th>
+                      <th sortable="BWART" (sort)="onSort($event)">
+                        Posting Date
+                      </th>
+                      <th sortable="WERKS" (sort)="onSort($event)">
+                        Plant
+                      </th>
+                      <th sortable="EBELN" (sort)="onSort($event)">
+                        Credit Memo No
+                      </th>
+                      <th sortable="EBELP" (sort)="onSort($event)">
+                        Vechile
+                        <span style="color: red">*</span>
+                      </th>
+                      <th sortable="ZEILE" (sort)="onSort($event)">
+                        Transporter 
+                        <span style="color: red">*</span>
+                      </th>
+                      <th sortable="MEINS" (sort)="onSort($event)">
+                        LR Number <span style="color: red">*</span>
+                      </th>
+                      <th sortable="CHARG" (sort)="onSort($event)"> LR Date
+                        <span style="color: red">*</span>
+                      </th>
+                      <th sortable="LIFNR" (sort)="onSort($event)"> Gross
+                        <span style="color: red">*</span>
+                      </th>
+                      <th sortable="WEMPF" (sort)="onSort($event)"> Net
+                        <span style="color: red">*</span>
+                      </th>
+                      <th sortable="REASON" (sort)="onSort($event)">Reason for Cancel 
+                        <span style="color: red">*</span>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody *ngFor="let table of tables$ | async; let i = index">
+                    <tr>
+                      <td>
+                        <input
+                          type="checkbox"
+                          [(ngModel)]="table.selected"
+                          (change)="onRowCheckboxChange(table)"
+                        />
+                      </td>
+                      <td>{{ table.invDocNo }}</td>
+                      <!-- Inv Doc No-->
+                        <td>{{ table.fiscalYear }}</td>
+                      <!-- Fiscal Year-->
+                      <td>{{ table.BUDAT | date: 'dd-MM-yyyy'  }}</td>
+                      <!-- Posting Date -->
+                      <td>{{ table.WERKS }}</td>
+                      <!-- Plant -->
+                      <td>{{ table.creditMemoNo }}</td>
+                      <!-- Credit Memo No -->
+                      <td>
+                        <input type="text" [(ngModel)]="table.vehicle" name="vehicle{{i}}" />
+                      </td>
+                      <!-- Vechile -->
+                      <td>
+                        <input type="text" [(ngModel)]="table.transporter" name="transporter{{i}}" />
+                      </td>
+                      <!-- Transporter -->
+                      <td>
+                        <input type="text" [(ngModel)]="table.lrNumber" name="lrNumber{{i}}" />
+                      </td>
+                      <!-- LR Number -->
+                      <td>
+                        <input type="date" [(ngModel)]="table.lrDate" name="lrDate{{i}}" />
+                      </td>
+                      <!-- LR Date -->
+                      <td>
+                        <input type="number" [(ngModel)]="table.gross" name="gross{{i}}" />
+                      </td>
+                      <!-- Gross -->
+                      <td>
+                        <input type="number" [(ngModel)]="table.net" name="net{{i}}" />
+                      </td>
+                      <!-- Net -->
+                      <td>
+                        <input type="text" [(ngModel)]="table.reasonForCancel" name="reasonForCancel{{i}}" />
+                      </td>
+                      <!-- Reason for Cancel -->
+                    </tr>
+                  </tbody>
+                </table>
               </div>
-            </div>
-            <!-- Posting Date To -->
-            <div class="col-md-2">
-              <label class="brandcolor" for="postingDateTo">TO DATE</label>
-              <div class="mb-3">
-                <input
-                  type="text"
-                  class="form-control"
-                  id="postingDateTo"
-                  formControlName="postingDateTo"
-                  [bsConfig]="bsConfig"
-                  bsDatepicker
-                  placeholder="POSTING DATE TO"
-                  [ngClass]="{
-                    'is-invalid': submit && form.postingDateTo.errors
-                  }"
-                />
-                <div
-                  *ngIf="submit && form.postingDateTo.errors"
-                  class="invalid-feedback"
-                >
-                  <span *ngIf="form.postingDateTo.errors.required"
-                    >Please provide a valid POSTING DATE TO.</span
-                  >
-                </div>
-              </div>
-            </div>
-            <!-- Button -->
-            <div class="col-md-1 mt-4">
-              <div class="ms-4 mb-3">
+              <!-- Save & Download Buttons -->
+              <div class="col-md-4 text-left">
                 <button
                   style="
-                    margin-top: 8px;
                     background-color: brown;
+                    margin-top: 28px;
+                    width: max-content;
+                    color: aliceblue;
+                  "
+                  class="btn me-3"
+                  type="submit"
+                  [disabled]="!(isAllFieldsValid() | async)"
+                  (click)="saveBound()"
+                >
+                  save
+                </button>
+              
+                <button
+                  style="
+                    background-color: brown;
+                    margin-top: 28px;
                     width: max-content;
                     color: aliceblue;
                   "
                   class="btn"
                   type="submit"
-                  (click)="getmb51()"
-                >
-                  Get Details
+                  [disabled]="!(isAllFieldsValid() | async)"
+                  (click)="saveBound()"
+                  >
+                  Download
                 </button>
               </div>
             </div>
           </div>
-        </form>
-      </div>
-    </div>
-    <!-- end card -->
-    <div class="card">
-      <div class="card-body">
-        <div class="row mb-md-2">
-          <div class="col-sm-12 col-md-6">
-            <div class="dataTables_length">
-              <label class="d-inline-flex align-items-center">
-                Show
-                <select
-                  name="tickets-table_length"
-                  aria-controls="tickets-table"
-                  class="form-control form-control-sm mx-2"
-                  [(ngModel)]="service.pageSize"
-                  [ngModelOptions]="{standalone: true}"
-                >
-                  <option [ngValue]="10">10</option>
-                  <option [ngValue]="25">25</option>
-                  <option [ngValue]="50">50</option>
-                  <option [ngValue]="100">100</option>
-                </select>
-                entries
-              </label>
+        <!--Pagination-->
+          <div class="row justify-content-md-between align-items-md-center mt-2">
+            <div class="col-sm-12 col-md-5">
+              <div class="dataTables_info mb-2" role="status" aria-live="polite">
+                Showing {{ service.startIndex }} to {{ service.endIndex }} of
+                {{ service.totalRecords }} entries
+              </div>
+            </div>
+            <div class="col-sm-12 col-md-5">
+              <div class="text-md-right float-md-end pagination-rounded">
+                <ul class="pagination justify-content-end mb-0">
+                  <!-- Previous Button -->
+                  <li
+                    class="page-item"
+                    [class.disabled]="service.page === 1"
+                    (click)="service.changePage(service.page - 1)"
+                  >
+                    <a class="page-link" href="javascript:void(0)">Previous</a>
+                  </li>
+                  <!-- Current Page Display -->
+                  <li class="page-item active">
+                    <a class="page-link" href="javascript:void(0)">{{
+                      service.page
+                    }}</a>
+                  </li>
+                  <!-- Next Button -->
+                  <li
+                    class="page-item"
+                    [class.disabled]="service.page === service.totalPages"
+                    (click)="service.changePage(service.page + 1)"
+                  >
+                    <a class="page-link" href="javascript:void(0)">Next</a>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
-          <!-- Export Button-->
-          <div class="col-sm-12 col-md-6">
-            <div class="text-md-end">
-              <button
-                class="btn btn-warning ms-2"
-                [disabled]="(tables$ | async)?.length === 0"
-                (click)="exportToExcel()"
-              >
-                Export
-              </button>
-            </div>
-          </div>
-        </div>
-        <!-- Table -->
-        <div class="table-responsive">
-          <table
-            id="basic-datatable"
-            class="table table-bordered dt-responsive nowrap"
-          >
-            <thead class="brandcolor tableHeader">
-              <tr>
-                <th></th>
-                <th class="brandcolor" sortable="PLANT" (sort)="onSort($event)">
-                  Plant
-                </th>
-                <th class="brandcolor" sortable="STGE_LOC" (sort)="onSort($event)">
-                  GL Account
-                </th>
-                <th class="brandcolor" sortable="MAT_DES" (sort)="onSort($event)">
-                  Material Document
-                </th>
-                <th class="brandcolor" sortable="MVT_TYPE" (sort)="onSort($event)">
-                  Document Date
-                </th>
-                <th class="brandcolor" sortable="POSTING_DATE" (sort)="onSort($event)">
-                  Posting Date
-                </th>
-                <th class="brandcolor" sortable="MATERIAL" (sort)="onSort($event)">
-                  Material
-                </th>
-                <th class="brandcolor" sortable="MAT_DES" (sort)="onSort($event)">
-                  Mat.Desc
-                </th>
-                <th class="brandcolor" sortable="MVT_TYPE" (sort)="onSort($event)">
-                  Qty
-                </th>
-                <th
-                  class="brandcolor"
-                  sortable="L_CUR_AMT"
-                  (sort)="onSort($event)"
-                >
-                  Amt in loc.cur
-                </th>
-                <th class="brandcolor" sortable="L_CUR_AMT" (sort)="onSort($event)">
-                  Purchase Order
-                </th>
-                <th
-                  class="brandcolor"
-                  sortable="PRICE"
-                  (sort)="onSort($event)"
-                >
-                  Price
-                </th>
-                <th class="brandcolor" sortable="MVT_TYPE" (sort)="onSort($event)">
-                  Mvt Type
-                </th>
-                <th
-                  class="brandcolor"
-                  sortable="MVT_TYPE_TXT"
-                  (sort)="onSort($event)"
-                >
-                  Mvt Type Txt
-                </th>
-              </tr>
-            </thead>
-            <tbody *ngFor="let table of tables$ | async; let i = index">
-              <tr>
-                <td align="center">
-                  <a class="expand-row" (click)="changeValue(i)">+</a>
-                </td>
-                <td>{{ table.PLANT }}</td>
-                <!-- Plant -->
-                <td>{{ table.GL_ACCOUNT }}</td>
-                <!-- gl account-->
-                <td>{{ table.MAT_DOC }}</td>
-                <!-- Material Doc -->
-                <td>{{ table.DOC_DATE | date: 'dd-MM-yyyy'  }}</td>
-                <!-- Doc Date -->
-                <td>{{ table.POSTING_DATE | date: 'dd-MM-yyyy'  }}</td>
-                <!-- Posting Date -->
-                <td>{{ table.MATERIAL }}</td>
-                <!-- Material -->
-                <td>{{ table.MAT_DES }}</td>
-                <!-- Material Desc -->
-                <td>{{ table.QUANITY }}</td>
-                <!-- Qty -->
-                <td>{{ table.L_CUR_AMT }}</td>
-                <!-- Amt in loc.cur -->
-                <td>{{ table.PUR_ORDER }}</td>
-                <!-- Purchase Order -->
-                <td>{{ table.PRICE }}</td>
-                <!-- Price -->
-                <td>{{ table.MVT_TYPE }}</td>
-                <!-- Movement Type -->
-                <td>{{ table.MVT_TYPE_TXT }}</td>
-                <!-- Movement Type Text -->
-              </tr>
-              <ng-container *ngIf="!hideme[i]">
-                <tr class="sub-table no-bg">
-                  <td align="center"></td>
-                  <td colspan="15" class="p-0">
-                    <table class="table mb-0 table-striped">
-                      <thead class="bg-dark text-white">
-                        <tr>
-                          <th>Doc Header Text</th>
-                          <th>S.Loc</th>
-                          <th>Entry Date</th>
-                          <th>Batch</th>
-                          <th>Consumption</th>
-                          <th>Supplier</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>{{ table.DOC_HEADER_TXT }}</td>
-                          <!-- Doc Header Text-->
-                          <td>{{ table.STG_LOC }}</td>
-                          <!-- Storage Location -->
-                           <td>{{ table.ENTRY_DATE| date: 'dd-MM-yyyy'  }}</td>
-                          <!-- Entry Date-->
-                           <td>{{ table.BATCH }}</td>
-                          <!-- Batch-->
-                           <td>{{ table.CONSUMPTION }}</td>
-                          <!-- Consumption-->
-                          <td>{{ table.SUPPLIER }}</td>
-                          <!-- Supplier -->
-                        </tr>
-                      </tbody>
-                    </table>
-                  </td>
-                </tr>
-              </ng-container>
-            </tbody>
-          </table>
-        </div>
-        <!-- Pagination -->
-        <div class="row justify-content-md-between align-items-md-center mt-2">
-          <div class="col-sm-12 col-md-5">
-            <div class="dataTables_info mb-2" role="status" aria-live="polite">
-              Showing {{ service.startIndex }} to {{ service.endIndex }} of
-              {{ service.totalRecords }} entries
-            </div>
-          </div>
-          <div class="col-sm-12 col-md-5">
-            <div class="text-md-right float-md-end pagination-rounded">
-              <ul class="pagination justify-content-end mb-0">
-                <!-- Previous Button -->
-                <li
-                  class="page-item"
-                  [class.disabled]="service.page === 1"
-                  (click)="service.changePage(service.page - 1)"
-                >
-                  <a class="page-link" href="javascript:void(0)">Previous</a>
-                </li>
-  
-                <!-- Current Page Display -->
-                <li class="page-item active">
-                  <a class="page-link" href="javascript:void(0)">{{
-                    service.page
-                  }}</a>
-                </li>
-  
-                <!-- Next Button -->
-                <li
-                  class="page-item"
-                  [class.disabled]="service.page === service.totalPages"
-                  (click)="service.changePage(service.page + 1)"
-                >
-                  <a class="page-link" href="javascript:void(0)">Next</a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <!-- End of Pagination -->
-      </div>
+        <!-- End Pagination-->
     </div>
   </div>
-  
+</div>  
