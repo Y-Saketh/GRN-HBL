@@ -249,7 +249,7 @@ onSort({ column, direction }: SortEvent) {
 
   getmb51() {
   let bwart = [];
-  bwart = this.form.movementType.value.map(data => data.item_id);
+  bwart = this.form.movementType.value.map(data => data.item_id).join(', ');
   console.log("validationform", this.form, bwart);
 
   let obj = {
