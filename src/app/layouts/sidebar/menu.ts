@@ -175,14 +175,14 @@ export const MENU: MenuItem[] = [
                 parentId: "menu"
             },
             {
-                id: "mb52",
+                id: "screen1",
                 label: 'MENUITEMS.DASHBOARDS.LIST.SCREEN1',
                 link:'screen1',
                 icon: 'bx-layer',
                 parentId: "menu"
             },
             {
-                id: "mb52",
+                id: "screen2",
                 label: 'MENUITEMS.DASHBOARDS.LIST.SCREEN2',
                 link:'screen2',
                 icon: 'bx-layer',
