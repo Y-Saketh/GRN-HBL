@@ -294,13 +294,11 @@
                                           <span class="brandcolor fs-6">
                                               Header Text <span style="color: red">*</span>
                                           </span>
-                                          <input
-                                              formControlName="headerText"
-                                              class="form-control fs-6"
-                                              placeholder="Enter Credit Memo Doc No"
-                                          />
+                                          <input formControlName="headerText" class="form-control fs-6" placeholder="Enter Credit Memo Doc No" maxlength="10"
+                                            type="text" pattern="\d*" oninput="this.value=this.value.slice(0,10)" />
+                                          
                                           <div *ngIf="submit && validationform.get('headerText').invalid" class="invalid-feedback fs-6">
-                                              Please provide a valid Credit Memo Doc No.
+                                            Please provide a valid Credit Memo Doc No.
                                           </div>
                                       </div>
                                   </div>
