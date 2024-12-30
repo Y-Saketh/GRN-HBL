@@ -173,6 +173,20 @@ export const MENU: MenuItem[] = [
                 link: 'popreview',
                 icon: 'bx-layer',
                 parentId: "menu"
+            },
+            {
+                id: "mb52",
+                label: 'MENUITEMS.DASHBOARDS.LIST.SCREEN1',
+                link:'screen1',
+                icon: 'bx-layer',
+                parentId: "menu"
+            },
+            {
+                id: "mb52",
+                label: 'MENUITEMS.DASHBOARDS.LIST.SCREEN2',
+                link:'screen2',
+                icon: 'bx-layer',
+                parentId: "menu"
             }
         
         ]

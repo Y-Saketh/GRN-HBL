@@ -18,6 +18,8 @@ import { Mb51Component } from 'src/app/GRNQRCodeGeneration/mb51/mb51.component';
 import { GoodsReturnsComponent } from 'src/app/GRNQRCodeGeneration/goods-returns/goods-returns.component';
 import { GRNagainstPOComponent } from 'src/app/GRNQRCodeGeneration/grnagainst-po/grnagainst-po.component';
 import { PoPreviewComponent } from 'src/app/GRNQRCodeGeneration/po-preview/po-preview.component';
+import { Screen1Component } from 'src/app/GRNQRCodeGeneration/screen1/screen1.component';
+import { Screen2Component } from 'src/app/GRNQRCodeGeneration/screen2/screen2.component';
 
 const routes: Routes = [
     {
@@ -80,6 +82,14 @@ const routes: Routes = [
     {
         path: 'popreview',
         component: PoPreviewComponent
+    },
+    {
+        path: 'screen1',
+        component: Screen1Component
+    },
+    {
+        path: 'screen2',
+        component: Screen2Component
     }
 ];
 
