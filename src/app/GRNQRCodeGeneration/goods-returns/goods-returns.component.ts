@@ -11,6 +11,7 @@ import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
+import * as moment from 'moment';
 
 
 @Component({
@@ -271,7 +272,7 @@ export class GoodsReturnsComponent {
           this.materialDocument = header.MBLNR;
           this.year = header.MJAHR;
           this.postingDate = header.BUDAT;
-          this.documentDate = header.BLDAT;
+          this.documentDate = moment(header.BLDAT).format('DD-MM-YYYY');
           this.invoiceNum  = header.XBLNR
           console.log('res', res)
           items.forEach(data=>data.INSMK = "3")
