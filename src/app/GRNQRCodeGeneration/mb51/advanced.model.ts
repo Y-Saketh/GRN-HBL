@@ -13,11 +13,11 @@ export interface Table {
     DOC_DATE: string;      // Document Date
     QUANITY: number;      // Quantity
     SUPPLIER: number;      // Supplier
-    ORDER: string;      // Order
+    // ORDER: string;      // Order
     GL_ACCOUNT: string;      // GL account
     DOC_HEADER_TXT: string;      // Doc Header Text
     ENTRY_DATE: string;      // Entry Date
-    BATCH: number;      // Batch
+    BATCH: string;      // Batch
     CONSUMPTION: string;      // Consumption
 }
   

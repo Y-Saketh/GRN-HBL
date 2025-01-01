@@ -36,6 +36,7 @@ export class GrpendingComponent implements OnInit {
   secondTableData: any[] = []; // Data for the second table
   unmatchedItemIndex: number | null = null;
   totalExpectedQuantity = 50000;
+  clickedButton: string | null = null;
 
   editableDetails: any = {};
 
@@ -75,6 +76,7 @@ export class GrpendingComponent implements OnInit {
   inBound: TableRow[] = [];
   inBoundshadow: TableRow[] = [];
   PostingDate: string;
+  
   constructor(public formBuilder: UntypedFormBuilder, public service: AdvancedService, private apiService:UserProfileService,public loaderservice:LoaderService) {
     this.tables$ = service.tables$;
     console.log("this.tables$", this.tables$)
@@ -150,6 +152,10 @@ export class GrpendingComponent implements OnInit {
       itemQuantity: 5000, // Default quantity
       matched: true,
     }));
+  }
+
+  onButtonClick(button: string): void {
+    this.service.handleButtonClick(button);
   }
 
   saveUnmatchedInBound(): void {

@@ -31,6 +31,7 @@ export class GrdoneComponent implements OnInit {
   plants: string[] = [];
   tables$: Observable<Table[]>;
   total$: Observable<number>;
+  clickedButton: string | null = null;
 
   @ViewChildren(AdvancedSortableDirective) headers: QueryList<AdvancedSortableDirective>;
   public isCollapsed = true;
@@ -98,6 +99,10 @@ export class GrdoneComponent implements OnInit {
     for (let i = 0; i <= this.tableData.length; i++) {
       this.hideme.push(true);
     }
+  }
+
+  onButtonClick(button: string): void {
+    this.service.handleButtonClick(button);
   }
 
   exportToExcel(): void {

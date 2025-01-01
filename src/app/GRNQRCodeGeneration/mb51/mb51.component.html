@@ -150,7 +150,7 @@
   <div class="card">
     <div class="card-body">
       <div class="row mb-md-2">
-        <div class="col-sm-12 col-md-6">
+        <div class="col-sm-12 col-md-4">
           <div class="dataTables_length">
             <label class="d-inline-flex align-items-center">
               Show
@@ -159,7 +159,7 @@
                 aria-controls="tickets-table"
                 class="form-control form-control-sm mx-2"
                 [(ngModel)]="service.pageSize"
-                [ngModelOptions]="{standalone: true}"
+                [ngModelOptions]="{ standalone: true }"
               >
                 <option [ngValue]="10">10</option>
                 <option [ngValue]="25">25</option>
@@ -170,19 +170,38 @@
             </label>
           </div>
         </div>
-        <!-- Export Button-->
-        <div class="col-sm-12 col-md-6">
-          <div class="text-md-end">
-            <button
-              class="btn btn-warning ms-2"
-              [disabled]="(tables$ | async)?.length === 0"
-              (click)="exportToExcel()"
-            >
-              Export
-            </button>
+      
+        <!-- Search and Export -->
+        <div class="col-sm-12 col-md-8">
+          <div class="d-flex justify-content-end align-items-center">
+            <!-- Search Field -->
+            <div id="tickets-table_filter" class="dataTables_filter">
+              <label class="d-inline-flex align-items-center">
+                Search:
+                <input
+                  type="text"
+                  name="searchTerm"
+                  class="form-control form-control-sm ms-2"
+                  aria-controls="tickets-table"
+                  [(ngModel)]="service.searchTerm"
+                />
+              </label>
+            </div>
+      
+            <!-- Export Button -->
+            <div>
+              <button
+                class="btn btn-warning ms-2"
+                [disabled]="(tables$ | async)?.length === 0"
+                (click)="exportToExcel()"
+              >
+                Export
+              </button>
+            </div>
           </div>
         </div>
       </div>
+      
       <!-- Table -->
       <div class="table-responsive">
         <table
@@ -195,16 +214,16 @@
               <th class="brandcolor" sortable="PLANT" (sort)="onSort($event)">
                 Plant
               </th>
-              <th class="brandcolor" sortable="STGE_LOC" (sort)="onSort($event)">
+              <th class="brandcolor" sortable="GL_ACCOUNT" (sort)="onSort($event)">
                 GL Account
               </th>
-              <!-- <th class="brandcolor" sortable="MAT_DES" (sort)="onSort($event)">
+              <!-- <th class="brandcolor" sortable="ORDER" (sort)="onSort($event)">
                 Order
               </th> -->
-              <th class="brandcolor" sortable="MAT_DES" (sort)="onSort($event)">
+              <th class="brandcolor" sortable="MAT_DOC" (sort)="onSort($event)">
                 Material Document
               </th>
-              <th class="brandcolor" sortable="MVT_TYPE" (sort)="onSort($event)">
+              <th class="brandcolor" sortable="DOC_DATE" (sort)="onSort($event)">
                 Document Date
               </th>
               <th class="brandcolor" sortable="POSTING_DATE" (sort)="onSort($event)">
@@ -216,7 +235,7 @@
               <th class="brandcolor" sortable="MAT_DES" (sort)="onSort($event)">
                 Mat.Desc
               </th>
-              <th class="brandcolor" sortable="MVT_TYPE" (sort)="onSort($event)">
+              <th class="brandcolor" sortable="QUANITY" (sort)="onSort($event)">
                 Qty
               </th>
               <th
@@ -226,7 +245,7 @@
               >
                 Amt in loc.cur
               </th>
-              <th class="brandcolor" sortable="L_CUR_AMT" (sort)="onSort($event)">
+              <th class="brandcolor" sortable="PUR_ORDER" (sort)="onSort($event)">
                 Purchase Order
               </th>
               <th
@@ -307,11 +326,6 @@
                   <table class="table mb-0 table-striped">
                     <thead class="bg-dark text-white">
                       <tr>
-                        <!-- <th>Purchase Order</th>
-                        <th>Doc Date</th>
-                        <th>Qty</th>
-                        <th>Order</th>
-                        <th>GL account</th> -->
                         <th>Doc Header Text</th>
                         <th>S.Loc</th>
                         <th>Entry Date</th>
@@ -358,30 +372,55 @@
               <li
                 class="page-item"
                 [class.disabled]="service.page === 1"
-                (click)="service.changePage(service.page - 1)"
+                [class.highlighted]="service.clickedButton === 'previous'"
+                (click)="onButtonClick('previous')"
               >
-                <a class="page-link" href="javascript:void(0)">Previous</a>
+                <a
+                  class="page-link"
+                  href="javascript:void(0)"
+                  [ngStyle]="{ 
+                    border: service.page > 1 ? '2px solid MediumSeaGreen' : 'none',
+                    backgroundColor: service.clickedButton === 'previous' ? '#d4edda' : 'transparent',
+                    transition: 'background-color 0.3s ease, transform 0.2s ease'
+                  }"
+                  [class.page-link-hover]="service.page > 1"
+                >
+                  Previous
+                </a>
               </li>
-
+      
               <!-- Current Page Display -->
               <li class="page-item active">
-                <a class="page-link" href="javascript:void(0)">{{
-                  service.page
-                }}</a>
+                <a class="page-link" href="javascript:void(0)">
+                  {{ service.page }}
+                </a>
               </li>
-
+      
               <!-- Next Button -->
               <li
                 class="page-item"
                 [class.disabled]="service.page === service.totalPages"
-                (click)="service.changePage(service.page + 1)"
+                [class.highlighted]="service.clickedButton === 'next'"
+                (click)="onButtonClick('next')"
               >
-                <a class="page-link" href="javascript:void(0)">Next</a>
+                <a
+                  class="page-link"
+                  href="javascript:void(0)"
+                  [ngStyle]="{ 
+                    border: service.page < service.totalPages ? '2px solid MediumSeaGreen' : 'none',
+                    backgroundColor: service.clickedButton === 'next' ? '#d4edda' : 'transparent',
+                    transition: 'background-color 0.3s ease, transform 0.2s ease'
+                  }"
+                  [class.page-link-hover]="service.page < service.totalPages"
+                >
+                  Next
+                </a>
               </li>
             </ul>
           </div>
         </div>
       </div>
+                
       <!-- End of Pagination -->
     </div>
   </div>

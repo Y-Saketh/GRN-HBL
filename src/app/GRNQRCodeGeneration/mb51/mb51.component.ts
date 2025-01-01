@@ -36,7 +36,7 @@ export class Mb51Component implements OnInit {
   //   { id: 122, itemName: 'Type 122' },
   //   { id: 123, itemName: 'Type 123' }
   // ];
-  
+  clickedButton: string | null = null;
   dropdownList = [];
   selectedItems = [];
   dropdownSettings = {};
@@ -70,6 +70,10 @@ export class Mb51Component implements OnInit {
     // showWeekNumbers: false, // Optional: Hide week numbers
     containerClass: 'theme-blue', // Optional: Use a predefined theme
   };
+
+  onButtonClick(button: string): void {
+    this.service.handleButtonClick(button);
+  }
 
   ngOnInit() {
     const currentDate = new Date();
@@ -194,6 +198,17 @@ export class Mb51Component implements OnInit {
       this.hideme.push(true);
     }
   }
+
+  searchPage: number | null = null; // Holds the value of the search input
+
+  jumpToPage(): void {
+    if (this.searchPage && this.searchPage >= 1 && this.searchPage <= this.service.totalPages) {
+      this.service.changePage(this.searchPage); // Navigate to the entered page
+      this.searchPage = null; // Reset the input field
+    }
+  }
+  
+
 
 /**
 * Sort table data

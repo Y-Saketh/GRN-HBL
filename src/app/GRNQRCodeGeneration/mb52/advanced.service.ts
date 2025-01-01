@@ -15,6 +15,7 @@ interface State {
   endIndex: number;
   totalRecords: number;
   changePage: number;
+  clickedButton: string;
 }
 
 const compare = (v1: string, v2: string) => (v1 < v2 ? -1 : v1 > v2 ? 1 : 0);
@@ -35,23 +36,40 @@ function sort(tables: Table[], column: string, direction: string): Table[] {
 /**
  * Check if the table row matches the search term
  */
-function matches(tables: Table, term: string, pipe: PipeTransform) {
-  return (
-    tables.MATNR.toString().includes(term.toLowerCase()) || // Material
-    tables.MAKTX.toLowerCase().includes(term.toLowerCase()) || // Material Description
-    tables.WERKS.toString().includes(term.toLowerCase()) || // Plant
-    tables.LGORT.toLowerCase().includes(term.toLowerCase()) || // Storage Location
-    tables.LGOBE.toLowerCase().includes(term.toLowerCase()) || // sl Description
-    tables.MEINS.toLowerCase().includes(term.toLowerCase()) || // Base Unit of Measure
-    tables.LABST.toString().includes(term.toLowerCase()) || // Unrestricted Stock Quantity
-    pipe.transform(tables.WLABS)?.toString().includes(term) || // Unrestricted Stock Value
-    tables.INSME.toString().includes(term.toLowerCase())  || // Quality Inspection Stock Quantity
-    tables.WINSM.toString().includes(term.toLowerCase())  // Quality Inspection Stock Quantity
-  );
+// function matches(tables: Table, term: string, pipe: PipeTransform) {
+//   return (
+//     tables.MATNR.toString().includes(term.toLowerCase()) || // Material
+//     tables.MAKTX.toLowerCase().includes(term.toLowerCase()) || // Material Description
+//     tables.WERKS.toString().includes(term.toLowerCase()) || // Plant
+//     tables.LGORT.toLowerCase().includes(term.toLowerCase()) || // Storage Location
+//     tables.LGOBE.toLowerCase().includes(term.toLowerCase()) || // sl Description
+//     tables.MEINS.toLowerCase().includes(term.toLowerCase()) || // Base Unit of Measure
+//     tables.LABST.toString().includes(term.toLowerCase()) || // Unrestricted Stock Quantity
+//     pipe.transform(tables.WLABS)?.toString().includes(term) || // Unrestricted Stock Value
+//     tables.INSME.toString().includes(term.toLowerCase())  || // Quality Inspection Stock Quantity
+//     tables.WINSM.toString().includes(term.toLowerCase())  // Quality Inspection Stock Quantity
+//   );
+// }
+
+function matches(tables: Table, term: string, pipe: PipeTransform): boolean {
+  const searchTerm = term.toLowerCase();
+
+  // Iterate over all properties of the table object
+  for (const key in tables) {
+    if (Object.prototype.hasOwnProperty.call(tables, key)) {
+      const value = tables[key];
+      // Check if the value exists and includes the search term
+      if (value !== null && value !== undefined) {
+        const stringValue = typeof value === 'string' ? value : pipe.transform(value)?.toString();
+        if (stringValue?.toLowerCase().includes(searchTerm)) {
+          return true;
+        }
+      }
+    }
+  }
+
+  return false;
 }
-
-
-
 
 @Injectable({
   providedIn: 'root',
@@ -71,6 +89,7 @@ export class AdvancedService {
     endIndex: 9,
     totalRecords: 0,
     changePage: 0,
+    clickedButton: '',
   };
   private apiData: Table[] = [];
 
@@ -142,6 +161,19 @@ export class AdvancedService {
   set sortDirection(sortDirection: SortDirection) {
     this._set({ sortDirection });
   }
+
+  get clickedButton(): string {
+    return this._state.clickedButton;
+  }
+
+  handleButtonClick(button: string): void {
+    if (button === 'previous' && this._state.page > 1) {
+      this._set({ clickedButton: 'previous', page: this._state.page - 1 });
+    } else if (button === 'next' && this._state.page < this.totalPages) {
+      this._set({ clickedButton: 'next', page: this._state.page + 1 });
+    }
+  }
+
 
   /** Change page */
   changePage(page: number): void {

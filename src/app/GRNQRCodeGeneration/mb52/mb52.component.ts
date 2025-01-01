@@ -35,6 +35,7 @@ export class Mb52Component implements OnInit {
     mattypes: string[] = ["ZANL","ZCNS","ZERM","ZFRT","ZHLB","ZMRN","ZROH","ZVRP"];
     tables$: Observable<Table[]>;
     total$: Observable<number>;
+    clickedButton: string | null = null;
   
     @ViewChildren(AdvancedSortableDirective) headers: QueryList<AdvancedSortableDirective>;
 
@@ -48,6 +49,10 @@ export class Mb52Component implements OnInit {
     dateInputFormat: 'DD-MM-YYYY', // Set the date format
     containerClass: 'theme-blue', // Optional: Use a predefined theme
   };
+
+  onButtonClick(button: string): void {
+    this.service.handleButtonClick(button);
+  }
 
   exportToExcel(): void {
       // Retrieve the current table data
@@ -112,8 +117,8 @@ export class Mb52Component implements OnInit {
     this.validationform = this.formBuilder.group({
       plant: ['', Validators.required],
       storageLocation: ['', Validators.required],
-      materialFrom: ['', Validators.required],
-      materialTo: ['', Validators.required],
+      materialFrom: ['1000000000', Validators.required],
+      materialTo: ['1999999999', Validators.required],
       materialType: ['', Validators.required],
     });
 

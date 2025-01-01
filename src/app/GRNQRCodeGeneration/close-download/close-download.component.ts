@@ -30,6 +30,7 @@ export class CloseDownloadComponent implements OnInit {
   plants: string[] = [];
   tables$: Observable<Table[]>;
   total$: Observable<number>;
+  clickedButton: string | null = null;
 
   @ViewChildren(AdvancedSortableDirective) headers: QueryList<AdvancedSortableDirective>;
   public isCollapsed = true;
@@ -50,6 +51,11 @@ export class CloseDownloadComponent implements OnInit {
     // showWeekNumbers: false, // Optional: Hide week numbers
     containerClass: 'theme-blue', // Optional: Use a predefined theme
   };
+
+  onButtonClick(button: string): void {
+    this.service.handleButtonClick(button);
+  }
+  
   ngOnInit(): void {
     this.submit = false;
     const currentDate = new Date();
