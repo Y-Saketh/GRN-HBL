@@ -38,6 +38,7 @@ export class OpenpolistComponent implements OnInit {
   hideme: boolean[] = [];
   tables$: Observable<Table[]>;
   total$: Observable<number>;
+  clickedButton: string | null = null;
 
   @ViewChildren(AdvancedSortableDirective) headers: QueryList<AdvancedSortableDirective>;
   public isCollapsed = true;
@@ -76,6 +77,11 @@ export class OpenpolistComponent implements OnInit {
     dateInputFormat: 'DD-MM-YYYY', // Set the date format
     containerClass: 'theme-blue', // Optional: Use a predefined theme
   };
+
+  onButtonClick(button: string): void {
+    this.service.handleButtonClick(button);
+  }
+
   ngOnInit(): void {
     this.submit = false;
     const currentDate = new Date();
@@ -327,7 +333,7 @@ export class OpenpolistComponent implements OnInit {
           this.service.setTableData(res || []);
           document.getElementById('elmLoader')?.classList.add('d-none')
           this._fetchData();
-          this.validationform.reset()
+          // this.validationform.reset()
           
         },
         error: (error: any) => {

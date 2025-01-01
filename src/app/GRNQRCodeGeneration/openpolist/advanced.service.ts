@@ -15,6 +15,7 @@ interface State {
   endIndex: number;
   totalRecords: number;
   changePage: number;
+  clickedButton: string;
 }
 
 const compare = (v1: string, v2: string) => (v1 < v2 ? -1 : v1 > v2 ? 1 : 0);
@@ -35,45 +36,65 @@ function sort(tables: Table[], column: string, direction: string): Table[] {
 /**
  * Check if the table row matches the search term
  */
-function matches(tables: Table, term: string, pipe: PipeTransform) {
-    return (
-      tables.EBELN.toLowerCase().includes(term.toLowerCase()) || // PO
-      tables.EBELP.toLowerCase().includes(term.toLowerCase()) || // PO Item 
-      tables.EKGRP.toLowerCase().includes(term.toLowerCase()) || // Purchase Group
-      tables.BEDAT.toLowerCase().includes(term.toLowerCase()) || // Purchase Document Date
-      tables.LIFNR.toLowerCase().includes(term.toLowerCase()) || // Supplier Code
-      tables.NAME1.toLowerCase().includes(term.toLowerCase()) || // Vendor Address
-      tables.LOEKZ.toLowerCase().includes(term.toLowerCase()) || // Deletion/Blocked
-      tables.MATNR.toLowerCase().includes(term.toLowerCase()) || // Material
-      tables.TXZ01.toLowerCase().includes(term.toLowerCase()) || // Updating Text Field
-      tables.WERKS.toLowerCase().includes(term.toLowerCase()) || // Plant
-      pipe.transform(tables.MENGE).includes(term) || // Alternative Unit of Measure
-      tables.MEINS.toLowerCase().includes(term.toLowerCase()) || // Unit of Measure
-      pipe.transform(tables.MENGE1).includes(term) || // Bill of Quantity (BOM)
-      tables.MEINS1.toLowerCase().includes(term.toLowerCase()) || // Base Unit of Measure
-      pipe.transform(tables.NETWR).includes(term) || // Net Price
-      pipe.transform(tables.DMBTR1).includes(term) || // Sum of Amount
-      tables.EINDT.toLowerCase().includes(term.toLowerCase()) || // Delivery Date
-      tables.DATUM.toLowerCase().includes(term.toLowerCase()) || // Current Date
-      pipe.transform(tables.LV_MENGE_SUM).includes(term) || // -
-      pipe.transform(tables.DAYS).includes(term) || // -
-      tables.EKNAM.toLowerCase().includes(term.toLowerCase()) || // Description of Purchase Group
-      pipe.transform(tables.WRBTR).includes(term) || // Local Current Amount
-      tables.BUYER.toLowerCase().includes(term.toLowerCase()) || // Supplier Email ID
-      tables.ERNAM.toLowerCase().includes(term.toLowerCase()) || // Created By
-      tables.ELIKZ.toLowerCase().includes(term.toLowerCase()) ||// Open PO
-      // inbound delivery
-      tables.DocumentDate.toLowerCase().includes(term.toLowerCase()) || // Document Date
-      tables.XBLNR.toLowerCase().includes(term.toLowerCase()) || // Invoice Number
-      tables.BLDAT.toLowerCase().includes(term.toLowerCase()) || // Invoice Date
-      tables.vehicleNumber.toLowerCase().includes(term.toLowerCase()) || // Vehicle Number
-      tables.transporterName.toLowerCase().includes(term.toLowerCase()) || // Transporter Name
-      tables.GATEENTRY.toLowerCase().includes(term.toLowerCase()) || // Gate Entry Number
-      tables.GATEDATE.toLowerCase().includes(term.toLowerCase()) || // Gate Entry Date
-      tables.lrDate.toLowerCase().includes(term.toLowerCase()) || // LR Date
-      tables.lrNo.toLowerCase().includes(term.toLowerCase()) // LR Number
-    );
+// function matches(tables: Table, term: string, pipe: PipeTransform) {
+//     return (
+//       tables.EBELN.toLowerCase().includes(term.toLowerCase()) || // PO
+//       tables.EBELP.toLowerCase().includes(term.toLowerCase()) || // PO Item 
+//       tables.EKGRP.toLowerCase().includes(term.toLowerCase()) || // Purchase Group
+//       tables.BEDAT.toLowerCase().includes(term.toLowerCase()) || // Purchase Document Date
+//       tables.LIFNR.toLowerCase().includes(term.toLowerCase()) || // Supplier Code
+//       tables.NAME1.toLowerCase().includes(term.toLowerCase()) || // Vendor Address
+//       tables.LOEKZ.toLowerCase().includes(term.toLowerCase()) || // Deletion/Blocked
+//       tables.MATNR.toLowerCase().includes(term.toLowerCase()) || // Material
+//       tables.TXZ01.toLowerCase().includes(term.toLowerCase()) || // Updating Text Field
+//       tables.WERKS.toLowerCase().includes(term.toLowerCase()) || // Plant
+//       pipe.transform(tables.MENGE).includes(term) || // Alternative Unit of Measure
+//       tables.MEINS.toLowerCase().includes(term.toLowerCase()) || // Unit of Measure
+//       pipe.transform(tables.MENGE1).includes(term) || // Bill of Quantity (BOM)
+//       tables.MEINS1.toLowerCase().includes(term.toLowerCase()) || // Base Unit of Measure
+//       pipe.transform(tables.NETWR).includes(term) || // Net Price
+//       pipe.transform(tables.DMBTR1).includes(term) || // Sum of Amount
+//       tables.EINDT.toLowerCase().includes(term.toLowerCase()) || // Delivery Date
+//       tables.DATUM.toLowerCase().includes(term.toLowerCase()) || // Current Date
+//       pipe.transform(tables.LV_MENGE_SUM).includes(term) || // -
+//       pipe.transform(tables.DAYS).includes(term) || // -
+//       tables.EKNAM.toLowerCase().includes(term.toLowerCase()) || // Description of Purchase Group
+//       pipe.transform(tables.WRBTR).includes(term) || // Local Current Amount
+//       tables.BUYER.toLowerCase().includes(term.toLowerCase()) || // Supplier Email ID
+//       tables.ERNAM.toLowerCase().includes(term.toLowerCase()) || // Created By
+//       tables.ELIKZ.toLowerCase().includes(term.toLowerCase()) ||// Open PO
+//       // inbound delivery
+//       tables.DocumentDate.toLowerCase().includes(term.toLowerCase()) || // Document Date
+//       tables.XBLNR.toLowerCase().includes(term.toLowerCase()) || // Invoice Number
+//       tables.BLDAT.toLowerCase().includes(term.toLowerCase()) || // Invoice Date
+//       tables.vehicleNumber.toLowerCase().includes(term.toLowerCase()) || // Vehicle Number
+//       tables.transporterName.toLowerCase().includes(term.toLowerCase()) || // Transporter Name
+//       tables.GATEENTRY.toLowerCase().includes(term.toLowerCase()) || // Gate Entry Number
+//       tables.GATEDATE.toLowerCase().includes(term.toLowerCase()) || // Gate Entry Date
+//       tables.lrDate.toLowerCase().includes(term.toLowerCase()) || // LR Date
+//       tables.lrNo.toLowerCase().includes(term.toLowerCase()) // LR Number
+//     );
+//   }
+
+function matches(tables: Table, term: string, pipe: PipeTransform): boolean {
+  const searchTerm = term.toLowerCase();
+
+  // Iterate over all properties of the table object
+  for (const key in tables) {
+    if (Object.prototype.hasOwnProperty.call(tables, key)) {
+      const value = tables[key];
+      // Check if the value exists and includes the search term
+      if (value !== null && value !== undefined) {
+        const stringValue = typeof value === 'string' ? value : pipe.transform(value)?.toString();
+        if (stringValue?.toLowerCase().includes(searchTerm)) {
+          return true;
+        }
+      }
+    }
   }
+
+  return false;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -93,6 +114,7 @@ export class AdvancedService {
     endIndex: 9,
     totalRecords: 0,
     changePage: 0,
+    clickedButton: '',
   };
   private apiData: Table[] = [];
 
@@ -164,6 +186,19 @@ export class AdvancedService {
   set sortDirection(sortDirection: SortDirection) {
     this._set({ sortDirection });
   }
+
+  get clickedButton(): string {
+    return this._state.clickedButton;
+  }
+
+  handleButtonClick(button: string): void {
+    if (button === 'previous' && this._state.page > 1) {
+      this._set({ clickedButton: 'previous', page: this._state.page - 1 });
+    } else if (button === 'next' && this._state.page < this.totalPages) {
+      this._set({ clickedButton: 'next', page: this._state.page + 1 });
+    }
+  }
+
 
   /** Change page */
   changePage(page: number): void {

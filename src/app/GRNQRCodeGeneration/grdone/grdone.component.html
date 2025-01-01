@@ -198,7 +198,7 @@
     <!-- <div class="card"> -->
     <div class="card-body">
       <div class="row mb-md-2">
-        <div class="col-sm-12 col-md-6">
+        <div class="col-sm-12 col-md-4">
           <div class="dataTables_length">
             <label class="d-inline-flex align-items-center">
               Show
@@ -207,6 +207,7 @@
                 aria-controls="tickets-table"
                 class="form-control form-control-sm mx-2"
                 [(ngModel)]="service.pageSize"
+                [ngModelOptions]="{ standalone: true }"
               >
                 <option [ngValue]="10">10</option>
                 <option [ngValue]="25">25</option>
@@ -217,16 +218,34 @@
             </label>
           </div>
         </div>
-        <!-- Export Button-->
-        <div class="col-sm-12 col-md-6">
-          <div class="text-md-end">
-            <button
-              class="btn btn-warning ms-2"
-              [disabled]="(tables$ | async)?.length === 0"
-              (click)="exportToExcel()"
-            >
-              Export
-            </button>
+      
+        <!-- Search and Export -->
+        <div class="col-sm-12 col-md-8">
+          <div class="d-flex justify-content-end align-items-center">
+            <!-- Search Field -->
+            <div id="tickets-table_filter" class="dataTables_filter">
+              <label class="d-inline-flex align-items-center">
+                Search:
+                <input
+                  type="text"
+                  name="searchTerm"
+                  class="form-control form-control-sm ms-2"
+                  aria-controls="tickets-table"
+                  [(ngModel)]="service.searchTerm"
+                />
+              </label>
+            </div>
+      
+            <!-- Export Button -->
+            <div>
+              <button
+                class="btn btn-warning ms-2"
+                [disabled]="(tables$ | async)?.length === 0"
+                (click)="exportToExcel()"
+              >
+                Export
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -451,25 +470,49 @@
               <li
                 class="page-item"
                 [class.disabled]="service.page === 1"
-                (click)="service.changePage(service.page - 1)"
+                [class.highlighted]="service.clickedButton === 'previous'"
+                (click)="onButtonClick('previous')"
               >
-                <a class="page-link" href="javascript:void(0)">Previous</a>
+                <a
+                  class="page-link"
+                  href="javascript:void(0)"
+                  [ngStyle]="{ 
+                    border: service.page > 1 ? '2px solid MediumSeaGreen' : 'none',
+                    backgroundColor: service.clickedButton === 'previous' ? '#d4edda' : 'transparent',
+                    transition: 'background-color 0.3s ease, transform 0.2s ease'
+                  }"
+                  [class.page-link-hover]="service.page > 1"
+                >
+                  Previous
+                </a>
               </li>
-
+      
               <!-- Current Page Display -->
               <li class="page-item active">
-                <a class="page-link" href="javascript:void(0)">{{
-                  service.page
-                }}</a>
+                <a class="page-link" href="javascript:void(0)">
+                  {{ service.page }}
+                </a>
               </li>
-
+      
               <!-- Next Button -->
               <li
                 class="page-item"
                 [class.disabled]="service.page === service.totalPages"
-                (click)="service.changePage(service.page + 1)"
+                [class.highlighted]="service.clickedButton === 'next'"
+                (click)="onButtonClick('next')"
               >
-                <a class="page-link" href="javascript:void(0)">Next</a>
+                <a
+                  class="page-link"
+                  href="javascript:void(0)"
+                  [ngStyle]="{ 
+                    border: service.page < service.totalPages ? '2px solid MediumSeaGreen' : 'none',
+                    backgroundColor: service.clickedButton === 'next' ? '#d4edda' : 'transparent',
+                    transition: 'background-color 0.3s ease, transform 0.2s ease'
+                  }"
+                  [class.page-link-hover]="service.page < service.totalPages"
+                >
+                  Next
+                </a>
               </li>
             </ul>
           </div>

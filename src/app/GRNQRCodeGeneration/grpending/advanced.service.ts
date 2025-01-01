@@ -15,6 +15,7 @@ interface State {
   endIndex: number;
   totalRecords: number;
   changePage: number;
+  clickedButton: string;
 }
 
 const compare = (v1: string, v2: string) => (v1 < v2 ? -1 : v1 > v2 ? 1 : 0);
@@ -35,37 +36,55 @@ function sort(tables: Table[], column: string, direction: string): Table[] {
 /**
  * Check if the table row matches the search term
  */
-function matches(tables: Table, term: string, pipe: PipeTransform) {
-  return (
-    tables.WERKS.toLowerCase().includes(term.toLowerCase()) || // Plant
-    tables.VBELN?.toLowerCase().includes(term.toLowerCase()) || // Inbound Delivery
-    tables.POSNR?.toLowerCase().includes(term.toLowerCase()) || // Inbound Delivery Item
-    tables.ERDAT?.toLowerCase().includes(term.toLowerCase()) || // Inbound Created On
-    tables.VGBEL?.toLowerCase().includes(term.toLowerCase()) ||// PO
-    tables.VGPOS?.toLowerCase().includes(term.toLowerCase()) || // PO Item
-    tables.LGORT?.toLowerCase().includes(term.toLowerCase()) || // Storage Location
-    tables.MATNR?.toLowerCase().includes(term.toLowerCase()) || // Material
-    tables.MAKTX?.toLowerCase().includes(term.toLowerCase()) || // Material Description
-    tables.MEINS?.toLowerCase().includes(term.toLowerCase()) || // Unit of Measure
-    pipe.transform(tables.LFIMG)?.toString().includes(term) || // Quantity
-    tables.GATEENTRY?.toLowerCase().includes(term.toLowerCase()) || // Gate Entry No
-    tables.GATEDATE?.toLowerCase().includes(term.toLowerCase()) || // Gate Entry Date
+// function matches(tables: Table, term: string, pipe: PipeTransform) {
+//   return (
+//     tables.WERKS.toLowerCase().includes(term.toLowerCase()) || // Plant
+//     tables.VBELN?.toLowerCase().includes(term.toLowerCase()) || // Inbound Delivery
+//     tables.POSNR?.toLowerCase().includes(term.toLowerCase()) || // Inbound Delivery Item
+//     tables.ERDAT?.toLowerCase().includes(term.toLowerCase()) || // Inbound Created On
+//     tables.VGBEL?.toLowerCase().includes(term.toLowerCase()) ||// PO
+//     tables.VGPOS?.toLowerCase().includes(term.toLowerCase()) || // PO Item
+//     tables.LGORT?.toLowerCase().includes(term.toLowerCase()) || // Storage Location
+//     tables.MATNR?.toLowerCase().includes(term.toLowerCase()) || // Material
+//     tables.MAKTX?.toLowerCase().includes(term.toLowerCase()) || // Material Description
+//     tables.MEINS?.toLowerCase().includes(term.toLowerCase()) || // Unit of Measure
+//     pipe.transform(tables.LFIMG)?.toString().includes(term) || // Quantity
+//     tables.GATEENTRY?.toLowerCase().includes(term.toLowerCase()) || // Gate Entry No
+//     tables.GATEDATE?.toLowerCase().includes(term.toLowerCase()) || // Gate Entry Date
 
-    tables.MBLNR?.toLowerCase().includes(term.toLowerCase()) || // Material Doc
-    tables.BUDAT?.toLowerCase().includes(term.toLowerCase()) || // Posting Date
-    pipe.transform(tables.AGE)?.toString().includes(term) || // Days Taken for GR
-    tables.BELNR_MIRO?.toLowerCase().includes(term.toLowerCase()) || // MIRO No
-    tables.BUDAT_MIRO?.toLowerCase().includes(term.toLowerCase()) || // MIRO Date
-    tables.XBLNR?.toLowerCase().includes(term.toLowerCase()) || // Invoice No
-    tables.BLDAT?.toLowerCase().includes(term.toLowerCase()) || // Invoice Date
-    tables.AEDAT?.toLowerCase().includes(term.toLowerCase()) || // PO Date
-    tables.ERNAM?.toLowerCase().includes(term.toLowerCase()) || // Created By
-    tables.LGOBE?.toLowerCase().includes(term.toLowerCase()) || // Storage Location Name
-    pipe.transform(tables.AGE1)?.toString().includes(term)  // 'Days taken for IBD
-  );
+//     tables.MBLNR?.toLowerCase().includes(term.toLowerCase()) || // Material Doc
+//     tables.BUDAT?.toLowerCase().includes(term.toLowerCase()) || // Posting Date
+//     pipe.transform(tables.AGE)?.toString().includes(term) || // Days Taken for GR
+//     tables.BELNR_MIRO?.toLowerCase().includes(term.toLowerCase()) || // MIRO No
+//     tables.BUDAT_MIRO?.toLowerCase().includes(term.toLowerCase()) || // MIRO Date
+//     tables.XBLNR?.toLowerCase().includes(term.toLowerCase()) || // Invoice No
+//     tables.BLDAT?.toLowerCase().includes(term.toLowerCase()) || // Invoice Date
+//     tables.AEDAT?.toLowerCase().includes(term.toLowerCase()) || // PO Date
+//     tables.ERNAM?.toLowerCase().includes(term.toLowerCase()) || // Created By
+//     tables.LGOBE?.toLowerCase().includes(term.toLowerCase()) || // Storage Location Name
+//     pipe.transform(tables.AGE1)?.toString().includes(term)  // 'Days taken for IBD
+//   );
+// }
+
+function matches(tables: Table, term: string, pipe: PipeTransform): boolean {
+  const searchTerm = term.toLowerCase();
+
+  // Iterate over all properties of the table object
+  for (const key in tables) {
+    if (Object.prototype.hasOwnProperty.call(tables, key)) {
+      const value = tables[key];
+      // Check if the value exists and includes the search term
+      if (value !== null && value !== undefined) {
+        const stringValue = typeof value === 'string' ? value : pipe.transform(value)?.toString();
+        if (stringValue?.toLowerCase().includes(searchTerm)) {
+          return true;
+        }
+      }
+    }
+  }
+
+  return false;
 }
-
-
 
 @Injectable({
   providedIn: 'root',
@@ -85,6 +104,7 @@ export class AdvancedService {
     endIndex: 9,
     totalRecords: 0,
     changePage: 0,
+    clickedButton: '',
   };
   private apiData: Table[] = [];
 
@@ -156,6 +176,19 @@ export class AdvancedService {
   set sortDirection(sortDirection: SortDirection) {
     this._set({ sortDirection });
   }
+
+  get clickedButton(): string {
+    return this._state.clickedButton;
+  }
+
+  handleButtonClick(button: string): void {
+    if (button === 'previous' && this._state.page > 1) {
+      this._set({ clickedButton: 'previous', page: this._state.page - 1 });
+    } else if (button === 'next' && this._state.page < this.totalPages) {
+      this._set({ clickedButton: 'next', page: this._state.page + 1 });
+    }
+  }
+
 
   /** Change page */
   changePage(page: number): void {

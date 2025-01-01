@@ -15,6 +15,7 @@ interface State {
   endIndex: number;
   totalRecords: number;
   changePage: number;
+  clickedButton: string;
 }
 
 const compare = (v1: string, v2: string) => (v1 < v2 ? -1 : v1 > v2 ? 1 : 0);
@@ -35,30 +36,49 @@ function sort(tables: Table[], column: string, direction: string): Table[] {
 /**
  * Check if the table row matches the search term
  */
-function matches(tables: Table, term: string, pipe: PipeTransform): boolean {
-  const lowerCaseTerm = term.toLowerCase();
-  // console.log("tables",tables)
-  return (
-    (tables.CLOSE && tables.CLOSE.toLowerCase().includes(lowerCaseTerm)) || // Close
-    (tables.BANFN && tables.BANFN.toLowerCase().includes(lowerCaseTerm)) || // Purchase Requisition
-    (tables.BNFPO && tables.BNFPO.toString().toLowerCase().includes(lowerCaseTerm)) || // Purchase Item
-    (tables.BADAT && tables.BADAT.toLowerCase().includes(lowerCaseTerm)) || // Requisition Date
-    (tables.BSART && tables.BSART.toLowerCase().includes(lowerCaseTerm)) || // Document Type
-    (tables.EKGRP && tables.EKGRP.toLowerCase().includes(lowerCaseTerm)) || // Purchase Group
-    (tables.MATNR && tables.MATNR.toLowerCase().includes(lowerCaseTerm)) || // Material Number
-    (tables.WERKS && tables.WERKS.toLowerCase().includes(lowerCaseTerm)) || // Plant
-    (tables.MENGE && pipe.transform(tables.MENGE).includes(term)) || // Quantity Requested
-    (tables.MEINS && tables.MEINS.toLowerCase().includes(lowerCaseTerm)) || // Unit of Measure
-    (tables.LOEKZ && tables.LOEKZ.toLowerCase().includes(lowerCaseTerm)) || // Delivery Indicator
-    (tables.AFNAM && tables.AFNAM.toLowerCase().includes(lowerCaseTerm)) || // Requisitioner
-    (tables.TXZ01 && tables.TXZ01.toLowerCase().includes(lowerCaseTerm)) || // Short Text
-    (tables.LFDAT && tables.LFDAT.toLowerCase().includes(lowerCaseTerm)) || // Delivery Date
-    (tables.FRGDT && tables.FRGDT.toLowerCase().includes(lowerCaseTerm)) || // Release Date
-    (tables.TOT_VAL && pipe.transform(tables.TOT_VAL).includes(term)) || // Total Value
-    (tables.AGE && pipe.transform(tables.AGE).includes(term)) // Pending Days
-  );
-}
+// function matches(tables: Table, term: string, pipe: PipeTransform): boolean {
+//   const lowerCaseTerm = term.toLowerCase();
+//   // console.log("tables",tables)
+//   return (
+//     (tables.CLOSE && tables.CLOSE.toLowerCase().includes(lowerCaseTerm)) || // Close
+//     (tables.BANFN && tables.BANFN.toLowerCase().includes(lowerCaseTerm)) || // Purchase Requisition
+//     (tables.BNFPO && tables.BNFPO.toString().toLowerCase().includes(lowerCaseTerm)) || // Purchase Item
+//     (tables.BADAT && tables.BADAT.toLowerCase().includes(lowerCaseTerm)) || // Requisition Date
+//     (tables.BSART && tables.BSART.toLowerCase().includes(lowerCaseTerm)) || // Document Type
+//     (tables.EKGRP && tables.EKGRP.toLowerCase().includes(lowerCaseTerm)) || // Purchase Group
+//     (tables.MATNR && tables.MATNR.toLowerCase().includes(lowerCaseTerm)) || // Material Number
+//     (tables.WERKS && tables.WERKS.toLowerCase().includes(lowerCaseTerm)) || // Plant
+//     (tables.MENGE && pipe.transform(tables.MENGE).includes(term)) || // Quantity Requested
+//     (tables.MEINS && tables.MEINS.toLowerCase().includes(lowerCaseTerm)) || // Unit of Measure
+//     (tables.LOEKZ && tables.LOEKZ.toLowerCase().includes(lowerCaseTerm)) || // Delivery Indicator
+//     (tables.AFNAM && tables.AFNAM.toLowerCase().includes(lowerCaseTerm)) || // Requisitioner
+//     (tables.TXZ01 && tables.TXZ01.toLowerCase().includes(lowerCaseTerm)) || // Short Text
+//     (tables.LFDAT && tables.LFDAT.toLowerCase().includes(lowerCaseTerm)) || // Delivery Date
+//     (tables.FRGDT && tables.FRGDT.toLowerCase().includes(lowerCaseTerm)) || // Release Date
+//     (tables.TOT_VAL && pipe.transform(tables.TOT_VAL).includes(term)) || // Total Value
+//     (tables.AGE && pipe.transform(tables.AGE).includes(term)) // Pending Days
+//   );
+// }
 
+function matches(tables: Table, term: string, pipe: PipeTransform): boolean {
+  const searchTerm = term.toLowerCase();
+
+  // Iterate over all properties of the table object
+  for (const key in tables) {
+    if (Object.prototype.hasOwnProperty.call(tables, key)) {
+      const value = tables[key];
+      // Check if the value exists and includes the search term
+      if (value !== null && value !== undefined) {
+        const stringValue = typeof value === 'string' ? value : pipe.transform(value)?.toString();
+        if (stringValue?.toLowerCase().includes(searchTerm)) {
+          return true;
+        }
+      }
+    }
+  }
+
+  return false;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -78,6 +98,7 @@ export class AdvancedService {
     endIndex: 9,
     totalRecords: 0,
     changePage: 0,
+    clickedButton: '',
   };
   private apiData: Table[] = [];
 
@@ -149,6 +170,19 @@ export class AdvancedService {
   set sortDirection(sortDirection: SortDirection) {
     this._set({ sortDirection });
   }
+
+  get clickedButton(): string {
+    return this._state.clickedButton;
+  }
+
+  handleButtonClick(button: string): void {
+    if (button === 'previous' && this._state.page > 1) {
+      this._set({ clickedButton: 'previous', page: this._state.page - 1 });
+    } else if (button === 'next' && this._state.page < this.totalPages) {
+      this._set({ clickedButton: 'next', page: this._state.page + 1 });
+    }
+  }
+
 
   /** Change page */
   changePage(page: number): void {
