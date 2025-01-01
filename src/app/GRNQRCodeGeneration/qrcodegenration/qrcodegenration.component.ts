@@ -439,6 +439,10 @@ export class QRcodegenrationComponent {
         let hasMismatchedQuantities = false;
         console.log("this.GrnResponse",this.GrnResponse)
         this.GrnResponses = this.GrnResponse?.filter(table => table.selected);
+        this.matchedAndUnmatchedData = this.matchedAndUnmatchedData.filter((grn) =>
+          this.GrnResponses?.some((dataa) => dataa.MATNR == grn.MATNR) && grn.selected == true
+      );
+      console.log("this.matchedAndUnmatchedData",this.matchedAndUnmatchedData)
         // console.log("this.GrnResponses",this.GrnResponses)
         this.GrnResponses.forEach((table) => {
           if (table.selected) {  // Check if the row is selected

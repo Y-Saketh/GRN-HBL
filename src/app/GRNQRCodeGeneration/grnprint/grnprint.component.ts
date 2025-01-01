@@ -707,7 +707,7 @@ export class GrnprintComponent implements OnInit {
     //   }
     // }|
   async printLabel2() {
-    this.qrCodes = [];
+    this.qrCodess = [];
     console.log("this.qrCodess", this.qrCodess);
     try {
       for (const table of this.qrCodess) {
@@ -800,7 +800,7 @@ export class GrnprintComponent implements OnInit {
   
         // Remove the old data for the material before adding the new one
         this.matchedAndUnmatchedData = this.matchedAndUnmatchedData.filter(
-            (data) => data.materialId !== selectedMaterial.MATNR
+            (data) => data.MATNR !== selectedMaterial.MATNR
         );
   
         // Add only the latest unmatched data (this will update the state for the material)
@@ -1407,7 +1407,7 @@ export class GrnprintComponent implements OnInit {
   
         // Remove the old data for the material before adding the new one
         this.matchedAndUnmatchedData = this.matchedAndUnmatchedData.filter(
-            (data) => data.materialId !== selectedMaterial.MATNR
+            (data) => data.MATNR !== selectedMaterial.MATNR
         );
   
         // Add only the latest unmatched data (this will update the state for the material)

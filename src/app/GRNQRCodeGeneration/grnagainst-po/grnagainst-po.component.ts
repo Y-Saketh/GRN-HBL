@@ -255,6 +255,10 @@ export class GRNagainstPOComponent{
         let hasEmptyShadows = false;
         let hasMismatchedQuantities = false;
         this.GrnResponses = this.GrnResponse?.filter(table => table.selected);
+        this.matchedAndUnmatchedData = this.matchedAndUnmatchedData.filter((grn) =>
+          this.GrnResponses?.some((dataa) => dataa.MATNR == grn.MATNR) && grn.selected == true
+      );
+      console.log("this.matchedAndUnmatchedData",this.matchedAndUnmatchedData)
         // console.log("this.GrnResponses",this.GrnResponses)
         this.GrnResponses.forEach((table) => {
           let shadowTotal = 0;

@@ -822,7 +822,10 @@ closePopup(): void {
   }
   async saveQRData(){
     this.selectedData = this.matchedAndUnmatchedData.filter(data => data.selected);
-
+    this.matchedAndUnmatchedData = this.matchedAndUnmatchedData.filter((grn) =>
+      this.selectedData?.some((dataa) => dataa.MATNR == grn.MATNR) && grn.selected == true
+  );
+  console.log("this.matchedAndUnmatchedData",this.matchedAndUnmatchedData)
     if (this.selectedData.length === 0) {
       await Swal.fire("", "No selected data available for QR generation.", "error");
       return;
