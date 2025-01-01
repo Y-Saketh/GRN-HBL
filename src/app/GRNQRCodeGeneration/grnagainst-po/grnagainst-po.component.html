@@ -240,20 +240,23 @@
                       <input type="text" [(ngModel)]="table.ABLAD" class="form-control form-control-sm" />
                     </td>
                     <td>
-                      <input type="number"  [(ngModel)]="table.ZLABEL" min="0"  [disabled]="!table.selected" (change)="onZLabelChange(i, table)" 
+                      <input type="number" (blur)="matchMaterial(i,table.ZLABEL, table)"   [(ngModel)]="table.ZLABEL" min="0"  [disabled]="!table.selected" (change)="onZLabelChange(i, table)" 
                         placeholder="Label Qty"  style="width: 8ch; text-align: center;"
                         />
   
                     </td>
-                    <td>
+                    <td  [ngClass]="{
+                      'row-highlighted-green': shouldHighlightRow(table.MATNR) === 'green',
+                      'row-highlighted-red': shouldHighlightRow(table.MATNR) === 'red'
+                    }">
                       <div style="display: flex; gap: 5px; justify-content: center;">
-                        <button 
+                        <!-- <button 
                           class="btn btn-success btn-sm" 
                            (click)="matchMaterial(i,table.ZLABEL, table)" 
                           [disabled]="table.issMatched || !table.selected || !table.ZLABEL">
                           >
                           Match
-                        </button>
+                        </button> -->
                         <button 
                           class="btn btn-danger btn-sm" 
                           (click)="unmatchMaterial(i, table)" 

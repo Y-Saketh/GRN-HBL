@@ -220,3 +220,11 @@
     width: 100%;
   }
 }
+.row-highlighted-green {
+  background-color: rgb(51 137 66 / 33%);
+
+}
+
+.row-highlighted-red {
+  background-color: rgb(191 113 136 / 33%);
+}

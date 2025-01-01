@@ -587,6 +587,13 @@ saveUnmatched(): void {
 isAnyRowSelected(): boolean {
   return this.tableData.some(table => table.selected);
 }
+shouldHighlightRow(matnr: string): 'green' | 'red' | null {
+  const matchedItem = this.matchedAndUnmatchedData.find(item => item.MATNR === matnr);
+  if (matchedItem) {
+    return matchedItem.isMatched ? 'green' : 'red';
+  }
+  return null;
+}
 // matchMaterial(index: number): void {
 //   const material = this.tableData[index];
 //   if (material.ZLABEL > 0 && material.MENGE > 0) {

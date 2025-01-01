@@ -322,4 +322,12 @@ background-color: #cadad6;
   .table-responsive::-webkit-scrollbar-track {
     background: #f1f1f1; /* Track color */
   }
+  .row-highlighted-green {
+    background-color: rgb(51 137 66 / 33%);
+  
+  }
+  
+  .row-highlighted-red {
+    background-color: rgb(191 113 136 / 33%);
+  }
   

@@ -51,7 +51,7 @@ export class QRcodegenrationComponent {
   qrCodes: { qrCodeUrl: string, data: any }[] = [];
   @ViewChildren(qrSortableDirective) headers: QueryList<qrSortableDirective>;
   public isCollapsed = true;
-  GrnResponse: any;
+  GrnResponse: any = [];
   Me23NData: any = [];
   submit: boolean;
   isSubmitting: boolean;
@@ -90,6 +90,7 @@ export class QRcodegenrationComponent {
   selectedd: boolean = true;
   isAllSelected: boolean = true;
   GrnResponses: any;
+  GrnResponsee: boolean;
 
   constructor(public service: AdvancedService, public formBuilder: UntypedFormBuilder, private apiService: UserProfileService, public loaderservice: LoaderService, private sanitizer: DomSanitizer, private http: HttpClient) {
     this.tables$ = service.tables$;
@@ -148,6 +149,7 @@ export class QRcodegenrationComponent {
    * fetches the table value
    */
   _fetchData() {
+    this.GrnResponsee = true
     this.tableData = this.GrnResponse;
     for (let i = 0; i <= this.tableData.length; i++) {
       this.hideme.push(true);
@@ -435,7 +437,7 @@ export class QRcodegenrationComponent {
 
         let hasEmptyShadows = false;
         let hasMismatchedQuantities = false;
-        // console.log("this.GrnResponse",this.GrnResponse)
+        console.log("this.GrnResponse",this.GrnResponse)
         this.GrnResponses = this.GrnResponse?.filter(table => table.selected);
         // console.log("this.GrnResponses",this.GrnResponses)
         this.GrnResponses.forEach((table) => {
@@ -1071,7 +1073,7 @@ export class QRcodegenrationComponent {
 
     // Optionally re-fetch data or reload the page
     this._fetchData();
-    this.GrnResponse = false;
+    this.GrnResponsee = false;
   }
 
 
@@ -1246,7 +1248,7 @@ export class QRcodegenrationComponent {
   // }
 
   closePopup(): void {
-    this.GrnResponse = true;
+    this.GrnResponsee = true;
     this.selectedIndex = null;
     this.unmatchModal?.hide();
     this.newContactModal?.hide();
@@ -1283,6 +1285,7 @@ export class QRcodegenrationComponent {
             if (this.GrnResponse) {
               this.GrnResponse = [...this.GrnResponse, ...res[0].SAVE];
             } else {
+              this.GrnResponse = [];
               this.isAllSelected = true;
               this.GrnResponse = res[0].SAVE;
             }
@@ -1384,6 +1387,18 @@ export class QRcodegenrationComponent {
   //     Swal.fire("Error", "Invalid Label Quantity or MENGE", "error");
   //   }
   // }
+  shouldHighlightRow(matnr: string): 'green' | 'red' | null {
+    const matchedItem = this.matchedAndUnmatchedData.find(item => item.MATNR === matnr);
+    if (matchedItem) {
+      return matchedItem.isMatched ? 'green' : 'red';
+    }
+    return null;
+  }
+  
+  // shouldHighlightRow(matnr: string): boolean {
+  //   return this.matchedAndUnmatchedData.some(item => item.MATNR === matnr && item.DCLABS);
+  // }
+  
   matchMaterial(index: number,label, table): void {
     console.log("index",index,label , table)
     // const material = this.GrnResponse[index];
@@ -1487,7 +1502,7 @@ export class QRcodegenrationComponent {
 
       // Remove the old data for the material before adding the new one
       this.matchedAndUnmatchedData = this.matchedAndUnmatchedData.filter(
-        (data) => data.materialId !== selectedMaterial.MATNR
+        (data) => data.MATNR !== selectedMaterial.MATNR
       );
 
       // Add only the latest unmatched data (this will update the state for the material)
@@ -1507,7 +1522,7 @@ export class QRcodegenrationComponent {
     return this.tableData?.some(table => table.selected);
   }
   backtoQunatity() {
-    this.GrnResponse = false;
+    this.GrnResponsee = false;
     // this.GrnResponse = true;
     this.selectedMaterial = false;
     this.qrscreen = false;
@@ -1535,7 +1550,7 @@ export class QRcodegenrationComponent {
     // this.saveQRData()
     // this.GRN = Grn.MBLNR
     // console.log(" this.GRN",Grn, this.GRN, this.vendorCode)
-    this.GrnResponse = false;
+    this.GrnResponsee = false;
     this.qrscreen = true;
     this.selectedData = this.matchedAndUnmatchedData.filter(data => data.selected);
 

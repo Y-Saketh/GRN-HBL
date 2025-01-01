@@ -628,7 +628,13 @@ export class GRNagainstPOComponent{
     //   //   console.error('No printer available!');
     //   // }
     // }
-
+    shouldHighlightRow(matnr: string): 'green' | 'red' | null {
+      const matchedItem = this.matchedAndUnmatchedData.find(item => item.MATNR === matnr);
+      if (matchedItem) {
+        return matchedItem.isMatched ? 'green' : 'red';
+      }
+      return null;
+    }
     // async printLabel() {
     //   this.qrCodes = [];
     //   console.log("matchedAndUnmatchedData", this.matchedAndUnmatchedData);
@@ -1182,7 +1188,7 @@ saveUnmatched(): void {
 
       // Remove the old data for the material before adding the new one
       this.matchedAndUnmatchedData = this.matchedAndUnmatchedData.filter(
-          (data) => data.materialId !== selectedMaterial.MATNR
+          (data) => data.MATNR !== selectedMaterial.MATNR
       );
 
       // Add only the latest unmatched data (this will update the state for the material)

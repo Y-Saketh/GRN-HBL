@@ -100,7 +100,13 @@ export class GrnprintComponent implements OnInit {
       this.showTable = false;
     }
   }
-
+  shouldHighlightRow(matnr: string): 'green' | 'red' | null {
+    const matchedItem = this.matchedAndUnmatchedData.find(item => item.MATNR === matnr);
+    if (matchedItem) {
+      return matchedItem.isMatched ? 'green' : 'red';
+    }
+    return null;
+  }
   // onRowCheckboxChange(row: any): void {
   //     this.tables$.pipe(take(1)).subscribe((tables) => {
   //       this.selectAll = tables.every((table) => table.selected);
