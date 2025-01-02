@@ -50,6 +50,15 @@ export class Mb52Component implements OnInit {
     containerClass: 'theme-blue', // Optional: Use a predefined theme
   };
 
+  resetPagination() {
+    this.service.page = 1;  // Reset the page number to 1
+  }
+
+  onPageSizeChange() {
+    this.service.page = 1; // Reset to the first page
+    this._fetchData(); // Refetch data based on the new page size
+  }
+
   onButtonClick(button: string): void {
     this.service.handleButtonClick(button);
   }

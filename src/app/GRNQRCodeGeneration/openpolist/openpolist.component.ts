@@ -82,6 +82,11 @@ export class OpenpolistComponent implements OnInit {
     this.service.handleButtonClick(button);
   }
 
+  onPageSizeChange() {
+    this.service.page = 1; // Reset to the first page
+    this._fetchData(); // Refetch data based on the new page size
+  }
+
   ngOnInit(): void {
     this.submit = false;
     const currentDate = new Date();
@@ -189,6 +194,10 @@ export class OpenpolistComponent implements OnInit {
   }
   saveInBound(){
 
+  }
+
+  resetPagination() {
+    this.service.page = 1;  // Reset the page number to 1
   }
 
   changeValue(i) {

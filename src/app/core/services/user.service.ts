@@ -97,6 +97,10 @@ export class UserProfileService {
         console.log("environment.API_URL_DEV",environment.API_URL_DEV)
         return this.http.post(`${environment.API_URL_DEV}api/external/print`,data)
     }
+    zven(data){
+        console.log("environment.API_URL_DEV",environment.API_URL_DEV)
+        return this.http.post(`${environment.API_URL_DEV}api/external/zven`,data)
+    }
 
 
 }

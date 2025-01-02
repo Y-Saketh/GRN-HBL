@@ -85,33 +85,81 @@
               </div>
             </div>
           </div>
-          <!-- Current Date To-->
-          <!-- <div class="col-md-2">
-            <label class="brandcolor" for="curentdateto">CURRENT DATE TO</label>
-            <div class="mb-3">
+          <!--PO NUMBER -->
+          <div class="col-md-2">
+            <label class="brandcolor" for="po">PO</label>
+            <div class="mb-3 d-flex align-items-center">
               <input
                 type="text"
                 class="form-control"
-                id="curentdateto"
-                formControlName="curentdateto"
-                placeholder="TO DATE"
-                [bsConfig]="bsConfig"
-                bsDatepicker
-             
+                id="po"
+                placeholder="Enter PO"
+                (input)="handlePOInput($event)"
                 [ngClass]="{
-                  'is-invalid': submit && form.curentdateto.errors
+                  'is-invalid': submit && poArray.length === 0
                 }"
               />
-              <div
-                *ngIf="submit && form.curentdateto.errors"
-                class="invalid-feedback"
+              <!-- Display the icon button only when there is data -->
+              <button
+                *ngIf="poArray.length > 0"
+                type="button"
+                class="btn btn-info ms-2"
+                (click)="openPOModal()"
               >
-                <span *ngIf="form.curentdateto.errors.required"
-                  >Please provide a valid To Date.</span
-                >
+                <i class="fas fa-list"></i>
+              </button>
+              <div
+                *ngIf="submit && poArray.length === 0"
+                class="invalid-feedback d-block"
+              >
+                <span>Please provide at least one PO Number.</span>
               </div>
             </div>
-          </div> -->
+          
+            <!-- Full-Screen Modal -->
+            <div class="modal-backdrop" *ngIf="showPOModal">
+              <div class="modal-content">
+                <!-- Close Button -->
+                <button
+                  type="button"
+                  class="btn btn-danger btn-sm close-button"
+                  (click)="closePOModal()"
+                >
+                  X
+                </button>
+          
+                <h3 class="modal-title">PO Numbers</h3>
+          
+                <div class="po-container">
+                  <div
+                    class="po-item"
+                    *ngFor="let po of poArray; let i = index"
+                  >
+                    <span>{{ po }}</span>
+                    <button
+                      type="button"
+                      class="btn btn-danger btn-sm"
+                      (click)="removePO(i)"
+                    >
+                      X
+                    </button>
+                  </div>
+                </div>
+          
+                <!-- Clear All Button -->
+                <div class="d-flex justify-content-end mt-3">
+                  <button
+                    type="button"
+                    class="btn btn-danger"
+                    (click)="clearAllPOs()"
+                    [disabled]="poArray.length === 0"
+                  >
+                    Clear All
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
           <!-- Button Row -->
           <div class="col-md-1 mt-4">
             <div class="mb-3">
@@ -150,6 +198,7 @@
                 aria-controls="tickets-table"
                 class="form-control form-control-sm mx-2"
                 [(ngModel)]="service.pageSize"
+                (change)="onPageSizeChange()"
                 [ngModelOptions]="{ standalone: true }"
               >
                 <option [ngValue]="10">10</option>
@@ -175,6 +224,7 @@
                   class="form-control form-control-sm ms-2"
                   aria-controls="tickets-table"
                   [(ngModel)]="service.searchTerm"
+                  (input)="resetPagination()"
                 />
               </label>
             </div>

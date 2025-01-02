@@ -121,6 +121,10 @@ export class AdvancedService {
     this._search$.next();
   }
 
+  resetPagination() {
+    this._set({ page: 1 }); // Reset to the first page
+  }
+
   /** Expose observables */
   get tables$(): Observable<Table[]> {
     return this._tables$.asObservable();
