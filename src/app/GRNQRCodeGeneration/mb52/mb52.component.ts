@@ -40,6 +40,7 @@ export class Mb52Component implements OnInit {
     clickedButton: string | null = null;
   
     @ViewChildren(AdvancedSortableDirective) headers: QueryList<AdvancedSortableDirective>;
+  matnr: string;
 
   constructor(public formBuilder: UntypedFormBuilder, @Inject(AdvancedService) public service: AdvancedService, private apiService:UserProfileService,public loaderservice:LoaderService) {
       this.tables$ = service.tables$;
@@ -212,13 +213,17 @@ export class Mb52Component implements OnInit {
 
 
   getmb52() {
+    this.matnr = '';
+    this.matnr = this.poArray.map(data => data).join(', ');
+console.log("validationform", this.form, this.matnr);
     console.log("validationform",this.form)
       let obj = {
         "WERKS": this.form.plant.value,//"1300",
         // "MATNR_F": this.form.materialFrom.value,//"1000001248",
         // "MATNR_T": this.form.materialTo.value,//"1000001248",
         "MATART": this.form.materialType.value,
-        "LGORT":this.form.storageLocation.value
+        "LGORT":this.form.storageLocation.value,
+        "MATNR":this.matnr
     }
     
       console.log("objobj",obj)

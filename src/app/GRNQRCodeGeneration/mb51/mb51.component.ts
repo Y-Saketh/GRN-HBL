@@ -60,6 +60,7 @@ export class Mb51Component implements OnInit {
   @ViewChildren(AdvancedSortableDirective) headers: QueryList<AdvancedSortableDirective>;
   selectedMovementType: any;
   plants: string[] = [];
+  matnr: string;
 
   constructor(public formBuilder: UntypedFormBuilder, @Inject(AdvancedService) public service: AdvancedService, private apiService:UserProfileService,public loaderservice:LoaderService) {
     this.tables$ = service.tables$;
@@ -321,14 +322,17 @@ onSort({ column, direction }: SortEvent) {
   getmb51() {
   let bwart = [];
   bwart = this.form.movementType.value.map(data => data.item_id).join(', ');
-  console.log("validationform", this.form, bwart);
+  this.matnr = '';
+      this.matnr = this.poArray.map(data => data).join(', ');
+  console.log("validationform", this.form, this.matnr);
 
   let obj = {
     WERKS: this.form.plant.value, // Plant
     BWART: bwart, // Movement Type
     VGART: "WE", // Transaction/Event Type
     BUDAT_F: this.form.postingDateFrom.value, // From Posting Date
-    BUDAT_T: this.form.postingDateTo.value  // To Posting Date
+    BUDAT_T: this.form.postingDateTo.value , // To Posting Date
+    MATNR:this.matnr
   };
 
   console.log("objobj", obj);

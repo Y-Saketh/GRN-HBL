@@ -41,6 +41,7 @@ export class CloseDownloadComponent implements OnInit {
   lotReportsData: any;
   
   CloseDownload: Table[];
+  banfn: string;
   constructor(public formBuilder: UntypedFormBuilder, public service: AdvancedService, private apiService:UserProfileService, public loaderservice:LoaderService) {
     this.tables$ = service.tables$;
     console.log("this.tables$$", this.tables$)
@@ -245,11 +246,14 @@ export class CloseDownloadComponent implements OnInit {
 
   getCloseDownload(){
     try{
-    console.log("validationform",this.form) 
+      this.banfn = '';
+      this.banfn = this.prArray.map(data => data).join(', ');
+    console.log("validationform",this.form, this.banfn) 
     let obj = {
       "WERKS": this.form.plant.value,// "1300","1025"
       "EKGRP": this.form.purchasegroup.value,//"013",
       "BADAT": this.form.date.value,// "2024-02-01",
+      "BANFN":  this.banfn
       // "BADAT_T": this.form.curentdateto.value?moment(this.form.curentdateto.value):""//"2024-02-20"
     }
     console.log("objobj",obj)
@@ -259,10 +263,10 @@ export class CloseDownloadComponent implements OnInit {
         this.loaderservice.hideLoader();
         console.log('Data:', res);
         this.CloseDownload = res;
-        this.service.setTableData(this.CloseDownload || res[0] ||  []);
+        this.service.setTableData(this.CloseDownload ||[]);
         this._fetchData();
         console.log("this.tables$ ",this.tables$ )
-        this.validationform.reset()
+        // this.validationform.reset()
      
       },
       error: (error: any) => {
