@@ -55,6 +55,7 @@ export class Mb52Component implements OnInit {
 
   resetPagination() {
     this.service.page = 1;  // Reset the page number to 1
+     this._fetchData();
   }
 
   onPageSizeChange() {
@@ -214,7 +215,7 @@ export class Mb52Component implements OnInit {
 
   getmb52() {
     this.matnr = '';
-    this.matnr = this.poArray.map(data => data).join(', ');
+    this.matnr = this.poArray.map(data => data).join(',');
 console.log("validationform", this.form, this.matnr);
     console.log("validationform",this.form)
       let obj = {

@@ -117,6 +117,13 @@ export const MENU: MenuItem[] = [
         icon: 'bx-paperclip',
         parentId: "menu"
     },
+    {
+        id: "grnprint",
+        label: 'MENUITEMS.DASHBOARDS.LIST.ZVEN',
+        link:'zven',
+        icon: 'bx-detail',
+        parentId: "menu"
+    },
   
     {
         id: "zgribdstatus",
@@ -171,23 +178,30 @@ export const MENU: MenuItem[] = [
                 id: "popreview",
                 label: 'MENUITEMS.DASHBOARDS.LIST.PREVIEW',
                 link: 'popreview',
-                icon: 'bx-layer',
+                icon: 'bx-screenshot',
                 parentId: "menu"
             },
             {
-                id: "zven",
-                label: 'MENUITEMS.DASHBOARDS.LIST.ZVEN',
-                link:'zven',
-                icon: 'bx-layer',
-                parentId: "menu"
-            },
-            {
-                id: "screen2",
+                id: "popreview",
                 label: 'MENUITEMS.DASHBOARDS.LIST.SCREEN2',
                 link:'screen2',
-                icon: 'bx-layer',
+                icon: 'bx-screenshot',
                 parentId: "menu"
             }
+            // {
+            //     id: "vendorreturnDC",
+            //     label: 'MENUITEMS.DASHBOARDS.LIST.ZVEN',
+            //     link:'zven',
+            //     icon: 'bx-layer',
+            //     parentId: "menu"
+            // },
+            // {
+            //     id: "debitnote",
+            //     label: 'MENUITEMS.DASHBOARDS.LIST.SCREEN2',
+            //     link:'screen2',
+            //     icon: 'bx-cloud-download',
+            //     parentId: "menu"
+            // }
         
         ]
     },

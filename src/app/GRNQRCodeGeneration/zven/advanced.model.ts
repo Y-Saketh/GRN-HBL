@@ -14,7 +14,7 @@ export interface Table {
     GROSS: number; // Gross
     NET: number; // Net
     REASON: string; // Reason for Rejection
-    SEL: string; // Single-Character Flag
+    SEL: boolean; // Single-Character Flag
     BUDAT_F: string; // Posting Date in the Document (From)
     BUDAT_T: string; // Posting Date in the Document (To)
 }

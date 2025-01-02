@@ -362,7 +362,7 @@ export class OpenpolistComponent implements OnInit {
 
   getPOLIST(){
     this.ebln ='';
-  this.ebln = this.poArray.map(data => data).join(', ');
+  this.ebln = this.poArray.map(data => data).join(',');
      
   console.log("validationform",this.form,this.ebln) 
     // if (this.validationform.valid) {

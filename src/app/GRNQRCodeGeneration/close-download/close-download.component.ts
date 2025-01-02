@@ -68,7 +68,8 @@ export class CloseDownloadComponent implements OnInit {
     this.validationform = this.formBuilder.group({
       plant: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]+')]],
       purchasegroup: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
-      date: [fifteenDaysAgo, [ Validators.pattern('[a-zA-Z0-9]+')]],
+      // date: [fifteenDaysAmb51go, [ Validators.pattern('[a-zA-Z0-9]+')]],
+      date: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
       // po: [''],
     });
 
@@ -247,7 +248,7 @@ export class CloseDownloadComponent implements OnInit {
   getCloseDownload(){
     try{
       this.banfn = '';
-      this.banfn = this.prArray.map(data => data).join(', ');
+      this.banfn = this.prArray.map(data => data).join(',');
     console.log("validationform",this.form, this.banfn) 
     let obj = {
       "WERKS": this.form.plant.value,// "1300","1025"

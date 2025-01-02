@@ -85,6 +85,7 @@ export class Mb51Component implements OnInit {
     this.validationform = this.formBuilder.group({
       plant: ['', Validators.required],
       movementType:  [[], Validators.required],
+      storageLocation:[''],
       postingDateFrom: [fifteenDaysAgo, Validators.required],
       postingDateTo: [currentDate, Validators.required]
     });
@@ -321,9 +322,9 @@ onSort({ column, direction }: SortEvent) {
 
   getmb51() {
   let bwart = [];
-  bwart = this.form.movementType.value.map(data => data.item_id).join(', ');
+  bwart = this.form.movementType.value.map(data => data.item_id).join(',');
   this.matnr = '';
-      this.matnr = this.poArray.map(data => data).join(', ');
+      this.matnr = this.poArray.map(data => data).join(',');
   console.log("validationform", this.form, this.matnr);
 
   let obj = {
@@ -332,7 +333,8 @@ onSort({ column, direction }: SortEvent) {
     VGART: "WE", // Transaction/Event Type
     BUDAT_F: this.form.postingDateFrom.value, // From Posting Date
     BUDAT_T: this.form.postingDateTo.value , // To Posting Date
-    MATNR:this.matnr
+    MATNR:this.matnr,
+    LGORT: this.form.storageLocation.value
   };
 
   console.log("objobj", obj);
@@ -363,6 +365,15 @@ onSort({ column, direction }: SortEvent) {
     }
   });
 }
+resetPagination() {
+  this.service.page = 1;  // Reset the page number to 1
+  this._fetchData();
+}
+onPageSizeChange() {
+  this.service.page = 1; // Reset to the first page
+  this._fetchData(); // Refetch data based on the new page size
+}
+
 
   }
 

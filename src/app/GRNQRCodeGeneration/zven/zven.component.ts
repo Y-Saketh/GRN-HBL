@@ -55,6 +55,7 @@ export class ZvenComponent {
   expandedRows: { [key: string]: boolean } = {};
   PRINT: any;
   SAVE: any;
+  isAllSelected: boolean = true;
 
 
   constructor(private apiService:UserProfileService, public formBuilder: UntypedFormBuilder,public service: AdvancedService,public loaderservice:LoaderService){
@@ -109,22 +110,95 @@ export class ZvenComponent {
 
   }
 
-  handleButtonClick() {
-    if (this.FORM === 'X') {
-      // Generate Base64 and trigger download
-      const base64Data = btoa(JSON.stringify(this.PRINT.RECORD));
-      const base64Blob = new Blob([base64Data], { type: 'application/json' });
-      const url = window.URL.createObjectURL(base64Blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'data.json';
-      a.click();
-    } else if (this.SAVE === 'X') {
-      // Display success message
-      alert('Save operation successful!');
-    }
-  }
+  // handleButtonClick(RECORD) {
+  //   // if (this.FORM === 'X') {
+  //     // Generate Base64 and trigger download
+  //     const base64Data = btoa(JSON.stringify(RECORD));
+  //     const base64Blob = new Blob([base64Data], { type: 'application/json' });
+  //     const url = window.URL.createObjectURL(base64Blob);
+  //     const a = document.createElement('a');
+  //     a.href = url;
+  //     a.download = 'Purchase Order.pdf';
+  //     a.click();
+  //   // } else if (this.SAVE === 'X') {
+  //   //   // Display success message
+  //   //   alert('Save operation successful!');
+  //   // }
+  // }
+   showPdfPreview(base64String: string) {
+      try {
+        const binaryString = atob(base64String); // Decode Base64
+        const binaryLen = binaryString.length;
+        const bytes = new Uint8Array(binaryLen);
   
+        for (let i = 0; i < binaryLen; i++) {
+          bytes[i] = binaryString.charCodeAt(i);
+        }
+  
+        const blob = new Blob([bytes], { type: 'application/pdf' });
+  
+        // Create a container for the preview
+        const container = document.createElement('div');
+        container.style.position = 'fixed';
+        container.style.top = '0';
+        container.style.left = '0';
+        container.style.width = '100%';
+        container.style.height = '100%';
+        container.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+        container.style.zIndex = '10000'; // Ensure it stays above other elements
+        container.style.display = 'flex';
+        container.style.justifyContent = 'center';
+        container.style.alignItems = 'center';
+  
+        // Create an iframe for the PDF preview
+        const iframe = document.createElement('iframe');
+        iframe.src = URL.createObjectURL(blob) + '#toolbar=0'; // Disable toolbar
+        iframe.style.width = '80%';
+        iframe.style.height = '100%';
+        iframe.style.border = 'none';
+  
+        // Prevent interaction with right-click or keyboard shortcuts
+        iframe.onload = () => {
+          iframe.contentWindow?.document.addEventListener('contextmenu', (e) => e.preventDefault());
+          iframe.contentWindow?.document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && (e.key === 'p' || e.key === 's')) e.preventDefault();
+          });
+        };
+  
+        // Create a close button
+        const closeButton = document.createElement('button');
+        closeButton.textContent = '<Close Preview';
+        closeButton.style.position = 'absolute';
+        closeButton.style.top = '10px';
+        closeButton.style.right = '10px';
+        closeButton.style.padding = '10px 20px';
+        closeButton.style.fontSize = '16px';
+        closeButton.style.color = '#fff';
+        closeButton.style.backgroundColor = '#f00'; // Red color
+        closeButton.style.border = 'none';
+        closeButton.style.borderRadius = '5px';
+        closeButton.style.cursor = 'pointer';
+  
+        closeButton.onclick = () => {
+          document.body.removeChild(container);
+          URL.revokeObjectURL(iframe.src);
+          document.body.style.overflow = 'auto'; // Restore background scrolling
+        };
+  
+        // Append elements to the container
+        container.appendChild(iframe);
+        container.appendChild(closeButton);
+  
+        // Disable background scrolling
+        document.body.style.overflow = 'hidden';
+  
+        // Add the container to the body
+        document.body.appendChild(container);
+      } catch (error) {
+        console.error('Error generating PDF preview:', error);
+        Swal.fire('Error', 'Failed to preview the PDF. Please try again.', 'error');
+      }
+    }
 
   isAllFieldsValid(): Observable<boolean> {
     return this.tables$.pipe(
@@ -149,6 +223,7 @@ export class ZvenComponent {
     console.log("val", val);
     const formValue = val === "save" ? "" : "X";
     const saveValue = val === "save" ? "X" : "";
+    this.zven =  this.zven.filter((data)=>data.selected)
     let payload = {
       PRINT: {
         RECORD: [],
@@ -172,7 +247,7 @@ export class ZvenComponent {
         GROSS: item.GROSS || null,
         NET: item.NET || null,
         REASON: item.REASON || "",
-        SEL: item.SEL || "",
+        SEL: item.selected == true?"X":"",
       };
       payload.PRINT.RECORD.push(mappedItem);
     });
@@ -185,14 +260,23 @@ export class ZvenComponent {
       next: (response: any) => {
         this.loaderservice.hideLoader();
   
-        if (response.FORM === "X") {
+        if (formValue === "X") {
           console.log("BASE64 Data:", response.BASE64);
-        } else if (response.SAVE === "X") {
+          try{
+            // this.handleButtonClick(response.BASE64) ;
+            this.showPdfPreview(response);
+          }catch{
+            this.loaderservice.hideLoader();
+            Swal.fire("","No Preview Data","error")          }
+          
+
+
+        } else if (saveValue === "X") {
           console.log("Success Message:", response.message);
           Swal.fire({
             icon: "success",
             title: "Success",
-            text: response.message,
+            text: response,
           });
         } else {
           Swal.fire({
@@ -228,12 +312,20 @@ export class ZvenComponent {
         }
       });
     });
+    if (this.isAllSelected) {
+      this.zven.forEach(table => table.selected = true);
+    } else {
+      this.zven.forEach(table => table.selected = false);
+    }
+    this.service.setTableData(this.zven || []);
+    this._fetchData();
   }
 
   onRowCheckboxChange(row: any): void {
     this.tables$.pipe(take(1)).subscribe((tables) => {
       this.selectAll = tables.every((table) => table.selected);
     });
+    this.isAllSelected = this.zven.every(table => table.selected);
   }
 
   onSort({ column, direction }: SortEvent) {
@@ -257,8 +349,8 @@ export class ZvenComponent {
     const payload = {
       WERKS: this.form.plant.value,
       GJAHR: this.form.year.value,
-      BUDAT_F: this.form.postingDateFrom.value,
-      BUDAT_T: this.form.postingDateTo.value,
+      BUDAT_F: '',//this.form.postingDateFrom.value,
+      BUDAT_T: '',//this.form.postingDateTo.value,
     };
     console.log("Final Payload:", payload);
     this.loaderservice.showLoader();
@@ -267,7 +359,20 @@ export class ZvenComponent {
         this.loaderservice.hideLoader();
         console.log("API Response for zven:", res);
         this.zven = res;
-        this.service.setTableData(res || []);
+        this.selectAll = true;
+        this.zven = this.zven.map((table) => {
+          const originalDate = table.LRDATE; // e.g., "2024-07-17"
+          const formattedDate = moment(originalDate, 'YYYY-MM-DD', true).isValid()
+            ? moment(originalDate, 'YYYY-MM-DD').format('DD-MM-YYYY')
+            : originalDate; // Fallback to the original date if invalid
+          return {
+            ...table,
+            LRDATE: formattedDate,
+            selected : true
+          };
+        });
+        // this.zven.forEach((data) => data.selected = true);
+        this.service.setTableData(this.zven || []);
         this._fetchData();
       },
       error: (error: any) => {

@@ -1,54 +1,42 @@
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-xl-12">
-            <div class="card">
-              <div class="card-body">
-                  <h4 class="card-title">
-                      <span style="color: black;"></span> ZVEN
-                  </h4>
-                  <form class="needs-validation" [formGroup]="validationform" (ngSubmit)="validSubmit()">
-                      <div class="row mt-4">
-                          <!-- Plant -->
-                          <div class="col-md-1">
-                            <label class="brandcolor" for="plant">PLANT</label>
-                            <div class="mb-3">
-                              <select
-                                  class="form-select"
-                                  id="plant"
-                                  formControlName="plant"
-                                >
-                                  <option value="" disabled selected>Plant</option>
-                                  <option *ngFor="let type of plants" [value]="type">
-                                    {{ type }}
-                                  </option>
-                                </select>
-                              <div *ngIf="submit && form.plant.errors" class="invalid-feedback">
-                                <span *ngIf="form.plant.errors.required"
-                                  >Please provide a valid plant.</span
-                                >
-                              </div>
-                            </div>
-                          </div>
-                          <!-- Year -->
-                          <div class="col-md-1">
-                              <div class="mb-3">
-                                  <label class="brandcolor" for="year">Year</label>
-                                  <input
-                                      type="text"
-                                      class="form-control"
-                                      id="year"
-                                      formControlName="year"
-                                      placeholder="Year"
-                                  />
-                                  <div *ngIf="submit && form.year.errors" class="invalid-feedback">
-                                      <span *ngIf="form.year.errors.required">
-                                          Please provide a valid Year.
-                                      </span>
-                                  </div>
-                              </div>
-                          </div>
-                          <!-- Posting Date From -->
-                          <div class="col-md-2">
+  <div class="row">
+    <div class="col-xl-12">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">
+            <span style="color: black;"></span> Vendor Returns DC
+          </h4>
+          <form class="needs-validation" [formGroup]="validationform" (ngSubmit)="validSubmit()">
+            <div class="row mt-4">
+              <!-- Plant -->
+              <div class="col-md-1">
+                <label class="brandcolor" for="plant">PLANT</label>
+                <div class="mb-3">
+                  <select class="form-select" id="plant" formControlName="plant">
+                    <option value="" disabled selected>Plant</option>
+                    <option *ngFor="let type of plants" [value]="type">
+                      {{ type }}
+                    </option>
+                  </select>
+                  <div *ngIf="submit && form.plant.errors" class="invalid-feedback">
+                    <span *ngIf="form.plant.errors.required">Please provide a valid plant.</span>
+                  </div>
+                </div>
+              </div>
+              <!-- Year -->
+              <div class="col-md-1">
+                <div class="mb-3">
+                  <label class="brandcolor" for="year">Year</label>
+                  <input type="text" class="form-control" id="year" formControlName="year" placeholder="Year" />
+                  <div *ngIf="submit && form.year.errors" class="invalid-feedback">
+                    <span *ngIf="form.year.errors.required">
+                      Please provide a valid Year.
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <!-- Posting Date From -->
+              <!-- <div class="col-md-2">
                             <label class="brandcolor" for="postingDateFrom"
                               >FROM DATE</label
                             >
@@ -74,9 +62,9 @@
                                 >
                               </div>
                             </div>
-                          </div>
-                          <!-- Posting Date To -->
-                          <div class="col-md-2">
+                          </div> -->
+              <!-- Posting Date To -->
+              <!-- <div class="col-md-2">
                             <label class="brandcolor" for="postingDateTo">TO DATE</label>
                             <div class="mb-3">
                               <input
@@ -100,233 +88,201 @@
                                 >
                               </div>
                             </div>
-                          </div>
-                          <!-- Button -->
-                          <div class="col-md-2 text-center">
-                              <button
-                                  style="
+                          </div> -->
+              <!-- Button -->
+              <div class="col-md-2 text-center">
+                <button style="
                                       background-color: brown;
                                       margin-top: 28px;
                                       width: max-content;
                                       color: aliceblue;
-                                  "
-                                  class="btn"
-                                  type="submit"
-                              >
-                                  Get Details
-                              </button>
-                          </div>
-                      </div>
-                  </form>
+                                  " class="btn" type="submit">
+                  Get Details
+                </button>
               </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- end card -->
+      <div class="card">
+        <div class="card-body">
+          <!-- Refresh Button -->
+          <div>
+            <button (click)="filterSelectedRows()" class="btn custom-btn rounded-circle shadow-lg p-3">
+              <i class="bx bx-revision"></i>
+            </button>
           </div>
-          
-            <!-- end card -->
-            <div class="card">
-              <div class="card-body">
-                <!-- Refresh Button -->
-                <div>
-                  <button (click)="filterSelectedRows()" class="btn custom-btn rounded-circle shadow-lg p-3">
-                    <i class="bx bx-revision"></i>
-                  </button>
-                </div>
-  
-                <!-- Table -->
-                <div class="table-responsive">
-                  <table
-                    id="basic-datatable"
-                    class="table table-bordered dt-responsive nowrap"
-                  >
-                    <thead class="brandcolor tableHeader">
-                      <tr>
-                        <th>
-                          <input
-                            type="checkbox"
-                            [checked]="selectAll"
-                            (change)="toggleSelectAll($event)"
-                          />
-                        </th>
-                        <!-- <th>
+
+          <!-- Table -->
+          <div class="table-responsive">
+            <table id="basic-datatable" class="table table-bordered dt-responsive nowrap">
+              <thead class="brandcolor tableHeader">
+                <tr>
+                  <th>
+                    <input type="checkbox" [checked]="selectAll" [(ngModel)]="isAllSelected"
+                      (change)="toggleSelectAll($event)" />
+                  </th>
+                  <!-- <th>
                           <input type="checkbox" [checked]="selectAll"     
                           [(ngModel)]="isAllSelected"
                           [ngModelOptions]="{standalone: true}" 
                           (change)="toggleSelectAll($event)" />
                         </th> -->
-                        <th sortable="BELNR" (sort)="onSort($event)">
-                          Inv.Doc.No
-                        </th>
-                        <th sortable="GJAHR" (sort)="onSort($event)">
-                          Fiscal Year
-                        </th>
-                        <th sortable="BUDAT" (sort)="onSort($event)">
-                          Posting Date
-                        </th>
-                        <th sortable="WERKS" (sort)="onSort($event)">
-                          Plant
-                        </th>
-                        <th sortable="CREDIT" (sort)="onSort($event)">
-                          Credit Memo No
-                        </th>
-                        <th sortable="VEHICAL" (sort)="onSort($event)">
-                          Vehicle No
-                          <span style="color: red">*</span>
-                        </th>
-                        <th sortable="TRANS" (sort)="onSort($event)">
-                          Transporter 
-                          <span style="color: red">*</span>
-                        </th>
-                        <th sortable="LRNO" (sort)="onSort($event)">
-                          LR Number <span style="color: red">*</span>
-                        </th>
-                        <th sortable="LRDATE" (sort)="onSort($event)"> LR Date
-                          <span style="color: red">*</span>
-                        </th>
-                        <th sortable="GROSS" (sort)="onSort($event)"> Gross
-                          <span style="color: red">*</span>
-                        </th>
-                        <th sortable="NET" (sort)="onSort($event)"> Net
-                          <span style="color: red">*</span>
-                        </th>
-                        <th sortable="REASON" (sort)="onSort($event)">Reason for Cancel 
-                          <span style="color: red">*</span>
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody *ngFor="let table of tables$ | async; let i = index">
-                      <tr>
-                        <td>
-                          <input
-                            type="checkbox"
-                            [(ngModel)]="table.selected"
-                            (change)="onRowCheckboxChange(table)"
-                          />
-                        </td>
-                        <td style="color: brown; cursor: pointer;" (click)="openMe23(table.EBELN )">{{ table.BELNR }} </td>
-                        <!-- Inv Doc No-->
-                          <td>{{ table.GJAHR }}</td>
-                        <!-- Fiscal Year-->
-                        <td>{{ table.BUDAT | date: 'dd-MM-yyyy'  }}</td>
-                        <!-- Posting Date -->
-                        <td>{{ table.WERKS }}</td>
-                        <!-- Plant -->
-                        <td>{{ table.CREDIT }}</td>
-                        <!-- Credit Memo No -->
-                        <td >
-                          <input type="text" style="width: 12ch; text-align: center;" [(ngModel)]="table.VEHICAL" name="vehicle{{i}}" />
-                        </td>
-                        <!-- Vechile -->
-                        <td>
-                          <input type="text" style="width: 12ch; text-align: center;" [(ngModel)]="table.TRANS" name="transporter{{i}}" />
-                        </td>
-                        <!-- Transporter -->
-                        <td>
-                          <input type="text" style="width: 12ch; text-align: center;" [(ngModel)]="table.LRNO" name="lrNumber{{i}}" />
-                        </td>
-                        <!-- LR Number -->
-                        <td class="p-2 text-start">
-                          <input type="text"  [bsConfig]="bsConfig" style="width: 12ch; text-align: center;"
-                          bsDatepicker [(ngModel)]="table.LRDATE" name="lrDate{{i}}" class="form-control" />
-                        </td>                        
-                        <!-- LR Date -->
-                        <td>
-                          <input type="number" style="width: 12ch; text-align: center;" [(ngModel)]="table.GROSS" name="gross{{i}}" />
-                        </td>
-                        <!-- Gross -->
-                        <td>
-                          <input type="number" style="width: 12ch; text-align: center;" [(ngModel)]="table.NET" name="net{{i}}" />
-                        </td>
-                        <!-- Net -->
-                        <td>
-                          <input type="text" [(ngModel)]="table.REASON" name="reasonForCancel{{i}}" />
-                        </td>
-                        <!-- Reason for Cancel -->
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <!-- Save & Download Buttons -->
-                <div class="col-md-4 text-left">
-                  <button 
-                  style="background-color: brown; width: max-content; color: aliceblue;" 
-                  class="btn" 
-                  type="submit" 
-                  (click)="saveBound('save')">
-                  Save
-              </button>
-                  <button 
-                      style="background-color: brown; width: max-content; color: aliceblue;" 
-                      class="btn" 
-                      type="submit" 
-                      (click)="saveBound('download')">
-                     Download
-                  </button>
-                </div>
-              </div>
-            </div>
-          <!--Pagination-->
-          <div class="row justify-content-md-between align-items-md-center mt-2">
-            <div class="col-sm-12 col-md-5">
-              <div class="dataTables_info mb-2" role="status" aria-live="polite">
-                Showing {{ service.startIndex }} to {{ service.endIndex }} of
-                {{ service.totalRecords }} entries
-              </div>
-            </div>
-            <div class="col-sm-12 col-md-5">
-              <div class="text-md-right float-md-end pagination-rounded">
-                <ul class="pagination justify-content-end mb-0">
-                  <!-- Previous Button -->
-                  <li
-                    class="page-item"
-                    [class.disabled]="service.page === 1"
-                    [class.highlighted]="service.clickedButton === 'previous'"
-                    (click)="onButtonClick('previous')"
-                  >
-                    <a
-                      class="page-link"
-                      href="javascript:void(0)"
-                      [ngStyle]="{ 
+                  <th sortable="BELNR" (sort)="onSort($event)">
+                    Inv.Doc.No
+                  </th>
+                  <th sortable="GJAHR" (sort)="onSort($event)">
+                    Fiscal Year
+                  </th>
+                  <th sortable="BUDAT" (sort)="onSort($event)">
+                    Posting Date
+                  </th>
+                  <th sortable="WERKS" (sort)="onSort($event)">
+                    Plant
+                  </th>
+                  <th sortable="CREDIT" (sort)="onSort($event)">
+                    Credit Memo No
+                  </th>
+                  <th sortable="VEHICAL" (sort)="onSort($event)">
+                    Vehicle No
+                    <span style="color: red">*</span>
+                  </th>
+                  <th sortable="TRANS" (sort)="onSort($event)">
+                    Transporter
+                    <span style="color: red">*</span>
+                  </th>
+                  <th sortable="LRNO" (sort)="onSort($event)">
+                    LR Number <span style="color: red">*</span>
+                  </th>
+                  <th sortable="LRDATE" (sort)="onSort($event)"> LR Date
+                    <span style="color: red">*</span>
+                  </th>
+                  <th sortable="GROSS" (sort)="onSort($event)"> Gross
+                    <span style="color: red">*</span>
+                  </th>
+                  <th sortable="NET" (sort)="onSort($event)"> Net
+                    <span style="color: red">*</span>
+                  </th>
+                  <th sortable="REASON" (sort)="onSort($event)">Reason for Cancel
+                    <span style="color: red">*</span>
+                  </th>
+                </tr>
+              </thead>
+              <tbody *ngFor="let table of tables$ | async; let i = index">
+                <tr>
+                  <td>
+                    <input type="checkbox" [(ngModel)]="table.selected" (change)="onRowCheckboxChange(table)" />
+                  </td>
+                  <!-- <td style="color: brown; cursor: pointer;" (click)="openMe23(table.EBELN )">{{ table.BELNR }} </td> -->
+                  <td>{{ table.BELNR }} </td>
+                  <!-- Inv Doc No-->
+                  <td>{{ table.GJAHR }}</td>
+                  <!-- Fiscal Year-->
+                  <td>{{ table.BUDAT | date: 'dd-MM-yyyy' }}</td>
+                  <!-- Posting Date -->
+                  <td>{{ table.WERKS }}</td>
+                  <!-- Plant -->
+                  <td>{{ table.CREDIT }}</td>
+                  <!-- Credit Memo No -->
+                  <td>
+                    <input type="text" style="width: 12ch; text-align: center;" [(ngModel)]="table.VEHICAL"
+                      name="vehicle{{i}}" />
+                  </td>
+                  <!-- Vechile -->
+                  <td>
+                    <input type="text" style="width: 12ch; text-align: center;" [(ngModel)]="table.TRANS"
+                      name="transporter{{i}}" />
+                  </td>
+                  <!-- Transporter -->
+                  <td>
+                    <input type="text" style="width: 12ch; text-align: center;" [(ngModel)]="table.LRNO"
+                      name="lrNumber{{i}}" />
+                  </td>
+                  <!-- LR Number -->
+                  <td class="p-2 text-start">
+                    <input type="text" [bsConfig]="bsConfig" style="width: 12ch; text-align: center;" bsDatepicker
+                      [(ngModel)]="table.LRDATE" name="lrDate{{i}}" class="form-control" />
+                  </td>
+                  <!-- LR Date -->
+                  <td>
+                    <input type="number" min="0" style="width: 12ch; text-align: center;" [(ngModel)]="table.GROSS"
+                      name="gross{{i}}" />
+                  </td>
+                  <!-- Gross -->
+                  <td>
+                    <input type="number" min="0" style="width: 12ch; text-align: center;" [(ngModel)]="table.NET"
+                      name="net{{i}}" />
+                  </td>
+                  <!-- Net -->
+                  <td>
+                    <input type="text" [(ngModel)]="table.REASON" name="reasonForCancel{{i}}" />
+                  </td>
+                  <!-- Reason for Cancel -->
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- Save & Download Buttons -->
+          <div class="col-md-4 text-left">
+            <button [disabled]="!zven" style="background-color: brown; width: max-content; color: aliceblue;"
+              class="btn" type="submit" (click)="saveBound('save')">
+              Save
+            </button>&nbsp; &nbsp;
+            <button style="background-color: brown; width: max-content; color: aliceblue;" class="btn ml-2"
+              type="submit" [disabled]="!zven" (click)="saveBound('download')">
+              Download
+            </button>
+          </div>
+        </div>
+      </div>
+      <!--Pagination-->
+      <div class="row justify-content-md-between align-items-md-center mt-2">
+        <div class="col-sm-12 col-md-5">
+          <div class="dataTables_info mb-2" role="status" aria-live="polite">
+            Showing {{ service.startIndex }} to {{ service.endIndex }} of
+            {{ service.totalRecords }} entries
+          </div>
+        </div>
+        <div class="col-sm-12 col-md-5">
+          <div class="text-md-right float-md-end pagination-rounded">
+            <ul class="pagination justify-content-end mb-0">
+              <!-- Previous Button -->
+              <li class="page-item" [class.disabled]="service.page === 1"
+                [class.highlighted]="service.clickedButton === 'previous'" (click)="onButtonClick('previous')">
+                <a class="page-link" href="javascript:void(0)" [ngStyle]="{ 
                         border: service.page > 1 ? '2px solid MediumSeaGreen' : 'none',
                         backgroundColor: service.clickedButton === 'previous' ? '#d4edda' : 'transparent',
                         transition: 'background-color 0.3s ease, transform 0.2s ease'
-                      }"
-                      [class.page-link-hover]="service.page > 1"
-                    >
-                      Previous
-                    </a>
-                  </li>
-          
-                  <!-- Current Page Display -->
-                  <li class="page-item active">
-                    <a class="page-link" href="javascript:void(0)">
-                      {{ service.page }}
-                    </a>
-                  </li>
-          
-                  <!-- Next Button -->
-                  <li
-                    class="page-item"
-                    [class.disabled]="service.page === service.totalPages"
-                    [class.highlighted]="service.clickedButton === 'next'"
-                    (click)="onButtonClick('next')"
-                  >
-                    <a
-                      class="page-link"
-                      href="javascript:void(0)"
-                      [ngStyle]="{ 
+                      }" [class.page-link-hover]="service.page > 1">
+                  Previous
+                </a>
+              </li>
+
+              <!-- Current Page Display -->
+              <li class="page-item active">
+                <a class="page-link" href="javascript:void(0)">
+                  {{ service.page }}
+                </a>
+              </li>
+
+              <!-- Next Button -->
+              <li class="page-item" [class.disabled]="service.page === service.totalPages"
+                [class.highlighted]="service.clickedButton === 'next'" (click)="onButtonClick('next')">
+                <a class="page-link" href="javascript:void(0)" [ngStyle]="{ 
                         border: service.page < service.totalPages ? '2px solid MediumSeaGreen' : 'none',
                         backgroundColor: service.clickedButton === 'next' ? '#d4edda' : 'transparent',
                         transition: 'background-color 0.3s ease, transform 0.2s ease'
-                      }"
-                      [class.page-link-hover]="service.page < service.totalPages"
-                    >
-                      Next
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
+                      }" [class.page-link-hover]="service.page < service.totalPages">
+                  Next
+                </a>
+              </li>
+            </ul>
           </div>
-          <!-- End Pagination-->
+        </div>
       </div>
+      <!-- End Pagination-->
     </div>
-  </div>  
+  </div>
+</div>

@@ -56,7 +56,7 @@ export class Screen2Component {
   get form() {
     return this.validationform.controls;
   }
-  openMe23() {
+  Preview() {
     this.submit = true;
 
     if (this.validationform.invalid) {
