@@ -85,6 +85,11 @@ export class GrdoneComponent implements OnInit {
 
   }
 
+  onPageSizeChange() {
+    this.service.page = 1; // Reset to the first page
+    this._fetchData(); // Refetch data based on the new page size
+  }
+
   changeValue(i) {
     this.hideme[i] = !this.hideme[i];
   }
@@ -99,6 +104,10 @@ export class GrdoneComponent implements OnInit {
     for (let i = 0; i <= this.tableData.length; i++) {
       this.hideme.push(true);
     }
+  }
+
+  resetPagination() {
+    this.service.page = 1;  // Reset the page number to 1
   }
 
   onButtonClick(button: string): void {

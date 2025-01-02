@@ -329,6 +329,7 @@
                     aria-controls="tickets-table"
                     class="form-control form-control-sm mx-2"
                     [(ngModel)]="service.pageSize"
+                    (change)="onPageSizeChange()"
                     [ngModelOptions]="{ standalone: true }"
                   >
                     <option [ngValue]="10">10</option>
@@ -354,6 +355,7 @@
                       class="form-control form-control-sm ms-2"
                       aria-controls="tickets-table"
                       [(ngModel)]="service.searchTerm"
+                      (input)="resetPagination()"
                     />
                   </label>
                 </div>

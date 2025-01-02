@@ -30,7 +30,10 @@ export class CloseDownloadComponent implements OnInit {
   plants: string[] = [];
   tables$: Observable<Table[]>;
   total$: Observable<number>;
+  poArray: string[] = []; // Array to store PO numbers
+  showPOModal: boolean = false; // Toggle visibility of the modal
   clickedButton: string | null = null;
+
 
   @ViewChildren(AdvancedSortableDirective) headers: QueryList<AdvancedSortableDirective>;
   public isCollapsed = true;
@@ -65,6 +68,7 @@ export class CloseDownloadComponent implements OnInit {
       plant: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]+')]],
       purchasegroup: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
       date: [fifteenDaysAgo, [ Validators.pattern('[a-zA-Z0-9]+')]],
+      // po: [''],
     });
 
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
@@ -83,6 +87,62 @@ export class CloseDownloadComponent implements OnInit {
     /**
      * fetch data
      */
+  }
+
+  // Method to handle input events
+  handlePOInput(event: Event): void {
+    const inputElement = event.target as HTMLInputElement;
+    const input = inputElement.value;
+  
+    if (input.trim()) {
+      // Check if input contains any delimiters (space, comma, or newline)
+      if (/[\s,]+/.test(input)) {
+        // Split the input by spaces, commas, or newlines, trim, and filter empty values
+        const newPOs = input
+          .split(/[\s,]+/) // Match spaces, commas, or newlines
+          .map((po) => po.trim())
+          .filter((po) => /^\d+$/.test(po)); // Allow only numeric values
+  
+        // Add unique PO numbers to the array
+        this.poArray.push(...newPOs.filter((po) => !this.poArray.includes(po)));
+  
+        // Clear the input field after processing
+        inputElement.value = '';
+      }
+    }
+  }
+  
+  
+  // Open the full-screen modal
+  openPOModal(): void {
+    this.showPOModal = true;
+  }
+
+  // Close the modal
+  closePOModal(): void {
+    this.showPOModal = false;
+  }
+
+  // Method to remove a PO from the array
+  removePO(index: number): void {
+    this.poArray.splice(index, 1);
+  }
+
+  clearAllPOs(): void {
+    this.poArray = [];
+    this.closePOModal();
+  }
+  
+
+
+ 
+  resetPagination() {
+    this.service.page = 1;  // Reset the page number to 1
+  }
+
+  onPageSizeChange() {
+    this.service.page = 1; // Reset to the first page
+    this._fetchData(); // Refetch data based on the new page size
   }
 
   changeValue(i) {
