@@ -1,4 +1,5 @@
 export interface Table {
+    STATUS: string;
     selected: any; // Optional: Indicates whether the row is selected
     BELNR: string; // Document Number of an Invoice Document
     GJAHR: number; // Fiscal Year

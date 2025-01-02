@@ -175,7 +175,7 @@ export const MENU: MenuItem[] = [
                 parentId: "menu"
             },
             {
-                id: "mb51",
+                id: "zven",
                 label: 'MENUITEMS.DASHBOARDS.LIST.ZVEN',
                 link:'zven',
                 icon: 'bx-layer',

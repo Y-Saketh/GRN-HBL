@@ -145,72 +145,79 @@ export class ZvenComponent {
       })
     );
   }
+  saveBound(val: string) {
+    console.log("val", val);
+    const formValue = val === "save" ? "" : "X";
+    const saveValue = val === "save" ? "X" : "";
+    let payload = {
+      PRINT: {
+        RECORD: [],
+        FORM: formValue,
+        SAVE: saveValue,
+      },
+    };
 
-    saveBound() {
-      const payload = {
-        PRINT: {
-          RECORD: [
-            {
-              BELNR: "5105649537",
-              GJAHR: 2024,
-              BUDAT: "2024-04-12",
-              WERKS: "1100",
-              CREDIT: "3618113873",
-              STATUS: "",
-              VEHICAL: "AP13Y3025",
-              TRANS: "LOCAL TRANSPORT",
-              LRNO: "1234LR",
-              LRDATE: "2024-12-31",
-              GROSS: 2300,
-              NET: 100,
-              REASON: "W/O THREADING (INV NO:397, DT:18.03.2024)",
-              SEL: "X",
-            },
-          ],
-          FORM: "",
-          SAVE: "X",
-        },
+    this.zven.forEach((item) => {
+      const mappedItem = {
+        BELNR: item.BELNR || "",
+        GJAHR: item.GJAHR || null,
+        BUDAT: item.BUDAT || "",
+        WERKS: item.WERKS || "",
+        CREDIT: item.CREDIT || "",
+        STATUS: item.STATUS || "",
+        VEHICAL: item.VEHICAL || "",
+        TRANS: item.TRANS || "",
+        LRNO: item.LRNO || "",
+        LRDATE: item.LRDATE || "",
+        GROSS: item.GROSS || null,
+        NET: item.NET || null,
+        REASON: item.REASON || "",
+        SEL: item.SEL || "",
       };
-      this.loaderservice.showLoader();
-      this.apiService.zven(payload).subscribe({
-        next: (response: any) => {
-          this.loaderservice.hideLoader();
-          if (response.FORM === "X") {
-            console.log("BASE64 Data:", response.BASE64);
-          } else if (response.SAVE === "X") {
-            console.log("Success Message:", response.message);
-            Swal.fire({
-              icon: "success",
-              title: "Success",
-              text: response.message,
-            });
-          } else {
-            Swal.fire({
-              icon: "error",
-              title: "Unexpected Response",
-              text: "The server returned an unexpected response.",
-            });
-          }
-        },
-        error: (error: any) => {
-          this.loaderservice.hideLoader();
-          console.error("Error in saveBound API call:", error);
+      payload.PRINT.RECORD.push(mappedItem);
+    });
+  
+    // Show the loader
+    this.loaderservice.showLoader();
+  
+    // Make the API call
+    this.apiService.zven(payload).subscribe({
+      next: (response: any) => {
+        this.loaderservice.hideLoader();
+  
+        if (response.FORM === "X") {
+          console.log("BASE64 Data:", response.BASE64);
+        } else if (response.SAVE === "X") {
+          console.log("Success Message:", response.message);
+          Swal.fire({
+            icon: "success",
+            title: "Success",
+            text: response.message,
+          });
+        } else {
           Swal.fire({
             icon: "error",
-            title: "Error",
-            text: "Failed to save the data. Please try again.",
+            title: "Unexpected Response",
+            text: "The server returned an unexpected response.",
           });
-        },
-        complete: () => {
-          console.log("saveBound API call completed.");
-          this.loaderservice.hideLoader();
-        },
-      });
-    }
-    
+        }
+      },
+      error: (error: any) => {
+        this.loaderservice.hideLoader();
+        console.error("Error in saveBound API call:", error);
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "Failed to save the data. Please try again.",
+        });
+      },
+      complete: () => {
+        console.log("saveBound API call completed.");
+        this.loaderservice.hideLoader();
+      },
+    });
+  }
   
-
-
   toggleSelectAll(event: any): void {
     const checked = event.target.checked;
     this.tables$.pipe(take(1)).subscribe((tables) => {
@@ -250,8 +257,8 @@ export class ZvenComponent {
     const payload = {
       WERKS: this.form.plant.value,
       GJAHR: this.form.year.value,
-      BUDAT_F: '',
-      BUDAT_T: '',
+      BUDAT_F: this.form.postingDateFrom.value,
+      BUDAT_T: this.form.postingDateTo.value,
     };
     console.log("Final Payload:", payload);
     this.loaderservice.showLoader();

@@ -168,7 +168,7 @@
                           Credit Memo No
                         </th>
                         <th sortable="VEHICAL" (sort)="onSort($event)">
-                          Vechile
+                          Vehicle No
                           <span style="color: red">*</span>
                         </th>
                         <th sortable="TRANS" (sort)="onSort($event)">
@@ -211,28 +211,29 @@
                         <!-- Plant -->
                         <td>{{ table.CREDIT }}</td>
                         <!-- Credit Memo No -->
-                        <td>
-                          <input type="text" [(ngModel)]="table.VEHICAL" name="vehicle{{i}}" />
+                        <td >
+                          <input type="text" style="width: 12ch; text-align: center;" [(ngModel)]="table.VEHICAL" name="vehicle{{i}}" />
                         </td>
                         <!-- Vechile -->
                         <td>
-                          <input type="text" [(ngModel)]="table.TRANS" name="transporter{{i}}" />
+                          <input type="text" style="width: 12ch; text-align: center;" [(ngModel)]="table.TRANS" name="transporter{{i}}" />
                         </td>
                         <!-- Transporter -->
                         <td>
-                          <input type="text" [(ngModel)]="table.LRNO" name="lrNumber{{i}}" />
+                          <input type="text" style="width: 12ch; text-align: center;" [(ngModel)]="table.LRNO" name="lrNumber{{i}}" />
                         </td>
                         <!-- LR Number -->
                         <td class="p-2 text-start">
-                          <input type="date" [(ngModel)]="table.LRDATE" name="lrDate{{i}}" class="form-control" />
+                          <input type="text"  [bsConfig]="bsConfig" style="width: 12ch; text-align: center;"
+                          bsDatepicker [(ngModel)]="table.LRDATE" name="lrDate{{i}}" class="form-control" />
                         </td>                        
                         <!-- LR Date -->
                         <td>
-                          <input type="number" [(ngModel)]="table.GROSS" name="gross{{i}}" />
+                          <input type="number" style="width: 12ch; text-align: center;" [(ngModel)]="table.GROSS" name="gross{{i}}" />
                         </td>
                         <!-- Gross -->
                         <td>
-                          <input type="number" [(ngModel)]="table.NET" name="net{{i}}" />
+                          <input type="number" style="width: 12ch; text-align: center;" [(ngModel)]="table.NET" name="net{{i}}" />
                         </td>
                         <!-- Net -->
                         <td>
@@ -246,11 +247,18 @@
                 <!-- Save & Download Buttons -->
                 <div class="col-md-4 text-left">
                   <button 
+                  style="background-color: brown; width: max-content; color: aliceblue;" 
+                  class="btn" 
+                  type="submit" 
+                  (click)="saveBound('save')">
+                  Save
+              </button>
+                  <button 
                       style="background-color: brown; width: max-content; color: aliceblue;" 
                       class="btn" 
                       type="submit" 
-                      (click)="handleButtonClick()">
-                      {{FORM === 'X' ? 'BASE64' : SAVE === 'X' ? 'Success Message' : 'Download'}}
+                      (click)="saveBound('download')">
+                     Download
                   </button>
                 </div>
               </div>
