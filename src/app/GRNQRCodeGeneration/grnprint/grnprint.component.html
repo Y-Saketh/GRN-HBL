@@ -118,12 +118,12 @@
                   <button (click)="generateQR()" [disabled]=" !isAnyRowSelected() ||matchedAndUnmatchedData == 0 " class="btn btn-success btn-lg highlight-3d-btn">Re-Generate QR</button>
               </div>
           </div>
-        <div *ngIf="GrnResponse" class="table table-responsive">
           <div>
             <button (click)="filterSelectedRows()" class="btn custom-btn rounded-circle shadow-lg p-3">
               <i class="bx bx-revision"></i>
             </button>
           </div>
+        <div *ngIf="GrnResponse" class="table table-responsive">
           <table id="basic-datatable"
             class="table table-bordered dt-responsive nowrap datatables no-footer dtr-inline">
             <thead>
@@ -306,6 +306,11 @@
             </button>
           </div>
         </div>
+        <div>
+          <button (click)="filterSelectedRows()" class="btn custom-btn rounded-circle shadow-lg p-3">
+            <i class="bx bx-revision"></i>
+          </button>
+        </div>
         <div *ngIf="GrnResponse" class="table table-responsive">
           <table id="basic-datatable"
             class="table table-bordered dt-responsive nowrap datatables no-footer dtr-inline">
@@ -387,6 +392,11 @@
                   class="btn btn-success btn-lg highlight-3d-btn">Userprint</button>
               </div>
           </div>
+          <div>
+            <button (click)="filterSelectedRows()" class="btn custom-btn rounded-circle shadow-lg p-3">
+              <i class="bx bx-revision"></i>
+            </button>
+          </div>
         <div *ngIf="GrnResponse" class="table table-responsive">
           <table id="basic-datatable"
             class="table table-bordered dt-responsive nowrap datatables no-footer dtr-inline">
@@ -424,7 +434,10 @@
                   <input type="number" [(ngModel)]="table.ZLABEL" min="0"  [disabled]="!table.selected" placeholder="Label Qty"  style="width: 12ch; text-align: center;"
                   />
                 </td>
-                <td>
+                <td  [ngClass]="{
+                  'row-highlighted-green': shouldHighlightRow(table.MATNR) === 'green',
+                  'row-highlighted-red': shouldHighlightRow(table.MATNR) === 'red'
+                }">
                   <div style="display: flex; gap: 5px; justify-content: center;">
                     <button class="btn btn-danger btn-sm" (click)="unmatchMaterial1(i, table)" [disabled]="!table.selected">
                       individual

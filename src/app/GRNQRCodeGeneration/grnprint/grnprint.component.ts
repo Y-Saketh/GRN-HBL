@@ -72,7 +72,7 @@ export class GrnprintComponent implements OnInit {
   GRN: any;
   currentDate: Date;
   GrnResponse: boolean = true;
-  selectedOption: string = 'pdf'; // Default selection
+  selectedOption: string = 'PDF'; // Default selection
   showTable: boolean = false;
   qrscreen: boolean = false;
   labelscreen: boolean = false;
@@ -80,7 +80,7 @@ export class GrnprintComponent implements OnInit {
   qrCodes: any[];
   qrCodess: any[];
   lableavail: Table[];
-  isAllSelected: boolean = true;
+  isAllSelected: boolean = false;
   GrnPrints: Table[];
   constructor(public formBuilder: UntypedFormBuilder, @Inject(AdvancedService) public service: AdvancedService, private apiService: UserProfileService, public loaderservice: LoaderService) {
     this.tables$ = service.tables$;
@@ -113,15 +113,19 @@ export class GrnprintComponent implements OnInit {
   //     });
   //   }
 
-  onQRCodeGenerateCheckboxChange(index: number, table): void {
+  onQRCodeGenerateCheckboxChange(table): void {
     // const material = this.tableData[index];
-    const material = table
-    if (material.MENGE > 0) {
-      this.selectedMaterial = { ...material };
-      this.selectedIndex = index;
-    } else {
-      Swal.fire("Error", "Invalid Quantity for QR Code Generation", "error");
+    // const material = table
+    // if (material.MENGE > 0) {
+    //   this.selectedMaterial = { ...material };
+    //   this.selectedIndex = index;
+    // } else {
+    //   Swal.fire("Error", "Invalid Quantity for QR Code Generation", "error");
+    // }
+    if (!table.selected) {
+      table.ZLABEL = 0; // Reset ZLABEL if the row is deselected
     }
+    this.isAllSelected = this.GrnPrint.every(table => table.selected);
   }
 
 
@@ -137,6 +141,7 @@ export class GrnprintComponent implements OnInit {
     if (!table.selected) {
       table.ZUSER = 0; // Reset ZUSER if the row is deselected
     }
+    this.isAllSelected = this.GrnPrint.every(table => table.selected);
   }
   
 
@@ -169,6 +174,8 @@ export class GrnprintComponent implements OnInit {
           this.loaderservice.hideLoader();
         }  else {
           this.GrnPrint = res[0]?.ITEM || res?.ITEM;
+          this.GrnPrint.forEach((data)=>data.selected=true);
+          this.isAllSelected = true;
           this.service.setTableData(this.GrnPrint);
           this._fetchData();
 
@@ -827,6 +834,10 @@ export class GrnprintComponent implements OnInit {
     this.labelscreen = false;
     this.userscreen = false;
     this.matchedAndUnmatchedData = [];
+    this.GrnPrint.forEach(data => data.ZLABEL = 0)
+    this.service.setTableData(this.GrnPrint || []); 
+    this.service.resetPagination();
+    this._fetchData(); 
 
   }
   async generateQR(): Promise<void> {
@@ -835,8 +846,12 @@ export class GrnprintComponent implements OnInit {
     // console.log(" this.GRN",Grn, this.GRN, this.vendorCode)
     this.GrnResponse = false;
     this.qrscreen = true;
+    console.log("this.GrnPrint",this.GrnPrint)
     this.selectedData = this.matchedAndUnmatchedData.filter(data => data.selected);
-
+    this.matchedAndUnmatchedData = this.matchedAndUnmatchedData.filter((grn) =>
+      this.GrnPrint?.some((dataa) => dataa.MATNR == grn.MATNR && dataa.selected == true)
+  );
+    console.log("matchedAndUnmatchedData", this.matchedAndUnmatchedData)
     if (this.selectedData.length === 0) {
       await Swal.fire("", "No selected data available for QR generation.", "error");
       return;
@@ -1159,6 +1174,9 @@ export class GrnprintComponent implements OnInit {
     this.GrnResponse = false;
     this.userscreen = true;
     this.qrCodes = [];
+    this.matchedAndUnmatchedData = this.matchedAndUnmatchedData.filter((grn) =>
+      this.GrnPrint?.some((dataa) => dataa.MATNR == grn.MATNR && dataa.selected == true)
+  );
     console.log("matchedAndUnmatchedData", this.matchedAndUnmatchedData)
     for (const table of this.matchedAndUnmatchedData) {
       const packets = table.packets || [];
@@ -1261,6 +1279,9 @@ export class GrnprintComponent implements OnInit {
     // }
 
     this.qrCodes = [];
+    this.matchedAndUnmatchedData = this.matchedAndUnmatchedData.filter((grn) =>
+      this.GrnPrint?.some((dataa) => dataa.MATNR == grn.MATNR && dataa.selected == true)
+  );
     console.log("matchedAndUnmatchedData", this.matchedAndUnmatchedData);
   
     // Show printer loader
@@ -1435,8 +1456,8 @@ export class GrnprintComponent implements OnInit {
     }
   }
   filterSelectedRows() {
-    this.GrnPrints = this.GrnPrint?.filter(table => table.selected);
-    this.service.setTableData(this.GrnPrints || []); 
+    this.GrnPrint = this.GrnPrint?.filter(table => table.selected);
+    this.service.setTableData(this.GrnPrint || []); 
     this.service.resetPagination();
     this._fetchData(); 
   }
