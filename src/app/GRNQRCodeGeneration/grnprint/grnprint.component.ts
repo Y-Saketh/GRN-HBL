@@ -221,6 +221,10 @@ export class GrnprintComponent implements OnInit {
     });
   }
 
+  onButtonClick(button: string): void {
+    this.service.handleButtonClick(button);
+  }
+
   get form() {
     return this.validationform.controls;
   }

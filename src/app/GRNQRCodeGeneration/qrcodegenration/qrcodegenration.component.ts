@@ -129,6 +129,11 @@ export class QRcodegenrationComponent {
      */
     // this._fetchData();
   }
+
+  onButtonClick(button: string): void {
+    this.service.handleButtonClick(button);
+  }
+  
   get form() {
     return this.validationform.controls;
   }

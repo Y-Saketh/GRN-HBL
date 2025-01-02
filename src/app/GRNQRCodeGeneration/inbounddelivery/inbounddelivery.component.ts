@@ -62,7 +62,8 @@ export class InbounddeliveryComponent implements OnInit {
   GSTIN: any;
   HSNCODE: any;
   selectedTables: Table[] = [];
-   isAllSelected: boolean = false;
+  isAllSelected: boolean = false;
+  clickedButton: string | null = null;
 
   constructor(public formBuilder: UntypedFormBuilder, public service: AdvancedService, private apiService: UserProfileService,public loaderservice:LoaderService) {
     this.tables$ = service.tables$;
@@ -259,6 +260,10 @@ export class InbounddeliveryComponent implements OnInit {
   onFormSubmit(event: Event) {
     event.preventDefault(); // Prevent form submission
     // Add your custom logic here, if any
+  }
+
+  onButtonClick(button: string): void {
+    this.service.handleButtonClick(button);
   }
   
   validSubmit() {

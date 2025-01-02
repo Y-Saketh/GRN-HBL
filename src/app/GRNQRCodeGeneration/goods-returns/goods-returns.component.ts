@@ -58,8 +58,10 @@ export class GoodsReturnsComponent {
     dateInputFormat: 'DD-MM-YYYY', // Set the date format
     containerClass: 'theme-blue', // Optional: Use a predefined theme
   };
-    
-  
+
+  onButtonClick(button: string): void {
+    this.service.handleButtonClick(button);
+  }
 
   @ViewChildren(AdvancedSortableDirective) headers: QueryList<AdvancedSortableDirective>;
   public isCollapsed = true;

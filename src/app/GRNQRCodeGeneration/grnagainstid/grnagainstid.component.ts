@@ -96,6 +96,10 @@ export class GrnagainstidComponent implements OnInit {
 
   }
 
+  onButtonClick(button: string): void {
+    this.service.handleButtonClick(button);
+  }
+
   validSubmit() {
     this.submit = true;
     let payload = { 

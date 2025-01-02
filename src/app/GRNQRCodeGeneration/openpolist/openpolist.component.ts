@@ -103,7 +103,8 @@ export class OpenpolistComponent implements OnInit {
     fromDate: [fortyfiveDaysAgo, [ Validators.pattern('[a-zA-Z0-9]+')]],
     toDate: [fifteenDaysAgo, [ Validators.pattern('[a-zA-Z0-9]+')]],
     documentFrom: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
-    documentTo: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],     
+    documentTo: ['', [ Validators.pattern('[a-zA-Z0-9]+')]], 
+    poNumber: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],    
     });
     this.tableForm = this.formBuilder.group({
       gateEntryNumber: ['', Validators.required],
