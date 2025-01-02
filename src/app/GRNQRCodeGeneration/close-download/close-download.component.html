@@ -6,7 +6,7 @@
         ZPRClose
       </h4>
       <!-- <p class="card-title-desc">Provide valuable, actionable feedback to your users with HTML5 form
-              validation–available in all our supported browsers.</p> -->
+              validation–available in all our supprrted browsers.</p> -->
       <form
         class="needs-validation"
         (ngSubmit)="validSubmit()"
@@ -85,61 +85,61 @@
               </div>
             </div>
           </div>
-          <!--PO NUMBER -->
+          <!--PR NUMBER -->
           <div class="col-md-2">
-            <label class="brandcolor" for="po">PO</label>
+            <label class="brandcolor" for="pr">PR</label>
             <div class="mb-3 d-flex align-items-center">
               <input
                 type="text"
                 class="form-control"
-                id="po"
-                placeholder="Enter PO"
-                (input)="handlePOInput($event)"
+                id="pr"
+                placeholder="Enter PR"
+                (input)="handleprInput($event)"
                 [ngClass]="{
-                  'is-invalid': submit && poArray.length === 0
+                  'is-invalid': submit && prArray.length === 0
                 }"
               />
               <!-- Display the icon button only when there is data -->
               <button
-                *ngIf="poArray.length > 0"
+                *ngIf="prArray.length > 0"
                 type="button"
                 class="btn btn-info ms-2"
-                (click)="openPOModal()"
+                (click)="openPRModal()"
               >
                 <i class="fas fa-list"></i>
               </button>
               <div
-                *ngIf="submit && poArray.length === 0"
+                *ngIf="submit && prArray.length === 0"
                 class="invalid-feedback d-block"
               >
-                <span>Please provide at least one PO Number.</span>
+                <span>Please provide at least one PR Number.</span>
               </div>
             </div>
           
             <!-- Full-Screen Modal -->
-            <div class="modal-backdrop" *ngIf="showPOModal">
+            <div class="modal-backdrop" *ngIf="showPRModal">
               <div class="modal-content">
                 <!-- Close Button -->
                 <button
                   type="button"
                   class="btn btn-danger btn-sm close-button"
-                  (click)="closePOModal()"
+                  (click)="closePRModal()"
                 >
                   X
                 </button>
           
-                <h3 class="modal-title">PO Numbers</h3>
+                <h3 class="modal-title">pr Numbers</h3>
           
-                <div class="po-container">
+                <div class="pr-container">
                   <div
-                    class="po-item"
-                    *ngFor="let po of poArray; let i = index"
+                    class="pr-item"
+                    *ngFor="let pr of prArray; let i = index"
                   >
-                    <span>{{ po }}</span>
+                    <span>{{ pr }}</span>
                     <button
                       type="button"
                       class="btn btn-danger btn-sm"
-                      (click)="removePO(i)"
+                      (click)="removePR(i)"
                     >
                       X
                     </button>
@@ -151,8 +151,8 @@
                   <button
                     type="button"
                     class="btn btn-danger"
-                    (click)="clearAllPOs()"
-                    [disabled]="poArray.length === 0"
+                    (click)="clearAllPRs()"
+                    [disabled]="prArray.length === 0"
                   >
                     Clear All
                   </button>
@@ -211,7 +211,7 @@
           </div>
         </div>
       
-        <!-- Search and Export -->
+        <!-- Search and Exprrt -->
         <div class="col-sm-12 col-md-8">
           <div class="d-flex justify-content-end align-items-center">
             <!-- Search Field -->
@@ -229,7 +229,7 @@
               </label>
             </div>
       
-            <!-- Export Button -->
+            <!-- Exprrt Button -->
             <div>
               <button
                 class="btn btn-warning ms-2"
@@ -243,14 +243,14 @@
         </div>
       </div>
       <!-- Table -->
-      <div class="table-responsive">
-        <table id="basic-datatable" class="table table-bordered dt-responsive nowrap">
+      <div class="table-resprnsive">
+        <table id="basic-datatable" class="table table-bordered dt-resprnsive nowrap">
           <thead class="brandcolor tableHeader">
             <tr>
               <th></th>
               <!-- <th sortable="CLOSE" (sort)="onSort($event)">Close</th> -->
               <th sortable="BANFN" (sort)="onSort($event)">Pur Reqn</th>
-              <th sortable="BNFPO" (sort)="onSort($event)">Item</th>
+              <th sortable="BNFpr" (sort)="onSort($event)">Item</th>
               <th sortable="BADAT" (sort)="onSort($event)">Reqn Date</th>
               <th sortable="BSART" (sort)="onSort($event)">Doc Type</th>
               <th sortable="LOEKZ" (sort)="onSort($event)">Del Ind</th>
@@ -273,7 +273,7 @@
                 <!-- Close -->
                 <td>{{ table.BANFN }}</td>
                 <!-- Purchase Requisitioner -->
-                <td>{{ table.BNFPO }}</td>
+                <td>{{ table.BNFpr }}</td>
                 <!-- Purchase Item -->
                 <td>{{ table.BADAT| date: 'dd-MM-yyyy'  }}</td>
                 <!-- Requistion Date -->
@@ -334,7 +334,7 @@
       <!-- Pagination -->
       <div class="row justify-content-md-between align-items-md-center mt-2">
         <div class="col-sm-12 col-md-5">
-          <div class="dataTables_info mb-2" role="status" aria-live="polite">
+          <div class="dataTables_info mb-2" role="status" aria-live="prlite">
             Showing {{ service.startIndex }} to {{ service.endIndex }} of
             {{ service.totalRecords }} entries
           </div>

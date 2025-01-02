@@ -51,6 +51,8 @@ export class OpenpolistComponent implements OnInit {
   tableForm: UntypedFormGroup;
   isSubmitting: boolean;
   inboundData: any[] = [];
+  poArray: string[] = []; // Array to store PO numbers
+  showPOModal: boolean = false; // Toggle visibility of the modal
   // INBOUND: Observable<any[]>;
   INBOUND: any[] = []; // Stores the API response for the second table
   hidemee: any[];
@@ -184,6 +186,50 @@ export class OpenpolistComponent implements OnInit {
     this.hidemee = new Array(this.INBOUND.length).fill(true); // Initialize hideme for each row
     console.log("this.hidemee",this.hidemee)
 }
+
+  // Method to handle input events
+  handlepoInput(event: Event): void {
+    const inputElement = event.target as HTMLInputElement;
+    const input = inputElement.value;
+  
+    if (input.trim()) {
+      // Check if input contains any delimiters (space, comma, or newline)
+      if (/[\s,]+/.test(input)) {
+        // Split the input by spaces, commas, or newlines, trim, and filter empty values
+        const newPOs = input
+          .split(/[\s,]+/) // Match spaces, commas, or newlines
+          .map((po) => po.trim())
+          .filter((po) => /^\d+$/.test(po)); // Allow only numeric values
+  
+        // Add unique PO numbers to the array
+        this.poArray.push(...newPOs.filter((po) => !this.poArray.includes(po)));
+  
+        // Clear the input field after processing
+        inputElement.value = '';
+      }
+    }
+  }
+  
+  
+  // Open the full-screen modal
+  openPOModal(): void {
+    this.showPOModal = true;
+  }
+
+  // Close the modal
+  closePOModal(): void {
+    this.showPOModal = false;
+  }
+
+  // Method to remove a PO from the array
+  removePO(index: number): void {
+    this.poArray.splice(index, 1);
+  }
+
+  clearAllPOs(): void {
+    this.poArray = [];
+    this.closePOModal();
+  }
 
   closePopup(): void {
     // this.selectedMaterial = true;

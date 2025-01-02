@@ -30,8 +30,8 @@ export class CloseDownloadComponent implements OnInit {
   plants: string[] = [];
   tables$: Observable<Table[]>;
   total$: Observable<number>;
-  poArray: string[] = []; // Array to store PO numbers
-  showPOModal: boolean = false; // Toggle visibility of the modal
+  prArray: string[] = []; // Array to store PO numbers
+  showPRModal: boolean = false; // Toggle visibility of the modal
   clickedButton: string | null = null;
 
 
@@ -90,7 +90,7 @@ export class CloseDownloadComponent implements OnInit {
   }
 
   // Method to handle input events
-  handlePOInput(event: Event): void {
+  handleprInput(event: Event): void {
     const inputElement = event.target as HTMLInputElement;
     const input = inputElement.value;
   
@@ -98,13 +98,13 @@ export class CloseDownloadComponent implements OnInit {
       // Check if input contains any delimiters (space, comma, or newline)
       if (/[\s,]+/.test(input)) {
         // Split the input by spaces, commas, or newlines, trim, and filter empty values
-        const newPOs = input
+        const newPRs = input
           .split(/[\s,]+/) // Match spaces, commas, or newlines
-          .map((po) => po.trim())
-          .filter((po) => /^\d+$/.test(po)); // Allow only numeric values
+          .map((pr) => pr.trim())
+          .filter((pr) => /^\d+$/.test(pr)); // Allow only numeric values
   
-        // Add unique PO numbers to the array
-        this.poArray.push(...newPOs.filter((po) => !this.poArray.includes(po)));
+        // Add unique pr numbers to the array
+        this.prArray.push(...newPRs.filter((pr) => !this.prArray.includes(pr)));
   
         // Clear the input field after processing
         inputElement.value = '';
@@ -114,28 +114,26 @@ export class CloseDownloadComponent implements OnInit {
   
   
   // Open the full-screen modal
-  openPOModal(): void {
-    this.showPOModal = true;
+  openPRModal(): void {
+    this.showPRModal = true;
   }
 
   // Close the modal
-  closePOModal(): void {
-    this.showPOModal = false;
+  closePRModal(): void {
+    this.showPRModal = false;
   }
 
   // Method to remove a PO from the array
-  removePO(index: number): void {
-    this.poArray.splice(index, 1);
+  removePR(index: number): void {
+    this.prArray.splice(index, 1);
   }
 
-  clearAllPOs(): void {
-    this.poArray = [];
-    this.closePOModal();
+  clearAllPRs(): void {
+    this.prArray = [];
+    this.closePRModal();
   }
   
 
-
- 
   resetPagination() {
     this.service.page = 1;  // Reset the page number to 1
   }

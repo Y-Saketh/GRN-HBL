@@ -35,6 +35,8 @@ export class Mb52Component implements OnInit {
     mattypes: string[] = ["ZANL","ZCNS","ZERM","ZFRT","ZHLB","ZMRN","ZROH","ZVRP"];
     tables$: Observable<Table[]>;
     total$: Observable<number>;
+    poArray: string[] = []; // Array to store PO numbers
+    showPOModal: boolean = false; // Toggle visibility of the modal
     clickedButton: string | null = null;
   
     @ViewChildren(AdvancedSortableDirective) headers: QueryList<AdvancedSortableDirective>;
@@ -126,9 +128,10 @@ export class Mb52Component implements OnInit {
     this.validationform = this.formBuilder.group({
       plant: ['', Validators.required],
       storageLocation: ['', Validators.required],
-      materialFrom: ['1000000000', Validators.required],
-      materialTo: ['1999999999', Validators.required],
+      // materialFrom: ['1000000000', Validators.required],
+      // materialTo: ['1999999999', Validators.required],
       materialType: ['', Validators.required],
+      po: ['', Validators.required],
     });
 
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
@@ -142,6 +145,50 @@ export class Mb52Component implements OnInit {
     this.plants = werksArray;
     console.log("Extracted Werks Array:", werksArray);
 
+  }
+
+   // Method to handle input events
+   handlepoInput(event: Event): void {
+    const inputElement = event.target as HTMLInputElement;
+    const input = inputElement.value;
+  
+    if (input.trim()) {
+      // Check if input contains any delimiters (space, comma, or newline)
+      if (/[\s,]+/.test(input)) {
+        // Split the input by spaces, commas, or newlines, trim, and filter empty values
+        const newPOs = input
+          .split(/[\s,]+/) // Match spaces, commas, or newlines
+          .map((po) => po.trim())
+          .filter((po) => /^\d+$/.test(po)); // Allow only numeric values
+  
+        // Add unique PO numbers to the array
+        this.poArray.push(...newPOs.filter((po) => !this.poArray.includes(po)));
+  
+        // Clear the input field after processing
+        inputElement.value = '';
+      }
+    }
+  }
+  
+  
+  // Open the full-screen modal
+  openPOModal(): void {
+    this.showPOModal = true;
+  }
+
+  // Close the modal
+  closePOModal(): void {
+    this.showPOModal = false;
+  }
+
+  // Method to remove a PO from the array
+  removePO(index: number): void {
+    this.poArray.splice(index, 1);
+  }
+
+  clearAllPOs(): void {
+    this.poArray = [];
+    this.closePOModal();
   }
 
   get form() {
@@ -168,8 +215,8 @@ export class Mb52Component implements OnInit {
     console.log("validationform",this.form)
       let obj = {
         "WERKS": this.form.plant.value,//"1300",
-        "MATNR_F": this.form.materialFrom.value,//"1000001248",
-        "MATNR_T": this.form.materialTo.value,//"1000001248",
+        // "MATNR_F": this.form.materialFrom.value,//"1000001248",
+        // "MATNR_T": this.form.materialTo.value,//"1000001248",
         "MATART": this.form.materialType.value,
         "LGORT":this.form.storageLocation.value
     }

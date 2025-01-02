@@ -172,6 +172,81 @@
                   </div>
                 </div>
               </div>
+               <!-- PO Number -->
+          <div class="col-md-2">
+            <label class="brandcolor" for="po">PO Number</label>
+            <div class="mb-3 d-flex align-items-center">
+              <input
+                type="text"
+                class="form-control"
+                id="po"
+                placeholder="Enter PO"
+                (input)="handlepoInput($event)"
+                [ngClass]="{
+                  'is-invalid': submit && poArray.length === 0
+                }"
+              />
+              <!-- Display the icon button only when there is data -->
+              <button
+                *ngIf="poArray.length > 0"
+                type="button"
+                class="btn btn-info ms-2"
+                (click)="openPOModal()"
+              >
+                <i class="fas fa-list"></i>
+              </button>
+              <div
+                *ngIf="submit && poArray.length === 0"
+                class="invalid-feedback d-block"
+              >
+                <span>Please provide at least one po Number.</span>
+              </div>
+            </div>
+          
+            <!-- Full-Screen Modal -->
+            <div class="modal-backdrop" *ngIf="showPOModal">
+              <div class="modal-content">
+                <!-- Close Button -->
+                <button
+                  type="button"
+                  class="btn btn-danger btn-sm close-button"
+                  (click)="closePOModal()"
+                >
+                  X
+                </button>
+          
+                <h3 class="modal-title">po Numbers</h3>
+          
+                <div class="po-container">
+                  <div
+                    class="po-item"
+                    *ngFor="let po of poArray; let i = index"
+                  >
+                    <span>{{ po }}</span>
+                    <button
+                      type="button"
+                      class="btn btn-danger btn-sm"
+                      (click)="removePO(i)"
+                    >
+                      X
+                    </button>
+                  </div>
+                </div>
+          
+                <!-- Clear All Button -->
+                <div class="d-flex justify-content-end mt-3">
+                  <button
+                    type="button"
+                    class="btn btn-danger"
+                    (click)="clearAllPOs()"
+                    [disabled]="poArray.length === 0"
+                  >
+                    Clear All
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
               <!-- Buton -->
               <div class="col-md-1 ms-2 mt-4">
                 <div class="mb-3">
