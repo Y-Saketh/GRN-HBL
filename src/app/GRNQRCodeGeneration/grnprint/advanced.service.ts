@@ -15,6 +15,7 @@ interface State {
   endIndex: number;
   totalRecords: number;
   changePage: number;
+  clickedButton: string;
 }
 
 const compare = (v1: string, v2: string) => (v1 < v2 ? -1 : v1 > v2 ? 1 : 0);
@@ -74,6 +75,7 @@ export class AdvancedService {
     endIndex: 9,
     totalRecords: 0,
     changePage: 0,
+    clickedButton: '',
   };
   private apiData: Table[] = [];
 
@@ -144,6 +146,18 @@ export class AdvancedService {
   }
   set sortDirection(sortDirection: SortDirection) {
     this._set({ sortDirection });
+  }
+
+  get clickedButton(): string {
+    return this._state.clickedButton;
+  }
+
+  handleButtonClick(button: string): void {
+    if (button === 'previous' && this._state.page > 1) {
+      this._set({ clickedButton: 'previous', page: this._state.page - 1 });
+    } else if (button === 'next' && this._state.page < this.totalPages) {
+      this._set({ clickedButton: 'next', page: this._state.page + 1 });
+    }
   }
 
   /** Change page */

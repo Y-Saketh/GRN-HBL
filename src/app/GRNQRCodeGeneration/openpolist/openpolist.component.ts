@@ -102,7 +102,8 @@ export class OpenpolistComponent implements OnInit {
     fromDate: [fortyfiveDaysAgo, [ Validators.pattern('[a-zA-Z0-9]+')]],
     toDate: [fifteenDaysAgo, [ Validators.pattern('[a-zA-Z0-9]+')]],
     documentFrom: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
-    documentTo: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],     
+    documentTo: ['', [ Validators.pattern('[a-zA-Z0-9]+')]], 
+    poNumber: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],    
     });
     this.tableForm = this.formBuilder.group({
       gateEntryNumber: ['', Validators.required],
@@ -370,6 +371,7 @@ export class OpenpolistComponent implements OnInit {
         BSART_T: this.form.documentTo.value,// Purchasing Document  To
         BEDAT_F:this.form.fromDate.value, // Item Delivery Date From
         BEDAT_T: this.form.toDate.value, // Item Delivery Date To
+        EBELN: this.form.poNumber.value, // Purchasing Document Number`
         // EBELN: '',//this.form.poNumber.value, // Purchasing Document Number`
         // LIFNR: '',//this.form.vendor.value, // Vendor
         // MATNR: '',//this.form.material.value, // Material
