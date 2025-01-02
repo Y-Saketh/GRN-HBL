@@ -67,6 +67,7 @@ export class OpenpolistComponent implements OnInit {
   gateEntryDate: string;
   lrDate: string;
   LrNo: string;
+  ebln: string;
   constructor(public formBuilder: UntypedFormBuilder, @Inject(AdvancedService) public service: AdvancedService, private apiService:UserProfileService,public loaderservice:LoaderService) {
     this.tables$ = service.tables$;
     console.log("this.tables$", this.tables$)
@@ -359,9 +360,10 @@ export class OpenpolistComponent implements OnInit {
 
 
   getPOLIST(){
-    
-    console.log("validationform",this.form) 
-  
+    this.ebln ='';
+  this.ebln = this.poArray.map(data => data).join(', ');
+     
+  console.log("validationform",this.form,this.ebln) 
     // if (this.validationform.valid) {
       let obj ={
         WERKS: this.form.plant.value, // Plant
@@ -370,6 +372,7 @@ export class OpenpolistComponent implements OnInit {
         BSART_T: this.form.documentTo.value,// Purchasing Document  To
         BEDAT_F:this.form.fromDate.value, // Item Delivery Date From
         BEDAT_T: this.form.toDate.value, // Item Delivery Date To
+        EBELN: this.ebln
         // EBELN: '',//this.form.poNumber.value, // Purchasing Document Number`
         // LIFNR: '',//this.form.vendor.value, // Vendor
         // MATNR: '',//this.form.material.value, // Material
