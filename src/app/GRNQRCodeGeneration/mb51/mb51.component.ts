@@ -50,8 +50,8 @@ export class Mb51Component implements OnInit {
   submit = false; // Form submission flag
   hideme: boolean[] = [];
   // mb51table: any;
-  mb51table: Table[];
-  tableData: Table[];
+  mb51table: Table[] = [];
+  tableData: Table[] = [];
   tables$: Observable<Table[]>;
   total$: Observable<number>;
   poArray: string[] = []; // Array to store PO numbers
@@ -322,6 +322,7 @@ onSort({ column, direction }: SortEvent) {
 
   getmb51() {
   let bwart = [];
+  this.mb51table = [];
   bwart = this.form.movementType.value.map(data => data.item_id).join(',');
   this.matnr = '';
       this.matnr = this.poArray.map(data => data).join(',');
@@ -355,13 +356,15 @@ onSort({ column, direction }: SortEvent) {
       console.log('MB51 data fetched successfully:', res);
 
       // Sort the response data by POSTING_DATE in descending order
-      this.mb51table = (res || []).sort((a, b) => {
-        const dateA = new Date(a.POSTING_DATE);
-        const dateB = new Date(b.POSTING_DATE);
-        return dateB.getTime() - dateA.getTime(); // Recent dates first
-      });
-
-      this.service.setTableData(this.mb51table || []);
+      this.mb51table = res;
+      console.log("this.mb51table", this.mb51table);
+      if(Array.isArray(this.mb51table)){
+        this.service.setTableData(this.mb51table);
+      }
+      else{
+        this.service.setTableData([]);
+      }
+      
       this._fetchData();
     },
     error: (error) => {

@@ -214,7 +214,7 @@ export class AdvancedService {
     let tables = sort(this.apiData, sortColumn, sortDirection);
   
     // 2. Filter the data
-    tables = tables.filter((table) => matches(table, searchTerm, this.pipe));
+    tables = tables?.filter((table) => matches(table, searchTerm, this.pipe));
     const total = tables.length;
   
     // 3. Paginate the data
