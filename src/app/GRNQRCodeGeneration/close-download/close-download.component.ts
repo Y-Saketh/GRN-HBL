@@ -100,13 +100,13 @@ export class CloseDownloadComponent implements OnInit {
       // Check if input contains any delimiters (space, comma, or newline)
       if (/[\s,]+/.test(input)) {
         // Split the input by spaces, commas, or newlines, trim, and filter empty values
-        const newPRs = input
+        const newPOs = input
           .split(/[\s,]+/) // Match spaces, commas, or newlines
-          .map((pr) => pr.trim())
-          .filter((pr) => /^\d+$/.test(pr)); // Allow only numeric values
+          .map((po) => po.trim())
+          .filter((po) => /^\d+$/.test(po)); // Allow only numeric values
   
-        // Add unique pr numbers to the array
-        this.prArray.push(...newPRs.filter((pr) => !this.prArray.includes(pr)));
+        // Add unique PO numbers to the array
+        this.prArray.push(...newPOs.filter((po) => !this.prArray.includes(po)));
   
         // Clear the input field after processing
         inputElement.value = '';

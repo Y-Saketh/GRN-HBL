@@ -327,12 +327,21 @@ onSort({ column, direction }: SortEvent) {
       this.matnr = this.poArray.map(data => data).join(',');
   console.log("validationform", this.form, this.matnr);
 
+  const formatToIST = (date: any) => {
+    if (!date) return '';
+    const localDate = new Date(date);
+    // Adjust to IST (UTC+5:30)
+    const istOffset = 5.5 * 60 * 60 * 1000;
+    const istDate = new Date(localDate.getTime() + istOffset);
+    return istDate.toISOString().split('T')[0]; // Format as "YYYY-MM-DD"
+  };
+
   let obj = {
     WERKS: this.form.plant.value, // Plant
     BWART: bwart, // Movement Type
     VGART: "WE", // Transaction/Event Type
-    BUDAT_F: this.form.postingDateFrom.value, // From Posting Date
-    BUDAT_T: this.form.postingDateTo.value , // To Posting Date
+    BUDAT_F: this.form.postingDateFrom ? formatToIST(this.form.postingDateFrom.value) : '', // From Posting Date
+    BUDAT_T: this.form.postingDateTo ? formatToIST(this.form.postingDateTo.value) : '', // To Posting Date
     MATNR:this.matnr,
     LGORT: this.form.storageLocation.value
   };
