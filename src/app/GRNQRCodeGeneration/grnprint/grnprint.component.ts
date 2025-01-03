@@ -338,7 +338,7 @@ export class GrnprintComponent implements OnInit {
         if (!Number.isInteger(qty)) {
           console.error("Error: Quantity cannot be split into decimal values for NOS, PCS, or EA.");
           Swal.fire("", "Quantity cannot be split into decimal values", "error");
-          material.ZLABEL = null;
+          // material.ZLABEL = null;
           return;
         }
       }
@@ -615,6 +615,61 @@ export class GrnprintComponent implements OnInit {
     //     this.backtoQunatity(); // Always execute this, even if some labels fail
     //   }
     // }
+    // async printLabel() {
+    //   this.qrCodes = [];
+    //   console.log("matchedAndUnmatchedData", this.matchedAndUnmatchedData);
+    
+    //   // Show printer loader
+    //   this.loaderservice.showPrinterLoader();
+    
+    //   try {
+    //     for (const table of this.matchedAndUnmatchedData) {
+    //       const qrData = `
+    //             GRN: ${table.MBLNR}
+    //           VC: ${table.LIFNR}
+    //           Mat: ${table.MATNR}
+    //           MatD: ${table.MAKTX}
+    //           Dt: ${this.currentDate}
+    //           RN: pkg  ${table.DCHARG}/${table.ZLABEL}
+    //           Qty: ${table.DCLABS} ${table.MEINS}
+    //         `;
+    
+    //       try {
+    //         const zpl = this.generateZPL(qrData, table);
+    //         if (this.printer) {
+    //           await new Promise<void>((resolve, reject) => {
+    //             this.printer.send(
+    //               zpl,
+    //               () => {
+    //                 console.log("Label sent to printer!");
+    //                 resolve();
+    //               },
+    //               (error: any) => {
+    //                 console.error("Error sending ZPL:", error);
+    //                 reject(error);
+    //               }
+    //             );
+    //           });
+    //         } else {
+    //           console.error("No printer available!");
+    //           throw new Error("No printer available");
+    //         }
+    //       } catch (error) {
+    //         console.error("Failed to print label:", error);
+    //         // Handle per-label errors here if needed
+    //       }
+    //     }
+    
+    //     console.log("All labels printed sequentially!");
+    //     this.backtoQunatity(); // Post-print operation
+    //   } catch (globalError) {
+    //     console.error("Error during the label printing process:", globalError);
+    //     // Handle overall errors if needed
+    //   } finally {
+    //     // Hide loader after all print operations
+    //     this.loaderservice.hidePrinterLoader();
+    //   }
+    // }
     async printLabel() {
       this.qrCodes = [];
       console.log("matchedAndUnmatchedData", this.matchedAndUnmatchedData);
@@ -626,37 +681,46 @@ export class GrnprintComponent implements OnInit {
         for (const table of this.matchedAndUnmatchedData) {
           const qrData = `
                 GRN: ${table.MBLNR}
-              VC: ${table.LIFNR}
-              Mat: ${table.MATNR}
-              MatD: ${table.MAKTX}
-              Dt: ${this.currentDate}
-              RN: pkg  ${table.DCHARG}/${table.ZLABEL}
-              Qty: ${table.DCLABS} ${table.MEINS}
-            `;
+                VC: ${table.LIFNR}
+                Mat: ${table.MATNR}
+                MatD: ${table.MAKTX}
+                Dt: ${this.currentDate}
+                RN: pkg ${table.DCHARG}/${table.ZLABEL}
+                Qty: ${table.DCLABS} ${table.MEINS}
+              `;
     
-          try {
-            const zpl = this.generateZPL(qrData, table);
-            if (this.printer) {
-              await new Promise<void>((resolve, reject) => {
-                this.printer.send(
-                  zpl,
-                  () => {
-                    console.log("Label sent to printer!");
-                    resolve();
-                  },
-                  (error: any) => {
-                    console.error("Error sending ZPL:", error);
-                    reject(error);
-                  }
-                );
-              });
-            } else {
-              console.error("No printer available!");
-              throw new Error("No printer available");
+          let printSuccess = false;
+          let attempts = 0;
+    
+          while (!printSuccess && attempts < 3) { // Retry up to 3 times
+            attempts++;
+            try {
+              const zpl = this.generateZPL(qrData, table);
+              if (this.printer) {
+                await new Promise<void>((resolve, reject) => {
+                  this.printer.send(
+                    zpl,
+                    () => {
+                      console.log(`Label sent to printer for ${table.MATNR}!`);
+                      printSuccess = true; // Mark success
+                      resolve();
+                    },
+                    (error: any) => {
+                      console.error(`Error sending ZPL for ${table.MATNR}:`, error);
+                      reject(error);
+                    }
+                  );
+                });
+              } else {
+                console.error("No printer available!");
+                throw new Error("No printer available");
+              }
+            } catch (error) {
+              console.error(`Attempt ${attempts} failed to print label for ${table.MATNR}:`, error);
+              if (attempts >= 3) {
+                console.error(`Skipping label for ${table.MATNR} after ${attempts} attempts.`);
+              }
             }
-          } catch (error) {
-            console.error("Failed to print label:", error);
-            // Handle per-label errors here if needed
           }
         }
     
@@ -670,6 +734,7 @@ export class GrnprintComponent implements OnInit {
         this.loaderservice.hidePrinterLoader();
       }
     }
+    
 
 
     // async printLabel2() {
@@ -717,48 +782,103 @@ export class GrnprintComponent implements OnInit {
     //     this.backtoQunatity(); // Always execute this, even if some labels fail
     //   }
     // }|
-  async printLabel2() {
-    this.qrCodess = [];
-    console.log("this.qrCodess", this.qrCodess);
-    try {
-      for (const table of this.qrCodess) {
-
-        try {
-          const zpl = this.generateZPL2(table);
-          if (this.printer) {
-            await new Promise<void>((resolve, reject) => {
-              this.printer.send(
-                zpl,
-                () => {
-                  console.log("Label sent to printer!");
-                  resolve();
-                },
-                (error: any) => {
-                  console.error("Error sending ZPL:", error);
-                  reject(error);
-                }
-              );
-            });
-          } else {
-            console.error("No printer available!");
-            throw new Error("No printer available");
+    async printLabel2() {
+      this.qrCodess = [];
+      console.log("this.qrCodess", this.qrCodess);
+    
+      // Show printer loader
+      this.loaderservice.showPrinterLoader();
+    
+      try {
+        for (const table of this.qrCodess) {
+          let printSuccess = false;
+          let attempts = 0;
+    
+          while (!printSuccess && attempts < 3) { // Retry up to 3 times
+            attempts++;
+            try {
+              const zpl = this.generateZPL2(table);
+              if (this.printer) {
+                await new Promise<void>((resolve, reject) => {
+                  this.printer.send(
+                    zpl,
+                    () => {
+                      console.log(`Label sent to printer for ${table.MATNR || 'unknown'}`);
+                      printSuccess = true; // Mark success
+                      resolve();
+                    },
+                    (error: any) => {
+                      console.error(`Error sending ZPL for ${table.MATNR || 'unknown'}:`, error);
+                      reject(error);
+                    }
+                  );
+                });
+              } else {
+                console.error("No printer available!");
+                throw new Error("No printer available");
+              }
+            } catch (error) {
+              console.error(`Attempt ${attempts} failed to print label for ${table.MATNR || 'unknown'}:`, error);
+              if (attempts >= 3) {
+                console.error(`Skipping label for ${table.MATNR || 'unknown'} after ${attempts} attempts.`);
+              }
+            }
           }
-        } catch (error) {
-          console.error("Failed to print label:", error);
-          // Handle per-label errors here if needed
         }
+    
+        console.log("All labels printed sequentially!");
+        this.backtoQunatity(); // Post-print operation
+      } catch (globalError) {
+        console.error("Error during the label printing process:", globalError);
+        // Handle overall errors if needed
+      } finally {
+        // Hide loader after all print operations
+        this.loaderservice.hidePrinterLoader();
       }
-
-      console.log("All labels printed sequentially!");
-      this.backtoQunatity(); // Post-print operation
-    } catch (globalError) {
-      console.error("Error during the label printing process:", globalError);
-      // Handle overall errors if needed
-    } finally {
-      // Hide loader after all print operations
-      this.loaderservice.hidePrinterLoader();
     }
-  }
+    
+  // async printLabel2() {
+  //   this.qrCodess = [];
+  //   console.log("this.qrCodess", this.qrCodess);
+  //   try {
+  //     for (const table of this.qrCodess) {
+
+  //       try {
+  //         const zpl = this.generateZPL2(table);
+  //         if (this.printer) {
+  //           await new Promise<void>((resolve, reject) => {
+  //             this.printer.send(
+  //               zpl,
+  //               () => {
+  //                 console.log("Label sent to printer!");
+  //                 resolve();
+  //               },
+  //               (error: any) => {
+  //                 console.error("Error sending ZPL:", error);
+  //                 reject(error);
+  //               }
+  //             );
+  //           });
+  //         } else {
+  //           console.error("No printer available!");
+  //           throw new Error("No printer available");
+  //         }
+  //       } catch (error) {
+  //         console.error("Failed to print label:", error);
+  //         // Handle per-label errors here if needed
+  //       }
+  //     }
+
+  //     console.log("All labels printed sequentially!");
+  //     this.backtoQunatity(); // Post-print operation
+  //   } catch (globalError) {
+  //     console.error("Error during the label printing process:", globalError);
+  //     // Handle overall errors if needed
+  //   } finally {
+  //     // Hide loader after all print operations
+  //     this.loaderservice.hidePrinterLoader();
+  //   }
+  // }
     generateZPL2(row){
       console.log("initPrinter", row)
       return `
@@ -1283,10 +1403,11 @@ export class GrnprintComponent implements OnInit {
     // }
 
     this.qrCodes = [];
+    // Filter matched and unmatched data based on selection
     this.matchedAndUnmatchedData = this.matchedAndUnmatchedData.filter((grn) =>
-      this.GrnPrint?.some((dataa) => dataa.MATNR == grn.MATNR && dataa.selected == true)
-  );
-    console.log("matchedAndUnmatchedData", this.matchedAndUnmatchedData);
+      this.GrnPrint?.some((dataa) => dataa.MATNR === grn.MATNR && dataa.selected === true)
+    );
+    console.log("Filtered matchedAndUnmatchedData", this.matchedAndUnmatchedData);
   
     // Show printer loader
     this.loaderservice.showPrinterLoader();
@@ -1300,32 +1421,41 @@ export class GrnprintComponent implements OnInit {
             MatD: ${table.MAKTX}
             Dt: ${this.currentDate}
             RN: pkg ${table.DCHARG}
-            Qty: ${table.DCLABS}  ${table.MEINS}
+            Qty: ${table.DCLABS} ${table.MEINS}
           `;
+        
+        let printSuccess = false;
+        let attempts = 0;
   
-        try {
-          const zpl = this.generateZPL3(qrData, table);
-          if (this.printer) {
-            await new Promise<void>((resolve, reject) => {
-              this.printer.send(
-                zpl,
-                () => {
-                  console.log("Label sent to printer!");
-                  resolve();
-                },
-                (error: any) => {
-                  console.error("Error sending ZPL:", error);
-                  reject(error);
-                }
-              );
-            });
-          } else {
-            console.error("No printer available!");
-            throw new Error("No printer available");
+        while (!printSuccess && attempts < 3) { // Retry up to 3 times
+          attempts++;
+          try {
+            const zpl = this.generateZPL3(qrData, table);
+            if (this.printer) {
+              await new Promise<void>((resolve, reject) => {
+                this.printer.send(
+                  zpl,
+                  () => {
+                    console.log(`Label sent to printer for ${table.MATNR || 'unknown'}`);
+                    printSuccess = true; // Mark success
+                    resolve();
+                  },
+                  (error: any) => {
+                    console.error(`Error sending ZPL for ${table.MATNR || 'unknown'}:`, error);
+                    reject(error);
+                  }
+                );
+              });
+            } else {
+              console.error("No printer available!");
+              throw new Error("No printer available");
+            }
+          } catch (error) {
+            console.error(`Attempt ${attempts} failed to print label for ${table.MATNR || 'unknown'}:`, error);
+            if (attempts >= 3) {
+              console.error(`Skipping label for ${table.MATNR || 'unknown'} after ${attempts} attempts.`);
+            }
           }
-        } catch (error) {
-          console.error("Failed to print label:", error);
-          // Handle per-label errors here if needed
         }
       }
   

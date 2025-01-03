@@ -987,32 +987,42 @@ export class QRcodegenrationComponent {
             MatD: ${table.MAKTX}
             Dt: ${this.currentDate}
             RN: pkg ${table.DCHARG}
-            Qty: ${table.DCLABS}  ${table.MEINS}
+            Qty: ${table.DCLABS} ${table.MEINS}
           `;
   
-        try {
-          const zpl = this.generateZPL(qrData, table);
-          if (this.printer) {
-            await new Promise<void>((resolve, reject) => {
-              this.printer.send(
-                zpl,
-                () => {
-                  console.log("Label sent to printer!");
-                  resolve();
-                },
-                (error: any) => {
-                  console.error("Error sending ZPL:", error);
-                  reject(error);
-                }
-              );
-            });
-          } else {
-            console.error("No printer available!");
-            throw new Error("No printer available");
+        let printSuccess = false;
+        let attempts = 0;
+  
+        // Retry logic for printing each label
+        while (!printSuccess && attempts < 3) {
+          attempts++;
+          try {
+            const zpl = this.generateZPL(qrData, table);
+            if (this.printer) {
+              await new Promise<void>((resolve, reject) => {
+                this.printer.send(
+                  zpl,
+                  () => {
+                    console.log(`Label sent to printer for ${table.MATNR || 'unknown'}!`);
+                    printSuccess = true; // Mark as successfully printed
+                    resolve();
+                  },
+                  (error: any) => {
+                    console.error(`Error sending ZPL for ${table.MATNR || 'unknown'}:`, error);
+                    reject(error);
+                  }
+                );
+              });
+            } else {
+              console.error("No printer available!");
+              throw new Error("No printer available");
+            }
+          } catch (error) {
+            console.error(`Attempt ${attempts} failed for ${table.MATNR || 'unknown'}:`, error);
+            if (attempts >= 3) {
+              console.error(`Skipping label for ${table.MATNR || 'unknown'} after ${attempts} attempts.`);
+            }
           }
-        } catch (error) {
-          console.error("Failed to print label:", error);
-          // Handle per-label errors here if needed
         }
       }
   
@@ -1026,6 +1036,7 @@ export class QRcodegenrationComponent {
       this.loaderservice.hidePrinterLoader();
     }
   }
+  
   
   
   
@@ -1422,7 +1433,7 @@ export class QRcodegenrationComponent {
         if (!Number.isInteger(qty)) {
           console.error("Error: Quantity cannot be split into decimal values for NOS, PCS, or EA.");
           Swal.fire("", "Quantity cannot be split into decimal values", "error");
-          material.ZLABEL = null;
+          // material.ZLABEL = null;
           return;
         }
       }

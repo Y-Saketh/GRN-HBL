@@ -716,29 +716,43 @@ export class GRNagainstPOComponent{
               Qty: ${table.DCLABS}  ${table.MEINS}
             `;
     
-          try {
-            const zpl = this.generateZPL(qrData,table,this.GRN);
-            if (this.printer) {
-              await new Promise<void>((resolve, reject) => {
-                this.printer.send(
-                  zpl,
-                  () => {
-                    console.log("Label sent to printer!");
-                    resolve();
-                  },
-                  (error: any) => {
-                    console.error("Error sending ZPL:", error);
-                    reject(error);
-                  }
+          let attempts = 0;
+          let isPrinted = false;
+    
+          while (attempts < 3 && !isPrinted) {
+            try {
+              const zpl = this.generateZPL(qrData, table, this.GRN);
+              if (this.printer) {
+                await new Promise<void>((resolve, reject) => {
+                  this.printer.send(
+                    zpl,
+                    () => {
+                      console.log(`Label sent to printer for GRN: ${this.GRN}, Mat: ${table.MATNR}`);
+                      isPrinted = true; // Mark this label as successfully printed
+                      resolve();
+                    },
+                    (error: any) => {
+                      console.error(`Error sending ZPL for GRN: ${this.GRN}, Mat: ${table.MATNR}:`, error);
+                      reject(error);
+                    }
+                  );
+                });
+              } else {
+                throw new Error("No printer available");
+              }
+            } catch (error) {
+              attempts++;
+              console.error(
+                `Attempt ${attempts} failed for GRN: ${this.GRN}, Mat: ${table.MATNR}:`,
+                error
+              );
+    
+              if (attempts >= 3) {
+                console.error(
+                  `Failed to print label for GRN: ${this.GRN}, Mat: ${table.MATNR} after 3 attempts.`
                 );
-              });
-            } else {
-              console.error("No printer available!");
-              throw new Error("No printer available");
+              }
             }
-          } catch (error) {
-            console.error("Failed to print label:", error);
-            // Handle per-label errors here if needed
           }
         }
     
@@ -746,12 +760,67 @@ export class GRNagainstPOComponent{
         this.backtoQunatity(); // Post-print operation
       } catch (globalError) {
         console.error("Error during the label printing process:", globalError);
-        // Handle overall errors if needed
       } finally {
         // Hide loader after all print operations
         this.loaderservice.hidePrinterLoader();
       }
     }
+    
+    // async printLabel() {
+    //   this.qrCodes = [];
+    //   console.log("matchedAndUnmatchedData", this.matchedAndUnmatchedData);
+    
+    //   // Show printer loader
+    //   this.loaderservice.showPrinterLoader();
+    
+    //   try {
+    //     for (const table of this.matchedAndUnmatchedData) {
+    //       const qrData = `
+    //           GRN: ${this.GRN}
+    //           VC: ${table.LIFNR}
+    //           Mat: ${table.MATNR}
+    //           MatD: ${table.MAKTX}
+    //           Dt: ${this.currentDate}
+    //           RN: pkg ${table.DCHARG}
+    //           Qty: ${table.DCLABS}  ${table.MEINS}
+    //         `;
+    
+    //       try {
+    //         const zpl = this.generateZPL(qrData,table,this.GRN);
+    //         if (this.printer) {
+    //           await new Promise<void>((resolve, reject) => {
+    //             this.printer.send(
+    //               zpl,
+    //               () => {
+    //                 console.log("Label sent to printer!");
+    //                 resolve();
+    //               },
+    //               (error: any) => {
+    //                 console.error("Error sending ZPL:", error);
+    //                 reject(error);
+    //               }
+    //             );
+    //           });
+    //         } else {
+    //           console.error("No printer available!");
+    //           throw new Error("No printer available");
+    //         }
+    //       } catch (error) {
+    //         console.error("Failed to print label:", error);
+    //         // Handle per-label errors here if needed
+    //       }
+    //     }
+    
+    //     console.log("All labels printed sequentially!");
+    //     this.backtoQunatity(); // Post-print operation
+    //   } catch (globalError) {
+    //     console.error("Error during the label printing process:", globalError);
+    //     // Handle overall errors if needed
+    //   } finally {
+    //     // Hide loader after all print operations
+    //     this.loaderservice.hidePrinterLoader();
+    //   }
+    // }
 
   generateQRCode(data: string): Promise<string> {
     return new Promise((resolve, reject) => {
@@ -1108,7 +1177,7 @@ matchMaterial(index: number,label, table): void {
       if (!Number.isInteger(qty)) {
         console.error("Error: Quantity cannot be split into decimal values for NOS, PCS, or EA.");
         Swal.fire("", "Quantity cannot be split into decimal values", "error");
-        material.ZLABEL = null;
+        // material.ZLABEL = null;
         return;
       }
     }
