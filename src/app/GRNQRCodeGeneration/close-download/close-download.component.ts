@@ -157,10 +157,10 @@ export class CloseDownloadComponent implements OnInit {
     console.log("this.tableData ", this.tableData)
     this.hideme = Array(this.tableData.length).fill(true); // Initialize hideme array
     
-    /**for (let i = 0; i <= this.tableData.length; i++) {
+    for (let i = 0; i <= this.tableData.length; i++) {
       this.hideme.push(true);
     }
-    */
+    
   }
 
   exportToExcel(): void {
@@ -262,14 +262,22 @@ export class CloseDownloadComponent implements OnInit {
     this.apiService.zprClose(obj).subscribe({
       next: (res: any) => {
         this.loaderservice.hideLoader();
-        console.log('Data:', res);
+        console.log('Data received:', res);
+      
         this.CloseDownload = res;
-        this.service.setTableData(this.CloseDownload ||[]);
-        this._fetchData();
-        console.log("this.tables$ ",this.tables$ )
-        // this.validationform.reset()
-     
+        console.log('this.CloseDownload:', typeof this.CloseDownload, !Array.isArray(this.CloseDownload));
+
+        if (Array.isArray(this.CloseDownload)) {
+          this.service.setTableData(this.CloseDownload); // Pass array to table data
+        } else {
+          console.warn('Unexpected data format:', this.CloseDownload);
+          this.service.setTableData([]); // Fallback to empty array if data is not valid
+        }
+      
+        this._fetchData(); // Refresh data
+        console.log('Table Data (this.tables$):', this.tables$);
       },
+            
       error: (error: any) => {
         this.loaderservice.hideLoader(); 
         console.error('Error fetching lot reports:', error);
