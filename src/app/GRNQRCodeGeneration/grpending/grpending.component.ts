@@ -454,33 +454,30 @@ export class GrpendingComponent implements OnInit {
     this.loaderservice.showLoader();
     console.log("validationform", this.form);
   
-    // Helper function to adjust and format date to Indian Time Zone
-    const formatToIST = (date: any) => {
-      if (!date) return '';
-      const localDate = new Date(date);
-      // Adjust to IST (UTC+5:30)
-      const istOffset = 5.5 * 60 * 60 * 1000;
-      const istDate = new Date(localDate.getTime() + istOffset);
-      return istDate.toISOString().split('T')[0]; // Format as "YYYY-MM-DD"
-    };
-  
+
     let obj = {
       "WERKS": this.form.plant.value, // "1300",
       "VBELN": this.form.delivery.value, // "180390138",
       "LGORT": "", // this.form.storageLocation.value, // "S048",
-      "BUDAT_F": this.form.fromDate ? formatToIST(this.form.fromDate.value) : '', // "2024-04-01",
-      "BUDAT_T": this.form.toDate ? formatToIST(this.form.toDate.value) : '', // "2024-11-25",
+      "BUDAT_F": this.form.fromDate ? moment(this.form.fromDate.value).format("YYYY-MM-DD") : '', // "2024-04-01",
+      "BUDAT_T": this.form.toDate ? moment(this.form.toDate.value).format("YYYY-MM-DD"): '', // "2024-11-25",
       "R1": "X",
       "R2": ""
     };
   
     console.log("objobj", obj);
-  
+    this.GrPending = []
     this.apiService.GrPending(obj).subscribe({
       next: (res: any) => {
         this.service.setTableData(res);
         console.log('Data:', res);
         this.GrPending = res;
+        if(Array.isArray(this.GrPending)){
+          this.service.setTableData(this.GrPending);
+        }
+        else{
+          this.service.setTableData([]);
+        }
         this._fetchData();
       },
       error: (error: any) => {
