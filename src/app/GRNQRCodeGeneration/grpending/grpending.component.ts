@@ -414,42 +414,85 @@ export class GrpendingComponent implements OnInit {
 
     this.initializeSecondTableData(); // Initialize the second table data
   }
-  getGrPending(){
+  // getGrPending(){
+  //   this.loaderservice.showLoader();
+  //   console.log("validationform",this.form) 
+  //   let obj = {
+  //   "WERKS": this.form.plant.value,//"1300",
+  //   "VBELN":this.form.delivery.value ,//"180390138",
+  //   "LGORT": "", //this.form.storageLocation.value,// "S048",
+  //   "BUDAT_F":this.form.fromDate?this.form.fromDate.value:'',//"2024-04-01",
+  //   "BUDAT_T": this.form.toDate?this.form.toDate.value:'',//""2024-11-25",
+  //   "R1": "X",
+  //   "R2": ""
+  //   }
+  //   console.log("objobj",obj)
+  //   this.apiService.GrPending(obj).subscribe({
+  //     next: (res: any) => {
+    
+  //       this.service.setTableData(res);
+  //       console.log('Data:', res);
+  //       this.GrPending = res;
+  //       // this.service.setTableData(res || []);
+  //       this._fetchData();
+  //       // this.validationform.reset()
+  //     },
+  //     error: (error: any) => {
+  //       this.loaderservice.hideLoader(); 
+  //       console.error('Error fetching lot reports:', error);
+  //       // this.validationform.reset()
+  //     },
+  //     complete: () => {
+  //       console.log('API call completed.');
+  //       this.loaderservice.hideLoader(); 
+  //       // this.validationform.reset()
+  //     }
+  //   });
+
+  // }
+  getGrPending() {
     this.loaderservice.showLoader();
-    console.log("validationform",this.form) 
+    console.log("validationform", this.form);
+  
+    // Helper function to adjust and format date to Indian Time Zone
+    const formatToIST = (date: any) => {
+      if (!date) return '';
+      const localDate = new Date(date);
+      // Adjust to IST (UTC+5:30)
+      const istOffset = 5.5 * 60 * 60 * 1000;
+      const istDate = new Date(localDate.getTime() + istOffset);
+      return istDate.toISOString().split('T')[0]; // Format as "YYYY-MM-DD"
+    };
+  
     let obj = {
-    "WERKS": this.form.plant.value,//"1300",
-    "VBELN":this.form.delivery.value ,//"180390138",
-    "LGORT": "", //this.form.storageLocation.value,// "S048",
-    "BUDAT_F":this.form.fromDate?this.form.fromDate.value:'',//"2024-04-01",
-    "BUDAT_T": this.form.toDate?this.form.toDate.value:'',//""2024-11-25",
-    "R1": "X",
-    "R2": ""
-    }
-    console.log("objobj",obj)
+      "WERKS": this.form.plant.value, // "1300",
+      "VBELN": this.form.delivery.value, // "180390138",
+      "LGORT": "", // this.form.storageLocation.value, // "S048",
+      "BUDAT_F": this.form.fromDate ? formatToIST(this.form.fromDate.value) : '', // "2024-04-01",
+      "BUDAT_T": this.form.toDate ? formatToIST(this.form.toDate.value) : '', // "2024-11-25",
+      "R1": "X",
+      "R2": ""
+    };
+  
+    console.log("objobj", obj);
+  
     this.apiService.GrPending(obj).subscribe({
       next: (res: any) => {
-    
         this.service.setTableData(res);
         console.log('Data:', res);
         this.GrPending = res;
-        // this.service.setTableData(res || []);
         this._fetchData();
-        // this.validationform.reset()
       },
       error: (error: any) => {
-        this.loaderservice.hideLoader(); 
+        this.loaderservice.hideLoader();
         console.error('Error fetching lot reports:', error);
-        // this.validationform.reset()
       },
       complete: () => {
         console.log('API call completed.');
-        this.loaderservice.hideLoader(); 
-        // this.validationform.reset()
+        this.loaderservice.hideLoader();
       }
     });
-
   }
-
+  
 
 }

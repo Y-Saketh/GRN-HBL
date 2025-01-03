@@ -366,13 +366,23 @@ export class OpenpolistComponent implements OnInit {
      
   console.log("validationform",this.form,this.ebln) 
     // if (this.validationform.valid) {
+
+      const formatToIST = (date: any) => {
+        if (!date) return '';
+        const localDate = new Date(date);
+        // Adjust to IST (UTC+5:30)
+        const istOffset = 5.5 * 60 * 60 * 1000;
+        const istDate = new Date(localDate.getTime() + istOffset);
+        return istDate.toISOString().split('T')[0]; // Format as "YYYY-MM-DD"
+      };
+
       let obj ={
         WERKS: this.form.plant.value, // Plant
         // MEINS: this.form.purchaseGroup.value, // purchase group
         BSART_F: this.form.documentFrom.value,// Purchasing Document  From
         BSART_T: this.form.documentTo.value,// Purchasing Document  To
-        BEDAT_F:this.form.fromDate.value, // Item Delivery Date From
-        BEDAT_T: this.form.toDate.value, // Item Delivery Date To
+        BEDAT_F: this.form.fromDate ? formatToIST(this.form.fromDate.value): '', // Item Delivery Date From
+        BEDAT_T: this.form.toDate ? formatToIST(this.form.toDate.value): '', // Item Delivery Date To
         EBELN: this.ebln
         // EBELN: '',//this.form.poNumber.value, // Purchasing Document Number`
         // LIFNR: '',//this.form.vendor.value, // Vendor
