@@ -414,6 +414,8 @@ export class OpenpolistComponent implements OnInit {
         error: (error: any) => {
           this.loaderservice.hideLoader(); 
           console.error('Error fetching lot reports:', error);
+          this.service.setTableData([]);
+          this._fetchData();
           // this.validationform.reset()
         },
         complete: () => {

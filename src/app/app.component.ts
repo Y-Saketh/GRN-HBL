@@ -17,7 +17,7 @@ export class AppComponent implements OnInit {
   ngOnInit() {
 
     console.log("appplication started")
-    this.setBrowserZoom(80);
+    // this.setBrowserZoom(80);
     
   }
   constructor(public loaderService: LoaderService, private sessionService:SessionServiceService,private renderer: Renderer2) {}
