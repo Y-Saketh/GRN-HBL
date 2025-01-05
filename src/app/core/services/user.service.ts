@@ -101,6 +101,10 @@ export class UserProfileService {
         console.log("environment.API_URL_DEV",environment.API_URL_DEV)
         return this.http.post(`${environment.API_URL_DEV}api/external/zven`,data)
     }
+    zdebit(data){
+        console.log("environment.API_URL_DEV",environment.API_URL_DEV)
+        return this.http.post(`${environment.API_URL_DEV}api/external/zdebit`,data)
+    }
 
 
 }

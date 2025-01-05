@@ -251,18 +251,10 @@ export class CloseDownloadComponent implements OnInit {
       this.banfn = this.prArray.map(data => data).join(',');
     console.log("validationform",this.form, this.banfn) 
     // Helper function to adjust and format date to Indian Time Zone
-    const formatToIST = (date: any) => {
-      if (!date) return '';
-      const localDate = new Date(date);
-      // Adjust to IST (UTC+5:30)
-      const istOffset = 5.5 * 60 * 60 * 1000;
-      const istDate = new Date(localDate.getTime() + istOffset);
-      return istDate.toISOString().split('T')[0]; // Format as "YYYY-MM-DD"
-    };
     let obj = {
       "WERKS": this.form.plant.value,// "1300","1025"
       "EKGRP": this.form.purchasegroup.value,//"013",
-      "BADAT": this.form.date ? formatToIST(this.form.date.value) : '',
+      "BADAT":  moment(this.form.date.value).format('YYYY-MM-DD'),
       "BANFN":  this.banfn
       // "BADAT_T": this.form.curentdateto.value?moment(this.form.curentdateto.value):""//"2024-02-20"
     }

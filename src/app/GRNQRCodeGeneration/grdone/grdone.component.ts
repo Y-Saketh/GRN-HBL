@@ -202,7 +202,7 @@ export class GrdoneComponent implements OnInit {
  
   getGrDone(){
     console.log("validationform",this.form) 
-
+    this.POLIST = []
     const formatToIST = (date: any) => {
       if (!date) return '';
       const localDate = new Date(date);
@@ -216,8 +216,8 @@ export class GrdoneComponent implements OnInit {
       "WERKS": this.form.plant.value,//"1300",
       "VBELN":this.form.delivery.value ,//"180390138",
       "LGORT": "",//this.form.storageLocation.value,// "S048",
-      "BUDAT_F": this.form.fromDate ? formatToIST(this.form.fromDate.value) : '', // "2024-04-01",
-      "BUDAT_T": this.form.toDate ? formatToIST(this.form.toDate.value) : '', // "2024-11-25",
+      "BUDAT_F": this.form.fromDate ?moment(this.form.fromDate.value).format("YYYY-MM-DD") : '', // "2024-04-01",
+      "BUDAT_T": this.form.toDate ? moment(this.form.toDate.value).format("YYYY-MM-DD"): '', // "2024-11-25",
       "R1": "",
       "R2": "X"
     }
@@ -228,7 +228,12 @@ export class GrdoneComponent implements OnInit {
         this.loaderservice.hideLoader();
         console.log('Data:', res);
         this.POLIST = res;
-        this.service.setTableData(res || []);
+        if(Array.isArray(this.POLIST)){
+          this.service.setTableData(this.POLIST);
+        }
+        else{
+          this.service.setTableData([]);
+        }
         this._fetchData();
         // this.validationform.reset()
       },

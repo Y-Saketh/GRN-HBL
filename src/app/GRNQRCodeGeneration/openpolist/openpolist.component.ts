@@ -362,6 +362,7 @@ export class OpenpolistComponent implements OnInit {
 
   getPOLIST(){
     this.ebln ='';
+    this.POLIST = []
   this.ebln = this.poArray.map(data => data).join(',');
      
   console.log("validationform",this.form,this.ebln) 
@@ -381,8 +382,8 @@ export class OpenpolistComponent implements OnInit {
         // MEINS: this.form.purchaseGroup.value, // purchase group
         BSART_F: this.form.documentFrom.value,// Purchasing Document  From
         BSART_T: this.form.documentTo.value,// Purchasing Document  To
-        BEDAT_F: this.form.fromDate ? formatToIST(this.form.fromDate.value): '', // Item Delivery Date From
-        BEDAT_T: this.form.toDate ? formatToIST(this.form.toDate.value): '', // Item Delivery Date To
+        BEDAT_F: this.form.fromDate ? moment(this.form.fromDate.value).format('YYYY-MM-DD'): '', // Item Delivery Date From
+        BEDAT_T: this.form.toDate ? moment(this.form.toDate.value).format('YYYY-MM-DD'): '', // Item Delivery Date To
         EBELN: this.ebln
         // EBELN: '',//this.form.poNumber.value, // Purchasing Document Number`
         // LIFNR: '',//this.form.vendor.value, // Vendor
@@ -399,7 +400,12 @@ export class OpenpolistComponent implements OnInit {
         next: (res: any) => {
           console.log('Data:', res);
           this.POLIST = res;
-          this.service.setTableData(res || []);
+          if(Array.isArray(this.POLIST)){
+            this.service.setTableData(this.POLIST);
+          }
+          else{
+            this.service.setTableData([]);
+          }
           document.getElementById('elmLoader')?.classList.add('d-none')
           this._fetchData();
           // this.validationform.reset()
@@ -408,6 +414,8 @@ export class OpenpolistComponent implements OnInit {
         error: (error: any) => {
           this.loaderservice.hideLoader(); 
           console.error('Error fetching lot reports:', error);
+          this.service.setTableData([]);
+          this._fetchData();
           // this.validationform.reset()
         },
         complete: () => {
