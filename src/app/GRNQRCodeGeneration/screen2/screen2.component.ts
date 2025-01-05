@@ -56,36 +56,74 @@ export class Screen2Component {
   get form() {
     return this.validationform.controls;
   }
+  // Preview() {
+  //   this.submit = true;
+
+  //   if (this.validationform.invalid) {
+  //     return;
+  //   }
+
+  //   const ponumber = this.validationform.value.poNum;
+  //   this.loaderservice.showLoader(); // Show loader during API call
+  //   const payload = { EBELN: ponumber };
+  //   this.apiService.me23getData(payload).subscribe({
+  //     next: (res: any) => {
+  //       console.log('API Response:', res); // Log the entire response for debugging
+  //       let base64String = res; // Assume the response contains the Base64 PDF data
+  //       this.loaderservice.hideLoader(); // Hide the loader
+  //       if (base64String) {
+  //         // If Base64 data is found, show the PDF preview
+  //         this.showPdfPreview(base64String);
+  //       } else {
+  //         Swal.fire('Error', 'No PDF data found in the response.', 'error');
+  //         console.warn('No Base64 PDF data found in the response.');
+  //       }
+  //     },
+  //     error: (err: any) => {
+  //       this.loaderservice.hideLoader();
+  //       console.error('Error fetching data:', err);
+  //       Swal.fire('Error', 'Failed to fetch data. Please try again.', 'error');
+  //     },
+  //   });
+  // }
+
   Preview() {
-    this.submit = true;
+  this.submit = true;
 
-    if (this.validationform.invalid) {
-      return;
-    }
-
-    const ponumber = this.validationform.value.poNum;
-    this.loaderservice.showLoader(); // Show loader during API call
-    const payload = { EBELN: ponumber };
-    this.apiService.me23getData(payload).subscribe({
-      next: (res: any) => {
-        console.log('API Response:', res); // Log the entire response for debugging
-        let base64String = res; // Assume the response contains the Base64 PDF data
-        this.loaderservice.hideLoader(); // Hide the loader
-        if (base64String) {
-          // If Base64 data is found, show the PDF preview
-          this.showPdfPreview(base64String);
-        } else {
-          Swal.fire('Error', 'No PDF data found in the response.', 'error');
-          console.warn('No Base64 PDF data found in the response.');
-        }
-      },
-      error: (err: any) => {
-        this.loaderservice.hideLoader();
-        console.error('Error fetching data:', err);
-        Swal.fire('Error', 'Failed to fetch data. Please try again.', 'error');
-      },
-    });
+  if (this.validationform.invalid) {
+    return;
   }
+
+  const ponumber = this.validationform.value.poNum;
+  this.loaderservice.showLoader(); // Show loader during API call
+  const payload = { EBELN: ponumber };
+  this.apiService.me23getData(payload).subscribe({
+    next: (res: any) => {
+      console.log('API Response:', res); // Log the entire response for debugging
+      let base64String = res; // Assume the response contains the Base64 PDF data
+      this.loaderservice.hideLoader(); // Hide the loader
+      if (base64String) {
+        // If Base64 data is found, show the PDF preview
+        this.showPdfPreview(base64String);
+      } else {
+        Swal.fire('Error', 'No PDF data found in the response.', 'error');
+        console.warn('No Base64 PDF data found in the response.');
+      }
+    },
+    error: (err: any) => {
+      this.loaderservice.hideLoader();
+      console.error('Error fetching data:', err);
+
+      // Check if the error message starts with "Data"
+      if (typeof err.message === 'string' && /^Data/.test(err.message)) {
+        Swal.fire('Error', 'No data available.', 'error');
+      } else {
+        Swal.fire('Error', 'Failed to fetch data. Please try again.', 'error');
+      }
+    },
+  });
+}
+
 
   showPdfPreview(base64String: string) {
     try {
