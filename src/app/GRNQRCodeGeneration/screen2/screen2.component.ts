@@ -6,7 +6,6 @@ import { LoaderService } from 'src/app/core/services/loader.service';
 import { CommonModule } from '@angular/common';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { ModalDirective, ModalModule } from 'ngx-bootstrap/modal';
-import * as moment from 'moment';
 @Component({
   selector: 'app-screen2',
   standalone: true,
@@ -41,7 +40,7 @@ export class Screen2Component {
       fromDate: [fortyfiveDaysAgo, [ Validators.pattern('[a-zA-Z0-9]+')]],
       toDate: [fifteenDaysAgo, [ Validators.pattern('[a-zA-Z0-9]+')]],
       documentFrom: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
-      // documentTo: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],     
+      documentTo: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],     
       });
 
       const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
@@ -57,58 +56,23 @@ export class Screen2Component {
   get form() {
     return this.validationform.controls;
   }
-  // Preview() {
-  //   this.submit = true;
-
-  //   if (this.validationform.invalid) {
-  //     return;
-  //   }
-
-  //   const ponumber = this.validationform.value.poNum;
-  //   this.loaderservice.showLoader(); // Show loader during API call
-  //   const payload = { EBELN: ponumber };
-  //   this.apiService.me23getData(payload).subscribe({
-  //     next: (res: any) => {
-  //       console.log('API Response:', res); // Log the entire response for debugging
-  //       let base64String = res; // Assume the response contains the Base64 PDF data
-  //       this.loaderservice.hideLoader(); // Hide the loader
-  //       if (base64String) {
-  //         // If Base64 data is found, show the PDF preview
-  //         this.showPdfPreview(base64String);
-  //       } else {
-  //         Swal.fire('Error', 'No PDF data found in the response.', 'error');
-  //         console.warn('No Base64 PDF data found in the response.');
-  //       }
-  //     },
-  //     error: (err: any) => {
-  //       this.loaderservice.hideLoader();
-  //       console.error('Error fetching data:', err);
-  //       Swal.fire('Error', 'Failed to fetch data. Please try again.', 'error');
-  //     },
-  //   });
-  // }
-
   Preview() {
-  this.submit = true;
+    this.submit = true;
 
-    // if (this.validationform.invalid) {
-    //   return;
-    // }
+    if (this.validationform.invalid) {
+      return;
+    }
 
     const ponumber = this.validationform.value.poNum;
     this.loaderservice.showLoader(); // Show loader during API call
-    let payload = {    
-      BELNR: this.form.documentFrom.value || "", //"5105649532",
-      BUDAT_F:moment(this.form.fromDate.value).format('yyyy-MM-DD') || "", // "2024-04-12",
-      BUDAT_T:moment(this.form.toDate.value).format('yyyy-MM-DD') || "", // "",
-      WERKS: this.form.plant.value,//"1100"
-    };
-    this.apiService.zdebit(payload).subscribe({
+    const payload = { EBELN: ponumber };
+    this.apiService.me23getData(payload).subscribe({
       next: (res: any) => {
-        console.log('API Response:', res); 
-        let base64String = res; 
-        this.loaderservice.hideLoader(); 
+        console.log('API Response:', res); // Log the entire response for debugging
+        let base64String = res; // Assume the response contains the Base64 PDF data
+        this.loaderservice.hideLoader(); // Hide the loader
         if (base64String) {
+          // If Base64 data is found, show the PDF preview
           this.showPdfPreview(base64String);
         } else {
           Swal.fire('Error', 'No PDF data found in the response.', 'error');
@@ -119,15 +83,13 @@ export class Screen2Component {
         this.loaderservice.hideLoader();
         console.error('Error fetching data:', err);
         Swal.fire('Error', 'Failed to fetch data. Please try again.', 'error');
-      }
-    },
-  });
-}
-
+      },
+    });
+  }
 
   showPdfPreview(base64String: string) {
     try {
-      const binaryString = atob(base64String); 
+      const binaryString = atob(base64String); // Decode Base64
       const binaryLen = binaryString.length;
       const bytes = new Uint8Array(binaryLen);
 
@@ -145,14 +107,14 @@ export class Screen2Component {
       container.style.width = '100%';
       container.style.height = '100%';
       container.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
-      container.style.zIndex = '10000';
+      container.style.zIndex = '10000'; // Ensure it stays above other elements
       container.style.display = 'flex';
       container.style.justifyContent = 'center';
       container.style.alignItems = 'center';
 
       // Create an iframe for the PDF preview
       const iframe = document.createElement('iframe');
-      iframe.src = URL.createObjectURL(blob) + '#toolbar=0';
+      iframe.src = URL.createObjectURL(blob) + '#toolbar=0'; // Disable toolbar
       iframe.style.width = '80%';
       iframe.style.height = '100%';
       iframe.style.border = 'none';
