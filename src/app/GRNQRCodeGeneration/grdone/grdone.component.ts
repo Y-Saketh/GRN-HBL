@@ -228,6 +228,7 @@ export class GrdoneComponent implements OnInit {
         this.loaderservice.hideLoader();
         console.log('Data:', res);
         this.POLIST = res;
+        this.resetPagination();
         if(Array.isArray(this.POLIST)){
           this.service.setTableData(this.POLIST);
         }

@@ -13,6 +13,8 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import * as moment from 'moment';
 import * as XLSX from 'xlsx'; 
 import { LoaderService } from 'src/app/core/services/loader.service';
+import Swal from 'sweetalert2';
+
 @Component({
   selector: 'app-close-download',
   standalone: true,
@@ -266,6 +268,7 @@ export class CloseDownloadComponent implements OnInit {
         console.log('Data received:', res);
       
         this.CloseDownload = res;
+        this.resetPagination();
         console.log('this.CloseDownload:', typeof this.CloseDownload, !Array.isArray(this.CloseDownload));
 
         if (Array.isArray(this.CloseDownload)) {
@@ -294,4 +297,6 @@ export class CloseDownloadComponent implements OnInit {
     this.loaderservice.hideLoader();
   }
   }
+
+  
 }

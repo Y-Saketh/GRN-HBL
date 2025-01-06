@@ -234,6 +234,7 @@ console.log("validationform", this.form, this.matnr);
           this.loaderservice.hideLoader();
           console.log('MB52 data fetched successfully:', res);
           this.mb52table = res;
+          this.resetPagination();
           this.service.setTableData(res || []);
           this._fetchData();
         },

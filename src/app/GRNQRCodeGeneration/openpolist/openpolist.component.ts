@@ -400,6 +400,7 @@ export class OpenpolistComponent implements OnInit {
         next: (res: any) => {
           console.log('Data:', res);
           this.POLIST = res;
+          this.resetPagination();
           if(Array.isArray(this.POLIST)){
             this.service.setTableData(this.POLIST);
           }

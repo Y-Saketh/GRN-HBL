@@ -357,6 +357,7 @@ onSort({ column, direction }: SortEvent) {
 
       // Sort the response data by POSTING_DATE in descending order
       this.mb51table = res;
+      this.resetPagination();
       console.log("this.mb51table", this.mb51table);
       if(Array.isArray(this.mb51table)){
         this.service.setTableData(this.mb51table);

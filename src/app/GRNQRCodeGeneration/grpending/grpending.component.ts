@@ -472,6 +472,7 @@ export class GrpendingComponent implements OnInit {
         this.service.setTableData(res);
         console.log('Data:', res);
         this.GrPending = res;
+        this.resetPagination();
         if(Array.isArray(this.GrPending)){
           this.service.setTableData(this.GrPending);
         }

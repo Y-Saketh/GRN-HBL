@@ -96,10 +96,33 @@ export class GrnprintComponent implements OnInit {
   onPrintOptionChange(): void {
     if (this.selectedOption === 'QR'|| this.selectedOption === 'labelPrint' || this.selectedOption === 'userprint') {
       this.showTable = true;
+      this. backtoQunatity() 
     } else {
       this.showTable = false;
+      this.backtoQunatity() 
     }
   }
+//   onPrintOptionChange(): void {
+//     if (this.selectedOption === 'QR') {
+//         this.qrscreen = false;
+//         this.showTable = true;
+//         // this.labelscreen = false;
+//         this.userscreen = false;
+//     } else if (this.selectedOption === 'labelPrint') {
+//         this.labelscreen = false;
+//         this.userscreen = false;
+//         this.qrscreen = false;
+//         this.showTable = true;
+//     } else if (this.selectedOption === 'userprint') {
+//       this.labelscreen = false;
+//       this.userscreen = false;
+//       this.qrscreen = false; 
+//       this.showTable = true;
+//     } else {
+//         this.showTable = false;
+//     }
+// }
+
   shouldHighlightRow(matnr: string): 'green' | 'red' | null {
     const matchedItem = this.matchedAndUnmatchedData.find(item => item.MATNR === matnr);
     if (matchedItem) {
@@ -139,7 +162,8 @@ export class GrnprintComponent implements OnInit {
 
   onUserPrintCheckboxChange(table: any): void {
     if (!table.selected) {
-      table.ZUSER = 0; // Reset ZUSER if the row is deselected
+      // table.ZUSER = 0; // Reset ZUSER if the row is deselected
+      table.ZLABEL = 0; // Reset ZUSER if the row is deselected
     }
     this.isAllSelected = this.GrnPrint.every(table => table.selected);
   }
@@ -958,10 +982,10 @@ export class GrnprintComponent implements OnInit {
     this.labelscreen = false;
     this.userscreen = false;
     this.matchedAndUnmatchedData = [];
-    this.GrnPrint.forEach(data => data.ZLABEL = 0)
     this.service.setTableData(this.GrnPrint || []); 
     this.service.resetPagination();
     this._fetchData(); 
+    this.GrnPrint.forEach(data => data.ZLABEL = 0)
 
   }
   async generateQR(): Promise<void> {
@@ -1178,28 +1202,36 @@ export class GrnprintComponent implements OnInit {
       mainRow.packets[index].DCLABS = null;
     }
   }
+  // toggleSelectAll(event: any): void {
+  //   const checked = event.target.checked;
+  //   // this.tables$.pipe(take(1)).subscribe((tables) => {
+  //   //   tables.forEach((table) => {
+  //   //     table.selected = checked;  // Set main row selected
+  //   //     // If there are shadow rows, set them selected too
+  //   //     if (table.shadowRows) {
+  //   //       table.shadowRows.forEach((shadowRow) => shadowRow.selected = checked);
+  //   //     }
+  //   //   });
+  //   // });
+  //   if (this.isAllSelected) {
+  //     this.GrnPrint.forEach(table => table.selected = true);
+  //   } else {
+  //     // If "Select All" checkbox is unchecked, set all rows' selected to false
+  //     this.GrnPrint.forEach(table => table.selected = false);
+  //   }
+    
+  //   // Update table data after selection/deselection
+  //   this.service.setTableData(this.GrnPrint || []);
+  //   this._fetchData();
+  // }
+
   toggleSelectAll(event: any): void {
     const checked = event.target.checked;
-    // this.tables$.pipe(take(1)).subscribe((tables) => {
-    //   tables.forEach((table) => {
-    //     table.selected = checked;  // Set main row selected
-    //     // If there are shadow rows, set them selected too
-    //     if (table.shadowRows) {
-    //       table.shadowRows.forEach((shadowRow) => shadowRow.selected = checked);
-    //     }
-    //   });
-    // });
-    if (this.isAllSelected) {
-      this.GrnPrint.forEach(table => table.selected = true);
-    } else {
-      // If "Select All" checkbox is unchecked, set all rows' selected to false
-      this.GrnPrint.forEach(table => table.selected = false);
-    }
-    
-    // Update table data after selection/deselection
+    this.GrnPrint.forEach(table => table.selected = checked);
     this.service.setTableData(this.GrnPrint || []);
     this._fetchData();
   }
+  
 
 
   closePopup(): void {
