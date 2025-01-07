@@ -95,6 +95,14 @@
         "JOBS": "Jobs"
       }
     },
+    "DASHBOARD": {
+      "TEXT": "QM",
+      "BADGE": "04",
+      "LIST": {
+        "RESULTRECORDING": "Result Recording",
+        "USAGEDECISION": "Usage Decision"
+      }
+    },
     "LAYOUTS": {
       "TEXT": "Layouts",
       "LIST": {

@@ -207,7 +207,30 @@ export const MENU: MenuItem[] = [
     },
 
     
-   
+    {
+        id: "zgribdstatus",
+        label: 'QM',
+        icon: 'bx-home-circle',
+        parentId: "menu",
+        subItems: [
+            {
+                id: "mb51",
+                label: 'MENUITEMS.DASHBOARD.LIST.RESULTRECORDING',
+                link: 'resultlRecording',
+                icon: 'bx-badge',
+                parentId: "zgribdstatus"
+            },
+            {
+                id: "mb51",
+                label: 'MENUITEMS.DASHBOARD.LIST.USAGEDECISION',
+                link: 'usageDecision',
+                icon: 'bx-badge',
+                parentId: "zgribdstatus"
+            },
+
+
+        ]
+    },
    
     
 ];

@@ -20,6 +20,8 @@ import { GRNagainstPOComponent } from 'src/app/GRNQRCodeGeneration/grnagainst-po
 import { PoPreviewComponent } from 'src/app/GRNQRCodeGeneration/po-preview/po-preview.component';
 import { Screen2Component } from 'src/app/GRNQRCodeGeneration/screen2/screen2.component';
 import { ZvenComponent } from 'src/app/GRNQRCodeGeneration/zven/zven.component';
+import { ResultRecordingComponent } from 'src/app/GRNQRCodeGeneration/result-recording/result-recording.component';
+import { UsageDecisionComponent } from 'src/app/GRNQRCodeGeneration/usage-decision/usage-decision.component';
 
 const routes: Routes = [
     {
@@ -90,6 +92,14 @@ const routes: Routes = [
     {
         path: 'screen2',
         component: Screen2Component
+    },
+    {
+        path: 'resultlRecording',
+        component: ResultRecordingComponent
+    },
+    {
+        path: 'usageDecision',
+        component: UsageDecisionComponent
     }
 ];
 
