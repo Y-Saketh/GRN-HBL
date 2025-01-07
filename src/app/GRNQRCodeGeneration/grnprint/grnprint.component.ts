@@ -981,6 +981,8 @@ export class GrnprintComponent implements OnInit {
     this.qrscreen = false;
     this.labelscreen = false;
     this.userscreen = false;
+    this.selectAll = true;
+    this.isAllSelected = true;
     this.matchedAndUnmatchedData = [];
     this.service.setTableData(this.GrnPrint || []); 
     this.service.resetPagination();

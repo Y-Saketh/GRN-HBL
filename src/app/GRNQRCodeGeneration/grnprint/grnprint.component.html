@@ -341,7 +341,8 @@
             <thead>
               <tr>
                 <th>
-                  <input type="checkbox" [checked]="selectAll" (change)="toggleSelectAll($event)" />
+                  <input type="checkbox" [checked]="selectAll"  [(ngModel)]="isAllSelected"
+                  [ngModelOptions]="{standalone: true}"  (change)="toggleSelectAll($event)" />
                 </th>
                 <th sortable="MATNR" (sort)="onSort($event)">Mat. No</th>
                 <th sortable="MAKTX" (sort)="onSort($event)">Mat. Desc</th>
@@ -490,7 +491,8 @@
             <thead>
               <tr>
                 <th>
-                  <input type="checkbox" [checked]="selectAll" (change)="toggleSelectAll($event)" />
+                  <input type="checkbox" [checked]="selectAll"  [(ngModel)]="isAllSelected"
+                  [ngModelOptions]="{standalone: true}"  (change)="toggleSelectAll($event)" />
                 </th>
                 <th sortable="MATNR" (sort)="onSort($event)">Mat. No</th>
                 <th sortable="MAKTX" (sort)="onSort($event)">Mat. Desc</th>
