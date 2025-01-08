@@ -92,13 +92,7 @@
         "SAAS": "Saas",
         "CRYPTO": "Crypto",
         "BLOG": "Blog",
-        "JOBS": "Jobs"
-      }
-    },
-    "DASHBOARD": {
-      "TEXT": "QM",
-      "BADGE": "04",
-      "LIST": {
+        "JOBS": "Jobs",
         "RESULTRECORDING": "Result Recording",
         "USAGEDECISION": "Usage Decision"
       }

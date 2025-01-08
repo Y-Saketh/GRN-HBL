@@ -187,7 +187,8 @@ export const MENU: MenuItem[] = [
                 link:'screen2',
                 icon: 'bx-screenshot',
                 parentId: "menu"
-            }
+            },
+            
             // {
             //     id: "vendorreturnDC",
             //     label: 'MENUITEMS.DASHBOARDS.LIST.ZVEN',
@@ -206,31 +207,23 @@ export const MENU: MenuItem[] = [
         ]
     },
 
-    
     {
-        id: "zgribdstatus",
-        label: 'QM',
-        icon: 'bx-home-circle',
-        parentId: "menu",
-        subItems: [
-            {
-                id: "mb51",
-                label: 'MENUITEMS.DASHBOARD.LIST.RESULTRECORDING',
-                link: 'resultlRecording',
-                icon: 'bx-badge',
-                parentId: "zgribdstatus"
-            },
-            {
-                id: "mb51",
-                label: 'MENUITEMS.DASHBOARD.LIST.USAGEDECISION',
-                link: 'usageDecision',
-                icon: 'bx-badge',
-                parentId: "zgribdstatus"
-            },
-
-
-        ]
+        id: "mb51",
+        label: 'MENUITEMS.DASHBOARDS.LIST.RESULTRECORDING',
+        link: 'resultlRecording',
+        icon: 'bx-badge',
+        parentId: "menu"
     },
+    {
+        id: "mb51",
+        label: 'MENUITEMS.DASHBOARDS.LIST.USAGEDECISION',
+        link: 'usageDecision',
+        icon: 'bx-badge',
+        parentId: "menu"
+    },
+
+    
+    
    
     
 ];

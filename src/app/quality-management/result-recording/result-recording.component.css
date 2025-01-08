@@ -1,0 +1,125 @@
+.brandcolor{
+    color: brown;
+}
+
+
+
+
+  .card-body {
+    /* background-color: #f7f3f1; */
+    background-color: #cadad6;
+    color: #2C3E50;
+    border-radius: 10px;
+    padding: 20px;
+  }
+  
+  .card-body input[type="text"] {
+    border: 1px solid #BDC3C7;
+    border-radius: 5px;
+    padding: 10px;
+  }
+  
+  .card-body input[type="text"]:focus {
+    border-color: #3498DB;
+    outline: none;
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+  }
+
+  .card-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 20px;
+    font-weight: 500;
+    color: brown;
+    /* text-transform: uppercase; */
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+    background: linear-gradient(90deg, brown, #670a0a);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-align: left;
+    border-bottom: 2px solid brown;
+    padding-bottom: 5px;
+  }
+  #basic-datatable thead tr {
+    background-color: #8B4513; 
+    color: #FFFFFF; 
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: capitalize;
+  }
+  
+  #basic-datatable thead th {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 2px solid #6A3B0E; 
+  }
+
+  :host ::ng-deep .multiselect-dropdown .dropdown-btn {
+    background-color: white;
+  }
+  
+   
+  /* Full-screen modal backdrop */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050;
+}
+
+/* Modal content */
+.modal-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 80%;
+  width: 100%;
+  max-height: 80%;
+  overflow-y: auto;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  position: relative;
+  text-align: center;
+}
+
+/* Close button at the top-right */
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1051;
+}
+
+/* Modal title */
+.modal-title {
+  margin-bottom: 20px;
+}
+
+/* PO container for side-by-side layout */
+.po-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+/* Individual PO item with border */
+.po-item {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background-color: #f9f9f9;
+  min-width: 100px;
+  justify-content: space-between;
+}
+
+  
