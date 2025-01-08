@@ -88,25 +88,16 @@ export class ResultRecordingComponent implements OnInit {
     if (dataToExport.length > 0) {
       // Define mapping of keys to header names
       const headerMapping: { [key: string]: string } = {
-        PLANT: 'Plant',                      
-        GL_ACCOUNT: 'GL account',
-        MAT_DOC: 'Mat Doc',
-        DOC_DATE: 'Doc Date',
-        POSTING_DATE: 'Posting Date',
-        MATERIAL: 'Material', 
-        MAT_DES: 'Mat Desc', 
-        QUANITY: 'Quantity',
-        L_CUR_AMT: 'Amt in loc.cur',
-        PUR_ORDER: 'Pur Order',
-        PRICE: 'Price', 
-        MVT_TYPE: 'Movement Type',                  
-        MVT_TYPE_TXT: 'Movement Type Text', 
-        DOC_HEADER_TXT: 'Doc Header Text', 
-        STG_LOC: 'Storage Location',            
-        ENTRY_DATE: 'Entry Date',                 
-        BATCH: 'Batch',                          
-        CONSUMPTION: 'Consumption',     
-        SUPPLIER: 'Supplier'                                                          
+        WERK: 'Plant',                      
+        PRUEFLOS: 'Inspection Lot',
+        MATNR: 'Material',
+        MAKTX: 'Material Name',
+        CHARG: 'Batch No',
+        EBELN: 'PO No', 
+        EBELP: 'PO Item', 
+        LOSMENGE: 'Lot Qty',
+        ZZREQUES: 'Requisition No',
+        LMENGEZUB: 'To be Posted Qty',                                                         
       };
   
       // Format data to map keys to user-friendly headers
