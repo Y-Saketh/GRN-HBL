@@ -12,6 +12,8 @@ export const GlobalComponent = {
     //-------------------------------------------------------//
   //Dev API
   API_URL_DEV:"http://10.10.4.178:3000/",
+  apiUrl:'http://10.10.4.178:9091/api/',
+
   // productionAPI
    // API_URL_DEV:"https://ims.hbl.in/grn/",
    //-------------------------------------------------------//

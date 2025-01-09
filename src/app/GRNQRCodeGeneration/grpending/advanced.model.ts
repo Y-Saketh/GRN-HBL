@@ -52,6 +52,8 @@ export interface Table {
   
 
 export interface TableRow {
+    RES_NO: any;
+    INSPCHAR: any;
     MATNR: string;
     WERKS: string;
     LGORT: string;

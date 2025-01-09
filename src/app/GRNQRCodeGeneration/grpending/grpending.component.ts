@@ -230,14 +230,16 @@ export class GrpendingComponent implements OnInit {
       this.inBoundshadow.push({
         MATNR: mainRow.MATNR,
         WERKS: mainRow.WERKS,
-        LGORT: mainRow.LGORT,//'',
+        LGORT: mainRow.LGORT, //'',
         BWART: mainRow.BWART,
         Batch: '',
         PostingDate: '',
-        MENGE: splitCounts,//'',
+        MENGE: splitCounts, //'',
         MEINS: mainRow.MEINS,
         EBELN: mainRow.EBELN,
         EBELP: mainRow.EBELP,
+        RES_NO: undefined,
+        INSPCHAR: undefined
       });
     }
     console.log('Shadow rows:', this.inBoundshadow);

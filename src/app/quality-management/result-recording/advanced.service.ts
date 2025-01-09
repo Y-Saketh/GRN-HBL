@@ -2,7 +2,7 @@ import { Injectable, PipeTransform } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 import { BehaviorSubject, Observable, Subject, of } from 'rxjs';
 import { debounceTime, delay, switchMap, tap } from 'rxjs/operators';
-import { Table, SearchResult } from './advanced.modal';
+import { Table, SearchResult } from './advanced.model';
 import { SortDirection } from './Advanced-sortable.directive';
 
 interface State {
@@ -92,10 +92,6 @@ export class AdvancedService {
     this._search$.next();
   }
 
-  resetPagination() {
-    this._set({ page: 1 }); // Reset to the first page
-  }
-
   /** Expose observables */
   get tables$(): Observable<Table[]> {
     return this._tables$.asObservable();
@@ -160,6 +156,7 @@ export class AdvancedService {
     }
   }
 
+
   /** Change page */
   changePage(page: number): void {
   // Ensure the page is within valid bounds
@@ -167,6 +164,7 @@ export class AdvancedService {
     this._set({ page });
   }
 }
+
 
   setTableData(data: Table[]) {
     this.apiData = data;
@@ -185,7 +183,7 @@ export class AdvancedService {
     let tables = sort(this.apiData, sortColumn, sortDirection);
   
     // 2. Filter the data
-    tables = tables?.filter((table) => matches(table, searchTerm, this.pipe));
+    tables = tables.filter((table) => matches(table, searchTerm, this.pipe));
     const total = tables.length;
   
     // 3. Paginate the data
@@ -201,7 +199,14 @@ export class AdvancedService {
   
     const paginatedTables = tables.slice(this._state.startIndex - 1, this._state.endIndex);
   
-    return of({ tables: paginatedTables, total });
+    return of({
+      tables: paginatedTables,
+      total,
+      lot89Rows: [], // Add this property
+      lot89: [], // Add this property
+      lot89Total: 0, // Add this property
+      lot89RowsTotal: 0, // Add this property
+    });
   }
   
 }

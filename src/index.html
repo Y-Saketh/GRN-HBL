@@ -96,10 +96,13 @@
       userID = urlParams.get('userID');
       let password = ''
       password= urlParams.get('password');
+      let proj = ''
+      proj = urlParams.get('proj');
 
       // Store them in a global variable or localStorage for use in Angular
       window.localStorage.setItem('userID', userID);
       window.localStorage.setItem('password', password);
+      window.localStorage.setItem('proj', proj);
       // Polyfills DOM4 MouseEvent only on IE11
       // Fixes ngx-charts line-chart hover
       // https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/MouseEvent#Polyfill
