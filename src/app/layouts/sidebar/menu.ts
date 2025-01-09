@@ -210,22 +210,6 @@ export const MENU: MenuItem[] = [
         
         ]
     },
-
-    {
-        id: "mb51",
-        label: 'MENUITEMS.DASHBOARDS.LIST.RESULTRECORDING',
-        link: 'resultlRecording',
-        icon: 'bx-badge',
-        parentId: "menu"
-    },
-    {
-        id: "mb51",
-        label: 'MENUITEMS.DASHBOARDS.LIST.USAGEDECISION',
-        link: 'usageDecision',
-        icon: 'bx-badge',
-        parentId: "menu"
-    },
-
     
     
    
