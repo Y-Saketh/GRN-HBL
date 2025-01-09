@@ -37,8 +37,8 @@ export class Screen2Component {
     this.validationform = this.formBuilder.group({
       plant: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]+')]],
       // purchaseGroup: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
-      fromDate: [fortyfiveDaysAgo, [ Validators.pattern('[a-zA-Z0-9]+')]],
-      toDate: [fifteenDaysAgo, [ Validators.pattern('[a-zA-Z0-9]+')]],
+      // fromDate: [fortyfiveDaysAgo, [ Validators.pattern('[a-zA-Z0-9]+')]],
+      // toDate: [fifteenDaysAgo, [ Validators.pattern('[a-zA-Z0-9]+')]],
       documentFrom: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],
       documentTo: ['', [ Validators.pattern('[a-zA-Z0-9]+')]],     
       });
@@ -97,7 +97,7 @@ export class Screen2Component {
     const ponumber = this.validationform.value.poNum;
     this.loaderservice.showLoader(); // Show loader during API call
     const payload = { EBELN: ponumber };
-    this.apiService.me23getData(payload).subscribe({
+    this.apiService.zdebit(payload).subscribe({
       next: (res: any) => {
         console.log('API Response:', res); // Log the entire response for debugging
         let base64String = res; // Assume the response contains the Base64 PDF data
