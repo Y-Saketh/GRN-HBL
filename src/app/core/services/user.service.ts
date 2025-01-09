@@ -106,5 +106,14 @@ export class UserProfileService {
         return this.http.post(`${environment.API_URL_DEV}api/external/zdebit`,data)
     }
 
+    getLotReports(obj){
+        console.log("environment.apiUrl",environment.apiUrl)
+        return this.http.post(`${environment.apiUrl}orders/lot/reports`,obj)
+    }
+    updateResultRecording(obj){
+        console.log("environment.apiUrl",environment.apiUrl)
+        return this.http.post(`${environment.apiUrl}orders/resultrecord`,obj)
+    }
+
 
 }

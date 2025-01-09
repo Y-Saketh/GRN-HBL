@@ -12,15 +12,15 @@
               <label class="brandcolor" for="plant">PLANT</label>
               <div class="mb-3">
                 <select
-                class="form-select"
-                id="plant"
-                formControlName="plant"
-              >
-                <option value="" disabled selected>Plant</option>
-                <option *ngFor="let type of plants" [value]="type">
-                  {{ type }}
-                </option>
-              </select>
+                    class="form-select"
+                    id="plant"
+                    formControlName="plant"
+                  >
+                    <option value="" disabled selected>Plant</option>
+                    <option *ngFor="let type of plants" [value]="type">
+                      {{ type }}
+                    </option>
+                  </select>
                 <div *ngIf="submit && form.plant.errors" class="invalid-feedback">
                   <span *ngIf="form.plant.errors.required"
                     >Please provide a valid plant.</span
@@ -28,153 +28,61 @@
                 </div>
               </div>
             </div>
-            <!-- Posting Date From -->
-            <div class="col-md-2">
-              <label class="brandcolor" for="postingDateFrom"
-                >FROM DATE</label
+             <!-- Posting Date From -->
+          <div class="col-md-2">
+            <label class="brandcolor" for="postingDateFrom"
+              >FROM DATE</label
+            >
+            <div class="mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="postingDateFrom"
+                formControlName="postingDateFrom"
+                [bsConfig]="bsConfig"
+                bsDatepicker
+                placeholder="POSTING DATE FROM"
+                [ngClass]="{
+                  'is-invalid': submit && form.postingDateFrom.errors
+                }"
+              />
+              <div
+                *ngIf="submit && form.postingDateFrom.errors"
+                class="invalid-feedback"
               >
-              <div class="mb-3">
-                <input
-                  type="text"
-                  class="form-control"
-                  id="postingDateFrom"
-                  formControlName="postingDateFrom"
-                  [bsConfig]="bsConfig"
-                  bsDatepicker
-                  placeholder="POSTING DATE FROM"
-                  [ngClass]="{
-                    'is-invalid': submit && form.postingDateFrom.errors
-                  }"
-                />
-                <div
-                  *ngIf="submit && form.postingDateFrom.errors"
-                  class="invalid-feedback"
+                <span *ngIf="form.postingDateFrom.errors.required"
+                  >Please provide a valid POSTING DATE FROM.</span
                 >
-                  <span *ngIf="form.postingDateFrom.errors.required"
-                    >Please provide a valid POSTING DATE FROM.</span
-                  >
-                </div>
               </div>
             </div>
-            <!-- Posting Date To -->
-            <div class="col-md-2">
-              <label class="brandcolor" for="postingDateTo">TO DATE</label>
-              <div class="mb-3">
-                <input
-                  type="text"
-                  class="form-control"
-                  id="postingDateTo"
-                  formControlName="postingDateTo"
-                  [bsConfig]="bsConfig"
-                  bsDatepicker
-                  placeholder="POSTING DATE TO"
-                  [ngClass]="{
-                    'is-invalid': submit && form.postingDateTo.errors
-                  }"
-                />
-                <div
-                  *ngIf="submit && form.postingDateTo.errors"
-                  class="invalid-feedback"
+          </div>
+           <!-- Posting Date To -->
+          <div class="col-md-2">
+            <label class="brandcolor" for="postingDateTo">TO DATE</label>
+            <div class="mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="postingDateTo"
+                formControlName="postingDateTo"
+                [bsConfig]="bsConfig"
+                bsDatepicker
+                placeholder="POSTING DATE TO"
+                [ngClass]="{
+                  'is-invalid': submit && form.postingDateTo.errors
+                }"
+              />
+              <div
+                *ngIf="submit && form.postingDateTo.errors"
+                class="invalid-feedback"
+              >
+                <span *ngIf="form.postingDateTo.errors.required"
+                  >Please provide a valid POSTING DATE TO.</span
                 >
-                  <span *ngIf="form.postingDateTo.errors.required"
-                    >Please provide a valid POSTING DATE TO.</span
-                  >
-                </div>
               </div>
             </div>
-            <!-- Search -->
-            <div class="col-md-2">
-              <label class="brandcolor" for="po">Search</label>
-              <div class="mb-3 d-flex align-items-center">
-                <input
-                  type="text"
-                  class="form-control"
-                  id="po"
-                  placeholder="Search Filter"
-                  (input)="handlepoInput($event)"
-                  [ngClass]="{
-                    'is-invalid': submit && poArray.length === 0
-                  }"
-                />
-                <!-- Display the icon button only when there is data -->
-                <button
-                  *ngIf="poArray.length > 0"
-                  type="button"
-                  class="btn btn-info ms-2"
-                  (click)="openPOModal()"
-                >
-                  <i class="fas fa-list"></i>
-                </button>
-                <div
-                  *ngIf="submit && poArray.length === 0"
-                  class="invalid-feedback d-block"
-                >
-                  <span>Please provide at least one Material.</span>
-                </div>
-              </div>
-            
-              <!-- Full-Screen Modal -->
-              <div class="modal-backdrop" *ngIf="showPOModal">
-                <div class="modal-content">
-                  <!-- Close Button -->
-                  <button
-                    type="button"
-                    class="btn btn-danger btn-sm close-button"
-                    (click)="closePOModal()"
-                  >
-                    X
-                  </button>
-            
-                  <h3 class="modal-title">Search Items</h3>
-            
-                  <div class="po-container">
-                    <div
-                      class="po-item"
-                      *ngFor="let po of poArray; let i = index"
-                    >
-                      <span>{{ po }}</span>
-                      <button
-                        type="button"
-                        class="btn btn-danger btn-sm"
-                        (click)="removePO(i)"
-                      >
-                        X
-                      </button>
-                    </div>
-                  </div>
-            
-                  <!-- Clear All Button -->
-                  <div class="d-flex justify-content-end mt-3">
-                    <button
-                      type="button"
-                      class="btn btn-danger"
-                      (click)="clearAllPOs()"
-                      [disabled]="poArray.length === 0"
-                    >
-                      Clear All
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- Button -->
-            <div class="col-md-1 mt-4">
-              <div class="ms-4 mb-3">
-                <button
-                  style="
-                    margin-top: 8px;
-                    background-color: brown;
-                    width: max-content;
-                    color: aliceblue;
-                  "
-                  class="btn"
-                  type="submit"
-                  (click)="getmb51()"
-                >
-                  Get Details
-                </button>
-              </div>
-            </div>
+          </div>
+
           </div>
         </form>
       </div>
@@ -211,31 +119,21 @@
               <!-- Search Field -->
               <div id="tickets-table_filter" class="dataTables_filter">
                 <label class="d-inline-flex align-items-center">
-                  Search:
+                  Filter:
                   <input
                     type="text"
                     name="searchTerm"
                     class="form-control form-control-sm ms-2"
                     aria-controls="tickets-table"
                     [(ngModel)]="service.searchTerm"
+                    (input)="resetPagination()"
                   />
                 </label>
               </div>
         
-              <!-- Export Button -->
-              <div>
-                <button
-                  class="btn btn-warning ms-2"
-                  [disabled]="(tables$ | async)?.length === 0"
-                  (click)="exportToExcel()"
-                >
-                  Export
-                </button>
-              </div>
             </div>
           </div>
         </div>
-        
         <!-- Table -->
         <div class="table-responsive">
           <table
@@ -244,47 +142,64 @@
           >
             <thead class="brandcolor tableHeader">
               <tr>
+                <!-- <th></th> -->
                 <th class="brandcolor" sortable="WERK" (sort)="onSort($event)">
                   Plant
                 </th>
                 <th class="brandcolor" sortable="PRUEFLOS" (sort)="onSort($event)">
-                  Inspection Lot
+                    Inspection Lot
                 </th>
                 <th class="brandcolor" sortable="MATNR" (sort)="onSort($event)">
-                  Material
+                    Material
                 </th>
                 <th class="brandcolor" sortable="MAKTX" (sort)="onSort($event)">
-                  Material Name
+                    Material Name
                 </th>
                 <th class="brandcolor" sortable="CHARG" (sort)="onSort($event)">
-                  Batch No
-                </th>
+                    Batch No
+                  </th>
                 <th class="brandcolor" sortable="EBELN" (sort)="onSort($event)">
-                  PO No
-                </th>
-                <th class="brandcolor" sortable="EBELP" (sort)="onSort($event)">
-                  PO Item
-                </th>
-                <th class="brandcolor" sortable="LOSMENGE" (sort)="onSort($event)">
-                  Lot Qty
+                    PO No
                 </th>
                 <th
                   class="brandcolor"
-                  sortable="ZZREQUES"
+                  sortable="EBELP"
                   (sort)="onSort($event)"
                 >
-                  Requisition No
+                    PO Item
                 </th>
-                <th class="brandcolor" sortable="LMENGEZUB" (sort)="onSort($event)">
-                  To be Posted Qty
+                <th
+                  class="brandcolor"
+                  sortable="LOSMENGE"
+                  (sort)="onSort($event)"
+                >
+                    Lot Qty
                 </th>
+              <th
+                class="brandcolor"
+                sortable="ZZREQUES"
+                (sort)="onSort($event)"
+                >
+                    Requisition No
+              </th>
+              <th
+                class="brandcolor"
+                sortable="LMENGEZUB"
+                (sort)="onSort($event)"
+                >
+                To be Posted Qty
+              </th>
               </tr>
             </thead>
             <tbody *ngFor="let table of tables$ | async; let i = index">
               <tr>
+                <!-- <td align="center">
+                  <a class="expand-row" (click)="changeValue(i)">+</a>
+                </td> -->
                 <td>{{ table.WERK }}</td>
                 <!-- Plant -->
-                <td style="color: brown; cursor: pointer;" (click)="openMe23(table.PRUEFLOS )">{{ table.PRUEFLOS }} </td>
+                <!-- <td>{{ table.PRUEFLOS }}</td> -->
+                <td style="color: brown; cursor: pointer;" (click)="updateResults(table.PRUEFLOS )">{{ table.PRUEFLOS }} </td>
                 <!-- Inspection Lot -->
                 <td>{{ table.MATNR }}</td>
                 <!-- Material -->
@@ -299,12 +214,205 @@
                 <td>{{ table.LOSMENGE }}</td>
                 <!-- Lot Qty -->
                 <td>{{ table.ZZREQUES }}</td>
-                <!-- Requisition No -->`
+                <!-- Requisition No -->
                 <td>{{ table.LMENGEZUB }}</td>
                 <!-- To be Posted Qty -->
               </tr>
             </tbody>
           </table>
+        </div>
+        <!-- Field Value table-->
+        <div class="w-full bg-white " *ngIf="resultRecordingScreen">
+            <div class="w-full bg-white shadow-md">
+                <table class="w-full border-collapse border border-slate-400">
+                    <thead class="bg-gray-700 text-white">
+                        <tr class="text-center">
+                            <th class="border border-slate-300 whitespace-nowrap px-6 py-4">Field</th>
+                            <th class="border border-slate-300 whitespace-nowrap px-6 py-4">Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="border border-slate-300 whitespace-nowrap px-6 py-2">Inspection Lot</td>
+                            <td class="border border-slate-300 whitespace-nowrap px-6 py-2">{{
+                                validationform.get('INSPLOT')?.value }}</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-slate-300  px-6 py-2">Material</td>
+                            <td class="border border-slate-300  px-6 py-2">{{
+                                validationform.get('MATNR')?.value }}</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-slate-300 whitespace-nowrap px-6 py-2">Material Name</td>
+                            <td class="border border-slate-300 whitespace-nowrap px-6 py-2">{{
+                                validationform.get('MAKTX')?.value }}</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-slate-300 whitespace-nowrap px-6 py-2">Requisition No</td>
+                            <td class="border border-slate-300 whitespace-nowrap px-6 py-2">{{
+                                validationform.get('ZZREQUES')?.value }}</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-slate-300 whitespace-nowrap px-6 py-2">Lot Quantity</td>
+                            <td class="border border-slate-300 whitespace-nowrap px-6 py-2">{{
+                                validationform.get('LOSMENGE')?.value }}</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-slate-300 whitespace-nowrap px-6 py-2">Batch</td>
+                            <td class="border border-slate-300 whitespace-nowrap px-6 py-2">{{validationform.get('CHARG')?.value }}</td>
+                        </tr>
+                        <tr >
+                            <td class="border border-slate-300 whitespace-nowrap px-6 py-2">Drawing Number/Version</td>
+                            <td class="border border-slate-300 whitespace-nowrap px-6 py-2"> {{ validationform.get('ZEINR')?.value || validationform.get('ZZDRAW')?.value }} / {{validationform.get('ZEIVR')?.value || validationform.get('ZZREVNO')?.value}} </td>
+                        </tr>
+                        <tr>
+                            <td class="border border-slate-300 whitespace-nowrap px-6 py-2">Test Started On</td>
+                            <td class="border border-slate-300 whitespace-nowrap px-6 py-2">{{
+                                validationform.get('ZZTESTF')?.value |date: 'dd-MM-yyyy'  }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="border border-slate-300 whitespace-nowrap px-6 py-2">Test Ended On</td>
+                            <td class="border border-slate-300 whitespace-nowrap px-6 py-2">{{
+                                validationform.get('ZZTESTT')?.value | date: 'dd-MM-yyyy'  }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="border border-slate-300 whitespace-nowrap px-6 py-2">Remarks</td>
+                            <td class="border border-slate-300 whitespace-nowrap px-6 py-2">{{validationform.get('ZZREST')?.value }}</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-slate-300 whitespace-nowrap px-6 py-2">Lab Condition</td>
+                            <td class="border border-slate-300 whitespace-nowrap px-6 py-2">
+                                <input matInput [(ngModel)]="ZRESREMAKS" [ngModelOptions]="{standalone: true}"
+                                class="w-full px-2 py-1 border border-slate-300">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="overflow-x-scroll" *ngIf="!showResultsTable && resultRecordingDescriptions.length > 0">
+                <div class="container">
+                  <table *ngIf="actualData.length > 0" class="custom-table">
+                    <thead>
+                      <tr>
+                        <th>Char No</th>
+                        <th>Char Type</th>
+                        <th>Characteristic Name</th>
+                        <th>Specifications</th>
+                        <th>Sample</th>
+                        <th>Result</th>
+                        <th>Visual Result</th>
+                        <th>A/R</th>
+                        <th>Type of Insp</th> 
+                         <th>Remarks</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let row of actualData">
+                        <td>{{ row.duplicatedINSPCHAR }}</td>
+                        <td>{{ row.KATAB1 }}</td>
+                        <td>{{ row.KURZTEXT }}</td>
+                        <td>{{ row.TOLGRENZE }}</td>                           
+                        <td>{{ row.SOLLSTPUMF }}</td>
+                        <td>
+                              <span *ngIf="row.isMainRow || row.KATAB1 =='X'">{{ row.KATAB1 =='X'? row.NONCONF : row.MEAN_VALUE }}</span>
+                          <input *ngIf="!row.isMainRow && row.KATAB1 !=='X'" [(ngModel)]="row.result" placeholder="Enter result" (keydown.enter)=" checkAllDuplicatesFilled(row)" 
+                           style=" border: 1px solid rgb(0, 0, 0) !important; " tabindex="1"
+                          />
+                        </td>
+                        <td *ngIf="!row.isMainRow && row.KATAB1 == 'X'">
+                            <mat-select 
+                              [(ngModel)]="row.CODE1" 
+                              (selectionChange)="onCode1Change(row)">
+                              <mat-option [value]="row.CODE">{{ row.CODE_DESP }}</mat-option>
+                              <mat-option [value]="row.CODE_1">{{row.CODE_DESP_1 }}</mat-option>
+                            </mat-select>
+                          </td>   
+                          <td *ngIf="row.KATAB1 !== 'X' || row.isMainRow"></td>  
+                          <td *ngIf="!row.isMainRow && row.KATAB1 == 'X'">
+                            <mat-select [(ngModel)]="row.RES_VALUAT" (selectionChange)="onVisualResultChange(row)"  [ngClass]="{'accept-class': row.RES_VALUAT === 'A', 'reject-class': row.RES_VALUAT === 'R'}">
+                                
+                              <mat-option value="A">Accept</mat-option>
+                              <mat-option value="R">Reject</mat-option>
+                            </mat-select>
+                        </td>
+                        <td *ngIf="row.isMainRow && row.KATAB1 == 'X' || row.KATAB1 !== 'X'"
+                            [ngClass]="{'accept-class': row.RES_VALUAT === 'A', 'reject-class': row.RES_VALUAT === 'R'}">
+                            {{
+                                (row.isMainRow && row.KATAB1 === 'X') 
+                                  ? '' 
+                                  : (row.RES_VALUAT === 'A' ? 'Accept' : (row.RES_VALUAT === 'R' ? 'Reject' : ''))
+                              }}
+                        </td>
+                        <td>{{row.AUSWMENGE1}}</td>
+                        <td>
+                            <input *ngIf="!row.isMainRow" [(ngModel)]="row.REMARK" placeholder="Enter Remarks"  style=" border: 1px solid rgb(0, 0, 0) !important; "/>
+                            <span *ngIf="row.isMainRow" >{{ row.REMARK }}</span>
+                        </td>
+                        <td>
+                          <button *ngIf="row.isMainRow" (click)="toggleDuplicateRows(row)">
+                            {{ row.isVisible ? 'Close' : 'Split' }}
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            <!-- In case there's no data -->
+            <div *ngIf="showResultsTable && resultRecordingDescriptions.length === 0">
+                No data available.
+            </div>
+            <div class="overflow-x-scroll" *ngIf="showResultsTable && loT89NumberArray.length > 0">
+                <div class="container">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Char No</th>
+                        <th>Characteristic Name</th>
+                        <th>Specifications</th>
+                        <th>Sample</th>
+                        <th>Result</th>
+                        <th>Remarks</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let data of actualData; let i = index">
+                            <td>{{ data.duplicatedINSPCHAR }}</td>
+                            <td>{{ data.KURZTEXT }}</td>
+                            <td>{{ data.TOLGRENZE }}</td> 
+                            <td>{{ data.SOLLSTPUMF }}</td>
+                            <td *ngIf="data.isMainRow">{{data.RESVAL}}</td>
+                            <td *ngIf="!data.isMainRow"><input type="text" [(ngModel)]="data.RESVAL"></td>
+                            <td *ngIf="!data.isMainRow"><input type="text" [(ngModel)]="data.REMARKS"></td>
+                            <td *ngIf="data.isMainRow">{{data.REMARKS}}</td>
+                            <td>
+                              <button *ngIf="data.isMainRow" (click)="toggleSplit(data)">
+                                {{ data.isVisible ? 'Close' : 'Split' }}
+                              </button>
+                            </td>
+                          </tr>   
+                      </tbody>
+                  </table>
+                </div>
+              </div>
+                    <div *ngIf="showResultsTable && loT89NumberArray.length === 0">
+                        No data available.
+                    </div>
+            <div class="flex justify-end m-2">
+                <button mat-flat-button class="mr-1"  (click)="saveOriginalRow(row)">
+                    Save
+                  </button>
+                <button *ngIf="!showResultsTable" mat-flat-button color="primary" [disabled]="!enableSubmitButton" (click)="submitResults()">
+                    <span>Submit</span>
+                </button>
+                <button *ngIf="showResultsTable" mat-flat-button color="primary" [disabled]="!enable89SubmitBtn" (click)="submitResults()">
+                    <span>Submit</span>
+                </button>
+            </div>
         </div>
         <!-- Pagination -->
         <div class="row justify-content-md-between align-items-md-center mt-2">
@@ -368,199 +476,8 @@
               </ul>
             </div>
           </div>
-        </div>     
-        <!-- End of Pagination -->
-         
-         <!-- Hidden Table -->
-         <div class="w-full bg-white " *ngIf="resultRecordingScreen">
-            <div class="w-full bg-white shadow-md">
-                <table class="w-full border-collapse border border-slate-400">
-                    <thead class="bg-gray-700 text-white">
-                        <tr class="text-center">
-                            <th class="border border-slate-300 whitespace-nowrap px-6 py-4">Field</th>
-                            <th class="border border-slate-300 whitespace-nowrap px-6 py-4">Value</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="border border-slate-300 whitespace-nowrap px-6 py-2">Inspection Lot</td>
-                            <td class="border border-slate-300 whitespace-nowrap px-6 py-2">{{
-                                resultRecordingForm.get('INSPLOT')?.value }}</td>
-                        </tr>
-                        <tr>
-                            <td class="border border-slate-300  px-6 py-2">Material</td>
-                            <td class="border border-slate-300  px-6 py-2">{{
-                                resultRecordingForm.get('MATNR')?.value }}</td>
-                        </tr>
-                        <tr>
-                            <td class="border border-slate-300 whitespace-nowrap px-6 py-2">Material Name</td>
-                            <td class="border border-slate-300 whitespace-nowrap px-6 py-2">{{
-                                resultRecordingForm.get('MAKTX')?.value }}</td>
-                        </tr>
-                        <tr>
-                            <td class="border border-slate-300 whitespace-nowrap px-6 py-2">Requisition No</td>
-                            <td class="border border-slate-300 whitespace-nowrap px-6 py-2">{{
-                                resultRecordingForm.get('ZZREQUES')?.value }}</td>
-                        </tr>
-                        <tr>
-                            <td class="border border-slate-300 whitespace-nowrap px-6 py-2">Lot Quantity</td>
-                            <td class="border border-slate-300 whitespace-nowrap px-6 py-2">{{
-                                resultRecordingForm.get('LOSMENGE')?.value }}</td>
-                        </tr>
-                        <tr>
-                            <td class="border border-slate-300 whitespace-nowrap px-6 py-2">Batch</td>
-                            <td class="border border-slate-300 whitespace-nowrap px-6 py-2">{{resultRecordingForm.get('CHARG')?.value }}</td>
-                        </tr>
-                        <tr >
-                            <td class="border border-slate-300 whitespace-nowrap px-6 py-2">Drawing Number/Version</td>
-                            <td class="border border-slate-300 whitespace-nowrap px-6 py-2"> {{ resultRecordingForm.get('ZEINR')?.value || resultRecordingForm.get('ZZDRAW')?.value }} / {{resultRecordingForm.get('ZEIVR')?.value }}</td>
-                        </tr>
-                        <tr>
-                            <td class="border border-slate-300 whitespace-nowrap px-6 py-2">Test Started On</td>
-                            <td class="border border-slate-300 whitespace-nowrap px-6 py-2">{{
-                                resultRecordingForm.get('ZZTESTF')?.value }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="border border-slate-300 whitespace-nowrap px-6 py-2">Test Ended On</td>
-                            <td class="border border-slate-300 whitespace-nowrap px-6 py-2">{{
-                                resultRecordingForm.get('ZZTESTT')?.value }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="border border-slate-300 whitespace-nowrap px-6 py-2">Remarks</td>
-                            <td class="border border-slate-300 whitespace-nowrap px-6 py-2">{{resultRecordingForm.get('ZZREST')?.value }}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="overflow-x-scroll" *ngIf="!showResultsTable && resultRecordingDescriptions.length > 0">
-                <div class="container">
-                  <table *ngIf="actualData.length > 0" class="custom-table">
-                    <thead>
-                      <tr>
-                        <th>Char No</th>
-                        <th>Char Type</th>
-                        <th>Characteristic Name</th>
-                        <th>Specifications</th>
-                        <th>Sample</th>
-                        <th>Result</th>
-                        <th>Visual Result</th>
-                        <th>A/R</th>
-                        <th>Type of Insp</th>
-                         <th>Remarks</th>
-                        <th>Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let row of actualData">
-                        <td>{{ row.duplicatedINSPCHAR }}</td>
-                        <td>{{ row.KATAB1 }}</td>
-                        <td>{{ row.KURZTEXT }}</td>
-                        <td>{{ row.TOLGRENZE }}</td>                           
-                        <td>{{ row.SOLLSTPUMF }}</td>
-                        <td>
-                              <span *ngIf="row.isMainRow || row.KATAB1 =='X'">{{ row.KATAB1 =='X'? row.NONCONF : row.MEAN_VALUE }}</span>
-                          <input *ngIf="!row.isMainRow && row.KATAB1 !=='X'" [(ngModel)]="row.result" placeholder="Enter result" (keydown.enter)=" checkAllDuplicatesFilled(row)" 
-                           style=" border: 1px solid rgb(0, 0, 0) !important; " tabindex="1"
-                          />
-                        </td>
-                        <td *ngIf="!row.isMainRow && row.KATAB1 == 'X'">
-                            <mat-select 
-                              [(ngModel)]="row.CODE1" 
-                              (selectionChange)="onCode1Change(row)">
-                              <mat-option [value]="row.CODE">{{ row.CODE_DESP }}</mat-option>
-                              <mat-option [value]="row.CODE_1">{{row.CODE_DESP_1 }}</mat-option>
-                            </mat-select>
-                          </td>   
-                          <td *ngIf="row.KATAB1 !== 'X' || row.isMainRow"></td>  
-                          <td *ngIf="!row.isMainRow && row.KATAB1 == 'X'">
-                            <mat-select [(ngModel)]="row.RES_VALUAT" (selectionChange)="onVisualResultChange(row)"  [ngClass]="{'accept-class': row.RES_VALUAT === 'A', 'reject-class': row.RES_VALUAT === 'R'}">
-                                
-                              <mat-option value="A">Accept</mat-option>
-                              <mat-option value="R">Reject</mat-option>
-                            </mat-select>
-                        </td>
-                        <td *ngIf="row.isMainRow && row.KATAB1 == 'X' || row.KATAB1 !== 'X'"
-                            [ngClass]="{'accept-class': row.RES_VALUAT === 'A', 'reject-class': row.RES_VALUAT === 'R'}">
-                            {{
-                                (row.isMainRow && row.KATAB1 === 'X') 
-                                  ? '' 
-                                  : (row.RES_VALUAT === 'A' ? 'Accept' : (row.RES_VALUAT === 'R' ? 'Reject' : ''))
-                              }}
-                        </td>
-                        
-                        <td>{{row.AUSWMENGE1}}</td>
-                        <td>
-                            <input *ngIf="!row.isMainRow" [(ngModel)]="row.REMARK" placeholder="Enter Remarks"  style=" border: 1px solid rgb(0, 0, 0) !important; "/>
-                            <span *ngIf="row.isMainRow" >{{ row.REMARK }}</span>
-                           
-                        </td>
-                        <td>
-                          <button *ngIf="row.isMainRow" (click)="toggleDuplicateRows(row)">
-                            {{ row.isVisible ? 'Close' : 'Split' }}
-                          </button>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-
-            <!-- In case there's no data -->
-            <div *ngIf="showResultsTable && resultRecordingDescriptions.length === 0">
-                No data available.
-            </div>
-            <div class="overflow-x-scroll" *ngIf="showResultsTable && loT89NumberArray.length > 0">
-                <div class="container">
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>Char No</th>
-                        <th>Characteristic Name</th>
-                        <th>Specifications</th>
-                        <th>Sample</th>
-                        <th>Result</th>
-                        <th>Remarks</th>
-                        <th>Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let data of actualData; let i = index">
-                            <td>{{ data.duplicatedINSPCHAR }}</td>
-                            <td>{{ data.KURZTEXT }}</td>
-                            <td>{{ data.TOLGRENZE }}</td> 
-                            <td>{{ data.SOLLSTPUMF }}</td>
-                            <td *ngIf="data.isMainRow">{{data.RESVAL}}</td>
-                            <td *ngIf="!data.isMainRow"><input type="text" [(ngModel)]="data.RESVAL"></td>
-                            <td *ngIf="!data.isMainRow"><input type="text" [(ngModel)]="data.REMARKS"></td>
-                            <td *ngIf="data.isMainRow">{{data.REMARKS}}</td>
-                            <td>
-                              <button *ngIf="data.isMainRow" (click)="toggleSplit(data)">
-                                {{ data.isVisible ? 'Close' : 'Split' }}
-                              </button>
-                            </td>
-                          </tr>
-                      </tbody>
-                  </table>
-                </div>
-              </div>
-              <div *ngIf="showResultsTable && loT89NumberArray.length === 0">
-                  No data available.
-              </div>
-            <div class="flex justify-end m-2">
-                <button mat-flat-button class="mr-1"  (click)="saveOriginalRow(row)">
-                    Save
-                  </button>
-                <button *ngIf="!showResultsTable" mat-flat-button color="primary" [disabled]="!enableSubmitButton" (click)="submitResults()">
-                    <span>Submit</span>
-                </button>
-                <button *ngIf="showResultsTable" mat-flat-button color="primary" [disabled]="!enable89SubmitBtn" (click)="submitResults()">
-                    <span>Submit</span>
-                </button>
-            </div>
-
         </div>
+        <!-- End of Pagination -->
       </div>
     </div>
   </div>
