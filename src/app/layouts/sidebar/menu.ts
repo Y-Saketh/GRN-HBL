@@ -73,7 +73,11 @@ export const MENU: MenuItem[] = [
             // },
         ]
     },
-
+    {
+        id: "QM",
+        label: 'Quality Management',
+        icon: 'bx-archive-in',
+    },
     {
         id: "inbounddelivery",
         label: 'MENUITEMS.DASHBOARDS.LIST.INBOUNDDELIVERY',

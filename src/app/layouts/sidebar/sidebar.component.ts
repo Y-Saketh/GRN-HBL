@@ -149,8 +149,11 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnChanges {
     const loginResponse = JSON.parse(localStorage.getItem('currentUser') || '{}');
     console.log("loginResponse1122",loginResponse)
     
-    if (loginResponse && loginResponse[0].ZGRNACT) {
+    if (loginResponse && loginResponse[0].ZGRNACT && loginResponse[0].ZGRNACT.ZGRNACT1 == "GRN") {
       const authorizedIds: string[] = Object.values(loginResponse[0].ZGRNACT).filter((id): id is string => typeof id === 'string' && id.trim() !== "");
+      this.menuItems = this.filterMenuItems(MENU, authorizedIds);
+    }else if (loginResponse && loginResponse[0].ZQMACT && loginResponse[0].ZQMACT.ZQMACT1 == "QM") {
+      const authorizedIds: string[] = Object.values(loginResponse[0].ZQMACT).filter((id): id is string => typeof id === 'string' && id.trim() !== "");
       this.menuItems = this.filterMenuItems(MENU, authorizedIds);
     } else {
       this.menuItems = []; // Fallback if no loginResponse or ZGRNACT
