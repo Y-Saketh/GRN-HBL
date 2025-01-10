@@ -92,12 +92,14 @@
       var pairs = document.cookie.split(";");
       console.log('Cookie: ', cookie, window.location.search, pairs);
       // const urlParams = new URLSearchParams(window.location.search);
+      console.log("urlParams",urlParams)
       let userID = ''
       userID = urlParams.get('userID');
       let password = ''
       password= urlParams.get('password');
       let proj = ''
       proj = urlParams.get('proj');
+      console.log("project",proj)
 
       // Store them in a global variable or localStorage for use in Angular
       window.localStorage.setItem('userID', userID);
