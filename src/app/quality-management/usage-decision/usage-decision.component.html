@@ -1,1 +1,477 @@
-<p>usage-decision works!</p>
+<div class="col-xl-12">
+    <div class="card" style="background-color: beige">
+      <div class="card-body">
+        <h4 class="card-title">
+          <span style="color: black"></span>
+          Usage Decision
+        </h4>
+        <form class="needs-validation" [formGroup]="validationform">
+          <div class="row">
+           <!-- Plant -->
+            <div class="col-md-1">
+            <label class="brandcolor" for="plant">PLANT</label>
+            <div class="mb-3">
+              <select
+                  class="form-select"
+                  id="plant"
+                  formControlName="plant"
+                >
+                  <option value="" disabled selected>Plant</option>
+                  <option *ngFor="let type of plants" [value]="type">
+                    {{ type }}
+                  </option>
+                </select>
+              <div *ngIf="submit && form.plant.errors" class="invalid-feedback">
+                <span *ngIf="form.plant.errors.required"
+                  >Please provide a valid plant.</span
+                >
+              </div>
+            </div>
+          </div>
+           <!-- Posting Date From -->
+          <div class="col-md-2">
+            <label class="brandcolor" for="postingDateFrom"
+              >FROM DATE</label
+            >
+            <div class="mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="postingDateFrom"
+                formControlName="postingDateFrom"
+                [bsConfig]="bsConfig"
+                bsDatepicker
+                placeholder="POSTING DATE FROM"
+                [ngClass]="{
+                  'is-invalid': submit && form.postingDateFrom.errors
+                }"
+              />
+              <div
+                *ngIf="submit && form.postingDateFrom.errors"
+                class="invalid-feedback"
+              >
+                <span *ngIf="form.postingDateFrom.errors.required"
+                  >Please provide a valid POSTING DATE FROM.</span
+                >
+              </div>
+            </div>
+          </div>
+          <!-- Posting Date To -->
+          <div class="col-md-2">
+            <label class="brandcolor" for="postingDateTo">TO DATE</label>
+            <div class="mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="postingDateTo"
+                formControlName="postingDateTo"
+                [bsConfig]="bsConfig"
+                bsDatepicker
+                placeholder="POSTING DATE TO"
+                [ngClass]="{
+                  'is-invalid': submit && form.postingDateTo.errors
+                }"
+              />
+              <div
+                *ngIf="submit && form.postingDateTo.errors"
+                class="invalid-feedback"
+              >
+                <span *ngIf="form.postingDateTo.errors.required"
+                  >Please provide a valid POSTING DATE TO.</span
+                >
+              </div>
+            </div>
+          </div>
+         </div>
+        </form>
+      </div>
+    </div>
+    <!-- end card -->
+    <div class="card">
+      <div class="card-body">
+        <div class="row mb-md-2">
+          <div class="col-sm-12 col-md-4">
+            <div class="dataTables_length">
+              <label class="d-inline-flex align-items-center">
+                Show
+                <select
+                  name="tickets-table_length"
+                  aria-controls="tickets-table"
+                  class="form-control form-control-sm mx-2"
+                  [(ngModel)]="service.pageSize"
+                  (change)="onPageSizeChange()"
+                  [ngModelOptions]="{ standalone: true }"
+                >
+                  <option [ngValue]="10">10</option>
+                  <option [ngValue]="25">25</option>
+                  <option [ngValue]="50">50</option>
+                  <option [ngValue]="100">100</option>
+                </select>
+                entries
+              </label>
+            </div>
+          </div>
+        
+          <!-- Search  -->
+          <div class="col-sm-12 col-md-8">
+            <div class="d-flex justify-content-end align-items-center">
+              <!-- Search Field -->
+              <div id="tickets-table_filter" class="dataTables_filter">
+                <label class="d-inline-flex align-items-center">
+                  Search:
+                  <input
+                    type="text"
+                    name="searchTerm"
+                    class="form-control form-control-sm ms-2"
+                    aria-controls="tickets-table"
+                    [(ngModel)]="service.searchTerm"
+                    (input)="resetPagination()"
+                  />
+                </label>
+              </div>
+        
+            </div>
+          </div>
+        </div>
+        <!-- Table -->
+        <div class="table-responsive">
+          <table
+            id="basic-datatable"
+            class="table table-bordered dt-responsive nowrap"
+          >
+            <thead class="brandcolor tableHeader">
+              <tr>
+                <!-- <th></th> -->
+                <th class="brandcolor" sortable="WERK" (sort)="onSort($event)">
+                  Plant
+                </th>
+                <th class="brandcolor" sortable="PRUEFLOS" (sort)="onSort($event)">
+                    Inspection Lot
+                </th>
+                <th class="brandcolor" sortable="MATNR" (sort)="onSort($event)">
+                    Material
+                </th>
+                <th class="brandcolor" sortable="MAKTX" (sort)="onSort($event)">
+                    Material Name
+                </th>
+                <th class="brandcolor" sortable="CHARG" (sort)="onSort($event)">
+                    Batch No
+                  </th>
+                <th class="brandcolor" sortable="EBELN" (sort)="onSort($event)">
+                    PO No
+                </th>
+                <th
+                  class="brandcolor"
+                  sortable="EBELP"
+                  (sort)="onSort($event)"
+                >
+                    PO Item
+                </th>
+                <th
+                  class="brandcolor"
+                  sortable="LOSMENGE"
+                  (sort)="onSort($event)"
+                >
+                    Lot Qty
+                </th>
+              <th
+                class="brandcolor"
+                sortable="ZZREQUES"
+                (sort)="onSort($event)"
+                >
+                    Requisition No
+              </th>
+              <th
+                class="brandcolor"
+                sortable="LMENGEZUB"
+                (sort)="onSort($event)"
+                >
+                To be Posted Qty
+              </th>
+              </tr>
+            </thead>
+            <tbody *ngFor="let table of tables$ | async; let i = index">
+              <tr>
+                <!-- <td align="center">
+                  <a class="expand-row" (click)="changeValue(i)">+</a>
+                </td> -->
+                <td>{{ table.WERK }}</td>
+                <!-- Plant -->
+                <!-- <td>{{ table.PRUEFLOS }}</td> -->
+                <td style="color: brown; cursor: pointer;" (click)="updateResults(table.PRUEFLOS )">{{ table.PRUEFLOS }} </td>
+                <!-- Inspection Lot -->
+                <td>{{ table.MATNR }}</td>
+                <!-- Material -->
+                <td>{{ table.MAKTX }}</td>
+                <!-- Material Name -->
+                <td>{{ table.CHARG }}</td>
+                <!-- Batch No -->
+                <td>{{ table.EBELN }}</td>
+                <!-- PO No -->
+                <td>{{ table.EBELP }}</td>
+                <!-- PO Item -->
+                <td>{{ table.LOSMENGE }}</td>
+                <!-- Lot Qty -->
+                <td>{{ table.ZZREQUES }}</td>
+                <!-- Requisition No -->
+                <td>{{ table.LMENGEZUB }}</td>
+                <!-- To be Posted Qty -->
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- Field Value Table -->
+        <div class="w-full bg-white shadow-md" *ngIf="resultRecordingScreen">
+          <form [formGroup]="resultRecordingForm" class="p-4">
+              <div class="grid grid-cols-2 gap-2">
+                  <mat-form-field class="fuse-mat-dense flex-auto">
+                      <mat-label>Inspection Lot</mat-label>
+                      <input matInput formControlName="PRUEFLOS" readonly />
+                  </mat-form-field>
+                  <mat-form-field class="fuse-mat-dense flex-auto">
+                      <mat-label>Material</mat-label>
+                      <input matInput formControlName="MATNR" readonly />
+                  </mat-form-field>
+              </div>
+              <div class="grid grid-cols-2 gap-2">
+                  <mat-form-field class="fuse-mat-dense flex-auto">
+                      <mat-label>Material Name</mat-label>
+                      <input matInput formControlName="MAKTX" readonly />
+                  </mat-form-field>
+                  <mat-form-field class="fuse-mat-dense flex-auto">
+                      <mat-label>Lot Qty</mat-label>
+                      <input matInput formControlName="LOSMENGE" readonly />
+                  </mat-form-field>
+              </div>
+              <div class="grid grid-cols-2 gap-2">
+                  <mat-form-field class="fuse-mat-dense flex-auto">
+                      <mat-label>Plant</mat-label>
+                      <input matInput formControlName="WERK" readonly />
+                  </mat-form-field>
+                  <mat-form-field class="fuse-mat-dense flex-auto">
+                      <mat-label>Batch</mat-label>
+                      <input matInput formControlName="CHARG" readonly />
+                  </mat-form-field>
+              </div>
+              <div class="grid grid-cols-2 gap-2">
+                  <mat-form-field class="fuse-mat-dense flex-auto">
+                      <mat-label>Posting Date</mat-label>
+                      <input matInput [matDatepicker]="fromPickers" formControlName="POSTDATE" [max]="maxDate"
+                          [min]="minDate" readonly>
+                      <mat-datepicker-toggle matSuffix [for]="fromPickers"></mat-datepicker-toggle>
+                      <mat-datepicker #fromPickers></mat-datepicker>
+                  </mat-form-field>
+
+                  <div>
+                      <button style="margin-top: 25px; margin-left: 40px;" class="text-center" mat-button
+                          (click)="openDialog(dialogTemplate)">Result Recording View</button>
+                  </div>
+              </div>
+          </form>
+          <div class="overflow-x-scroll">
+              <table class="w-full border-collapse border border-slate-400" [hidden]="tableNotRequired">
+                  <thead class="bg-gray-700 text-white">
+                      <tr class="text-center">
+                          <th class="border border-slate-300 whitespace-nowrap px-6 py-4">To Unrestricted Use</th>
+                          <th class="border border-slate-300 whitespace-nowrap px-6 py-4">To Scrap</th>
+                          <th class="border border-slate-300 whitespace-nowrap px-6 py-4">To Sample Consumption
+                          </th>
+                          <th class="border border-slate-300 whitespace-nowrap px-6 py-4">To Blocked Stock</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr>
+                          <td class="border border-slate-300 whitespace-nowrap px-6 py-2">
+                              <div class="d-flex align-items-center justify-content-between">
+                                  <mat-form-field class="fuse-mat-dense flex-grow-1">
+                                      <input matInput [(ngModel)]="stock.unstricted" name="unstricted"
+                                          (input)="calculationOfFields()" (blur)="setDefaultIfEmpty('unstricted')"
+                                          (focus)="resetIfZero('unstricted')" autocomplete="off" />
+                                  </mat-form-field>
+                                  <button mat-button class="ml-2" (click)="openRemarksDialog('unstricted')">
+                                      Remarks
+                                  </button>
+                              </div>
+                          </td>
+
+
+                          <td class="border border-slate-300 whitespace-nowrap px-6 py-2">
+                              <div class="d-flex align-items-center justify-content-between">
+                                  <mat-form-field class="fuse-mat-dense flex-auto">
+                                      <input matInput [(ngModel)]="stock.scrap" name="scrap"
+                                          (input)="calculationOfFields()" (blur)="setDefaultIfEmpty('scrap')"
+                                          (focus)="resetIfZero('scrap')" autocomplete="off" />
+                                  </mat-form-field>
+                                  <button mat-button class="ml-2" (click)="openRemarksDialog('scrap')">
+                                      Remarks
+                                  </button>
+                              </div>
+                          </td>
+                          <td class="border border-slate-300 whitespace-nowrap px-6 py-2 cursor-pointer">
+                              <div class="d-flex align-items-center justify-content-between">
+                                  <mat-form-field class="fuse-mat-dense flex-auto">
+                                      <input matInput [(ngModel)]="stock.consumption" name="consumption"
+                                          (input)="calculationOfFields()"
+                                          (blur)="setDefaultIfEmpty('consumption')"
+                                          (focus)="resetIfZero('consumption')" autocomplete="off" />
+                                  </mat-form-field>
+                                  <button mat-button class="ml-2" (click)="openRemarksDialog('consumption')">
+                                      Remarks
+                                  </button>
+                              </div>
+                          </td>
+                          <td class="border border-slate-300 whitespace-nowrap px-6 py-2">
+                              <div class="d-flex align-items-center justify-content-between">
+                                  <mat-form-field class="fuse-mat-dense flex-auto">
+                                      <input matInput [(ngModel)]="stock.blocked" name="blocked"
+                                          (input)="calculationOfFields()" (blur)="setDefaultIfEmpty('blocked')"
+                                          (focus)="resetIfZero('blocked')" autocomplete="off" />
+                                  </mat-form-field>
+                                  <button mat-button class="ml-2" (click)="openRemarksDialog('blocked')">
+                                      Remarks
+                                  </button>
+                              </div>
+                          </td>
+                      </tr>
+
+                  </tbody>
+              </table>
+              <button class="text-center" mat-button (click)="submitForm()"
+              [disabled]="submitBtnDisable">Submit</button>
+          </div>
+        </div>
+        <!-- Pagination -->
+        <div class="row justify-content-md-between align-items-md-center mt-2">
+          <div class="col-sm-12 col-md-5">
+            <div class="dataTables_info mb-2" role="status" aria-live="polite">
+              Showing {{ service.startIndex }} to {{ service.endIndex }} of
+              {{ service.totalRecords }} entries
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-5">
+            <div class="text-md-right float-md-end pagination-rounded">
+              <ul class="pagination justify-content-end mb-0">
+                <!-- Previous Button -->
+                <li
+                  class="page-item"
+                  [class.disabled]="service.page === 1"
+                  [class.highlighted]="service.clickedButton === 'previous'"
+                  (click)="onButtonClick('previous')"
+                >
+                  <a
+                    class="page-link"
+                    href="javascript:void(0)"
+                    [ngStyle]="{ 
+                      border: service.page > 1 ? '2px solid MediumSeaGreen' : 'none',
+                      backgroundColor: service.clickedButton === 'previous' ? '#d4edda' : 'transparent',
+                      transition: 'background-color 0.3s ease, transform 0.2s ease'
+                    }"
+                    [class.page-link-hover]="service.page > 1"
+                  >
+                    Previous
+                  </a>
+                </li>
+        
+                <!-- Current Page Display -->
+                <li class="page-item active">
+                  <a class="page-link" href="javascript:void(0)">
+                    {{ service.page }}
+                  </a>
+                </li>
+        
+                <!-- Next Button -->
+                <li
+                  class="page-item"
+                  [class.disabled]="service.page === service.totalPages"
+                  [class.highlighted]="service.clickedButton === 'next'"
+                  (click)="onButtonClick('next')"
+                >
+                  <a
+                    class="page-link"
+                    href="javascript:void(0)"
+                    [ngStyle]="{ 
+                      border: service.page < service.totalPages ? '2px solid MediumSeaGreen' : 'none',
+                      backgroundColor: service.clickedButton === 'next' ? '#d4edda' : 'transparent',
+                      transition: 'background-color 0.3s ease, transform 0.2s ease'
+                    }"
+                    [class.page-link-hover]="service.page < service.totalPages"
+                  >
+                    Next
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <!-- End of Pagination -->
+      </div>
+    </div>
+    <ng-template #dialogTemplate>
+      <mat-dialog-content class="dialog-container">
+          <div class="flex w-full py-3 mb-3 text-xl font-semibold justify-center items-center text-white"
+              style="background-color: #433b3d;">
+              <h1>Result Recording</h1>
+              <button mat-icon-button (click)="closeDialog()" class="absolute right-4">
+                  <mat-icon> X </mat-icon>
+              </button>
+          </div>
+          <div class="dialog-scroll-container">
+              <div class="table-container">
+                  <table *ngIf="actualData.length > 0" class="custom-table">
+                      <thead>
+                          <tr>
+                              <th>Char No</th>
+                              <th>Char Type</th>
+                              <th>Characteristic Name</th>
+                              <th>Specifications</th>
+                              <th>Sample</th>
+                              <th>Result</th>
+                              <!-- <th>Type of Insp</th>   -->
+                              <th>Visual Result</th> <!-- New Column -->
+                              <th>A/R</th>
+                              <th>Remarks</th>
+                              <!-- <th>Code Group</th> -->
+                              <th>Actions</th>
+                              <!-- <th>Save Technician</th> -->
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <tr *ngFor="let row of actualData">
+                              <td>{{ row.duplicatedINSPCHAR }}</td>
+                              <td>{{ row.KATAB1 }}</td>
+                              <td>{{ row.KURZTEXT }}</td>
+                              <td>{{ row.TOLGRENZE }}</td>
+                              <td>{{ row.SOLLSTPUMF }}</td>
+                              <td>{{ row.result }}</td>
+                              <!-- <td>{{row.AUSWMENGE1}}</td> -->
+                              <td>{{getDescriptionForCode(row)}}</td>
+                              <td>{{row.CODE1}}</td>
+                              <td>{{row.REMARK}}</td>
+                              <!-- <td>{{ row.CODEGRUPPE }}</td> -->
+                              <td>
+                                  <button *ngIf="row.isMainRow" (click)="toggleDuplicateRows(row)">
+                                      {{ row.isVisible ? 'Close' : 'Split' }}
+                                  </button>
+                              </td>
+                          </tr>
+                      </tbody>
+                  </table>
+              </div>
+          </div>
+      </mat-dialog-content>
+  </ng-template>
+  
+  <ng-template #remarksDialog>
+      <div mat-dialog-content>
+          <mat-form-field class="w-full">
+              <!-- <mat-label>Remarks</mat-label> -->
+              <input matInput placeholder="Enter Remarks" [(ngModel)]="remarks" />
+          </mat-form-field>
+      </div>
+      <div mat-dialog-actions>
+          <button mat-button style="float: right;" color="primary" (click)="onSave()">Save</button>
+          <button mat-button style="float: right; background-color: #6e6366;" (click)="onCancel()">Cancel</button>
+      </div>
+  </ng-template>
+  </div>
+  

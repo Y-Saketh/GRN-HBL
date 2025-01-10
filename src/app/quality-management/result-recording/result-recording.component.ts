@@ -97,7 +97,7 @@ export class ResultRecordingComponent implements OnInit {
   // Form and data variables
   lotReportsForm!: FormGroup;
   resultsReportsForm:FormGroup;
-  resultRecordingForm!: FormGroup;
+  // validationform!: FormGroup;
   dataSource: any[] = [];
   displayedColumns: string[] = [
    'WERK', 'PRUEFLOS','MATNR','MAKTX', 'CHARG', 'EBELN', 'EBELP','LOSMENGE','ZZREQUES','LMENGEZUB'
@@ -227,11 +227,6 @@ export class ResultRecordingComponent implements OnInit {
       console.error('ZUSER is missing from localStorage');
     }
 
-    this.resultsReportsForm.get('fromDate')?.valueChanges.subscribe((fromDate: Date) => {
-        this.dynamicMinToDate = fromDate || this.minDate; // Set the minimum for `toDate`
-      });
-  
-
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
     console.log("currentUser", currentUser)
     const werksArray: string[] = [];  
@@ -243,7 +238,7 @@ export class ResultRecordingComponent implements OnInit {
     this.plants = werksArray;
     console.log("Extracted Werks Array:", werksArray);
 
-    // this.getReports(ZUSER, ZTYUSER);
+    this.getReports(ZUSER, ZTYUSER);
 
   }
   
@@ -337,6 +332,7 @@ export class ResultRecordingComponent implements OnInit {
     this.apiService.getLotReports(obj).subscribe(
       (res: any) => {
         this.loading = false;
+        console.log("API response:", res,res.data, res.data.TABLE);
         if (res.status === true) {
           if (res.data && res.data.TABLE) {
             this.lotReportsData= res.data.TABLE; // Update table data
@@ -375,7 +371,7 @@ export class ResultRecordingComponent implements OnInit {
             // Check if the response status is successful
             if (res.status === true) {
                 // Populate form fields with data from response
-                this.resultRecordingForm.patchValue({
+                this.validationform.patchValue({
                     INSPLOT: res.data.INSPLOT || rowData.PRUEFLOS,
                     MATNR: res.data.MATNR,
                     MAKTX: res.data.MAKTX,
@@ -568,16 +564,16 @@ export class ResultRecordingComponent implements OnInit {
         // Proceed with submission
         const currentDate = this.getCurrentDate();
         this.currentLot = '';
-        const zztestt = this.resultRecordingForm.get('ZZTESTT')?.value || currentDate;
-        this.currentLot = this.resultRecordingForm.get('INSPLOT')?.value;
+        const zztestt = this.validationform.get('ZZTESTT')?.value || currentDate;
+        this.currentLot = this.validationform.get('INSPLOT')?.value;
         // const currentDate = this.getCurrentDate();
-        const zztestf = this.resultRecordingForm.get('ZZTESTF')?.value ? this.resultRecordingForm.get('ZZTESTF')?.value : currentDate;
+        const zztestf = this.validationform.get('ZZTESTF')?.value ? this.validationform.get('ZZTESTF')?.value : currentDate;
   
     const payload = {
       INSPLOT: this.currentLot,
       INSPOPER: "0010",
       INSPSTAT: "SUBMIT",
-      ZZTESTF: zztestf,//this.resultRecordingForm.get('ZZTESTF')?.value,
+      ZZTESTF: zztestf,//this.validationform.get('ZZTESTF')?.value,
       ZZTESTT: zztestt,
       ZZUSER:this.userId,
       ZRESREMARKS:this.ZRESREMAKS,
@@ -608,7 +604,7 @@ export class ResultRecordingComponent implements OnInit {
             showConfirmButton: true,
             confirmButtonColor:'btn btn success'
           })
-          this.resultRecordingForm.reset();
+          this.validationform.reset();
           this.resultRecordingScreen=false;
           this.ngOnInit();
         } else {
@@ -972,13 +968,13 @@ Save(): void {
       if (result.isConfirmed) {
         // Proceed with submission
     const currentDate = this.getCurrentDate();
-    const zztestf = this.resultRecordingForm.get('ZZTESTF')?.value?this.resultRecordingForm.get('ZZTESTF')?.value:currentDate;
+    const zztestf = this.validationform.get('ZZTESTF')?.value?this.validationform.get('ZZTESTF')?.value:currentDate;
     this.currentLot = ''
-    this.currentLot = this.resultRecordingForm.get('INSPLOT')?.value;
+    this.currentLot = this.validationform.get('INSPLOT')?.value;
      ;
     
     const payload = {
-      INSPLOT: this.resultRecordingForm.get('INSPLOT')?.value,
+      INSPLOT: this.validationform.get('INSPLOT')?.value,
       INSPOPER: '0010',
       INSPSTAT: '',
       ZZTESTF: zztestf,
@@ -1054,7 +1050,7 @@ Save(): void {
           })
         }
         this.refreshResults();
-        this.resultRecordingForm.patchValue({
+        this.validationform.patchValue({
           ZZTESTF: this.updatedFromDate
         })
         setTimeout(() => this.enableSubmit(), 500);
@@ -1079,7 +1075,7 @@ refreshResults(): void {
   
     const payload = {
         GET: {
-            INSPLOT: this.resultRecordingForm.get('INSPLOT')?.value,
+            INSPLOT: this.validationform.get('INSPLOT')?.value,
             INSPOPER: "0010"
         }
     };
@@ -1096,7 +1092,7 @@ refreshResults(): void {
                   console.log('Updated Date:', this.updatedFromDate);
   
                   // Patch the date to the form
-                  this.resultRecordingForm.patchValue({
+                  this.validationform.patchValue({
                       ZZTESTF: this.updatedFromDate
                   });
               } else {
@@ -1162,7 +1158,7 @@ Save1() {
     }).then((result) => {
       if (result.isConfirmed) {
         const currentDate = this.getCurrentDate();
-        const zztestf = this.resultRecordingForm.get('ZZTESTF')?.value ? this.resultRecordingForm.get('ZZTESTF')?.value : currentDate;
+        const zztestf = this.validationform.get('ZZTESTF')?.value ? this.validationform.get('ZZTESTF')?.value : currentDate;
         // let resNoCounter = 1;
         const allRows = [...this.duplicatedData];
         console.log('allRows',allRows)
@@ -1188,7 +1184,7 @@ Save1() {
           });
   
         const payload = {
-          INSPLOT: this.resultRecordingForm.get('INSPLOT')?.value,
+          INSPLOT: this.validationform.get('INSPLOT')?.value,
           ZZTESTF: zztestf,
           ZZTESTT: '',
           RESVAL: resValueArray,
