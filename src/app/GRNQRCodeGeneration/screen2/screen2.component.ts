@@ -95,8 +95,12 @@ export class Screen2Component {
     }
   
     const ponumber = this.validationform.value.poNum;
+    const plantss = this.validationform.value.plant;
     this.loaderservice.showLoader(); // Show loader during API call
-    const payload = { EBELN: ponumber };
+    const payload = { EBELN: ponumber ,
+      WERKS: plantss
+    };
+    console.log("payload",payload)
     this.apiService.zdebit(payload).subscribe({
       next: (res: any) => {
         console.log('API Response:', res); // Log the entire response for debugging
