@@ -151,13 +151,18 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnChanges {
     const project = localStorage.getItem('proj');
     console.log("project",project);
     
-    if (loginResponse && loginResponse[0].ZGRNACT && loginResponse[0].ZGRNACT.ZGRNACT1 == "GRN" && project == "grn" ) {
+    // if (loginResponse && loginResponse[0].ZGRNACT && loginResponse[0].ZGRNACT.ZGRNACT1 == "GRN" && project == "grn" ) {
+    //   const authorizedIds: string[] = Object.values(loginResponse[0].ZGRNACT).filter((id): id is string => typeof id === 'string' && id.trim() !== "");
+    //   this.menuItems = this.filterMenuItems(MENU, authorizedIds);
+    // }else if (loginResponse && loginResponse[0].ZQMACT && loginResponse[0].ZQMACT.ZQMACT1 == "QM" && project == "qm" ) {
+    //   const authorizedIds: string[] = Object.values(loginResponse[0].ZQMACT).filter((id): id is string => typeof id === 'string' && id.trim() !== "");
+    //   this.menuItems = this.filterMenuItems(MENU, authorizedIds);
+    // } 
+     if (loginResponse && loginResponse[0].ZGRNACT ) {
       const authorizedIds: string[] = Object.values(loginResponse[0].ZGRNACT).filter((id): id is string => typeof id === 'string' && id.trim() !== "");
       this.menuItems = this.filterMenuItems(MENU, authorizedIds);
-    }else if (loginResponse && loginResponse[0].ZQMACT && loginResponse[0].ZQMACT.ZQMACT1 == "QM" && project == "qm" ) {
-      const authorizedIds: string[] = Object.values(loginResponse[0].ZQMACT).filter((id): id is string => typeof id === 'string' && id.trim() !== "");
-      this.menuItems = this.filterMenuItems(MENU, authorizedIds);
-    } else {
+    } 
+    else {
       this.menuItems = []; // Fallback if no loginResponse or ZGRNACT
     }
   }
