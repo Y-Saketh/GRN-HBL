@@ -20,6 +20,10 @@ import { GRNagainstPOComponent } from 'src/app/GRNQRCodeGeneration/grnagainst-po
 import { PoPreviewComponent } from 'src/app/GRNQRCodeGeneration/po-preview/po-preview.component';
 import { Screen2Component } from 'src/app/GRNQRCodeGeneration/screen2/screen2.component';
 import { ZvenComponent } from 'src/app/GRNQRCodeGeneration/zven/zven.component';
+import { ResultRecordingComponent } from 'src/app/quality-management/result-recording/result-recording.component';
+import { UsageDecisionComponent } from 'src/app/quality-management/usage-decision/usage-decision.component';
+import { QualityReportsComponent } from 'src/app/quality-management/quality-reports/quality-reports.component';
+import { PendingLotReportsComponent } from 'src/app/quality-management/pending-lot-reports/pending-lot-reports.component';
 
 
 
@@ -93,6 +97,22 @@ const routes: Routes = [
         path: 'screen2',
         component: Screen2Component
     },
+    {
+        path: 'resultRecording',
+        component: ResultRecordingComponent
+    },
+    {
+        path: 'usageDecision',
+        component: UsageDecisionComponent
+    },
+    {
+        path: 'qualityReport',
+        component: QualityReportsComponent
+    },
+    {
+        path: 'pendingLotReport',
+        component: PendingLotReportsComponent
+    }
 
 ];
 

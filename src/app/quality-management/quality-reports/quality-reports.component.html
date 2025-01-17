@@ -1,0 +1,493 @@
+<div class="col-xl-12">
+  <div class="card" style="background-color: beige">
+    <div class="card-body">
+      <h4 class="card-title">
+        <span style="color: black"></span>
+        Quality Reports
+      </h4>
+      <form class="needs-validation" [formGroup]="validationform">
+        <div class="row">
+          <!-- Plant -->
+          <div class="col-md-1">
+            <label class="brandcolor" for="plant"
+              >Plant<span style="color: red">*</span></label
+            >
+            <div class="mb-3">
+              <select class="form-select" id="plant" formControlName="plant">
+                <option value="" disabled selected>Plant</option>
+                <option *ngFor="let type of plants" [value]="type">
+                  {{ type }}
+                </option>
+              </select>
+              <div *ngIf="submit && form.plant.errors" class="invalid-feedback">
+                <span *ngIf="form.plant.errors.required"
+                  >Please provide a valid plant.</span
+                >
+              </div>
+            </div>
+          </div>
+          <!-- Inspection Lot -->
+          <div class="col-md-2">
+            <label class="brandcolor" for="inspectionLot">Inspection Lot</label>
+            <div class="mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="inspectionLot"
+                formControlName="inspectionLot"
+                placeholder="Inspection Lot"
+                [ngClass]="{
+                  'is-invalid': submit && form.inspectionLot.errors
+                }"
+              />
+            </div>
+          </div>
+          <!-- Inspection Type -->
+          <div class="col-md-2">
+            <label class="brandcolor" for="inspectionType"
+              >Inspection Type<span style="color: red">*</span></label
+            >
+            <div class="mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="inspectionType"
+                formControlName="inspectionType"
+                placeholder="Inspection Type"
+                [ngClass]="{
+                  'is-invalid': submit && form.inspectionType.errors
+                }"
+              />
+            </div>
+          </div>
+          <!-- Date Range -->
+          <div class="col-md-2">
+            <label class="brandcolor" for="dateRange"
+              >Date Range<span style="color: red">*</span></label
+            >
+            <div class="mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="dateRange"
+                formControlName="dateRange"
+                [bsConfig]="bsConfig"
+                bsDatepicker
+                placeholder="Enter Date Range"
+                [ngClass]="{
+                  'is-invalid': submit && form.dateRange.errors
+                }"
+              />
+              <div
+                *ngIf="submit && form.dateRange.errors"
+                class="invalid-feedback"
+              >
+                <span *ngIf="form.dateRange.errors.required"
+                  >Please provide a valid Date Range</span
+                >
+              </div>
+            </div>
+          </div>
+          <!-- Button -->
+          <div class="col-md-1 mt-4">
+            <div class="ms-4 mb-3">
+              <button
+                style="
+                  margin-top: 8px;
+                  background-color: brown;
+                  width: max-content;
+                  color: aliceblue;
+                "
+                class="btn"
+                type="submit"
+              >
+                Get Details
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <!-- end card -->
+  <div class="card">
+    <div class="card-body">
+      <div class="row mb-md-2">
+        <div class="col-sm-12 col-md-4">
+          <div class="dataTables_length">
+            <label class="d-inline-flex align-items-center">
+              Show
+              <select
+                name="tickets-table_length"
+                aria-controls="tickets-table"
+                class="form-control form-control-sm mx-2"
+                [(ngModel)]="service.pageSize"
+                (change)="onPageSizeChange()"
+                [ngModelOptions]="{ standalone: true }"
+              >
+                <option [ngValue]="10">10</option>
+                <option [ngValue]="25">25</option>
+                <option [ngValue]="50">50</option>
+                <option [ngValue]="100">100</option>
+              </select>
+              entries
+            </label>
+          </div>
+        </div>
+
+        <!-- Search and Export -->
+        <div class="col-sm-12 col-md-8">
+          <div class="d-flex justify-content-end align-items-center">
+            <!-- Search Field -->
+            <div id="tickets-table_filter" class="dataTables_filter">
+              <label class="d-inline-flex align-items-center">
+                Search:
+                <input
+                  type="text"
+                  name="searchTerm"
+                  class="form-control form-control-sm ms-2"
+                  aria-controls="tickets-table"
+                  [(ngModel)]="service.searchTerm"
+                />
+              </label>
+            </div>
+
+            <!-- Export Button -->
+            <div>
+              <button
+                class="btn btn-warning ms-2"
+                [disabled]="(tables$ | async)?.length === 0"
+                (click)="exportToExcel()"
+              >
+                Export
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="table-responsive">
+        <table
+          id="basic-datatable"
+          class="table table-bordered dt-responsive nowrap"
+        >
+          <thead class="brandcolor tableHeader">
+            <tr>
+              <th></th>
+              <th class="brandcolor" sortable="PLANT" (sort)="onSort($event)">
+                Plant
+              </th>
+              <th
+                class="brandcolor"
+                sortable="GL_ACCOUNT"
+                (sort)="onSort($event)"
+              >
+                Division
+              </th>
+              <th class="brandcolor" sortable="MAT_DOC" (sort)="onSort($event)">
+                Material Document
+              </th>
+              <th
+                class="brandcolor"
+                sortable="DOC_DATE"
+                (sort)="onSort($event)"
+              >
+                Inspection Lot
+              </th>
+              <th
+                class="brandcolor"
+                sortable="POSTING_DATE"
+                (sort)="onSort($event)"
+              >
+                Insp. End Date
+              </th>
+              <th
+                class="brandcolor"
+                sortable="MATERIAL"
+                (sort)="onSort($event)"
+              >
+                Batch No
+              </th>
+              <th class="brandcolor" sortable="MAT_DES" (sort)="onSort($event)">
+                Invoice
+              </th>
+              <th class="brandcolor" sortable="QUANITY" (sort)="onSort($event)">
+                Invoice Date
+              </th>
+              <th class="brandcolor" sortable="MAT_DES" (sort)="onSort($event)">
+                DC Number
+              </th>
+              <th class="brandcolor" sortable="MAT_DES" (sort)="onSort($event)">
+                DC Date
+              </th>
+              <th class="brandcolor" sortable="MAT_DES" (sort)="onSort($event)">
+                GR No
+              </th>
+              <th class="brandcolor" sortable="MAT_DES" (sort)="onSort($event)">
+                GR Date
+              </th>
+              <th class="brandcolor" sortable="MAT_DES" (sort)="onSort($event)">
+                PO Number
+              </th>
+              <th class="brandcolor" sortable="MAT_DES" (sort)="onSort($event)">
+                PO Item
+              </th>
+              <th class="brandcolor" sortable="MAT_DES" (sort)="onSort($event)">
+                PO Doc.Date
+              </th>
+              <th class="brandcolor" sortable="MAT_DES" (sort)="onSort($event)">
+                Vendor
+              </th>
+              <th class="brandcolor" sortable="MAT_DES" (sort)="onSort($event)">
+                Vendor Name
+              </th>
+              <th class="brandcolor" sortable="MAT_DES" (sort)="onSort($event)">
+                Lot Qty
+              </th>
+            </tr>
+          </thead>
+          <tbody *ngFor="let table of tables$ | async; let i = index">
+            <tr>
+              <td align="center">
+                <a class="expand-row" (click)="changeValue(i)">+</a>
+              </td>
+              <td>{{ table.PLANT }}</td>
+              <!-- Plant -->
+              <td>{{ table.GL_ACCOUNT }}</td>
+              <!-- Division -->
+              <td>{{ table.MAT_DOC }}</td>
+              <!-- Material Document -->
+              <td>{{ table.DOC_DATE | date : "dd-MM-yyyy" }}</td>
+              <!-- Inspection Lot -->
+              <td>{{ table.POSTING_DATE | date : "dd-MM-yyyy" }}</td>
+              <!-- Insp. End Date -->
+              <td>{{ table.MATERIAL }}</td>
+              <!-- Batch No -->
+              <td>{{ table.MAT_DES }}</td>
+              <!-- Invoice -->
+              <td>{{ table.QUANITY }}</td>
+              <!-- Invoice Date -->
+              <td>{{ table.MAT_DES }}</td>
+              <!-- DC Number -->
+              <td>{{ table.MAT_DES }}</td>
+              <!-- DC Date -->
+              <td>{{ table.MAT_DES }}</td>
+              <!-- GR No -->
+              <td>{{ table.MAT_DES }}</td>
+              <!-- GR Date -->
+              <td>{{ table.MAT_DES }}</td>
+              <!-- PO Number -->
+              <td>{{ table.MAT_DES }}</td>
+              <!-- PO Item -->
+              <td>{{ table.MAT_DES }}</td>
+              <!-- PO Doc.Date -->
+              <td>{{ table.MAT_DES }}</td>
+              <!-- Vendor -->
+              <td>{{ table.MAT_DES }}</td>
+              <!-- Vendor Name -->
+              <td>{{ table.MAT_DES }}</td>
+              <!-- Lot Qty -->
+            </tr>
+            <ng-container *ngIf="!hideme[i]">
+              <tr class="sub-table no-bg">
+                <td align="center"></td>
+                <td colspan="15" class="p-0">
+                  <table class="table mb-0 table-striped">
+                    <thead class="bg-dark text-white">
+                      <tr>
+                        <th>PO Number</th>
+                        <th>PO Item</th>
+                        <th>PO Doc.Date</th>
+                        <th>Vendor</th>
+                        <th>Vendor Name</th>
+                        <th>Lot Qty</th>
+                        <th>Accepted Quality</th>
+                        <th>Reason for Accepted</th>
+                        <th>Rejected Quanity</th>
+                        <th>Reason for Rejection</th>
+                        <th>To be Posted Qty</th>
+                        <th>Sample Quantity</th>
+                        <th>Profit Center</th>
+                        <th>Profit Center Name</th>
+                        <th>SLOC</th>
+                        <th>SLOC Name</th>
+                        <th>Total Insp Lot Value</th>
+                        <th>Material</th>
+                        <th>Material Name</th>
+                        <th>Drawing No</th>
+                        <th>Valuation(Result Codes)</th>
+                        <th>Valuation Date</th>
+                        <th>Result Code Name</th>
+                        <th>Inspected by</th>
+                        <th>Inspected by Name</th>
+                        <th>Oper./Act.</th>
+                        <th>Inspection Characteristics</th>
+                        <th>Specifications</th>
+                        <th>Sample Size</th>
+                        <th>Valuation</th>
+                        <th>Results</th>
+                        <th>Lower Limit</th>
+                        <th>Material</th>
+                        <th>Material</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>{{ table.DOC_HEADER_TXT }}</td>
+                        <!-- PO Number -->
+                        <td>{{ table.STG_LOC }}</td>
+                        <!-- PO Item -->
+                        <td>{{ table.ENTRY_DATE | date : "dd-MM-yyyy" }}</td>
+                        <!-- PO Doc.Date -->
+                        <td>{{ table.BATCH }}</td>
+                        <!-- Vendor -->
+                        <td>{{ table.CONSUMPTION }}</td>
+                        <!-- Vendor Name -->
+                        <td>{{ table.SUPPLIER }}</td>
+                        <!-- Lot Qty -->
+                        <td>{{ table.SUPPLIER }}</td>
+                        <!-- Accepted Quality -->
+                        <td>{{ table.SUPPLIER }}</td>
+                        <!-- Reason for Accepted -->
+                        <td>{{ table.SUPPLIER }}</td>
+                        <!-- Rejected Quanity -->
+                        <td>{{ table.SUPPLIER }}</td>
+                        <!-- Reason for Rejection -->
+                        <td>{{ table.SUPPLIER }}</td>
+                        <!-- To be Posted Qty -->
+                        <td>{{ table.SUPPLIER }}</td>
+                        <!-- Sample Quantity -->
+                        <td>{{ table.SUPPLIER }}</td>
+                        <!-- Profit Center -->
+                        <td>{{ table.SUPPLIER }}</td>
+                        <!-- Profit Center Name -->
+                        <td>{{ table.SUPPLIER }}</td>
+                        <!-- SLOC -->
+                        <td>{{ table.SUPPLIER }}</td>
+                        <!-- SLOC Name -->
+                        <td>{{ table.SUPPLIER }}</td>
+                        <!-- Total Insp Lot Value -->
+                        <td>{{ table.SUPPLIER }}</td>
+                        <!-- Material -->
+                        <td>{{ table.SUPPLIER }}</td>
+                        <!-- Material Name -->
+                        <td>{{ table.SUPPLIER }}</td>
+                        <!-- Drawing No -->
+                        <td>{{ table.SUPPLIER }}</td>
+                        <!-- Valuation(Result Codes) -->  
+                        <td>{{ table.SUPPLIER }}</td>
+                        <!-- Valuation Date -->
+                        <td>{{ table.SUPPLIER }}</td>
+                        <!-- Result Code Name -->
+                        <td>{{ table.SUPPLIER }}</td>
+                        <!-- Inspected by -->
+                        <td>{{ table.SUPPLIER }}</td>
+                        <!-- Inspected by Name -->
+                        <td>{{ table.SUPPLIER }}</td>
+                        <!-- Oper./Act. -->
+                        <td>{{ table.SUPPLIER }}</td>
+                        <!-- Inspection Characteristics -->
+                        <td>{{ table.SUPPLIER }}</td>
+                        <!-- Specifications -->
+                        <td>{{ table.SUPPLIER }}</td>
+                        <!-- Sample Size -->
+                        <td>{{ table.SUPPLIER }}</td>
+                        <!-- Valuation -->
+                        <td>{{ table.SUPPLIER }}</td>
+                        <!-- Results -->
+                        <td>{{ table.SUPPLIER }}</td>
+                        <!-- Lower Limit -->
+                        <td>{{ table.SUPPLIER }}</td>
+                        <!-- Material -->
+                        <td>{{ table.SUPPLIER }}</td>
+                        <!-- Material -->
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+      <!-- Pagination -->
+      <div class="row justify-content-md-between align-items-md-center mt-2">
+        <div class="col-sm-12 col-md-5">
+          <div class="dataTables_info mb-2" role="status" aria-live="polite">
+            Showing {{ service.startIndex }} to {{ service.endIndex }} of
+            {{ service.totalRecords }} entries
+          </div>
+        </div>
+        <div class="col-sm-12 col-md-5">
+          <div class="text-md-right float-md-end pagination-rounded">
+            <ul class="pagination justify-content-end mb-0">
+              <!-- Previous Button -->
+              <li
+                class="page-item"
+                [class.disabled]="service.page === 1"
+                [class.highlighted]="service.clickedButton === 'previous'"
+                (click)="onButtonClick('previous')"
+              >
+                <a
+                  class="page-link"
+                  href="javascript:void(0)"
+                  [ngStyle]="{
+                    border:
+                      service.page > 1 ? '2px solid MediumSeaGreen' : 'none',
+                    backgroundColor:
+                      service.clickedButton === 'previous'
+                        ? '#d4edda'
+                        : 'transparent',
+                    transition:
+                      'background-color 0.3s ease, transform 0.2s ease'
+                  }"
+                  [class.page-link-hover]="service.page > 1"
+                >
+                  Previous
+                </a>
+              </li>
+
+              <!-- Current Page Display -->
+              <li class="page-item active">
+                <a class="page-link" href="javascript:void(0)">
+                  {{ service.page }}
+                </a>
+              </li>
+
+              <!-- Next Button -->
+              <li
+                class="page-item"
+                [class.disabled]="service.page === service.totalPages"
+                [class.highlighted]="service.clickedButton === 'next'"
+                (click)="onButtonClick('next')"
+              >
+                <a
+                  class="page-link"
+                  href="javascript:void(0)"
+                  [ngStyle]="{
+                    border:
+                      service.page < service.totalPages
+                        ? '2px solid MediumSeaGreen'
+                        : 'none',
+                    backgroundColor:
+                      service.clickedButton === 'next'
+                        ? '#d4edda'
+                        : 'transparent',
+                    transition:
+                      'background-color 0.3s ease, transform 0.2s ease'
+                  }"
+                  [class.page-link-hover]="service.page < service.totalPages"
+                >
+                  Next
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- End of Pagination -->
+    </div>
+  </div>
+</div>

@@ -33,6 +33,7 @@ function sort(tables: Table[], column: string, direction: string): Table[] {
   });
 }
 
+
 function matches(tables: Table, term: string, pipe: PipeTransform): boolean {
   const searchTerm = term.toLowerCase();
 
@@ -90,6 +91,10 @@ export class AdvancedService {
       });
 
     this._search$.next();
+  }
+
+  resetPagination() {
+    this._set({ page: 1 }); // Reset to the first page
   }
 
   /** Expose observables */
@@ -156,7 +161,6 @@ export class AdvancedService {
     }
   }
 
-
   /** Change page */
   changePage(page: number): void {
   // Ensure the page is within valid bounds
@@ -164,7 +168,6 @@ export class AdvancedService {
     this._set({ page });
   }
 }
-
 
   setTableData(data: Table[]) {
     this.apiData = data;
@@ -180,12 +183,10 @@ export class AdvancedService {
     const { sortColumn, sortDirection, pageSize, page, searchTerm } = this._state;
   
     // 1. Sort the data
-    // let tables = sort(this.apiData, sortColumn, sortDirection);
-    let tables = sort(this.apiData || [], sortColumn, sortDirection);
+    let tables = sort(this.apiData, sortColumn, sortDirection);
   
     // 2. Filter the data
-    // tables = tables?.filter((table) => matches(table, searchTerm, this.pipe));
-    tables = Array.isArray(tables) ? tables.filter((table) => matches(table, searchTerm, this.pipe)) : [];
+    tables = tables?.filter((table) => matches(table, searchTerm, this.pipe));
     const total = tables.length;
   
     // 3. Paginate the data
@@ -201,14 +202,7 @@ export class AdvancedService {
   
     const paginatedTables = tables.slice(this._state.startIndex - 1, this._state.endIndex);
   
-    return of({
-      tables: paginatedTables,
-      total,
-      lot89Rows: [], // Add this property
-      lot89: [], // Add this property
-      lot89Total: 0, // Add this property
-      lot89RowsTotal: 0, // Add this property
-    });
+    return of({ tables: paginatedTables, total });
   }
   
 }

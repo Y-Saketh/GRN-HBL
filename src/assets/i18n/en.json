@@ -94,7 +94,9 @@
         "BLOG": "Blog",
         "JOBS": "Jobs",
         "RESULTRECORDING": "Result Recording",
-        "USAGEDECISION": "Usage Decision"
+        "USAGEDECISION": "Usage Decision",
+        "QUALITYREPORTS": "Quality Reports",
+        "PENDINGLOTREPORT": "Pending Lot Report"
       }
     },
     "LAYOUTS": {

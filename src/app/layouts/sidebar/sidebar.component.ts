@@ -158,17 +158,30 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnChanges {
     //   const authorizedIds: string[] = Object.values(loginResponse[0].ZQMACT).filter((id): id is string => typeof id === 'string' && id.trim() !== "");
     //   this.menuItems = this.filterMenuItems(MENU, authorizedIds);
     // } 
-     if (loginResponse && loginResponse[0].ZGRNACT ) {
-      const authorizedIds: string[] = Object.values(loginResponse[0].ZGRNACT).filter((id): id is string => typeof id === 'string' && id.trim() !== "");
-      this.menuItems = this.filterMenuItems(MENU, authorizedIds);
-    }else if (loginResponse && loginResponse[0].ZQMACT && loginResponse[0].ZQMACT.ZQMACT1 == "QM" && project == "qm" ) {
-      const authorizedIds: string[] = Object.values(loginResponse[0].ZQMACT).filter((id): id is string => typeof id === 'string' && id.trim() !== "");
-      this.menuItems = this.filterMenuItems(MENU, authorizedIds);
-    } 
+
+    //while deploy uncomment 
+
+    //  if (loginResponse && loginResponse[0].ZGRNACT ) {
+    //   const authorizedIds: string[] = Object.values(loginResponse[0].ZGRNACT).filter((id): id is string => typeof id === 'string' && id.trim() !== "");
+    //   this.menuItems = this.filterMenuItems(MENU, authorizedIds);
+    // }else if (loginResponse && loginResponse[0].ZQMACT && loginResponse[0].ZQMACT.ZQMACT1 == "QM" && project == "qm" ) {
+    //   const authorizedIds: string[] = Object.values(loginResponse[0].ZQMACT).filter((id): id is string => typeof id === 'string' && id.trim() !== "");
+    //   this.menuItems = this.filterMenuItems(MENU, authorizedIds);
+    // } 
+
+
+       // while local 
+
+
     //  if (loginResponse && loginResponse[0].ZGRNACT ) {
     //   const authorizedIds: string[] = Object.values(loginResponse[0].ZGRNACT).filter((id): id is string => typeof id === 'string' && id.trim() !== "");
     //   this.menuItems = this.filterMenuItems(MENU, authorizedIds);
     // } 
+ 
+    if (loginResponse && loginResponse[0].ZQMACT ) {
+      const authorizedIds: string[] = Object.values(loginResponse[0].ZQMACT).filter((id): id is string => typeof id === 'string' && id.trim() !== "");
+      this.menuItems = this.filterMenuItems(MENU, authorizedIds);
+    } 
     else {
       this.menuItems = []; // Fallback if no loginResponse or ZGRNACT
     }

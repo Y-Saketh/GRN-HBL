@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormsModule,  ReactiveFormsModule, UntypedFormBuilder  } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormsModule,  ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup  } from '@angular/forms';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
@@ -16,6 +16,7 @@ import { DecimalPipe } from '@angular/common';
 import { HttpInterceptorService } from 'src/app/core/services/http-interceptor.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import Swal from 'sweetalert2';
+import { s } from '@fullcalendar/core/internal-common';
 // import { TableRow } from 'src/app/GRNQRCodeGeneration/grpending/advanced.model';
 
 interface TableRow {
@@ -75,10 +76,12 @@ export class ResultRecordingComponent implements OnInit {
     validationform!: FormGroup; // Form group for the input fields
     submit = false; // Form submission flag
     resultRecordingScreen = false;
-    mb52table: Table[] = [];
     tableData: Table[];
     actualData: TableRow[] = [];
+    duplicatedData: TableRow[] = [];
     plants: string[] = [];
+    floatingForm: UntypedFormGroup;
+    tableForm: UntypedFormGroup;
     tables$: Observable<Table[]>;
     total$: Observable<number>;
     poArray: string[] = []; // Array to store PO numbers
@@ -97,7 +100,6 @@ export class ResultRecordingComponent implements OnInit {
   // Form and data variables
   lotReportsForm!: FormGroup;
   resultsReportsForm:FormGroup;
-  // validationform!: FormGroup;
   dataSource: any[] = [];
   displayedColumns: string[] = [
    'WERK', 'PRUEFLOS','MATNR','MAKTX', 'CHARG', 'EBELN', 'EBELP','LOSMENGE','ZZREQUES','LMENGEZUB'
@@ -107,6 +109,12 @@ export class ResultRecordingComponent implements OnInit {
     'Characteristic Name', 'Specifications', 'Sample',
     'Results','Type of Insp', 'Code 1', 'Code 2','Code Group 1'
   ];
+  stock:any = {
+    unstricted:"",
+    scrap:"",
+    blocked:"",
+    consumption:""
+  }
   columnsToDisplayWithExpand = [...this.columnsToDisplay, 'expand','save'];
   expandedElement: any | null = null;
   CODEGROUP: any[] = [];
@@ -121,13 +129,24 @@ export class ResultRecordingComponent implements OnInit {
   username: any;
   currentLot: any;
   inspectionLot: any;
+  material: any;
+  materialName: any;
+  requisitionNo: any;
+  lotQty: any;
+  batch: any;
+  drawing: any;
+  testStarted: any;
+  testEnded: any;
+  remarks: any;
+  labCondition: any;
+
   payload: { GET: { INSPLOT: any; INSPOPER: string; }; };
   Remarks89:any;
   loT89NumberArray: any;
   resultValue: any;
   lotReportsDataTable:boolean=false;
   lotReportsDataHide: boolean=false;
-  lotReportsData:[] =  [];
+  lotReportsData: any = [];
 
   updatedArr: any=[];
   updatedFromDate: any;
@@ -135,7 +154,7 @@ export class ResultRecordingComponent implements OnInit {
   
     @ViewChildren(AdvancedSortableDirective) headers: QueryList<AdvancedSortableDirective>;
   matnr: string;
-    duplicatedData: TableRow[];
+  private _snackBar: any;
 
   constructor(public formBuilder: UntypedFormBuilder, @Inject(AdvancedService) public service: AdvancedService, private apiService:UserProfileService,public loaderservice:LoaderService, private cdr: ChangeDetectorRef) {
       this.tables$ = service.tables$;
@@ -165,7 +184,7 @@ export class ResultRecordingComponent implements OnInit {
   
 
   _fetchData() {
-    this.tableData = this.mb52table;
+    this.tableData = this.lotReportsData;
     console.log("this.tableData ", this.tableData)
   }
     
@@ -185,32 +204,36 @@ export class ResultRecordingComponent implements OnInit {
     console.log('userName',this.userId)
     this.LuserName = localStorage.getItem('ZLNAME');
     this.validationform = this.formBuilder.group({
-      plant: ['1100', Validators.required],
-      postingDateFrom: [oneMonthAgo, Validators.required],
-      postingDateTo: [currentDate, Validators.required],
-      PRUEFLOS: [""],
-      WERK: [""],
-      ART: [""],
-      MATNR: [""],
-      ENSTEHDAT: [""],
-      SELLIFNR: [""],
-      ZZUSER: [""],
-      ZZDIV: [""],
-
+      WERK: ['1100', Validators.required],
+      fromDate: [oneMonthAgo, Validators.required],
+      toDate: [currentDate, Validators.required],
+      inspectionLot: [''],
+      material: [''],
+      materialName: [''],
+      lotQty: [''],
+      batch: [''],
+      postingDate: [''], 
+    });
+    this.tableForm = this.formBuilder.group({
+      toUnrestrictedUse: [''],
+      toScrap: [''],
+      toBlocked: [''],
+      toConsumption: [''],
+    });
+    this.floatingForm = this.formBuilder.group({
       INSPLOT: [""],
+      MATNR: [""],
       MAKTX: [""],
+      ZZREQUES: [""],
       LOSMENGE: [""],
       CHARG: [""],
-      ZZTESTF:[""],
-      ZZTESTT:[""],
-      ZEINR:[""],
-      ZEIVR:[""],
-      ZZREST:[""],
-      ZRESREMAKS:[""],
-      ZZREQUES:[''],
-      ZZDRAW:[''],
-      ZZREVNO:['']
-    });
+
+      ZZDRAW: [''],
+      ZZTESTF: [''],
+      ZZTESTT: [''],
+      ZZREST: [''],
+      ZRESREMAKS: ['']
+    })
 
     // Directly retrieve ZUSER and WERK from localStorage
     const ZUSER = localStorage.getItem('ZUSER');
@@ -301,7 +324,6 @@ export class ResultRecordingComponent implements OnInit {
   }
 
   getReports(ZUSER: string, ZTYUSER: string) {
-    // Construct the payload object dynamically
     const filter = {
       PRUEFLOS: "",
       WERK: "",
@@ -335,11 +357,16 @@ export class ResultRecordingComponent implements OnInit {
         console.log("API response:", res,res.data, res.data.TABLE);
         if (res.status === true) {
           if (res.data && res.data.TABLE) {
-            this.lotReportsData= res.data.TABLE; // Update table data
+            console.warn("Entered to reponse")
+            this.lotReportsData= res.data.TABLE;
+            console.table(this.lotReportsData)
           } else {
             this.lotReportsDataHide=true;
             console.error("No table data returned.");
           }
+          console.log("response:", res);
+          this.service.setTableData(this.lotReportsData || []);
+          this._fetchData();
         } else {
           console.error("API returned an error response:", res);
         }
@@ -371,7 +398,7 @@ export class ResultRecordingComponent implements OnInit {
             // Check if the response status is successful
             if (res.status === true) {
                 // Populate form fields with data from response
-                this.validationform.patchValue({
+                this.floatingForm.patchValue({
                     INSPLOT: res.data.INSPLOT || rowData.PRUEFLOS,
                     MATNR: res.data.MATNR,
                     MAKTX: res.data.MAKTX,
@@ -385,7 +412,6 @@ export class ResultRecordingComponent implements OnInit {
                     ZZREQUES:res.data.ZZREQUES,
                     ZZDRAW:res.data.ZZDRAW,
                     ZZREVNO:res.data.ZZREVNO
-  
                 });
                 this.ZRESREMAKS=res.data.ZRESREMARKS
                 console.log('this.ZRESREMAKS',this.ZRESREMAKS)
@@ -549,34 +575,13 @@ export class ResultRecordingComponent implements OnInit {
     return `${year}${month}${day}`;
   }
 
-  submitResults(): void {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: 'Do you want to submit the data?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, submit it!',
-      cancelButtonText: 'Cancel'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        // Proceed with submission
-        const currentDate = this.getCurrentDate();
-        this.currentLot = '';
-        const zztestt = this.validationform.get('ZZTESTT')?.value || currentDate;
-        this.currentLot = this.validationform.get('INSPLOT')?.value;
-        // const currentDate = this.getCurrentDate();
-        const zztestf = this.validationform.get('ZZTESTF')?.value ? this.validationform.get('ZZTESTF')?.value : currentDate;
-  
+  submitSave(): void {
     const payload = {
-      INSPLOT: this.currentLot,
+      INSPLOT: this.validationform.get('INSPLOT')?.value,
       INSPOPER: "0010",
-      INSPSTAT: "SUBMIT",
-      ZZTESTF: zztestf,//this.validationform.get('ZZTESTF')?.value,
-      ZZTESTT: zztestt,
-      ZZUSER:this.userId,
-      ZRESREMARKS:this.ZRESREMAKS,
+      INSPSTAT: "",
+      ZZTESTF: "20241107",
+      ZZTESTT: "20241107",
       RESVAL: []
     };
   
@@ -584,28 +589,139 @@ export class ResultRecordingComponent implements OnInit {
       // Check if Char Type has a value, indicating it should go to CODE1
       const shouldSendToCode1 = element.KATAB1 && element.KATAB1.trim() !== '';
   
-      // payload.RESVAL.push({
-      //   INSPCHAR: element.INSPCHAR,
-      //   RES_NO: 1,
-      //   RES_VALUE: shouldSendToCode1 ? '' : element.RES_VALUE, // Send to RES_VALUE if Char Type is empty
-      //   CODE1: shouldSendToCode1 ? element.RES_VALUE : element.CODE1, // Send to CODE1 if Char Type has a value
-      //   RES_VALUAT: element.BEWERTUNG || '',
-      //   CODE_GRP1: element.CODEGRUPPE,
-      // });
+      payload.RESVAL.push({
+        INSPCHAR: element.INSPCHAR,
+        RES_NO: 1,
+        RES_VALUE: shouldSendToCode1 ? '' : element.RES_VALUE, // Send to RES_VALUE if Char Type is empty
+        CODE1: shouldSendToCode1 ? element.RES_VALUE : element.CODE1, // Send to CODE1 if Char Type has a value
+        RES_VALUAT: element.BEWERTUNG || '',
+        CODE_GRP1: element.CODEGRUPPE,
+      });
     });
   
     // Submit the payload through the service
     this.apiService.updateResultRecording(payload).subscribe(
       (res: any) => {
         if (res.status === true) {
-          Swal.fire({                
-            icon: "success",
-            text: res.data.INFO, //'Data Submitted successfully!',
-            showConfirmButton: true,
-            confirmButtonColor:'btn btn success'
-          })
+          this._snackBar.open('Data Saved successfully!', '', {
+            duration: 3000,
+            horizontalPosition: 'end',
+            verticalPosition: 'top',
+          });
           this.validationform.reset();
-          this.resultRecordingScreen=false;
+        } else {
+          console.error("Error: No data found.");
+        }
+      },
+      error => {
+        console.error("Error:", error);
+      }
+    );
+  }
+  
+
+  // submitResults(): void {
+  //   Swal.fire({
+  //     title: 'Are you sure?',
+  //     text: 'Do you want to submit the data?',
+  //     icon: 'warning',
+  //     showCancelButton: true,
+  //     confirmButtonColor: '#3085d6',
+  //     cancelButtonColor: '#d33',
+  //     confirmButtonText: 'Yes, submit it!',
+  //     cancelButtonText: 'Cancel'
+  //   }).then((result) => {
+  //     if (result.isConfirmed) {
+  //       // Proceed with submission
+  //       const currentDate = this.getCurrentDate();
+  //       this.currentLot = '';
+  //       const zztestt = this.validationform.get('ZZTESTT')?.value || currentDate;
+  //       this.currentLot = this.validationform.get('INSPLOT')?.value;
+  //       // const currentDate = this.getCurrentDate();
+  //       const zztestf = this.validationform.get('ZZTESTF')?.value ? this.validationform.get('ZZTESTF')?.value : currentDate;
+  
+  //   const payload = {
+  //     INSPLOT: this.currentLot,
+  //     INSPOPER: "0010",
+  //     INSPSTAT: "SUBMIT",
+  //     ZZTESTF: zztestf,//this.validationform.get('ZZTESTF')?.value,
+  //     ZZTESTT: zztestt,
+  //     ZZUSER:this.userId,
+  //     ZRESREMARKS:this.ZRESREMAKS,
+  //     RESVAL: []
+  //   };
+  
+  //   this.dataSource.forEach((element: any) => {
+  //     // Check if Char Type has a value, indicating it should go to CODE1
+  //     const shouldSendToCode1 = element.KATAB1 && element.KATAB1.trim() !== '';
+  //   });
+  
+  //   // Submit the payload through the service
+  //   this.apiService.updateResultRecording(payload).subscribe(
+  //     (res: any) => {
+  //       if (res.status === true) {
+  //         Swal.fire({                
+  //           icon: "success",
+  //           text: res.data.INFO, //'Data Submitted successfully!',
+  //           showConfirmButton: true,
+  //           confirmButtonColor:'btn btn success'
+  //         })
+  //         this.validationform.reset();
+  //         this.resultRecordingScreen=false;
+  //         this.ngOnInit();
+  //       } else {
+  //         console.error("Error: No data found.");
+  //       }
+  //     },
+  //     error => {
+  //       console.error("Error:", error);
+  //     }
+  //   );
+  // } else {
+  //   // User cancelled submission
+  //   console.log('Submission cancelled');
+  // }
+  // });
+  // }
+
+  submitResults(): void {
+    const payload = {
+      INSPLOT: this.floatingForm.get('INSPLOT')?.value,
+      INSPOPER: "0010",
+      INSPSTAT: "SUBMIT",
+      ZZTESTF: "20241107",
+      ZZTESTT: "20241107",
+      RESVAL: []
+    };
+  
+    this.dataSource.forEach((element: any) => {
+      // Check if Char Type has a value, indicating it should go to CODE1
+      const shouldSendToCode1 = element.KATAB1 && element.KATAB1.trim() !== '';
+  
+      payload.RESVAL.push({
+        INSPCHAR: element.INSPCHAR,
+        RES_NO: 1,
+        RES_VALUE: shouldSendToCode1 ? '' : element.RES_VALUE, // Send to RES_VALUE if Char Type is empty
+        CODE1: shouldSendToCode1 ? element.RES_VALUE : element.CODE1, // Send to CODE1 if Char Type has a value
+        RES_VALUAT: element.BEWERTUNG || '',
+        CODE_GRP1: element.CODEGRUPPE,
+      });
+    });
+  
+    // Submit the payload through the service
+    this.apiService.updateResultRecording(payload).subscribe(
+      (res: any) => {
+        if (res.status === true) {
+          // this._snackBar.open('Data Saved successfully!', '', {
+          //   duration: 3000,
+          //   horizontalPosition: 'end',
+          //   verticalPosition: 'top',
+          // });
+          Swal.fire(
+            '','Data Saved successfully!',
+            'success',  
+          )
+          this.floatingForm.reset();
           this.ngOnInit();
         } else {
           console.error("Error: No data found.");
@@ -615,11 +731,6 @@ export class ResultRecordingComponent implements OnInit {
         console.error("Error:", error);
       }
     );
-  } else {
-    // User cancelled submission
-    console.log('Submission cancelled');
-  }
-  });
   }
 
   checkToleranceAndSetResult(row: TableRow) {
@@ -818,20 +929,10 @@ export class ResultRecordingComponent implements OnInit {
     console.log('Duplicated Data:', this.duplicatedData);
   }
 
-//   filterData(): void {
-//     const werks = this.resultsReportsForm.get('WERKS')?.value?.toLowerCase() || '';
-//     this.lotReportsData.filterPredicate = (data: any) => {
-//       const matchesPlant = data.WERK?.toLowerCase().includes(werks);
-//       return matchesPlant
-//     };
-//     this.lotReportsData.filter =  werks; 
-//   }
-
-
-//   applyFilter(event: Event) {
-//     const filterValue = (event.target as HTMLInputElement).value;
-//     this.lotReportsData.filter = filterValue.trim().toLowerCase();
-//   }
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.lotReportsData.filter = filterValue.trim().toLowerCase();
+  }
 
   getResvalValue(element: any): string {
     const resvalEntry = this.resval.find((item: any) => item.INSPCHAR === element.INSPCHAR);
@@ -1252,51 +1353,6 @@ Save1() {
       top: yPosition,
       behavior: 'smooth' // Optional for smooth scrolling
     });
-  }
-  
-
-   // Method to handle input events
-   handlepoInput(event: Event): void {
-    const inputElement = event.target as HTMLInputElement;
-    const input = inputElement.value;
-  
-    if (input.trim()) {
-      // Check if input contains any delimiters (space, comma, or newline)
-      if (/[\s,]+/.test(input)) {
-        // Split the input by spaces, commas, or newlines, trim, and filter empty values
-        const newPOs = input
-          .split(/[\s,]+/) // Match spaces, commas, or newlines
-          .map((po) => po.trim())
-          .filter((po) => /^\d+$/.test(po)); // Allow only numeric values
-  
-        // Add unique PO numbers to the array
-        this.poArray.push(...newPOs.filter((po) => !this.poArray.includes(po)));
-  
-        // Clear the input field after processing
-        inputElement.value = '';
-      }
-    }
-  }
-  
-  
-  // Open the full-screen modal
-  openPOModal(): void {
-    this.showPOModal = true;
-  }
-
-  // Close the modal
-  closePOModal(): void {
-    this.showPOModal = false;
-  }
-
-  // Method to remove a PO from the array
-  removePO(index: number): void {
-    this.poArray.splice(index, 1);
-  }
-
-  clearAllPOs(): void {
-    this.poArray = [];
-    this.closePOModal();
   }
 
   get form() {

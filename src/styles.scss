@@ -204,6 +204,17 @@ color: white;
   
 }
 
+/* Fix for Pagination Button Text Overflow */
+.pagination .page-item .page-link {
+  display: inline-block; /* Ensures proper inline-block behavior */
+  min-width: 75px; /* Ensures a minimum width to accommodate text */
+  text-align: center; /* Centers the text */
+  white-space: nowrap; /* Prevents text wrapping */
+  overflow: hidden; /* Hides overflow text */
+  text-overflow: ellipsis; /* Adds ellipsis for long text */
+  font-size: 14px; /* Adjust font size for readability */
+}
+
 /* Hover Effect */
 .page-link-hover:hover {
   background-color: MediumSeaGreen !important;
@@ -212,19 +223,21 @@ color: white;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Active Button Styling */
-.page-item.active .page-link {
-  background-color: MediumSeaGreen;
-  color: white;
+/* Active and Disabled Button Styling */
+.page-item.active .page-link,
+.page-item.disabled .page-link {
   border: 2px solid MediumSeaGreen;
+  color: white;
+  background-color: MediumSeaGreen;
+  pointer-events: auto;
 }
 
-/* Disabled Button Styling */
 .page-item.disabled .page-link {
   color: #6c757d;
-  pointer-events: none;
   background-color: #f8f9fa;
-  border: 2px solid #dee2e6;
+  pointer-events: none;
+  border-color: #dee2e6;
 }
+
 
 

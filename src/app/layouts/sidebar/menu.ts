@@ -79,6 +79,20 @@ export const MENU: MenuItem[] = [
         icon: 'bx-archive-in',
     },
     {
+        id: "resultrecording",
+        label: 'MENUITEMS.DASHBOARDS.LIST.RESULTRECORDING',
+        link: 'resultRecording',
+        icon: 'bx-archive',
+        parentId: "menu"
+    },
+    {
+        id: "resultrecording",
+        label: 'MENUITEMS.DASHBOARDS.LIST.USAGEDECISION',
+        link: 'usageDecision',
+        icon: 'bx-archive',
+        parentId: "menu"
+    },
+    {
         id: "inbounddelivery",
         label: 'MENUITEMS.DASHBOARDS.LIST.INBOUNDDELIVERY',
         link: 'inbounddelivery',
@@ -175,6 +189,20 @@ export const MENU: MenuItem[] = [
                 id: "mb52",
                 label: 'MENUITEMS.DASHBOARDS.LIST.MB52',
                 link: 'mb52',
+                icon: 'bx-layer',
+                parentId: "menu"
+            },
+            {
+                id: "mb52",
+                label: 'MENUITEMS.DASHBOARDS.LIST.QUALITYREPORTS',
+                link: 'qualityReport',
+                icon: 'bx-layer',
+                parentId: "menu"
+            },
+            {
+                id: "mb52",
+                label: 'MENUITEMS.DASHBOARDS.LIST.PENDINGLOTREPORT',
+                link: 'pendingLotReport',
                 icon: 'bx-layer',
                 parentId: "menu"
             },

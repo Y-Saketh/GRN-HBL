@@ -114,6 +114,10 @@ export class UserProfileService {
         console.log("environment.apiUrl",environment.apiUrl)
         return this.http.post(`${environment.apiUrl}orders/resultrecord`,obj)
     }
+    submitResults(obj) {
+        console.log("environment.apiUrl",environment.apiUrl)
+        return this.http.post(`${environment.apiUrl}orders/lot/result`,obj)
+    }
 
 
 }
