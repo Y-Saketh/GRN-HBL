@@ -1,320 +1,323 @@
 <div class="col-xl-12">
-    <div class="card" style="background-color: beige">
-      <div class="card-body">
-        <h4 class="card-title">
-          <span style="color: black"></span>
-          Quality Reports
-        </h4>
-        <form class="needs-validation" [formGroup]="validationform">
-          <div class="row">
-            <!-- Plant -->
-            <div class="col-md-1">
-              <label class="brandcolor" for="plant">Plant<span style="color: red;">*</span></label>
-              <div class="mb-3">
-                <select class="form-select" id="plant" formControlName="plant">
-                  <option value="" disabled selected>Plant</option>
-                  <option *ngFor="let type of plants" [value]="type">
-                    {{ type }}
-                  </option>
-                </select>
-                <div *ngIf="submit && form.plant.errors" class="invalid-feedback">
-                  <span *ngIf="form.plant.errors.required"
-                    >Please provide a valid plant.</span
-                  >
-                </div>
-              </div>
-            </div>
-            <!-- Date Range -->
-            <div class="col-md-2">
-              <label class="brandcolor" for="dateRange">Date Range<span style="color: red;">*</span></label>
-              <div class="mb-3">
-                <input
-                  type="text"
-                  class="form-control"
-                  id="dateRange"
-                  formControlName="dateRange"
-                  [bsConfig]="bsConfig"
-                  bsDatepicker
-                  placeholder="Enter Date Range"
-                  [ngClass]="{
-                    'is-invalid': submit && form.dateRange.errors
-                  }"
-                />
-                <div
-                  *ngIf="submit && form.dateRange.errors"
-                  class="invalid-feedback"
+  <div class="card" style="background-color: beige">
+    <div class="card-body">
+      <h4 class="card-title">
+        <span style="color: black"></span>
+        Quality Reports
+      </h4>
+      <form class="needs-validation" [formGroup]="validationform">
+        <div class="row">
+          <!-- Plant -->
+          <div class="col-md-1">
+            <label class="brandcolor" for="plant"
+              >Plant<span style="color: red">*</span></label
+            >
+            <div class="mb-3">
+              <select class="form-select" id="plant" formControlName="plant">
+                <option value="" disabled selected>Plant</option>
+                <option *ngFor="let type of plants" [value]="type">
+                  {{ type }}
+                </option>
+              </select>
+              <div *ngIf="submit && form.plant.errors" class="invalid-feedback">
+                <span *ngIf="form.plant.errors.required"
+                  >Please provide a valid plant.</span
                 >
-                  <span *ngIf="form.dateRange.errors.required"
-                    >Please provide a valid Date Range</span
-                  >
-                </div>
-              </div>
-            </div>
-            <!-- Button -->
-            <div class="col-md-1 mt-4">
-              <div class="ms-4 mb-3">
-                <button
-                  style="
-                    margin-top: 8px;
-                    background-color: brown;
-                    width: max-content;
-                    color: aliceblue;
-                  "
-                  class="btn"
-                  type="submit"
-                >
-                  Get Details
-                </button>
               </div>
             </div>
           </div>
-        </form>
-      </div>
-    </div>
-    <!-- end card -->
-    <div class="card">
-      <div class="card-body">
-        <div class="row mb-md-2">
-          <div class="col-sm-12 col-md-4">
-            <div class="dataTables_length">
-              <label class="d-inline-flex align-items-center">
-                Show
-                <select
-                  name="tickets-table_length"
-                  aria-controls="tickets-table"
-                  class="form-control form-control-sm mx-2"
-                  [(ngModel)]="service.pageSize"
-                  (change)="onPageSizeChange()"
-                  [ngModelOptions]="{ standalone: true }"
+          <!-- Date Range -->
+          <div class="col-md-2">
+            <label class="brandcolor" for="dateRange"
+              >Date Range<span style="color: red">*</span></label
+            >
+            <div class="mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="dateRange"
+                formControlName="dateRange"
+                [bsConfig]="bsConfig"
+                bsDatepicker
+                placeholder="Enter Date Range"
+                [ngClass]="{
+                  'is-invalid': submit && form.dateRange.errors
+                }"
+              />
+              <div
+                *ngIf="submit && form.dateRange.errors"
+                class="invalid-feedback"
+              >
+                <span *ngIf="form.dateRange.errors.required"
+                  >Please provide a valid Date Range</span
                 >
-                  <option [ngValue]="10">10</option>
-                  <option [ngValue]="25">25</option>
-                  <option [ngValue]="50">50</option>
-                  <option [ngValue]="100">100</option>
-                </select>
-                entries
-              </label>
+              </div>
             </div>
           </div>
-  
-          <!-- Search and Export -->
-          <div class="col-sm-12 col-md-8">
-            <div class="d-flex justify-content-end align-items-center">
-              <!-- Search Field -->
-              <div id="tickets-table_filter" class="dataTables_filter">
-                <label class="d-inline-flex align-items-center">
-                  Search:
-                  <input
-                    type="text"
-                    name="searchTerm"
-                    class="form-control form-control-sm ms-2"
-                    aria-controls="tickets-table"
-                    [(ngModel)]="service.searchTerm"
-                  />
-                </label>
-              </div>
-  
-              <!-- Export Button -->
-              <div>
-                <button
-                  class="btn btn-warning ms-2"
-                  [disabled]="(tables$ | async)?.length === 0"
-                  (click)="exportToExcel()"
-                >
-                  Export
-                </button>
-              </div>
+          <!-- Button -->
+          <div class="col-md-1 mt-4">
+            <div class="ms-4 mb-3">
+              <button
+                style="
+                  margin-top: 8px;
+                  background-color: brown;
+                  width: max-content;
+                  color: aliceblue;
+                "
+                class="btn"
+                type="submit"
+              >
+                Get Details
+              </button>
             </div>
           </div>
         </div>
-  
-        <!-- Table -->
-        <div class="table-responsive">
-          <table
-            id="basic-datatable"
-            class="table table-bordered dt-responsive nowrap"
-          >
-            <thead class="brandcolor tableHeader">
-              <tr>
-                <th></th>
-                <th class="brandcolor" sortable="PLANT" (sort)="onSort($event)">
-                  Plant
-                </th>
-                <th
-                  class="brandcolor"
-                  sortable="GL_ACCOUNT"
-                  (sort)="onSort($event)"
-                >
-                  Division
-                </th>
-                <th class="brandcolor" sortable="MAT_DOC" (sort)="onSort($event)">
-                  Inspection Type
-                </th>
-                <th
-                  class="brandcolor"
-                  sortable="DOC_DATE"
-                  (sort)="onSort($event)"
-                >
-                  Inspection Lot
-                </th>
-                <th
-                  class="brandcolor"
-                  sortable="POSTING_DATE"
-                  (sort)="onSort($event)"
-                >
-                  Lot Created On
-                </th>
-                <th
-                  class="brandcolor"
-                  sortable="MATERIAL"
-                  (sort)="onSort($event)"
-                >
-                  Created By
-                </th>
-                <th class="brandcolor" sortable="MAT_DES" (sort)="onSort($event)">
-                  Stor. Location
-                </th>
-              </tr>
-            </thead>
-            <tbody *ngFor="let table of tables$ | async; let i = index">
-              <tr>
-                <td align="center">
-                  <a class="expand-row" (click)="changeValue(i)">+</a>
-                </td>
-                <td>{{ table.PLANT }}</td>
-                <!-- Plant -->
-                <td>{{ table.GL_ACCOUNT }}</td>
-                <!-- Division -->
-                <td>{{ table.MAT_DOC }}</td>
-                <!-- Inspection Type -->
-                <td>{{ table.DOC_DATE | date : "dd-MM-yyyy" }}</td>
-                <!-- Inspection Lot -->
-                <td>{{ table.POSTING_DATE | date : "dd-MM-yyyy" }}</td>
-                <!-- Lot Created On -->
-                <td>{{ table.MATERIAL }}</td>
-                <!-- Created By -->
-                <td>{{ table.MAT_DES }}</td>
-                <!-- Stor. Location -->
-              </tr>
-              <ng-container *ngIf="!hideme[i]">
-                <tr class="sub-table no-bg">
-                  <td align="center"></td>
-                  <td colspan="15" class="p-0">
-                    <table class="table mb-0 table-striped">
-                      <thead class="bg-dark text-white">
-                        <tr>
-                          <th>Material Doc</th>
-                          <th>Mat.Doc.Year</th>
-                          <th>Posting Date</th>
-                          <th>Material</th>
-                          <th>Material Desc</th>
-                          <th>UOM</th>
-                          <th>Qty</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>{{ table.DOC_HEADER_TXT }}</td>
-                          <!-- Material Doc-->
-                          <td>{{ table.STG_LOC }}</td>
-                          <!-- Mat.Doc.Year -->
-                          <td>{{ table.ENTRY_DATE | date : "dd-MM-yyyy" }}</td>
-                          <!-- Posting Date -->
-                          <td>{{ table.BATCH }}</td>
-                          <!-- Material -->
-                          <td>{{ table.CONSUMPTION }}</td>
-                          <!-- Material Desc -->
-                          <td>{{ table.SUPPLIER }}</td>
-                          <!-- UOM -->
-                          <td>{{ table.SUPPLIER }}</td>
-                          <!-- Qty -->
-                        </tr>
-                      </tbody>
-                    </table>
-                  </td>
-                </tr>
-              </ng-container>
-            </tbody>
-          </table>
-        </div>
-        <!-- Pagination -->
-        <div class="row justify-content-md-between align-items-md-center mt-2">
-          <div class="col-sm-12 col-md-5">
-            <div class="dataTables_info mb-2" role="status" aria-live="polite">
-              Showing {{ service.startIndex }} to {{ service.endIndex }} of
-              {{ service.totalRecords }} entries
-            </div>
-          </div>
-          <div class="col-sm-12 col-md-5">
-            <div class="text-md-right float-md-end pagination-rounded">
-              <ul class="pagination justify-content-end mb-0">
-                <!-- Previous Button -->
-                <li
-                  class="page-item"
-                  [class.disabled]="service.page === 1"
-                  [class.highlighted]="service.clickedButton === 'previous'"
-                  (click)="onButtonClick('previous')"
-                >
-                  <a
-                    class="page-link"
-                    href="javascript:void(0)"
-                    [ngStyle]="{
-                      border:
-                        service.page > 1 ? '2px solid MediumSeaGreen' : 'none',
-                      backgroundColor:
-                        service.clickedButton === 'previous'
-                          ? '#d4edda'
-                          : 'transparent',
-                      transition:
-                        'background-color 0.3s ease, transform 0.2s ease'
-                    }"
-                    [class.page-link-hover]="service.page > 1"
-                  >
-                    Previous
-                  </a>
-                </li>
-  
-                <!-- Current Page Display -->
-                <li class="page-item active">
-                  <a class="page-link" href="javascript:void(0)">
-                    {{ service.page }}
-                  </a>
-                </li>
-  
-                <!-- Next Button -->
-                <li
-                  class="page-item"
-                  [class.disabled]="service.page === service.totalPages"
-                  [class.highlighted]="service.clickedButton === 'next'"
-                  (click)="onButtonClick('next')"
-                >
-                  <a
-                    class="page-link"
-                    href="javascript:void(0)"
-                    [ngStyle]="{
-                      border:
-                        service.page < service.totalPages
-                          ? '2px solid MediumSeaGreen'
-                          : 'none',
-                      backgroundColor:
-                        service.clickedButton === 'next'
-                          ? '#d4edda'
-                          : 'transparent',
-                      transition:
-                        'background-color 0.3s ease, transform 0.2s ease'
-                    }"
-                    [class.page-link-hover]="service.page < service.totalPages"
-                  >
-                    Next
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-  
-        <!-- End of Pagination -->
-      </div>
+      </form>
     </div>
   </div>
-  
+  <!-- end card -->
+  <div class="card">
+    <div class="card-body">
+      <div class="row mb-md-2">
+        <div class="col-sm-12 col-md-4">
+          <div class="dataTables_length">
+            <label class="d-inline-flex align-items-center">
+              Show
+              <select
+                name="tickets-table_length"
+                aria-controls="tickets-table"
+                class="form-control form-control-sm mx-2"
+                [(ngModel)]="service.pageSize"
+                (change)="onPageSizeChange()"
+                [ngModelOptions]="{ standalone: true }"
+              >
+                <option [ngValue]="10">10</option>
+                <option [ngValue]="25">25</option>
+                <option [ngValue]="50">50</option>
+                <option [ngValue]="100">100</option>
+              </select>
+              entries
+            </label>
+          </div>
+        </div>
+
+        <!-- Search and Export -->
+        <div class="col-sm-12 col-md-8">
+          <div class="d-flex justify-content-end align-items-center">
+            <!-- Search Field -->
+            <div id="tickets-table_filter" class="dataTables_filter">
+              <label class="d-inline-flex align-items-center">
+                Search:
+                <input
+                  type="text"
+                  name="searchTerm"
+                  class="form-control form-control-sm ms-2"
+                  aria-controls="tickets-table"
+                  [(ngModel)]="service.searchTerm"
+                />
+              </label>
+            </div>
+
+            <!-- Export Button -->
+            <div>
+              <button
+                class="btn btn-warning ms-2"
+                [disabled]="(tables$ | async)?.length === 0"
+                (click)="exportToExcel()"
+              >
+                Export
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="table-responsive">
+        <table
+          id="basic-datatable"
+          class="table table-bordered dt-responsive nowrap"
+        >
+          <thead class="brandcolor tableHeader">
+            <tr>
+              <th></th>
+              <th class="brandcolor" sortable="WERK" (sort)="onSort($event)">
+                Plant
+              </th>
+              <th class="brandcolor" sortable="DEP" (sort)="onSort($event)">
+                Division
+              </th>
+              <th class="brandcolor" sortable="ART" (sort)="onSort($event)">
+                Inspection Type
+              </th>
+              <th
+                class="brandcolor"
+                sortable="PRUEFLOS"
+                (sort)="onSort($event)"
+              >
+                Inspection Lot
+              </th>
+              <th
+                class="brandcolor"
+                sortable="ENSTEHDAT"
+                (sort)="onSort($event)"
+              >
+                Lot Created On
+              </th>
+              <th
+                class="brandcolor"
+                sortable="ERSTELLER"
+                (sort)="onSort($event)"
+              >
+                Created By
+              </th>
+              <th
+                class="brandcolor"
+                sortable="LAGORTCHRG"
+                (sort)="onSort($event)"
+              >
+                Stor. Location
+              </th>
+            </tr>
+          </thead>
+          <tbody *ngFor="let table of tables$ | async; let i = index">
+            <tr>
+              <td align="center">
+                <a class="expand-row" (click)="changeValue(i)">+</a>
+              </td>
+              <td>{{ table.WERK }}</td>
+              <!-- Plant -->
+              <td>{{ table.DEP }}</td>
+              <!-- Division -->
+              <td>{{ table.ART }}</td>
+              <!-- Inspection Type -->
+              <td>{{ table.PRUEFLOS }}</td>
+              <!-- Inspection Lot -->
+              <td>{{ table.ENSTEHDAT }}</td>
+              <!-- Lot Created On -->
+              <td>{{ table.ERSTELLER }}</td>
+              <!-- Created By -->
+              <td>{{ table.LAGORTCHRG }}</td>
+              <!-- Stor. Location -->
+            </tr>
+            <ng-container *ngIf="!hideme[i]">
+              <tr class="sub-table no-bg">
+                <td align="center"></td>
+                <td colspan="15" class="p-0">
+                  <table class="table mb-0 table-striped">
+                    <thead class="bg-dark text-white">
+                      <tr>
+                        <th>Material Doc</th>
+                        <th>Mat.Doc.Year</th>
+                        <th>Posting Date</th>
+                        <th>Material</th>
+                        <th>Material Desc</th>
+                        <th>UOM</th>
+                        <th>Qty</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>{{ table.MBLNR }}</td>
+                        <!-- Material Doc-->
+                        <td>{{ table.MJAHR }}</td>
+                        <!-- Mat.Doc.Year -->
+                        <td>{{ table.BUDAT }}</td>
+                        <!-- Posting Date -->
+                        <td>{{ table.MATNR }}</td>
+                        <!-- Material -->
+                        <td>{{ table.MAKTX }}</td>
+                        <!-- Material Desc -->
+                        <td>{{ table.MEINS }}</td>
+                        <!-- UOM -->
+                        <td>{{ table.MENGE }}</td>
+                        <!-- Qty -->
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+      <!-- Pagination -->
+      <div class="row justify-content-md-between align-items-md-center mt-2">
+        <div class="col-sm-12 col-md-5">
+          <div class="dataTables_info mb-2" role="status" aria-live="polite">
+            Showing {{ service.startIndex }} to {{ service.endIndex }} of
+            {{ service.totalRecords }} entries
+          </div>
+        </div>
+        <div class="col-sm-12 col-md-5">
+          <div class="text-md-right float-md-end pagination-rounded">
+            <ul class="pagination justify-content-end mb-0">
+              <!-- Previous Button -->
+              <li
+                class="page-item"
+                [class.disabled]="service.page === 1"
+                [class.highlighted]="service.clickedButton === 'previous'"
+                (click)="onButtonClick('previous')"
+              >
+                <a
+                  class="page-link"
+                  href="javascript:void(0)"
+                  [ngStyle]="{
+                    border:
+                      service.page > 1 ? '2px solid MediumSeaGreen' : 'none',
+                    backgroundColor:
+                      service.clickedButton === 'previous'
+                        ? '#d4edda'
+                        : 'transparent',
+                    transition:
+                      'background-color 0.3s ease, transform 0.2s ease'
+                  }"
+                  [class.page-link-hover]="service.page > 1"
+                >
+                  Previous
+                </a>
+              </li>
+
+              <!-- Current Page Display -->
+              <li class="page-item active">
+                <a class="page-link" href="javascript:void(0)">
+                  {{ service.page }}
+                </a>
+              </li>
+
+              <!-- Next Button -->
+              <li
+                class="page-item"
+                [class.disabled]="service.page === service.totalPages"
+                [class.highlighted]="service.clickedButton === 'next'"
+                (click)="onButtonClick('next')"
+              >
+                <a
+                  class="page-link"
+                  href="javascript:void(0)"
+                  [ngStyle]="{
+                    border:
+                      service.page < service.totalPages
+                        ? '2px solid MediumSeaGreen'
+                        : 'none',
+                    backgroundColor:
+                      service.clickedButton === 'next'
+                        ? '#d4edda'
+                        : 'transparent',
+                    transition:
+                      'background-color 0.3s ease, transform 0.2s ease'
+                  }"
+                  [class.page-link-hover]="service.page < service.totalPages"
+                >
+                  Next
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- End of Pagination -->
+    </div>
+  </div>
+</div>

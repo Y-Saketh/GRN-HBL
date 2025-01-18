@@ -118,6 +118,10 @@ export class UserProfileService {
         console.log("environment.apiUrl",environment.apiUrl)
         return this.http.post(`${environment.apiUrl}orders/lot/result`,obj)
     }
+    reportZQA32(obj) {
+        console.log("environment.apiUrl",environment.apiUrl)
+        return this.http.post(`${environment.apiUrl}orders/reportZQA32`,obj)
+    }
 
 
 }

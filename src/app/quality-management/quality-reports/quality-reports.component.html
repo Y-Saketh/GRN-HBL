@@ -175,74 +175,71 @@
           <thead class="brandcolor tableHeader">
             <tr>
               <th></th>
-              <th class="brandcolor" sortable="PLANT" (sort)="onSort($event)">
+              <th class="brandcolor" sortable="WERK" (sort)="onSort($event)">
                 Plant
               </th>
               <th
                 class="brandcolor"
-                sortable="GL_ACCOUNT"
+                sortable="PRCTR1"
                 (sort)="onSort($event)"
               >
                 Division
               </th>
-              <th class="brandcolor" sortable="MAT_DOC" (sort)="onSort($event)">
-                Material Document
-              </th>
               <th
                 class="brandcolor"
-                sortable="DOC_DATE"
+                sortable="PRUEFLOS"
                 (sort)="onSort($event)"
               >
                 Inspection Lot
               </th>
               <th
                 class="brandcolor"
-                sortable="POSTING_DATE"
+                sortable="PEENDTERM"
                 (sort)="onSort($event)"
               >
                 Insp. End Date
               </th>
               <th
                 class="brandcolor"
-                sortable="MATERIAL"
+                sortable="CHARG"
                 (sort)="onSort($event)"
               >
                 Batch No
               </th>
-              <th class="brandcolor" sortable="MAT_DES" (sort)="onSort($event)">
+              <th class="brandcolor" sortable="INVOICE" (sort)="onSort($event)">
                 Invoice
               </th>
-              <th class="brandcolor" sortable="QUANITY" (sort)="onSort($event)">
+              <th class="brandcolor" sortable="IN_DATE" (sort)="onSort($event)">
                 Invoice Date
               </th>
-              <th class="brandcolor" sortable="MAT_DES" (sort)="onSort($event)">
+              <th class="brandcolor" sortable="DCNUMBER" (sort)="onSort($event)">
                 DC Number
               </th>
-              <th class="brandcolor" sortable="MAT_DES" (sort)="onSort($event)">
+              <th class="brandcolor" sortable="DC_DATE" (sort)="onSort($event)">
                 DC Date
               </th>
-              <th class="brandcolor" sortable="MAT_DES" (sort)="onSort($event)">
+              <th class="brandcolor" sortable="MBLNR" (sort)="onSort($event)">
                 GR No
               </th>
-              <th class="brandcolor" sortable="MAT_DES" (sort)="onSort($event)">
+              <th class="brandcolor" sortable="BUDAT" (sort)="onSort($event)">
                 GR Date
               </th>
-              <th class="brandcolor" sortable="MAT_DES" (sort)="onSort($event)">
+              <th class="brandcolor" sortable="EBELN" (sort)="onSort($event)">
                 PO Number
               </th>
-              <th class="brandcolor" sortable="MAT_DES" (sort)="onSort($event)">
+              <th class="brandcolor" sortable="EBELP" (sort)="onSort($event)">
                 PO Item
               </th>
-              <th class="brandcolor" sortable="MAT_DES" (sort)="onSort($event)">
+              <th class="brandcolor" sortable="BEDAT" (sort)="onSort($event)">
                 PO Doc.Date
               </th>
-              <th class="brandcolor" sortable="MAT_DES" (sort)="onSort($event)">
+              <th class="brandcolor" sortable="LIFNR" (sort)="onSort($event)">
                 Vendor
               </th>
-              <th class="brandcolor" sortable="MAT_DES" (sort)="onSort($event)">
+              <th class="brandcolor" sortable="NAME1" (sort)="onSort($event)">
                 Vendor Name
               </th>
-              <th class="brandcolor" sortable="MAT_DES" (sort)="onSort($event)">
+              <th class="brandcolor" sortable="MENGE" (sort)="onSort($event)">
                 Lot Qty
               </th>
             </tr>
@@ -252,41 +249,39 @@
               <td align="center">
                 <a class="expand-row" (click)="changeValue(i)">+</a>
               </td>
-              <td>{{ table.PLANT }}</td>
+              <td>{{ table.WERK }}</td>
               <!-- Plant -->
-              <td>{{ table.GL_ACCOUNT }}</td>
+              <td>{{ table.PRCTR1 }}</td>
               <!-- Division -->
-              <td>{{ table.MAT_DOC }}</td>
-              <!-- Material Document -->
-              <td>{{ table.DOC_DATE | date : "dd-MM-yyyy" }}</td>
+              <td>{{ table.PRUEFLOS }}</td>
               <!-- Inspection Lot -->
-              <td>{{ table.POSTING_DATE | date : "dd-MM-yyyy" }}</td>
+              <td>{{ table.PEENDTERM }}</td>
               <!-- Insp. End Date -->
-              <td>{{ table.MATERIAL }}</td>
+              <td>{{ table.CHARG }}</td>
               <!-- Batch No -->
-              <td>{{ table.MAT_DES }}</td>
+              <td>{{ table.INVOICE }}</td>
               <!-- Invoice -->
-              <td>{{ table.QUANITY }}</td>
+              <td>{{ table.IN_DATE }}</td>
               <!-- Invoice Date -->
-              <td>{{ table.MAT_DES }}</td>
+              <td>{{ table.DCNUMBER }}</td>
               <!-- DC Number -->
-              <td>{{ table.MAT_DES }}</td>
+              <td>{{ table.DC_DATE }}</td>
               <!-- DC Date -->
-              <td>{{ table.MAT_DES }}</td>
+              <td>{{ table.MBLNR }}</td>
               <!-- GR No -->
-              <td>{{ table.MAT_DES }}</td>
+              <td>{{ table.BUDAT }}</td>
               <!-- GR Date -->
-              <td>{{ table.MAT_DES }}</td>
+              <td>{{ table.EBELN }}</td>
               <!-- PO Number -->
-              <td>{{ table.MAT_DES }}</td>
+              <td>{{ table.EBELP }}</td>
               <!-- PO Item -->
-              <td>{{ table.MAT_DES }}</td>
+              <td>{{ table.BEDAT }}</td>
               <!-- PO Doc.Date -->
-              <td>{{ table.MAT_DES }}</td>
+              <td>{{ table.LIFNR }}</td>
               <!-- Vendor -->
-              <td>{{ table.MAT_DES }}</td>
+              <td>{{ table.NAME1 }}</td>
               <!-- Vendor Name -->
-              <td>{{ table.MAT_DES }}</td>
+              <td>{{ table.MENGE }}</td>
               <!-- Lot Qty -->
             </tr>
             <ng-container *ngIf="!hideme[i]">
@@ -296,12 +291,6 @@
                   <table class="table mb-0 table-striped">
                     <thead class="bg-dark text-white">
                       <tr>
-                        <th>PO Number</th>
-                        <th>PO Item</th>
-                        <th>PO Doc.Date</th>
-                        <th>Vendor</th>
-                        <th>Vendor Name</th>
-                        <th>Lot Qty</th>
                         <th>Accepted Quality</th>
                         <th>Reason for Accepted</th>
                         <th>Rejected Quanity</th>
@@ -328,80 +317,68 @@
                         <th>Valuation</th>
                         <th>Results</th>
                         <th>Lower Limit</th>
-                        <th>Material</th>
-                        <th>Material</th>
+                        <th>Upper Limit</th>
+                        <th>Remarks</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr>
-                        <td>{{ table.DOC_HEADER_TXT }}</td>
-                        <!-- PO Number -->
-                        <td>{{ table.STG_LOC }}</td>
-                        <!-- PO Item -->
-                        <td>{{ table.ENTRY_DATE | date : "dd-MM-yyyy" }}</td>
-                        <!-- PO Doc.Date -->
-                        <td>{{ table.BATCH }}</td>
-                        <!-- Vendor -->
-                        <td>{{ table.CONSUMPTION }}</td>
-                        <!-- Vendor Name -->
-                        <td>{{ table.SUPPLIER }}</td>
-                        <!-- Lot Qty -->
-                        <td>{{ table.SUPPLIER }}</td>
+                        <td>{{ table.MENGE_ACC }}</td>
                         <!-- Accepted Quality -->
-                        <td>{{ table.SUPPLIER }}</td>
+                        <td>{{ table.SGTXT1 }}</td>
                         <!-- Reason for Accepted -->
-                        <td>{{ table.SUPPLIER }}</td>
+                        <td>{{ table.MENGE_REJ }}</td>
                         <!-- Rejected Quanity -->
-                        <td>{{ table.SUPPLIER }}</td>
+                        <td>{{ table.SGTXT }}</td>
                         <!-- Reason for Rejection -->
-                        <td>{{ table.SUPPLIER }}</td>
+                        <td>{{ table.LMENGEZUB }}</td>
                         <!-- To be Posted Qty -->
-                        <td>{{ table.SUPPLIER }}</td>
+                        <td>{{ table.MENGE_SAM }}</td>
                         <!-- Sample Quantity -->
-                        <td>{{ table.SUPPLIER }}</td>
+                        <td>{{ table.PRCTR }}</td>
                         <!-- Profit Center -->
-                        <td>{{ table.SUPPLIER }}</td>
+                        <td>{{ table.LTEXT }}</td>
                         <!-- Profit Center Name -->
-                        <td>{{ table.SUPPLIER }}</td>
+                        <td>{{ table.LAGORTCHRG }}</td>
                         <!-- SLOC -->
-                        <td>{{ table.SUPPLIER }}</td>
+                        <td>{{ table.LGOBE }}</td>
                         <!-- SLOC Name -->
-                        <td>{{ table.SUPPLIER }}</td>
+                        <td>{{ table.DMBTR }}</td>
                         <!-- Total Insp Lot Value -->
-                        <td>{{ table.SUPPLIER }}</td>
+                        <td>{{ table.MATNR }}</td>
                         <!-- Material -->
-                        <td>{{ table.SUPPLIER }}</td>
+                        <td>{{ table.MAKTX }}</td>
                         <!-- Material Name -->
-                        <td>{{ table.SUPPLIER }}</td>
+                        <td>{{ table.DRAWING }}</td>
                         <!-- Drawing No -->
-                        <td>{{ table.SUPPLIER }}</td>
+                        <td>{{ table.VCODE }}</td>
                         <!-- Valuation(Result Codes) -->  
-                        <td>{{ table.SUPPLIER }}</td>
+                        <td>{{ table.VDATUM }}</td>
                         <!-- Valuation Date -->
-                        <td>{{ table.SUPPLIER }}</td>
+                        <td>{{ table.KURZTEXT }}</td>
                         <!-- Result Code Name -->
-                        <td>{{ table.SUPPLIER }}</td>
+                        <td>{{ table.PRUEFER }}</td>
                         <!-- Inspected by -->
-                        <td>{{ table.SUPPLIER }}</td>
+                        <td>{{ table.PRUEFER_NAME }}</td>
                         <!-- Inspected by Name -->
-                        <td>{{ table.SUPPLIER }}</td>
+                        <td>{{ table.MERKNR }}</td>
                         <!-- Oper./Act. -->
-                        <td>{{ table.SUPPLIER }}</td>
+                        <td>{{ table.VERWMERKM }}</td>
                         <!-- Inspection Characteristics -->
-                        <td>{{ table.SUPPLIER }}</td>
+                        <td>{{ table.KURZTEXT1 }}</td>
                         <!-- Specifications -->
-                        <td>{{ table.SUPPLIER }}</td>
+                        <td>{{ table.SOLLSTPUMF }}</td>
                         <!-- Sample Size -->
-                        <td>{{ table.SUPPLIER }}</td>
+                        <td>{{ table.MBEWERTG }}</td>
                         <!-- Valuation -->
-                        <td>{{ table.SUPPLIER }}</td>
+                        <td>{{ table.ORIGINAL_INPUT }}</td>
                         <!-- Results -->
-                        <td>{{ table.SUPPLIER }}</td>
+                        <td>{{ table.TOLERANZUN }}</td>
                         <!-- Lower Limit -->
-                        <td>{{ table.SUPPLIER }}</td>
-                        <!-- Material -->
-                        <td>{{ table.SUPPLIER }}</td>
-                        <!-- Material -->
+                        <td>{{ table.TOLERANZOB }}</td>
+                        <!-- Upper Limit -->
+                        <td>{{ table.PRUEFBEMKT }}</td>
+                        <!-- Remarks -->
                       </tr>
                     </tbody>
                   </table>

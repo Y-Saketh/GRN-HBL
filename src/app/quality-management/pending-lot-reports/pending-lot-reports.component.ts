@@ -1,18 +1,5 @@
-import {
-  Component,
-  OnInit,
-  QueryList,
-  ViewChild,
-  ViewChildren,
-} from "@angular/core";
-import {
-  FormBuilder,
-  FormGroup,
-  Validators,
-  FormsModule,
-  ReactiveFormsModule,
-  UntypedFormBuilder,
-} from "@angular/forms";
+import {Component,OnInit,QueryList,ViewChild,ViewChildren,} from "@angular/core";
+import {FormBuilder,FormGroup,Validators,FormsModule,ReactiveFormsModule,UntypedFormBuilder,} from "@angular/forms";
 import { BehaviorSubject, Observable } from "rxjs";
 import { CommonModule } from "@angular/common";
 import { BsDatepickerModule } from "ngx-bootstrap/datepicker";
@@ -22,17 +9,12 @@ import { LoaderService } from "src/app/core/services/loader.service";
 import { UserProfileService } from "src/app/core/services/user.service";
 import { Inject } from "@angular/core";
 import * as moment from "moment";
-import {
-  AdvancedSortableDirective,
-  SortEvent,
-} from "./Advanced-sortable.directive";
+import {AdvancedSortableDirective,SortEvent,} from "./Advanced-sortable.directive";
 import { Table } from "./advanced.model"; // Import the correct Table type
 import { ModalDirective } from "ngx-bootstrap/modal";
 import { DecimalPipe } from "@angular/common";
-import {
-  IDropdownSettings,
-  NgMultiSelectDropDownModule,
-} from "ng-multiselect-dropdown";
+import {IDropdownSettings,NgMultiSelectDropDownModule,} from "ng-multiselect-dropdown";
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-pending-lot-reports',
@@ -53,7 +35,6 @@ export class PendingLotReportsComponent implements OnInit {
   clickedButton: string | null = null;
   selectedItems = [];
   Valuesselectedplants: number | null = null;
-  bsConfig: any;
 
   @ViewChild("newContactModal", { static: false })
   newContactModal?: ModalDirective;
@@ -73,6 +54,12 @@ export class PendingLotReportsComponent implements OnInit {
   selectedMovementType: any;
   plants: string[] = [];
   matnr: string;
+  range: any;
+  dataSource: any;
+  paginator: any;
+  sort: any;
+  fromDate: Date;
+  toDate: Date;
 
   constructor(
     public formBuilder: UntypedFormBuilder,
@@ -85,10 +72,11 @@ export class PendingLotReportsComponent implements OnInit {
     this.total$ = service.total$;
   }
 
-  // bsConfig = {
-  //   dateInputFormat: 'DD-MM-YYYY', // Set the date format
-  //   containerClass: 'theme-blue', // Optional: Use a predefined theme
-  // };
+  bsConfig = {
+    dateInputFormat: 'DD-MM-YYYY', // Set the date format
+    // rangeInputFormat: 'DD-MM-YYYY',
+    containerClass: 'theme-blue', // Optional: Use a predefined theme
+  };
 
   onButtonClick(button: string): void {
     this.service.handleButtonClick(button);
@@ -100,7 +88,10 @@ export class PendingLotReportsComponent implements OnInit {
     fifteenDaysAgo.setDate(currentDate.getDate() - 15);
     this.validationform = this.formBuilder.group({
       plant: ["", Validators.required],
-      dateRange: [currentDate, Validators.required],
+      // dateRange: [currentDate, Validators.required],
+      dateRange: [null, Validators.required],
+      fromDate: [null],
+      toDate: [null],
     });
 
     const currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
@@ -114,40 +105,75 @@ export class PendingLotReportsComponent implements OnInit {
     });
     this.plants = werksArray;
 
-    this.setDynamicDateRange();
+    
   }
 
-  setDynamicDateRange(): void {
-    const currentDate = new Date();
-    const oneMonthAgo = new Date();
-    oneMonthAgo.setMonth(currentDate.getMonth() - 1);
+  getPendingLotReports() {
+    if (this.form.valid && this.range.valid) {
+        const formatDate = (date: Date) => {
+            return date.toISOString().split('T')[0];
+        };
+        const payload = {
+            WERKS: this.validationform.value.WERKS,
+            FROMDT: formatDate(this.range.value.start),
+            TODT: formatDate(this.range.value.end),
+            DEP: "",
+            LGORT: "",
+            MATNR: "",
+            RALV: "X",
+            RBMAIL: ""
+        };
 
-    this.bsConfig = {
-      dateInputFormat: "DD-MM-YYYY", // Your desired date format
-      containerClass: "theme-blue", // Optional theme class
-      minDate: oneMonthAgo, // Minimum date: One month ago
-      maxDate: currentDate, // Maximum date: Current date
-      showWeekNumbers: false, // Optional: Hide week numbers
-      isAnimated: true, // Optional: Enable date picker animation
-    };
-  }
+        this.loaderservice.showLoader();
+        this.apiService.reportZQA32(payload).subscribe(
+            (response: any) => {
+              this.loaderservice.hideLoader();
+                if (response && response.status) {
+                    if (response.data === 'Data is not available') {
+                        Swal.fire({
+                            icon: 'info',
+                            title: 'Information',
+                            text: response.data,
+                            timer: 3000,
+                            timerProgressBar: true,
+                        });
+                    } else {
+                        this.dataSource.data = response.data;
+                        this.dataSource.paginator = this.paginator;
+                        this.dataSource.sort = this.sort; //error to be solved
+                    }
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Invalid response format.',
+                        timer: 3000,
+                        timerProgressBar: true,
+                    });
+                }
+            },
+            (error) => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'An error occurred while submitting data.',
+                    timer: 3000,
+                    timerProgressBar: true,
+                });
+            }
+        );
+    } else {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Validation Error',
+            text: 'Please fill in all required fields and date range.',
+            timer: 3000,
+            timerProgressBar: true,
+        });
+    }
+}
 
-  onItemSelect(item: any) {
-    console.log(item);
-    this.validationform.patchValue({
-      movementType: this.selectedItems,
-    });
-  }
-  onSelectAll(items: any) {
-    console.log(items);
-    this.selectedItems = items;
-    this.validationform.patchValue({
-      movementType: this.selectedItems,
-    });
-  }
-  onDropdownChange() {
-    console.log("Selected Movement Type:", this.selectedMovementType);
-  }
+
   exportToExcel(): void {
     // Retrieve the current table data
     const dataToExport = this.mb51table;
@@ -235,48 +261,6 @@ export class PendingLotReportsComponent implements OnInit {
     }
   }
 
-  // Method to handle input events
-  handlepoInput(event: Event): void {
-    const inputElement = event.target as HTMLInputElement;
-    const input = inputElement.value;
-
-    if (input.trim()) {
-      // Check if input contains any delimiters (space, comma, or newline)
-      if (/[\s,]+/.test(input)) {
-        // Split the input by spaces, commas, or newlines, trim, and filter empty values
-        const newPOs = input
-          .split(/[\s,]+/) // Match spaces, commas, or newlines
-          .map((po) => po.trim())
-          .filter((po) => /^\d+$/.test(po)); // Allow only numeric values
-
-        // Add unique PO numbers to the array
-        this.poArray.push(...newPOs.filter((po) => !this.poArray.includes(po)));
-
-        // Clear the input field after processing
-        inputElement.value = "";
-      }
-    }
-  }
-
-  // Open the full-screen modal
-  openPOModal(): void {
-    this.showPOModal = true;
-  }
-
-  // Close the modal
-  closePOModal(): void {
-    this.showPOModal = false;
-  }
-
-  // Method to remove a PO from the array
-  removePO(index: number): void {
-    this.poArray.splice(index, 1);
-  }
-
-  clearAllPOs(): void {
-    this.poArray = [];
-    this.closePOModal();
-  }
 
   /**
    * Sort table data
